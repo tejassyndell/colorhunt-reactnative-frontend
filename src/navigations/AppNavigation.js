@@ -16,14 +16,7 @@ import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsD
 function MainNavigator() {
   return(
     <Stack.Navigator
-      screenOptions={{
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            textAlign: 'center',
-            alignSelf: 'center',
-            flex: 1,
-          }
-      }}
+   
     >
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='Categories' component={CategoriesScreen}/>
