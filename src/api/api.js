@@ -1,6 +1,6 @@
 /* eslint-disable */
-import axios from 'axios'
-const url = 'http://localhost:4000'
+import axios from "axios"
+const url = 'http://10.0.2.2:4000'
 // const url = 'https://colorhunt-mobile-backend.sincprojects.com'
 // const url = 'https://garment-backend.sincprojects.com'
 
@@ -60,12 +60,11 @@ export const DeleteWishlist = async (data) => {
 }
 
 export const ArticleDetails = async (data) => {
-  console.log(data.ArticleId)
-  console.log(data.PartyId)
-
+  const { ArticleId, PartyId } = data;
+  console.log(ArticleId,PartyId,"=++++=");
   try {
     return await axios.post(
-      `${url}/articledetails?ArticleId=${data.ArticleId}&PartyId=${data.PartyId}`,
+      `${url}/articledetails?ArticleId=${ArticleId}&PartyId=${PartyId}`,
     )
   } catch (error) {
     console.log(error, 'err in react api')
@@ -100,3 +99,13 @@ export const SendMail = async (data) => {
     console.log(err, 'err in react api')
   }
 }
+
+export const addtocart = async (data) => {
+  try {
+    return  await axios.post(`${url}/addtocart`, data)
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}
+
