@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { color } from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   btnClickContain: {
@@ -10,16 +11,18 @@ const styles = StyleSheet.create({
   btnContainer: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'center',
+    height:30
+    
   },
   btnIcon: {
-    height: 25,
-    width: 25
+    height: 20,
+    width: 20
   },
   btnText: {
     fontSize: 16,
     marginLeft: 10,
-    marginTop: 2
+    color:'#fff'
   }
 });
 
