@@ -33,6 +33,15 @@ export default function DrawerContainer(props) {
             navigation.closeDrawer();
           }}
         />
+        <MenuButton title="Profile" onPress={() => {
+          navigation.navigate("Profile");
+          navigation.closeDrawer();
+        }}
+        />
+        <MenuButton title="Contact-Us" onPress={() => {
+          navigation.navigate("Contact");
+          navigation.closeDrawer();
+        }}/>
       </View>
     </View>
   );

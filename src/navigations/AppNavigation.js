@@ -10,7 +10,8 @@ import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
 import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
 import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
-
+import Userprofile from '../screens/UserProfile/Userprofile';
+import Contact from '../screens/Contact-Us/Contact';
  const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -32,6 +33,8 @@ function MainNavigator() {
       <Stack.Screen name='Ingredient' component={IngredientScreen} />
       <Stack.Screen name='Search' component={SearchScreen} />
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
+      <Stack.Screen name='Profile' component={Userprofile} />
+      <Stack.Screen name='Contact' component={Contact} />
     </Stack.Navigator>
   )
 } 
