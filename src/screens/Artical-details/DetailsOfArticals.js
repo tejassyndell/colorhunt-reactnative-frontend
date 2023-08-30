@@ -158,7 +158,7 @@ const DetailsOfArticals = (props) => {
     const [prdImage, setPrdImage] = useState();
     const renderImage = ({ item }) => (
         <TouchableHighlight>
-            <View style={{ height: "100%", width: "100%" }}>
+            <View style={{ height: "100%", width: "100%"}}>
                 <Image style={{ height: 520, width: "100%" }} source={{ uri: baseImageUrl + item }} />
             </View>
         </TouchableHighlight>
@@ -195,7 +195,7 @@ const DetailsOfArticals = (props) => {
                 </ScrollView>
             </View>
             <View style={styles.productDetails}>
-                <ScrollView>
+                <ScrollView style={{overflow:"scroll"}}>
                     <View style={styles.product_detail} >
                         <View style={styles.product_detail_sec}>
                             <Text style={styles.size_label}>Size</Text>
@@ -251,11 +251,11 @@ const DetailsOfArticals = (props) => {
                                                     <View style={styles.top_row}>
                                                         <View style={styles.box1}>
                                                             <Pressable
-                                                                style={styles.box1_butn}
+                                                                style={styles.box1_btn}
                                                                 onPress={() => handleDecrease(item.index)}
                                                                 disabled={quantities[item.index] <= 0}
                                                             >
-                                                                <Text>-</Text>
+                                                                <Text style={styles.box1_btn_text}>-</Text>
                                                             </Pressable>
                                                             
 
@@ -265,11 +265,11 @@ const DetailsOfArticals = (props) => {
                                                         </View>
                                                         <View style={styles.box3}>
                                                             <Pressable
-                                                            style={styles.box3_butn}
+                                                            style={styles.box3_btn}
                                                                 onPress={() => handleIncrease(item.index)}
                                                                  disabled={quantities[item.index] >= nopacks}
                                                             >
-                                                                <Text>+</Text>
+                                                                <Text style={styles.box1_btn_text}>+</Text>
                                                             </Pressable>
                                                         </View>
                                                     </View>

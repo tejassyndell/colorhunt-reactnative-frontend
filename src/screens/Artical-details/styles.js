@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         width:"100%",
     },
     color_box_div: {
-        width: "31%"
+        width: "31%",
     },
     color_box: {
         width: '98%',
@@ -204,7 +204,9 @@ const styles = StyleSheet.create({
         paddingVertical: 7, // Equivalent to padding: 7px 0px;
     },
     available_box_div: {
-        width: "37%"
+        width: "37%",
+        paddingLeft:12,
+        paddingRight:12
     },
     available_box: {
         width: '98%',
@@ -226,7 +228,9 @@ const styles = StyleSheet.create({
     },
     qty_box_div: {
         width: "31%",
-        display: "flex"
+        maxWidth:"100%",
+        display: "flex",
+        flexDirection:"row"
     },
     // row:{
     //     flexShrink:0,
@@ -239,11 +243,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowRadius: 4,
         elevation: 2, // Use elevation to simulate box-shadow
-        height: 40,
         justifyContent: 'center', // Align content vertically
         alignItems: 'center', // Center content horizontally
-        paddingVertical: 7,
-        paddingHorizontal: 0,
+        // paddingTop: 7,
+        // paddingBottom:7,
+        paddingLeft:0,
+        paddingStart:0,
         textAlign:"center",
         borderWidth: 1,
         borderColor: '#ded6d6',
@@ -252,50 +257,54 @@ const styles = StyleSheet.create({
     },
     top_row:{
         display:"flex",
+        flexDirection:"row",
         width:"100%"
     },
     box1:{
         width:"33%"
     },
-    box1_butn:{
+    box1_btn:{
         float:"left",
         borderRadius:10,
-        marginTop:-8,
-        marginRight:-1,
-        marginBottom:5,
-        marginLeft:-1,
-        paddingLeft:10,
-        paddingRight:10,
-        paddingTop:0,
         paddingBottom:0,backgroundColor:"white",
-        fontSize:25,
         borderWidth:1,
         borderStyle:"solid",
-        borderColor:"#0000004d"
+        borderColor:"#0000004d",
+        marginHorizontal:0,
+        // height:"100%",
+        paddingBottom:3,
+       marginVertical:0
+    },
+    box1_btn_text:{
+        fontSize:25,
+        textAlign:"center"
     },
     box2:{
-        width:"33%"
+        width:"33%",
+        height:"96%",
+        display:"flex",
+        justifyContent:"center",
+        alignContent:"center"
     },
     box3:{
         width:"33%",
         marginLeft:5
     },
-    box1_butn:{
+    box3_btn:{
         borderWidth:1,
         borderStyle:"solid",
         borderColor:"#0000004d",
         float:"right",
         borderRadius:10,
-        marginTop:-8,
-        marginRight:-1,
-        marginBottom:5,
-        marginLeft:0,
-        paddingLeft:9,
-        paddingRight:9,
-        paddingTop:0,
-        paddingBottom:0,
         backgroundColor:"white",
-        fontSize:25
+        marginHorizontal:0,
+        // height:"100%",
+        paddingBottom:3,
+        marginLeft:-3,
+        marginRight:3
+    },
+    accessibilityImage:{
+        opacity:1
     }
 });
 
