@@ -6,27 +6,29 @@ import MenuButton from "../../components/MenuButton/MenuButton";
 
 export default function DrawerContainer(props) {
   const { navigation } = props;
+  const id = 883;
+  
   return (
     <View style={styles.content}>
       <View style={styles.container}>
-        <View style={{ width:'100%', height: 50 ,marginTop:20,marginBottom:50,paddingRight:20, paddingLeft:10, justifyContent: 'center',flexDirection:"row"}}>
-          <View style={{flexDirection:"row",alignItems:"center",width:'100%'}} >
+        <View style={{ width: '100%', height: 50, marginTop: 20, marginBottom: 50, paddingRight: 20, paddingLeft: 10, justifyContent: 'center', flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", width: '100%' }} >
 
-          <Image source={require('../../../assets/sidebaricons/1171274903.png')} style={{width:50,height:50}}/>
-          <Text style={{color:'#ffff',left:10}} onPress={() =>  navigation.navigate("Profile")}>NIRAV SIR</Text>
-       
+            <Image source={require('../../../assets/sidebaricons/1171274903.png')} style={{ width: 50, height: 50 }} />
+            <Text style={{ color: '#ffff', left: 10 }} onPress={() => navigation.navigate("Profile")}>NIRAV SIR</Text>
+
           </View>
-          
+
           <MenuButton
-          source={require('../../../assets/sidebaricons/menu.png')}
-          onPress={() => {
-            navigation.closeDrawer();
+            source={require('../../../assets/sidebaricons/menu.png')}
+            onPress={() => {
+              navigation.closeDrawer();
 
-          }}
-        />
+            }}
+          />
 
-        
-        
+
+
           <View>
 
           </View>
@@ -37,7 +39,7 @@ export default function DrawerContainer(props) {
           title="Orders History"
           source={require("../../../assets/sidebaricons/order.png")}
           onPress={() => {
-            navigation.navigate("Home");
+            navigation.navigate("DetailsOfArticals", { id:id });
             navigation.closeDrawer();
           }}
         />
@@ -81,8 +83,8 @@ export default function DrawerContainer(props) {
             navigation.closeDrawer();
           }}
         />
-      
-         <MenuButton
+
+        <MenuButton
           title="Logout"
           source={require("../../../assets/sidebaricons/download-4.png")}
           onPress={() => {
