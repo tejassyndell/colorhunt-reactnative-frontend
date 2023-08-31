@@ -32,7 +32,9 @@ const AddToCart = (props) => {
             ),
             headerRight: () =>
                 <View style={{ marginRight: 20, width: 50, height: 40, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Image source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
+                    <TouchableOpacity  onPress={handleGoToOrderList}>
+                    <Image  source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
+                    </TouchableOpacity>
                 </View>,
         });
     }, []);
@@ -272,7 +274,7 @@ const AddToCart = (props) => {
                         </View>
                     </View>
                     <View  style={{ padding: 10 }}>
-                        <Pressable style={{width:"100%"}}>
+                        <Pressable style={{width:"100%"}} onPress={handleProceedToCheckout}>
                             <Text style={{
                                 color: "white",
                                 backgroundColor: "#212121",
