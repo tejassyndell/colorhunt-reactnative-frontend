@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, TouchableHighlight, Image,ScrollView, Pressable} from "react-native";
+import { Text, View, Image,ScrollView, Pressable,TouchableOpacity,Keyboard,TextInput,Button} from "react-native";
 import MenuImage from "../../components/MenuImage/MenuImage";
 import styles from "./styles";
 import{getProductName,getcateGorywithphotos} from "../../api/api";
@@ -63,14 +63,8 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => (
         <View style={styles.searchContainer}>
-          {/* <Image style={styles.searchIcon} source={require("../../../assets/icons/search.png")} /> */}
-          {/* <TextInput
-            style={styles.searchInput}
-            // onChangeText={handleSearch}
-            // value={value}
-          /> */}
+
           <Pressable >
-          {/* <Image style={styles.searchIcon} source={require("../../../assets/icons/close.png")} /> */}
           </Pressable>
         </View>
       ),
@@ -83,12 +77,17 @@ export default function HomeScreen(props) {
     navigation.navigate("DetailsOfArticals", { id:id });
   };
 
+  const handlePress = (item) => {
+    // ategoryNames(item);
+    console.log(item);
+    navigation.navigate("CategorisWiseArticle", {item:item});
+  };
+
 
   return (
     <View style={{width:'100%',height:'100%',backgroundColor:'#FFFF'}}>
       <ScrollView  showsHorizontalScrollIndicator={false} style={{overflow: 'hidden' }}>
 
-      {/* <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={recipes} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} /> */}
       <View style={{width:'100%',flexDirection:"row",top:10}}>
         
         <Text style={{start:10}}>Men's </Text>
@@ -120,14 +119,20 @@ export default function HomeScreen(props) {
           elevation: 4,
         }}
       >
-        <Image source={require('../../../assets/demo.png')} style={{ width: 200, height: 300, borderRadius: 10 }} />
+        <TouchableOpacity  onPress={()=> {handlePress(item)}} >
+        <Image source={require('../../../assets/demo.png')} style={{ width: 200, height: 300, borderRadius: 10 }}/>
+
+        </TouchableOpacity>
         <Text style={{marginTop:10,fontWeight: 'bold'}}>{item.Category}</Text>
       </View>
       ))
     ) : (
       applyrData.map((item) => (
         <View key={item.id} style={{ alignItems: 'center', justifyContent: 'center', width: 200, marginLeft: 5, marginRight: 5 }}>
+        <TouchableOpacity  onPress={()=> {handlePress(item)}} >
+
          <Image source={require('../../../assets/demo.png')} style={{ width: 200, height: 300, borderRadius: 10 }} />
+         </TouchableOpacity>
          <Text style={{ marginTop: 10, fontWeight: 'bold' }}>{item.Category}</Text>
 
         </View>
