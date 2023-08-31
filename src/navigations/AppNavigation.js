@@ -9,6 +9,7 @@ import RecipesListScreen from '../screens/RecipesList/RecipesListScreen';
 import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
 import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
+import AllArticleScreen from '../screens/AllArticle/AllArticle';
 import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
 
  const Stack = createStackNavigator();
@@ -24,6 +25,7 @@ function MainNavigator() {
       <Stack.Screen name='RecipesList' component={RecipesListScreen} />
       <Stack.Screen name='Ingredient' component={IngredientScreen} />
       <Stack.Screen name='Search' component={SearchScreen} />
+      <Stack.Screen name="AllArticle" component={AllArticleScreen} />
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
     </Stack.Navigator>
   )
@@ -37,7 +39,6 @@ function DrawerStack() {
   return(
     <Drawer.Navigator
       drawerPosition='left'
-      initialRouteName='Main'
       drawerStyle={{
         width: 250
       }}

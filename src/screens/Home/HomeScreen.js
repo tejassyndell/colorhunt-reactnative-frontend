@@ -1,12 +1,13 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, TouchableHighlight, Image,ScrollView } from "react-native";
+import { Text, View, TouchableHighlight, Image,ScrollView, Pressable} from "react-native";
 import MenuImage from "../../components/MenuImage/MenuImage";
+import styles from "./styles";
 import{getProductName,getcateGorywithphotos} from "../../api/api";
 import ButtomNavigation from '../../components/AppFooter/ButtomNavigation'
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen(props) {
   const { navigation } = props;
-
   const [categoryName,setCategoryName] = useState()
   const [ApplyStatushBack, setApplyStatushBack] = useState(true);
   const [nameData, setNameData] = useState([]);
@@ -21,7 +22,6 @@ export default function HomeScreen(props) {
     const result = await getcateGorywithphotos().then((res) => {
 
       if (res.status === 200) {
-        console.log(res.data);
 
         setCategoryName(res.data)
         setNameData(res.data)
@@ -31,7 +31,6 @@ export default function HomeScreen(props) {
     const resul = await getProductName().then((res) => {
 
       if (res.status === 200) {
-        console.log(res.data);
 
         setCategoryName(res.data)
         setNameDatas(res.data)
@@ -45,7 +44,12 @@ export default function HomeScreen(props) {
     getCategoriesname()
   },[])
 
-  console.log(categoryName);
+
+  const viewAllArticles = () => {
+  
+    navigation.navigate('AllArticle'); // Replace 'AllArticlesScreen' with the name of your target screen
+  };
+  
 
 
   useLayoutEffect(() => {
@@ -57,26 +61,26 @@ export default function HomeScreen(props) {
           }}
         />
       ),
-      headerRight: () => <View />,
+      headerTitle: () => (
+        <View style={styles.searchContainer}>
+          {/* <Image style={styles.searchIcon} source={require("../../../assets/icons/search.png")} /> */}
+          {/* <TextInput
+            style={styles.searchInput}
+            // onChangeText={handleSearch}
+            // value={value}
+          /> */}
+          <Pressable >
+          {/* <Image style={styles.searchIcon} source={require("../../../assets/icons/close.png")} /> */}
+          </Pressable>
+        </View>
+      ),
+      headerRight: () => <View  />,
     });
   }, []);
 
-  const onPressRecipe = (item) => {
-    navigation.navigate("Recipe", { item });
-  };
+ 
 
-  const renderRecipes = () => (
-    
-    <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" /* onPress={() => onPressRecipe(item)} */>
-      {/* <View style={styles.container}>
-        <Image style={styles.photo} source={{ uri: item.photo_url }} />
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.category}>{getCategoryName(item.categoryId)}</Text>
-      </View> */}
-      
-     
-    </TouchableHighlight>
-  );
+
 
   return (
     <View style={{width:'100%',height:'100%',backgroundColor:'#FFFF'}}>
@@ -86,7 +90,7 @@ export default function HomeScreen(props) {
       <View style={{width:'100%',flexDirection:"row",top:10}}>
         
         <Text style={{start:10}}>Men's </Text>
-        <Text style={{position:'absolute',end:10}}>View All</Text>
+        <Text style={{position:'absolute',end:10}} onPress={viewAllArticles}>View All</Text>
       </View>
       
       <View style={{ position: 'relative', maxWidth: '100%', height:'auto', flexDirection: "row", top: 20 }}>
@@ -134,7 +138,7 @@ export default function HomeScreen(props) {
 <View style={{width:'100%',flexDirection:"row",top:10,marginTop:20}}>
         
         <Text style={{start:10}}>Kid’s </Text>
-        <Text style={{position:'absolute',end:10}} /* onPress={()=>{viewAllArtical}} */>View All</Text>
+        <Text style={{position:'absolute',end:10}} onPress={viewAllArticles}>View All</Text>
       </View>
       
       <View style={{ position: 'relative', maxWidth: '100%', height:'auto', flexDirection: "row", top: 20 }}>
