@@ -4,7 +4,6 @@ import { getProductName,getWishlistData,getAddWishlist,DeleteWishlist } from "..
 import styles from "./styles";
 import { FontAwesome } from '@expo/vector-icons';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
-import SearchBar from '../../components/SearchBar/searchbar'
 export default function AllArticle(props) {
   const { navigation } = props;
 
@@ -167,10 +166,7 @@ export default function AllArticle(props) {
 
   return (
     <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-      <View>
-
-      <SearchBar/>
-      </View>
+     
       <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
         <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
           <FlatList
