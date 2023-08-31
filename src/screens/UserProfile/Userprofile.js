@@ -29,7 +29,7 @@ export default function Userprofile() {
                 </TouchableHighlight>
                 <TouchableHighlight>
                 <View style={styles.Profile}>
-                    <Image source={require('../../../assets/Profileicon/Frame 1171274903.png')}/>
+                <Image source={require('../../../assets/Profileicon/Frame_1171274903.png')}/>
                 </View>
                 </TouchableHighlight>
             </View>

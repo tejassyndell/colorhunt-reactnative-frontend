@@ -10,10 +10,10 @@ export default function DrawerContainer(props) {
     <View style={styles.content}>
       <View style={styles.container}>
         <View style={{ width:'100%', height: 50 ,marginTop:20,marginBottom:50,paddingRight:20, paddingLeft:10, justifyContent: 'center',flexDirection:"row"}}>
-          <View style={{flexDirection:"row",alignItems:"center",width:'100%'}}>
+          <View style={{flexDirection:"row",alignItems:"center",width:'100%'}} >
 
           <Image source={require('../../../assets/sidebaricons/1171274903.png')} style={{width:50,height:50}}/>
-          <Text style={{color:'#ffff',left:10}}>NIRAV SIR</Text>
+          <Text style={{color:'#ffff',left:10}} onPress={() =>  navigation.navigate("Profile")}>NIRAV SIR</Text>
        
           </View>
           
@@ -77,7 +77,7 @@ export default function DrawerContainer(props) {
           title="Contact Us"
           source={require("../../../assets/sidebaricons/1000005828.png")}
           onPress={() => {
-            navigation.navigate("Search");
+            navigation.navigate("Contact");
             navigation.closeDrawer();
           }}
         />
