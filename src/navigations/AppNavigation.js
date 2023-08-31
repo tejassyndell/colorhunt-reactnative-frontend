@@ -9,6 +9,7 @@ import RecipesListScreen from '../screens/RecipesList/RecipesListScreen';
 import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
 import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
+import AllArticleScreen from '../screens/AllArticle/AllArticle';
 import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
 import Userprofile from '../screens/UserProfile/Userprofile';
 import Contact from '../screens/Contact-Us/Contact';
@@ -17,14 +18,7 @@ import Contact from '../screens/Contact-Us/Contact';
 function MainNavigator() {
   return(
     <Stack.Navigator
-      screenOptions={{
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            textAlign: 'center',
-            alignSelf: 'center',
-            flex: 1,
-          }
-      }}
+   
     >
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='Categories' component={CategoriesScreen}/>
@@ -32,6 +26,7 @@ function MainNavigator() {
       <Stack.Screen name='RecipesList' component={RecipesListScreen} />
       <Stack.Screen name='Ingredient' component={IngredientScreen} />
       <Stack.Screen name='Search' component={SearchScreen} />
+      <Stack.Screen name="AllArticle" component={AllArticleScreen} />
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
       <Stack.Screen name='Profile' component={Userprofile} />
       <Stack.Screen name='Contact' component={Contact} />
@@ -47,7 +42,6 @@ function DrawerStack() {
   return(
     <Drawer.Navigator
       drawerPosition='left'
-      initialRouteName='Main'
       drawerStyle={{
         width: 250
       }}
