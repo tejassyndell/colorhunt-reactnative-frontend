@@ -118,8 +118,8 @@ const AddToCart = (props) => {
     }
     return (
         <View >
-            <ScrollView style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
-                <View style={{ display: "flex", flexDirection: "column", height: "42%", width: "100%", backgroundColor: "#FFF" }}>
+            <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
+                <View style={{ display: "flex", flexDirection: "column", height: "60%", width: "100%", backgroundColor: "#FFF" }}>
                     <ScrollView>
                         <View style={{ paddingBottom: 20 }}>
                             {orderItems.map((item) =>
@@ -203,7 +203,7 @@ const AddToCart = (props) => {
                     </ScrollView>
 
                 </View>
-                <View style={{ height: "30%", width: "100%", backgroundColor: "#FFF" }}>
+                <ScrollView style={{ height: "30%", width: "100%", backgroundColor: "#FFF" }}>
                     <View style={{ padding: 10 }}>
                         <TextInput
                             value={promoCode}
@@ -237,7 +237,7 @@ const AddToCart = (props) => {
                         justifyContent: "flex-end",
                         alignItems: "flex-end",
                         width: "97.5%",
-                        marginTop: "10%"
+                        marginTop: "5%"
                     }}>
                         <Pressable onPress={handleAddMoreItems}>
                             <Text style={{
@@ -290,8 +290,8 @@ const AddToCart = (props) => {
                             right: 0}} source={require("../../../assets/arrow.png")}></Image>
                         </Pressable>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         </View>
     )
 }
