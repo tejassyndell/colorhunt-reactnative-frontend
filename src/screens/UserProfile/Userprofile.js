@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, View, Image, TouchableHighlight } from 'react-native'
 import styles from './style2'
-import { Profiledata } from '../../api/api/api'
+import { Profiledata } from '../../api/api'
 export default function Userprofile() {
 
     const [Profile, setprofile] = useState([])
