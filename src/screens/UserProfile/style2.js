@@ -4,7 +4,9 @@ const styles = StyleSheet.create({
     TopContainer: {
         backgroundColor: 'black',
         color: 'white',
-        height: 250
+        height: 250,
+        justifyContent:'center',
+        alignItems:'center'
     },
     Button: {
         height: 35,
