@@ -78,8 +78,10 @@ export default function HomeScreen(props) {
     });
   }, []);
 
- 
-
+  const onPressRecipe = (item) => {
+    const id = 883;
+    navigation.navigate("DetailsOfArticals", { id:id });
+  };
 
 
   return (

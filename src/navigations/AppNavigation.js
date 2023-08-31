@@ -13,6 +13,8 @@ import AllArticleScreen from '../screens/AllArticle/AllArticle';
 import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
 import Userprofile from '../screens/UserProfile/Userprofile';
 import Contact from '../screens/Contact-Us/Contact';
+import DetailsOfArticals from '../screens/Artical-details/DetailsOfArticals';
+import AddToCart from '../screens/Cart/AddToCart';
  const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -30,6 +32,8 @@ function MainNavigator() {
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
       <Stack.Screen name='Profile' component={Userprofile} />
       <Stack.Screen name='Contact' component={Contact} />
+      <Stack.Screen name='DetailsOfArticals' component={DetailsOfArticals} />
+      <Stack.Screen name='cart_list' component={AddToCart} />
     </Stack.Navigator>
   )
 } 
