@@ -11,6 +11,7 @@ import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
 import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
 import DetailsOfArticals from '../screens/Artical-details/DetailsOfArticals';
+import AddToCart from '../screens/Cart/AddToCart';
  const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -33,6 +34,7 @@ function MainNavigator() {
       <Stack.Screen name='Search' component={SearchScreen} />
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
       <Stack.Screen name='DetailsOfArticals' component={DetailsOfArticals} />
+      <Stack.Screen name='cart_list' component={AddToCart} />
     </Stack.Navigator>
   )
 } 

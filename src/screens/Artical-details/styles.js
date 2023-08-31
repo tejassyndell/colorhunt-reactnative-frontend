@@ -4,7 +4,10 @@ const { width: viewportWidth } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        // flex: 1,
+        // zIndex:0
+        overflow:"scroll",
+        height:"100%"
     },
     image: {
         ...StyleSheet.absoluteFillObject,
@@ -27,19 +30,19 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 0,
         paddingTop: 1,
-        position: "absolute",
-        height: "100%",
+        position: "relative",
+        height: 450,
         width: "100%",
         backgroundColor: "#ffffff",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        // bottom: 0,
-        top:410,
+        // bottom:0,
+        top:"1%",
         elevation: 50,
         shadowOffset: { width: "100%", height: -3 }, // Offset the shadow upwards
         shadowColor: 'red',
         shadowOpacity: 5,
-        shadowRadius: 5
+        shadowRadius: 5,
 
     },
     product_detail: {
@@ -129,20 +132,40 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     product_detail_sec3: {
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        alignContent:"center",
         width: "95%",
+        height:"12%",
         marginTop: "4%"
     },
-    // container_grid:{
-    //     width:"100%"
-    // },
+    container_grid:{
+        width:"100%"
+    },
     head_grid: {
         display: "flex",
         flexDirection: "row",
         width: "100%"
     },
+    color_Text:{
+        width:"31%",
+        textAlign:"left"
+    },
+    available_Text:{
+        width:"37%",
+        textAlign:"left"
+    },
+    qty_Text:{
+        width:"31%",
+        textAlign:"left"
+    },
+    color_box_Text:{ width:"31%",paddingRight:20},
+    available_box_Text:{ width:"37%"},
+    qty_box_Text:{ width:"31%",display:"flex",paddingLeft:20},
     color_div: {
         width: "31%",
-        float: "left"
+        textAlign: "left"
     },
 
     color_title: {
@@ -153,18 +176,18 @@ const styles = StyleSheet.create({
     },
     available_div: {
         width: "37%",
-        float: "left"
+        textAlign: "left"
     },
     available_title: {
         width: "100%",
         fontSize: 15,
         fontWeight: 600,
         color: "black",
-        marginLeft: 12
+        marginLeft: 2
     },
     qty_div: {
         width: "31%",
-        float: "left"
+        textAlign: "left"
     },
     qty_title: {
         width: "100%",
@@ -264,7 +287,7 @@ const styles = StyleSheet.create({
         width:"33%"
     },
     box1_btn:{
-        float:"left",
+        textAlign:"left",
         borderRadius:10,
         paddingBottom:0,backgroundColor:"white",
         borderWidth:1,
@@ -294,7 +317,7 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderStyle:"solid",
         borderColor:"#0000004d",
-        float:"right",
+        textAlign:"right",
         borderRadius:10,
         backgroundColor:"white",
         marginHorizontal:0,
@@ -303,8 +326,72 @@ const styles = StyleSheet.create({
         marginLeft:-3,
         marginRight:3
     },
-    accessibilityImage:{
-        opacity:1
+
+    article_ratio_Section:{
+        display:"flex",
+        flexDirection:"row",
+        width:"95%",
+        marginTop:"10%"
+    },
+    article_ratio_container:{
+        width:"45%"
+    },
+    articallabel:{
+        fontWeight:600,
+        marginLeft:"3%"
+    },
+    article_content_r:{
+        width:"98%",
+        elevation:5,
+        fontSize:18,
+        fontWeight:500,
+        borderColor:"#ded6d6",
+        borderWidth:1,
+        borderStyle:"solid",
+        borderRadius:10,
+        height:53,
+        paddingHorizontal:0,
+        paddingVertical:10,
+        backgroundColor:"#f4f4f4"
+    },
+    article_ratio_content:{
+        textAlign:"left",
+        textAlign:"center"
+    },
+    article_rate_container:{
+        width:"40%",
+        textAlign:"left",
+        marginLeft:"13%"
+    },
+    article_rate_content:{
+        textAlign:"right",
+        textAlign:"center"
+    },
+    articallabel1:{
+        fontWeight:500,
+        marginLeft:"5%"
+    },
+    total_price_container:{
+        width:"95%",
+        display:"flex",
+        flexDirection:"row",
+        marginTop:"20%",
+        position:"relative",
+        top:0,
+        marginBottom:30
+    },
+    main_total_div:{
+        width:"30%"
+    },
+    addto_card_container:{
+        width:"50%",
+        marginLeft:"24%"
+    },
+    addto_cart_btn:{
+        backgroundColor:"black",
+        borderRadius:10,
+        paddingHorizontal:20,
+        paddingVertical:10
     }
 });
 

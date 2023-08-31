@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableHighlight, Dimensions, Pressable } from "react-native"
-import { ArticleDetails } from '../../api/api'
+import { ArticleDetails , addto_cart } from '../../api/api'
 import Menubar from '../../../assets/Colorhuntimg/menu bar (1).svg'
 import Carousel from "react-native-snap-carousel";
 import axios from "axios"
@@ -7,8 +7,8 @@ import cart from '../../../assets/images/icon.png'
 import { useEffect, useState } from "react"
 import { useRoute } from "@react-navigation/native"
 import styles from "./styles";
+import stylesRecipe from "../Recipe/styles"
 import { ScrollView } from "react-native-gesture-handler";
-import { Button } from "react-native";
 
 
 
@@ -108,7 +108,8 @@ const DetailsOfArticals = (props) => {
             rate: totalPrice,
         }
         try {
-            const response = await addtocart(data);
+            console.log(data);
+            const response = await addto_cart(data);
             console.log('APi Response:', response.data)
         } catch (error) {
             console.log('Error Adding to Cart:', error)
@@ -158,155 +159,153 @@ const DetailsOfArticals = (props) => {
     const [prdImage, setPrdImage] = useState();
     const renderImage = ({ item }) => (
         <TouchableHighlight>
-            <View style={{ height: "100%", width: "100%"}}>
-                <Image style={{ height: 520, width: "100%" }} source={{ uri: baseImageUrl + item }} />
+            <View style={stylesRecipe.imageContainer}>
+                <Image style={stylesRecipe.image} source={{ uri: baseImageUrl + item }} />
             </View>
         </TouchableHighlight>
     );
     return (
-        <View style={styles.container}>
-            <View >
-                <ScrollView >
-                    <View >
-                        <View>
-                            <Carousel
-                                data={articlePhotos}
-                                renderItem={renderImage}
-                                sliderWidth={viewportWidth}
-                                itemWidth={viewportWidth}
-                                loop={true}
-                                autoplay={true}
-                                autoplayInterval={3000}
-                            >
-                            </Carousel>
-                        </View>
-                        <View style={{
-                            width: "100%",
-                            position: "absolute",
-                            top: "70%",
-                        }}>
-                            <Text style={{
-                                fontSize: 26,
-                                textAlign: "center",
-                                fontWeight: 600
-                            }}>Artical No:{articleNumber}</Text>
-                        </View>
-                    </View>
-                </ScrollView>
+
+        <ScrollView >
+
+            <View style={stylesRecipe.carouselContainer}>
+                <Carousel
+                    data={articlePhotos}
+                    renderItem={renderImage}
+                    sliderWidth={viewportWidth}
+                    itemWidth={viewportWidth}
+                    loop={true}
+                    autoplay={true}
+                    autoplayInterval={3000}
+                >
+                </Carousel>
+            </View>
+            <View style={{
+                width: "100%",
+                position: "absolute",
+                top: "40%",
+                shadowColor: "black",
+                shadowOffset: { width: "100%", height: 0 },
+                elevation: 15,
+            }}>
+                <Text style={{
+                    fontSize: 26,
+                    textAlign: "center",
+                    fontWeight: 600
+                }}>Artical No:{articleNumber}</Text>
             </View>
             <View style={styles.productDetails}>
-                <ScrollView style={{overflow:"scroll"}}>
-                    <View style={styles.product_detail} >
-                        <View style={styles.product_detail_sec}>
-                            <Text style={styles.size_label}>Size</Text>
-                            <View style={styles.size_container1}>
-                                {articleSizeData &&
-                                    articleSizeData.map((item, index) => (
-                                        <View style={styles.size_options} key={index}>
-                                            <View style={styles.size}>
-                                                <Text href="/" style={styles.size_a} onPress={() => handleSizeClick(item.Name)}>
-                                                    {item.Name}
-                                                </Text>
-                                            </View>
+                <View style={styles.product_detail} >
+                    <View style={styles.product_detail_sec}>
+                        <Text style={styles.size_label}>Size</Text>
+                        <View style={styles.size_container1}>
+                            {articleSizeData &&
+                                articleSizeData.map((item, index) => (
+                                    <View style={styles.size_options} key={index}>
+                                        <View style={styles.size}>
+                                            <Text href="/" style={styles.size_a} onPress={() => handleSizeClick(item.Name)}>
+                                                {item.Name}
+                                            </Text>
                                         </View>
-                                    ))}
-                            </View>
+                                    </View>
+                                ))}
                         </View>
-                        <View style={styles.product_detail_sec2}>
-                            <Text style={styles.size_label1}>Category</Text>
-                            <View style={styles.size_container2}>
-                                <View style={styles.size_options}>
-                                    {/* <p>{articleCategory}</p> */}
-                                    <Text style={styles.size_p}>{subcategory}</Text>
-                                </View>
+                    </View>
+                    <View style={styles.product_detail_sec2}>
+                        <Text style={styles.size_label1}>Category</Text>
+                        <View style={styles.size_container2}>
+                            <View style={styles.size_options}>
+
+                                <Text style={styles.size_p}>{subcategory}</Text>
                             </View>
                         </View>
                     </View>
-                    <View style={styles.product_detail_sec3}>
-                        <View style={styles.container_grid}>
-                            <View style={styles.head_grid}>
-                                <View style={styles.color_div}>
-                                    <Text style={styles.color_title}>Color</Text>
-                                </View>
-                                <View style={styles.available_div}>
-                                    <Text style={styles.available_title}>Available in Stock</Text>
-                                </View>
-                                <View style={styles.qty_div}>
-                                    <Text style={styles.qty_title}>Add Qty.</Text>
-                                </View>
+                </View>
+                <View style={styles.product_detail_sec3}>
+                    <View style={styles.container_grid}>
+                        <View style={styles.head_grid}>
+                            <View style={styles.color_Text}>
+                                <Text style={styles.color_title}>Color</Text>
                             </View>
-                            <View style={styles.body_main_con}>
-                                {combinedArray.map((item) => (
-                                    <View key={item.Id}>
-                                        <View style={styles.row} >
-                                            <View style={styles.color_box_div}>
-                                                <Text style={styles.color_box}>{item.Name}</Text>
-                                            </View>
-                                            <View style={styles.available_box_div}>
-                                                <Text style={styles.available_box}>{nopacks}</Text>
-                                            </View>
+                            <View style={styles.available_Text}>
+                                <Text style={styles.available_title}>Available in Stock</Text>
+                            </View>
+                            <View style={styles.qty_Text}>
+                                <Text style={styles.qty_title}>Add Qty.</Text>
+                            </View>
+                        </View>
+                        <View style={styles.body_main_con}>
+                            {combinedArray.map((item) => (
+                                <View key={item.Id}>
+                                    <View style={styles.row} >
+                                        <View style={styles.color_box_Text}>
+                                            <Text style={styles.color_box}>{item.Name}</Text>
+                                        </View>
+                                        <View style={styles.available_box_Text}>
+                                            <Text style={styles.available_box}>{nopacks}</Text>
+                                        </View>
 
-                                            <View style={styles.qty_box_div}>
-                                                <View style={styles.qty_box}>
-                                                    <View style={styles.top_row}>
-                                                        <View style={styles.box1}>
-                                                            <Pressable
-                                                                style={styles.box1_btn}
-                                                                onPress={() => handleDecrease(item.index)}
-                                                                disabled={quantities[item.index] <= 0}
-                                                            >
-                                                                <Text style={styles.box1_btn_text}>-</Text>
-                                                            </Pressable>
-                                                            
+                                        <View style={styles.qty_box_Text}>
+                                            <View style={styles.qty_box}>
+                                                <View style={styles.top_row}>
+                                                    <View style={styles.box1}>
+                                                        <Pressable
+                                                            style={styles.box1_btn}
+                                                            onPress={() => handleDecrease(item.index)}
+                                                            disabled={quantities[item.index] <= 0}
+                                                        >
+                                                            <Text style={styles.box1_btn_text}>-</Text>
+                                                        </Pressable>
 
-                                                        </View>
-                                                        <View style={styles.box2}>
-                                                            <Text style={{textAlign:"center"}}>{quantities[item.index]}</Text>
-                                                        </View>
-                                                        <View style={styles.box3}>
-                                                            <Pressable
+
+                                                    </View>
+                                                    <View style={styles.box2}>
+                                                        <Text style={{ textAlign: "center" }}>{quantities[item.index]}</Text>
+                                                    </View>
+                                                    <View style={styles.box3}>
+                                                        <Pressable
                                                             style={styles.box3_btn}
-                                                                onPress={() => handleIncrease(item.index)}
-                                                                 disabled={quantities[item.index] >= nopacks}
-                                                            >
-                                                                <Text style={styles.box1_btn_text}>+</Text>
-                                                            </Pressable>
-                                                        </View>
+                                                            onPress={() => handleIncrease(item.index)}
+                                                            disabled={quantities[item.index] >= nopacks}
+                                                        >
+                                                            <Text style={styles.box1_btn_text}>+</Text>
+                                                        </Pressable>
                                                     </View>
                                                 </View>
                                             </View>
                                         </View>
                                     </View>
-                                ))}
-                            </View>
+                                </View>
+                            ))}
                         </View>
                     </View>
-                    {/* <View style="article-ratio-Section">
-             <View style="article-ratio-container">
-                 <div style="articallabel">Artical Ratio</div>
-                 <div style="article-ratio-content">{articleRatio}</div>
-             </View>
+                </View>
+                <View style={styles.article_ratio_Section}>
+                    <View style={styles.article_ratio_container}>
+                        <Text style={styles.articallabel}>Artical Ratio</Text>
+                        <Text style={[styles.article_ratio_content, styles.article_content_r]}>{articleRatio}</Text>
+                    </View>
 
-             <View style="article-rate-container">
-                 <div style="articallabel1">Artical Rate</div>
-                 <div style="article-rate-content">{articleRate / 10}</div>
-             </View>
-         </View>
-         <View style="total-price-container">
-             <View style="main-total-div">
-                 <span style="total-price-title">Total Price</span> <br />
-                 <span style="total-price-dig">{formatPrice(totalPrice)}</span>
-             </View>
-
-             <View style="add-to-card-container">
-                 <button style="add-to-cart-button" onClick={() => addtocart(197, id)}>
-                     <img src={cart} alt="cart" /> Add To Cart
-                 </button>
-             </View>
-         </View> */}
-                </ScrollView>
+                    <View style={styles.article_rate_container}>
+                        <Text style={styles.articallabel1}>Artical Rate</Text>
+                        <Text style={[styles.article_rate_content, styles.article_content_r]}>{articleRate / 10}</Text>
+                    </View>
+                </View>
+                <View style={styles.total_price_container}>
+                    <View style={styles.main_total_div} >
+                        <Text style={{ fontSize: 10, fontWeight: 400 }}>Total Price</Text>
+                        <Text style={{ fontSize: 16, fontWeight: 600, color: "black" }}>{formatPrice(totalPrice)}</Text>
+                    </View>
+                    <View style={styles.addto_card_container}>
+                        <Pressable style={styles.addto_cart_btn} onPress={() => addtocart(197, id)}>
+                            <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18 }}>  Add To Cart</Text>
+                        </Pressable>
+                    </View>
+                </View>
             </View>
-        </View>
+
+        </ScrollView>
+
     )
 }
 

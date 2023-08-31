@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from "axios"
-// const url = 'http://10.0.2.2:4000'
-const url = 'http://localhost:4000'
+const url = 'http://10.0.2.2:4000'
+// const url = 'http://localhost:4000'
 // const url = 'https://colorhunt-mobile-backend.sincprojects.com'
 // const url = 'https://garment-backend.sincprojects.com'
 
@@ -101,7 +101,7 @@ export const SendMail = async (data) => {
   }
 }
 
-export const addtocart = async (data) => {
+export const addto_cart = async (data) => {
   try {
     return  await axios.post(`${url}/addtocart`, data)
   } catch (err) {
