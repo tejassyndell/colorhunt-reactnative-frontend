@@ -17,7 +17,6 @@ export default function Userprofile() {
             console.log(err,'error in fetching data')
         }
     }
-    console.log(Profile)
     return (
         <>
             <View style={styles.TopContainer}>

@@ -1,15 +1,14 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Text, View, Image, ScrollView, FlatList,TouchableOpacity } from "react-native";
 import { getProductName,getWishlistData,getAddWishlist,DeleteWishlist } from "../../api/api";
-import styles from "./styles";
+import styles from "./styles.js";
 import { FontAwesome } from '@expo/vector-icons';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
-import SearchBar from '../../components/SearchBar/searchbar'
-export default function AllArticle(props) {
+export default function WishList(props) {
   const { navigation } = props;
 
   const [nameDatas, setNameDatas] = useState([]);
-  const [selectedprd, setSelectprd] = useState([])
+  const [selectedprd, setSelectprd] = useState([]);
 
 
   // uploard url image
@@ -51,21 +50,7 @@ export default function AllArticle(props) {
       })
     }
 
-    const addArticleWishlist = async (i) => {
-      let data = {
-        user_id: 197,
-        article_id: i.Id,
-      }
-  
-      console.log(data)
-      try {
-        await getAddWishlist(data).then((res) => {
-          getWishlist()
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    }
+   
 
   useEffect(() => {
     getCategoriesname();
@@ -143,49 +128,31 @@ export default function AllArticle(props) {
           />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity
-          onPress={() => {
-            addArticleWishlist(item);
-          }}
-        >
-          <FontAwesome
-            name="heart-o"
-            style={[
-              styles.disabledIcon,
-              // isLoggedin === false ? styles.disabledIcon : null,
-            ]}
-          />
-        </TouchableOpacity>
+       <></>
       )}
     </View>
-      <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: 200, height: 300, borderRadius: 10 }} />
+      <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: 200, height: 300, borderRadius: 10 }} />
       <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
-      <Text>{item.Category}</Text>
+      <Text>{item.StyleDescription}</Text>
       <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate}</Text>
     </View>
   );
 
   return (
     <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-      <View>
-
-      <SearchBar/>
-      </View>
       <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
         <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
           <FlatList
-            data={nameDatas}
+            data={selectedprd}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
-            numColumns={3}
+            numColumns={2}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingVertical: 10 }}
           />
         </View>
       </ScrollView>
-      {/* <View style={{position:'absolute',bottom:10}}>
-        <ButtomNavigation/>
-      </View> */}
+     
     </View>
   );
 }

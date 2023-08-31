@@ -53,7 +53,7 @@ export default function DrawerContainer(props) {
           title="Wishlist"
           source={require("../../../assets/sidebaricons/Wishlist.png")}
           onPress={() => {
-            navigation.navigate("Search");
+            navigation.navigate("Wishlist");
             navigation.closeDrawer();
           }}
         />

@@ -1,75 +1,53 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, FlatList,TouchableOpacity } from "react-native";
-import { getProductName,getWishlistData,getAddWishlist,DeleteWishlist } from "../../api/api";
+import { Text, View, Image, ScrollView, FlatList, Pressable } from "react-native";
+import MenuImage from "../../components/MenuImage/MenuImage";
+import { getProductName } from "../../api/api";
 import styles from "./styles";
-import { FontAwesome } from '@expo/vector-icons';
+import { useRoute } from "@react-navigation/native";
+import { TextInput } from "react-native-gesture-handler";
+import ButtomNavigation from '../../components/AppFooter/ButtomNavigation';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
-import SearchBar from '../../components/SearchBar/searchbar'
 export default function AllArticle(props) {
   const { navigation } = props;
 
   const [nameDatas, setNameDatas] = useState([]);
-  const [selectedprd, setSelectprd] = useState([])
 
+  const route = useRoute();
+  const { item } = route.params;
+
+//   console.log('.............',item.Category);
+  const category = item.Category;
 
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
   // getCategoriesname
-  const getCategoriesname = async () => {
-    const res = await getProductName();
-    if (res.status === 200) {
-      setNameDatas(res.data);
-    }
-  }
-  const rmvProductWishlist = async (i) => {
-    console.log(i, 'r')
-    let data = {
-      party_id: 197,
-      article_id: i.Id,
-    }
-    console.log(data)
+//   const getCategoriesname = async () => {
+//     // const res = await getProductName();
+//     if (res.status === 200) {
+//       setNameDatas(res.data);
+//     }
+//   }
 
+const getproductname = async () => {
     try {
-      await DeleteWishlist(data).then((res) => {
+        const res = await getProductName()
         if (res.status === 200) {
-          getWishlist()
+            // setAlldata(res.data)
+            const sdPrds = res.data.slice() // Use the fetched data
+            const fildata = sdPrds.filter((item) => item.Category === category)
+            console.log(fildata);
+            setNameDatas(fildata)
+            // setFiltereddata(fildata)
+            // setFilterDataSearch(fildata)
         }
-      })
     } catch (error) {
-      console.log(error)
-    }
-  }
-
-    // ------- add product in wishlist start-------------
-    const getWishlist = async () => {
-      const data = {
-        party_id: 197,
-      }
-      const result = await getWishlistData(data).then((res) => {
-        setSelectprd(res.data)
-      })
-    }
-
-    const addArticleWishlist = async (i) => {
-      let data = {
-        user_id: 197,
-        article_id: i.Id,
-      }
-  
-      console.log(data)
-      try {
-        await getAddWishlist(data).then((res) => {
-          getWishlist()
-        })
-      } catch (error) {
         console.log(error)
-      }
     }
+}
 
   useEffect(() => {
-    getCategoriesname();
-    getWishlist()
+    getproductname();
   }, []);
 
   useLayoutEffect(() => {
@@ -105,7 +83,6 @@ export default function AllArticle(props) {
       headerRight: () => <View />,
     });
   }, []);
-  
 
   const renderItem = ({ item }) => (
     <View key={item.id} style={{
@@ -127,37 +104,6 @@ export default function AllArticle(props) {
       },
       elevation: 4,
     }}>
-       <View id={item.id} style={styles.producticones}>
-      {selectedprd.some((i) => i.Id === item.Id) ? (
-        <TouchableOpacity
-          onPress={() => {
-            rmvProductWishlist(item);
-          }}
-        >
-          <FontAwesome
-            name="heart"
-            style={[
-              styles.icon,
-              // isLoggedin === false ? styles.disabledIcon : null,
-            ]}
-          />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={() => {
-            addArticleWishlist(item);
-          }}
-        >
-          <FontAwesome
-            name="heart-o"
-            style={[
-              styles.disabledIcon,
-              // isLoggedin === false ? styles.disabledIcon : null,
-            ]}
-          />
-        </TouchableOpacity>
-      )}
-    </View>
       <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: 200, height: 300, borderRadius: 10 }} />
       <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
       <Text>{item.Category}</Text>
@@ -167,10 +113,6 @@ export default function AllArticle(props) {
 
   return (
     <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-      <View>
-
-      <SearchBar/>
-      </View>
       <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
         <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
           <FlatList
