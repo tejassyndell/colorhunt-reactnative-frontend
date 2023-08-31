@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, FlatList, Pressable } from "react-native";
+import { Text, View, Image, ScrollView, FlatList, Pressable, TouchableOpacity } from "react-native";
 import MenuImage from "../../components/MenuImage/MenuImage";
 import { getProductName } from "../../api/api";
 import styles from "./styles";
@@ -85,6 +85,8 @@ const getproductname = async () => {
   }, []);
 
   const renderItem = ({ item }) => (
+    console.log(item,"fffffff"),
+    <TouchableOpacity onPress={()=>  navigation.navigate("DetailsOfArticals", { id:item.Id })}>
     <View key={item.id} style={{
       alignItems: 'center',
       height: 370,
@@ -104,11 +106,14 @@ const getproductname = async () => {
       },
       elevation: 4,
     }}>
+
       <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: 200, height: 300, borderRadius: 10 }} />
+
       <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
       <Text>{item.Category}</Text>
       <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate}</Text>
     </View>
+    </TouchableOpacity>
   );
 
   return (
