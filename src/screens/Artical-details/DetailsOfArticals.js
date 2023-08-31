@@ -1,9 +1,9 @@
 import { View, Text, Image, TouchableHighlight, Dimensions, Pressable } from "react-native"
 import { ArticleDetails , addto_cart } from '../../api/api'
-import Menubar from '../../../assets/Colorhuntimg/menu bar (1).svg'
+// import Menubar from '../../../assets/Colorhuntimg/menu bar (1).svg'
 import Carousel from "react-native-snap-carousel";
 import axios from "axios"
-import cart from '../../../assets/images/icon.png'
+// import cart from '../../../assets/images/icon.png'
 import { useEffect, useState } from "react"
 import { useRoute } from "@react-navigation/native"
 import styles from "./styles";
