@@ -1,7 +1,7 @@
-import { View, Text , Image} from "react-native";
+import { View, Text , Image, ScrollView} from "react-native";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
-import cartIcone from '../../../assets/sidebaricons/cart.png';
+
 const AddToCart = (props) => {
     const { navigation } = props;
 
@@ -27,14 +27,22 @@ const AddToCart = (props) => {
                 </View>
             ),
             headerRight: () => 
-            <View >
-                <Image source={cartIcone}></Image>
+            <View style={{marginRight:20,width:50,height:40,display:"flex",justifyContent:"center",alignItems:"center"}}>
+                <Image source={require('../../../assets/sidebaricons/cart.png')} style={{ width:20, height:20 ,borderRadius:1, backgroundColor:"black" }} ></Image>
             </View>,
         });
     }, []);
     return (
         <View>
-            <Text>AddToCart</Text>
+           <View style={{height:"100%",width:"100%",backgroundColor:"white",borderTopColor:"black",borderWidth:1,borderStyle:"solid"}}>
+                <View style={{height:"60%",width:"100%",backgroundColor:"lightgreen"}}>
+                    <ScrollView style={{height:"60%",width:"100%",backgroundColor:"lightred"}}>
+                        <View>
+
+                        </View>
+                    </ScrollView>
+                </View>
+           </View>
         </View>
     )
 }
