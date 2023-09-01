@@ -18,7 +18,7 @@ const DetailsOfArticals = (props) => {
 
     const route = useRoute();
     const { id } = route.params;
-
+    console.log(id);
     const handleSizeClick = (size) => { }
     // const { id } = useParams()//Use this with navigate
     useEffect(() => {
@@ -40,7 +40,7 @@ const DetailsOfArticals = (props) => {
     const [isZoomed, setIsZoomed] = useState(true);
     const ArticleDetailsData = async () => {
         let data = {
-            ArticleId: 883,
+            ArticleId: id,
             PartyId: 197,
         }
         try {

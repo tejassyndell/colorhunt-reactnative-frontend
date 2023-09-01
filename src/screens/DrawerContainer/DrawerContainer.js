@@ -6,7 +6,6 @@ import MenuButton from "../../components/MenuButton/MenuButton";
 
 export default function DrawerContainer(props) {
   const { navigation } = props;
-  const id = 883;
   
   return (
     <View style={styles.content}>
@@ -39,7 +38,6 @@ export default function DrawerContainer(props) {
           title="Orders History"
           source={require("../../../assets/sidebaricons/order.png")}
           onPress={() => {
-            navigation.navigate("DetailsOfArticals", { id:id });
             navigation.closeDrawer();
           }}
         />
@@ -55,7 +53,7 @@ export default function DrawerContainer(props) {
           title="Wishlist"
           source={require("../../../assets/sidebaricons/Wishlist.png")}
           onPress={() => {
-            navigation.navigate("Search");
+            navigation.navigate("Wishlist");
             navigation.closeDrawer();
           }}
         />

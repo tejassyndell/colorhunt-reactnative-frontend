@@ -2,30 +2,53 @@ import React, { useEffect, useState } from 'react'
 import { Text, View, Image, TouchableHighlight } from 'react-native'
 import styles from './style2'
 import { Profiledata } from '../../api/api'
-export default function Userprofile() {
-
+import { useLayoutEffect } from 'react'
+import MenuBackArrow from '../../components/menubackarrow/menubackarrow'
+export default function Userprofile(props) {
+    const  {navigation} = props;
     const [Profile, setprofile] = useState([])
     useEffect(()=>{
         fetchprofiledata()
     },[])
     const fetchprofiledata = async () => {
         try{
-            const data = { party_id: 197}
+            const data = { party_id:3}
             const response = await Profiledata(data);
             setprofile(response.data)
         } catch(err) {
             console.log(err,'error in fetching data')
         }
     }
-    console.log(Profile)
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <MenuBackArrow
+                    onPress={() => {
+                        navigation.navigate('Home');
+                    }}
+                />
+            ),
+            headerTitle: () => (
+                <View style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%"
+                }}>
+                    <Text style={{
+                        textAlign: "center",
+                        fontSize: 25, fontWeight: 700, width: "100%"
+                    }}>Profile</Text>
+                </View>
+            ),
+        });
+    }, []);
     return (
         <>
             <View style={styles.TopContainer}>
                 <TouchableHighlight>
                 <View style={styles.Button}>
-                    <Image source={require('../../../assets/Backbutton/menu_bar.jpg')} />
+                    {/* <Image source={require('../../../assets/Backbutton/menu_bar.jpg')} /> */}
                 </View>
-                
                 </TouchableHighlight>
                 <TouchableHighlight>
                 <View style={styles.Profile}>
