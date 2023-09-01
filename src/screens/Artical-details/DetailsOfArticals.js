@@ -9,7 +9,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { ActivityIndicator } from "react-native";
-
+import bagicon from '../../../assets/icons/icon.png'
 const DetailsOfArticals = (props) => {
     const { navigation } = props;
     const { width: viewportWidth } = Dimensions.get("window");
@@ -331,7 +331,10 @@ const DetailsOfArticals = (props) => {
                                     onPress={() => addtocart(197, id)}
                                     disabled={totalQuantity === 0}
                                 >
+                                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                                        <Image source={require('../../../assets/icons/icon.png')} style={{marginRight:10}} />
                                     <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18 }}>Add To Cart</Text>
+                                    </View>
                                 </Pressable>
                             </View>
 
