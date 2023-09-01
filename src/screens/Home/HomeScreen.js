@@ -1,11 +1,22 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, Pressable,TouchableOpacity} from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Pressable,
+  TouchableOpacity,
+  Keyboard,
+  TextInput,
+  Button,
+} from "react-native";
 import MenuImage from "../../components/MenuImage/MenuImage";
 import styles from "./styles";
 import { getProductName, getcateGorywithphotos } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
+import SearchBar from "../../components/SearchBar/searchbar";
+import Filter from "../../components/Fliter/Filter";
 import { useNavigation } from "@react-navigation/native";
-import Filter from "../../components/Fliter/filter";
 
 export default function HomeScreen(props) {
   const { navigation } = props;
@@ -14,16 +25,17 @@ export default function HomeScreen(props) {
   const [nameData, setNameData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
   const [applyrData, setApplyData] = useState([]);
-  const [isFilterVisible, setIsFilterVisible] = useState(false); 
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+
+  // open filter
+
+  const openFilter = () => {
+    setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
+  };
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
-
-  // Filter 
-  const toggleFilter = () => {
-    setIsFilterVisible(!isFilterVisible);
-  };
-
+  //getCategoriesname
   const getCategoriesname = async () => {
     const result = await getcateGorywithphotos().then((res) => {
       if (res.status === 200) {
@@ -46,7 +58,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const viewAllArticles = () => {
-    navigation.navigate("AllArticle");
+    navigation.navigate("AllArticle"); // Replace 'AllArticlesScreen' with the name of your target screen
   };
 
   useLayoutEffect(() => {
@@ -60,71 +72,57 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => (
         <View style={styles.searchContainer}>
-          <Pressable>
-            <Image
-              style={styles.searchIcon}
-              source={require("../../../assets/FilterIcon/filter.png")}
-            />
-          </Pressable>
+          <Pressable></Pressable>
         </View>
       ),
       headerRight: () => <View />,
     });
-  }, [navigation.isFilterVisible]);
+  }, []);
+
+  const onPressRecipe = (item) => {
+    const id = 883;
+    navigation.navigate("DetailsOfArticals", { id: id });
+  };
+
+  const handlePress = (item) => {
+    // ategoryNames(item);
+    console.log(item);
+    navigation.navigate("CategorisWiseArticle", { item: item });
+  };
 
   return (
-    
-    
-    <View style={{ flex: 1,  }}>
-       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <View
-        style={{
-          width: "98%",
-          height: 70,
-          flexDirection: "row",
-          marginLeft:5,
-          borderRadius:20,
-          justifyContent: "end",
-        }}
-      >
-         {isFilterVisible && (
-        <Filter
-          categoriesData={categoryName}
-          selectedCategories={selectedCategories}
-          setCategories={setSelectedCategories}
-          clearFilters={() => {
-            setSelectedCategories([]);
-          }}
-          applyFilters={() => {
-            // Apply your filter logic here
-            // Update your applyData or other relevant state variables
-          }}
-        />
-      )}
-        <TouchableOpacity
-          style={{
-            width: "20%",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-
+    <View style={{ width: "100%", height: "100%", backgroundColor: "#FFFF" }}>
+      <View style={{ marginTop: 10 }}>
+        <View>
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: 700,
+              paddingLeft: 20,
+              height: 40,
+              alignItems: "center",
+            }}
+          >
+            Welcome...
+          </Text>
+        </View>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
         >
-          <Image
-            source={require("../../../assets/FilterIcon/filter.png")}
-            style={{ width: 30, height: 30 }}
-            
-          />
-        </TouchableOpacity>
-       
+          <SearchBar />
+          <TouchableOpacity onPress={openFilter}>
+            {" "}
+            <Image
+              source={require("../../../assets/Nevbar/Group8922.png")}
+              style={{ width: 50, height: 50, borderRadius: 10 }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-      
       <ScrollView
         showsHorizontalScrollIndicator={false}
-        style={{ overflow: "hidden", overflow: "hidden" }}
+        style={{ overflow: "hidden" }}
       >
-        {/* <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={recipes} renderItem={renderRecipes} keyExtractor={(item) => `${item.recipeId}`} /> */}
         <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
           <Text style={{ start: 10 }}>Men's </Text>
           <Text
@@ -155,7 +153,7 @@ export default function HomeScreen(props) {
                     key={item.id}
                     style={{
                       alignItems: "center",
-                      height: 270,
+                      height: 370,
                       width: 200,
                       marginLeft: 5,
                       marginRight: 5,
@@ -174,10 +172,16 @@ export default function HomeScreen(props) {
                       elevation: 4,
                     }}
                   >
-                    <Image
-                      source={require("../../../assets/demo.png")}
-                      style={{ width: 200, height: 200, borderRadius: 10 }}
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        handlePress(item);
+                      }}
+                    >
+                      <Image
+                        source={require("../../../assets/demo.png")}
+                        style={{ width: 200, height: 300, borderRadius: 10 }}
+                      />
+                    </TouchableOpacity>
                     <Text style={{ marginTop: 10, fontWeight: "bold" }}>
                       {item.Category}
                     </Text>
@@ -194,10 +198,16 @@ export default function HomeScreen(props) {
                       marginRight: 5,
                     }}
                   >
-                    <Image
-                      source={require("../../../assets/demo.png")}
-                      style={{ width: 200, height: 300, borderRadius: 10 }}
-                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        handlePress(item);
+                      }}
+                    >
+                      <Image
+                        source={require("../../../assets/demo.png")}
+                        style={{ width: 200, height: 300, borderRadius: 10 }}
+                      />
+                    </TouchableOpacity>
                     <Text style={{ marginTop: 10, fontWeight: "bold" }}>
                       {item.Category}
                     </Text>
@@ -229,7 +239,7 @@ export default function HomeScreen(props) {
               maxWidth: "100%",
               height: "auto",
               flexDirection: "row",
-              top: 40,
+              top: 20,
             }}
           >
             <ScrollView
@@ -243,7 +253,7 @@ export default function HomeScreen(props) {
                       key={item.id}
                       style={{
                         alignItems: "center",
-                        height: 270,
+                        height: 370,
                         width: 200,
                         marginLeft: 5,
                         marginRight: 5,
@@ -266,7 +276,7 @@ export default function HomeScreen(props) {
                     >
                       <Image
                         source={{ uri: baseImageUrl + item.Photos }}
-                        style={{ width: 200, height: 200, borderRadius: 10 }}
+                        style={{ width: 200, height: 300, borderRadius: 10 }}
                       />
                       <Text style={{ fontWeight: "bold" }}>
                         {item.ArticleNumber}
@@ -305,9 +315,49 @@ export default function HomeScreen(props) {
           </View>
         </View>
       </ScrollView>
-      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-        <ButtomNavigation navigation={navigation} />
-      </View>
+      {isFilterVisible ? null : (
+        <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+          <ButtomNavigation navigation={navigation} />
+        </View>
+      )}
+
+      {isFilterVisible && (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            justifyContent: "flex-end",
+          }}
+        >
+          <View
+            style={{
+              width: "90%",
+              backgroundColor: "white",
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0, // To make it span the full width
+              marginLeft: "auto", // Margin on the left side
+              marginRight: "auto", // Margin on the right side
+              padding: 10,
+            }}
+          >
+            <Filter
+              categoriesData={nameData}
+              clearFilters={() => setIsFilterVisible(false)}
+              applyFilters={() => {
+                // Handle applying filters here
+                setIsFilterVisible(false);
+              }}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 }
