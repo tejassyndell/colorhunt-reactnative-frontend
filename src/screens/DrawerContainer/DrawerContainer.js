@@ -6,11 +6,9 @@ import MenuButton from "../../components/MenuButton/MenuButton";
 
 export default function DrawerContainer(props) {
   const { navigation } = props;
-  
   return (
     <View style={styles.content}>
       <View style={styles.container}>
-<<<<<<< HEAD
         <View style={{ width:'100%', height: 50 ,marginTop:20,marginBottom:50,paddingRight:20, paddingLeft:10, justifyContent: 'center',flexDirection:"row"}}>
           <View style={{flexDirection:"row",alignItems:"center",width:'100%'}} >
 
@@ -29,26 +27,6 @@ export default function DrawerContainer(props) {
 
         
         
-=======
-        <View style={{ width: '100%', height: 50, marginTop: 20, marginBottom: 50, paddingRight: 20, paddingLeft: 10, justifyContent: 'center', flexDirection: "row" }}>
-          <View style={{ flexDirection: "row", alignItems: "center", width: '100%' }} >
-
-            <Image source={require('../../../assets/sidebaricons/1171274903.png')} style={{ width: 50, height: 50 }} />
-            <Text style={{ color: '#ffff', left: 10 }} onPress={() => navigation.navigate("Profile")}>NIRAV SIR</Text>
-
-          </View>
-
-          <MenuButton
-            source={require('../../../assets/sidebaricons/menu.png')}
-            onPress={() => {
-              navigation.closeDrawer();
-
-            }}
-          />
-
-
-
->>>>>>> upstream/31_08_23
           <View>
 
           </View>
@@ -59,6 +37,7 @@ export default function DrawerContainer(props) {
           title="Orders History"
           source={require("../../../assets/sidebaricons/order.png")}
           onPress={() => {
+            navigation.navigate("Home");
             navigation.closeDrawer();
           }}
         />
@@ -73,24 +52,12 @@ export default function DrawerContainer(props) {
         <MenuButton
           title="Wishlist"
           source={require("../../../assets/sidebaricons/Wishlist.png")}
-<<<<<<< HEAD
-=======
-          onPress={() => {
-            navigation.navigate("Wishlist");
-            navigation.closeDrawer();
-          }}
-        />
-        <MenuButton
-          title="Notifications"
-          source={require("../../../assets/sidebaricons/notification.png")}
->>>>>>> upstream/31_08_23
           onPress={() => {
             navigation.navigate("Search");
             navigation.closeDrawer();
           }}
         />
         <MenuButton
-<<<<<<< HEAD
           title="Notifications"
           source={require("../../../assets/sidebaricons/notification.png")}
           onPress={() => {
@@ -99,8 +66,6 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-=======
->>>>>>> upstream/31_08_23
           title="About us"
           source={require("../../../assets/sidebaricons/1000005827.png")}
           onPress={() => {
@@ -116,13 +81,8 @@ export default function DrawerContainer(props) {
             navigation.closeDrawer();
           }}
         />
-<<<<<<< HEAD
       
          <MenuButton
-=======
-
-        <MenuButton
->>>>>>> upstream/31_08_23
           title="Logout"
           source={require("../../../assets/sidebaricons/download-4.png")}
           onPress={() => {
