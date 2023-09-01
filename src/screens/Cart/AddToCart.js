@@ -83,8 +83,9 @@ const AddToCart = (props) => {
 
     const handleProceedToCheckout = () => {
         const datatopass = [orderItems]
-        localStorage.setItem('Orderlist', JSON.stringify(datatopass))
-        //   navigate(`/orders`) // Update the route path as per your routing setup
+        // localStorage.setItem('Orderlist', JSON.stringify(datatopass))
+        //   navigate(`/Orderlist`) // Update the route path as per your routing setup
+        navigation.navigate('Orderlist');
     }
 
     const handleDeleteOrder = async (article_id) => {
@@ -289,7 +290,7 @@ const AddToCart = (props) => {
                             position: "absolute",
                             top: "20%",
                             left: "85%",
-                            right: 0}} source={require("../../../assets/arrow.png")}></Image>
+                            right: 0}} source={require("../../../assets/arrow(1).png")}></Image>
                         </Pressable>
                     </View>
                 </ScrollView>

@@ -38,6 +38,7 @@ export default function DrawerContainer(props) {
           title="Orders History"
           source={require("../../../assets/sidebaricons/order.png")}
           onPress={() => {
+            navigation.navigate("Orderlist");
             navigation.closeDrawer();
           }}
         />
