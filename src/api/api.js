@@ -1,7 +1,12 @@
 /* eslint-disable */
 import axios from "axios"
+<<<<<<< HEAD
 // const url = 'http://10.0.2.2:4000'
 const url = 'http://localhost:4000'
+=======
+const url = 'http://10.0.2.2:4000'
+// const url = 'http://localhost:4000'
+>>>>>>> upstream/31_08_23
 // const url = 'https://colorhunt-mobile-backend.sincprojects.com'
 // const url = 'https://garment-backend.sincprojects.com'
 
@@ -124,3 +129,24 @@ export const addto_cart = async (data) => {
   }
 }
 
+<<<<<<< HEAD
+=======
+export const cartdetails = async () => {
+  try {
+    return  await axios.post(`${url}/cartdetails`, { party_id: 197 })
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}
+
+export const deletecartitem = async (data) => {
+  try {
+    return   await axios.post(`${url}/deletecartitem`, data)
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}
+
+>>>>>>> upstream/31_08_23

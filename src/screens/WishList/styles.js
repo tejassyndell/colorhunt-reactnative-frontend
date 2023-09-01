@@ -28,10 +28,6 @@ const styles = StyleSheet.create({
       profileImage: {
         width: "100%",
         height: "100%",
-<<<<<<< HEAD
-      },
-   
-=======
         paddingRight:10
       },
       producticones: {
@@ -53,46 +49,8 @@ const styles = StyleSheet.create({
        
         // Add other icon styling here
       },
-      disabledIcon: {
-        width:'100%',
-        color:'black',
-        fontSize: 20,
-        textAlign:'right',
-        paddingRight:10,
-        paddingTop:10
-        // Add styles for disabled icon here
-      },
-      container: {
-        margin: 15,
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "row",
-        width: "90%",
     
-      },
-      searchBar__unclicked: {
-        padding: 10,
-        flexDirection: "row",
-        width: "95%",
-        backgroundColor: "#d9dbda",
-        borderRadius: 15,
-        alignItems: "center",
-      },
-      searchBar__clicked: {
-        padding: 10,
-        flexDirection: "row",
-        width: "80%",
-        backgroundColor: "#d9dbda",
-        borderRadius: 15,
-        alignItems: "center",
-        justifyContent: "space-evenly",
-      },
-      input: {
-        fontSize: 20,
-        marginLeft: 10,
-        width: "90%",
-      },
->>>>>>> upstream/31_08_23
+   
   
   
 

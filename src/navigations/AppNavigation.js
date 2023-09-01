@@ -15,11 +15,22 @@ import Userprofile from '../screens/UserProfile/Userprofile';
 import Contact from '../screens/Contact-Us/Contact';
 import DetailsOfArticals from '../screens/Artical-details/DetailsOfArticals';
 import AddToCart from '../screens/Cart/AddToCart';
+<<<<<<< HEAD
+=======
+import CategorisWiseArticle from '../screens/CategorisWiseArticle/CategorisWiseArticle';
+import WishList from '../screens/WishList/wishlist';
+>>>>>>> upstream/31_08_23
  const Stack = createStackNavigator();
 
 function MainNavigator() {
   return(
+<<<<<<< HEAD
     <Stack.Navigator>
+=======
+    <Stack.Navigator
+   
+    >
+>>>>>>> upstream/31_08_23
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='Categories' component={CategoriesScreen}/>
       <Stack.Screen name='Recipe' component={RecipeScreen}/>
@@ -31,6 +42,11 @@ function MainNavigator() {
       <Stack.Screen name='Profile' component={Userprofile} />
       <Stack.Screen name='Contact' component={Contact} />
       <Stack.Screen name='DetailsOfArticals' component={DetailsOfArticals} />
+<<<<<<< HEAD
+=======
+      <Stack.Screen name='Wishlist' component={WishList} />
+      <Stack.Screen name='CategorisWiseArticle' component={CategorisWiseArticle} />
+>>>>>>> upstream/31_08_23
       <Stack.Screen name='cart_list' component={AddToCart} />
     </Stack.Navigator>
   )
