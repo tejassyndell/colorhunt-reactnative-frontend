@@ -1,15 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, FlatList,TouchableOpacity } from "react-native";
-import { getProductName,getWishlistData,getAddWishlist,DeleteWishlist } from "../../api/api";
+import { Text, View, Image, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles";
 import { FontAwesome } from '@expo/vector-icons';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
+import { ActivityIndicator } from "react-native";
 export default function AllArticle(props) {
   const { navigation } = props;
 
   const [nameDatas, setNameDatas] = useState([]);
   const [selectedprd, setSelectprd] = useState([])
-
+  const [isLoading, setIsLoading] = useState(true);
 
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
@@ -19,6 +20,7 @@ export default function AllArticle(props) {
     const res = await getProductName();
     if (res.status === 200) {
       setNameDatas(res.data);
+      setIsLoading(false)
     }
   }
   const rmvProductWishlist = async (i) => {
@@ -40,31 +42,31 @@ export default function AllArticle(props) {
     }
   }
 
-    // ------- add product in wishlist start-------------
-    const getWishlist = async () => {
-      const data = {
-        party_id: 197,
-      }
-      const result = await getWishlistData(data).then((res) => {
-        setSelectprd(res.data)
-      })
+  // ------- add product in wishlist start-------------
+  const getWishlist = async () => {
+    const data = {
+      party_id: 197,
+    }
+    const result = await getWishlistData(data).then((res) => {
+      setSelectprd(res.data)
+    })
+  }
+
+  const addArticleWishlist = async (i) => {
+    let data = {
+      user_id: 197,
+      article_id: i.Id,
     }
 
-    const addArticleWishlist = async (i) => {
-      let data = {
-        user_id: 197,
-        article_id: i.Id,
-      }
-  
-      console.log(data)
-      try {
-        await getAddWishlist(data).then((res) => {
-          getWishlist()
-        })
-      } catch (error) {
-        console.log(error)
-      }
+    console.log(data)
+    try {
+      await getAddWishlist(data).then((res) => {
+        getWishlist()
+      })
+    } catch (error) {
+      console.log(error)
     }
+  }
 
   useEffect(() => {
     getCategoriesname();
@@ -81,16 +83,9 @@ export default function AllArticle(props) {
         />
       ),
       headerTitle: () => (
-        
-        
-          <View style={{position:'absolute',left:310}}>
+        <View style={{ position: 'absolute', left: 310 }}>
           <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-
-          </View>
-
-
-
-        
+        </View>
       ),
       headerRight: () => <View />,
     });
@@ -99,12 +94,11 @@ export default function AllArticle(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       // headerright: () => (
-       
       // ),
       headerRight: () => <View />,
     });
   }, []);
-  
+
 
   const renderItem = ({ item }) => (
     <View key={item.id} style={{
@@ -126,37 +120,37 @@ export default function AllArticle(props) {
       },
       elevation: 4,
     }}>
-       <View id={item.id} style={styles.producticones}>
-      {selectedprd.some((i) => i.Id === item.Id) ? (
-        <TouchableOpacity
-          onPress={() => {
-            rmvProductWishlist(item);
-          }}
-        >
-          <FontAwesome
-            name="heart"
-            style={[
-              styles.icon,
-              // isLoggedin === false ? styles.disabledIcon : null,
-            ]}
-          />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={() => {
-            addArticleWishlist(item);
-          }}
-        >
-          <FontAwesome
-            name="heart-o"
-            style={[
-              styles.disabledIcon,
-              // isLoggedin === false ? styles.disabledIcon : null,
-            ]}
-          />
-        </TouchableOpacity>
-      )}
-    </View>
+      <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart-o"
+              style={[
+                styles.disabledIcon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
       <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: 200, height: 300, borderRadius: 10 }} />
       <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
       <Text>{item.Category}</Text>
@@ -165,23 +159,30 @@ export default function AllArticle(props) {
   );
 
   return (
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-     
-      <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
-        <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
-          <FlatList
-            data={nameDatas}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            numColumns={3}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingVertical: 10 }}
+    <>
+      {isLoading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator
+            size="large"
+            color="black"
           />
         </View>
-      </ScrollView>
-      {/* <View style={{position:'absolute',bottom:10}}>
-        <ButtomNavigation/>
-      </View> */}
-    </View>
+      ) : (
+        <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+          <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
+            <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
+              <FlatList
+                data={nameDatas}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItem}
+                numColumns={3}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingVertical: 10 }}
+              />
+            </View>
+          </ScrollView>
+        </View>
+      )}
+    </>
   );
 }

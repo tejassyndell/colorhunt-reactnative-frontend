@@ -25,12 +25,8 @@ export default function DrawerContainer(props) {
 
             }}
           />
-
-
-
           <View>
-
-          </View>
+        </View>
         </View>
 
 
@@ -45,7 +41,7 @@ export default function DrawerContainer(props) {
           title="Cart"
           source={require("../../../assets/sidebaricons/cart.png")}
           onPress={() => {
-            navigation.navigate("Categories");
+            navigation.navigate("cart_list");
             navigation.closeDrawer();
           }}
         />
