@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableHighlight, Dimensions, Pressable } from "react-native"
-import { ArticleDetails , addto_cart } from '../../api/api'
+import { ArticleDetails, addto_cart } from '../../api/api'
 // import Menubar from '../../../assets/Colorhuntimg/menu bar (1).svg'
 import Carousel from "react-native-snap-carousel";
 import axios from "axios"
@@ -9,8 +9,8 @@ import { useRoute } from "@react-navigation/native"
 import styles from "./styles";
 import stylesRecipe from "../Recipe/styles"
 import { ScrollView } from "react-native-gesture-handler";
-
-
+import { useLayoutEffect } from "react";
+import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 
 const DetailsOfArticals = (props) => {
     const { navigation } = props;
@@ -38,6 +38,7 @@ const DetailsOfArticals = (props) => {
     const [combinedArray, setCombinedArray] = useState([])
     const [subcategory, setSubcategory] = useState()
     const [isZoomed, setIsZoomed] = useState(true);
+
     const ArticleDetailsData = async () => {
         let data = {
             ArticleId: id,
@@ -164,6 +165,18 @@ const DetailsOfArticals = (props) => {
             </View>
         </TouchableHighlight>
     );
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <MenuBackArrow
+                    onPress={() => {
+                        navigation.navigate('Home');
+                    }}
+                />
+            ),
+        });
+    }, []);
     return (
 
         <ScrollView >
@@ -297,10 +310,21 @@ const DetailsOfArticals = (props) => {
                         <Text style={{ fontSize: 16, fontWeight: 600, color: "black" }}>{formatPrice(totalPrice)}</Text>
                     </View>
                     <View style={styles.addto_card_container}>
-                        <Pressable style={styles.addto_cart_btn} onPress={() => addtocart(197, id)}>
-                            <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18 }}>  Add To Cart</Text>
+                        <Pressable
+                            style={[
+                                styles.addto_cart_btn,
+                                {
+                                    backgroundColor: totalQuantity === 0 ? 'gray' : 'black',
+                                    opacity: totalQuantity === 0 ? 0.5 : 1,
+                                },
+                            ]}
+                            onPress={() => addtocart(197, id)}
+                            disabled={totalQuantity === 0} 
+                        >
+                            <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18 }}>Add To Cart</Text>
                         </Pressable>
                     </View>
+
                 </View>
             </View>
 

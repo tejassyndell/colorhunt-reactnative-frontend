@@ -5,19 +5,17 @@ import { useLayoutEffect } from 'react';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow'
 
 export default function Contact(props) {
-    const  {navigation} = props;
+    const { navigation } = props;
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [showValidationErrors, setShowValidationErrors] = useState(false);
     const handleSubmit = async () => {
-        // Perform your API call or action here
-        // For simplicity, I'm showing an alert instead of actual API calls
         setShowValidationErrors(true)
         if (!userName || !email || !subject || !message) {
-            Alert.alert('Validation Error.', 'Please fill in all fields before submitting.', [{ text: 'OK', onPress: () => console.log('Alert Dismissed') }]
-            )
+            // Alert.alert('Validation Error.', 'Please fill in all fields before submitting.', [{ text: 'OK', onPress: () => console.log('Alert Dismissed') }]
+            // )
             return;
         }
         Alert.alert(
@@ -57,7 +55,7 @@ export default function Contact(props) {
     }, []);
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:'white' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
             <TouchableOpacity>
                 <View >
                     <Image source={require('../../../assets/ContactPagePNG/contact.png')} />
@@ -69,34 +67,44 @@ export default function Contact(props) {
                         placeholder="Name"
                         value={userName}
                         onChangeText={setUserName}
-                        style={{ borderWidth: 1, padding: 10, margin: 5, width: 300 }}
+                        style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300 }}
                     />
-                    {showValidationErrors && userName === '' && <Text style={{color:'red'}}>This Field is Required</Text>}
+                    <View style={{position: 'absolute', top: 58, marginLeft:5}} >
+                    {showValidationErrors && userName === '' && <Text style={{ color: 'red', fontSize:10 }}>This Field is Required</Text>}
+                    </View>
                     <TextInput
                         placeholder="Email"
                         value={email}
                         onChangeText={setEmail}
-                        style={{ borderWidth: 1, padding: 10, margin: 5, width: 300 }}
+                        style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300, marginTop: 20 }}
                     />
-                    {showValidationErrors && email === '' && <Text style={{color:'red'}}>This field is Required</Text>}
+                    <View style={{position:'absolute', top:133, marginLeft:5}}>
+                    {showValidationErrors && email === '' && <Text style={{ color: 'red', fontSize:10 }}>This field is Required</Text>}
+                    </View>
                     <TextInput
                         placeholder="Subject"
                         value={subject}
                         onChangeText={setSubject}
-                        style={{ borderWidth: 1, padding: 10, margin: 5, width: 300 }}
+                        style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300, marginTop: 20 }}
                     />
-                    {showValidationErrors && subject === '' && <Text style={{color:'red'}}>This Field is Required</Text>}
+                    <View style={{position:'absolute', top:207, marginLeft:5}}>
+                    {showValidationErrors && subject === '' && <Text style={{ color: 'red', fontSize:10 }}>This Field is Required</Text>}
+                    </View>
                     <TextInput
                         placeholder="Message"
                         value={message}
                         onChangeText={setMessage}
                         multiline
-                        style={{ borderWidth: 1, padding: 10, margin: 5, width: 300, height: 100 }}
+                        style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300, marginTop: 20 }}
                     />
-                    {showValidationErrors && message === '' && <Text style={{color:'red'}}>This Field is Required</Text>}
-                    <TouchableOpacity style={{ backgroundColor: 'black', padding: 10, borderRadius: 5, margin: 5, marginTop: 30 }}>
-                        <Text style={{ color: 'white', textAlign: 'center' }} onPress={handleSubmit}>Submit</Text>
-                    </TouchableOpacity>
+                    <View style={{position:'absolute',top:283, marginLeft:5}}>
+                    {showValidationErrors && message === '' && <Text style={{ color: 'red', fontSize:10 }}>This Field is Required</Text>}
+                    </View>
+                    <View style={{  justifyContent: 'center', alignItems: 'center', marginTop:30 }}>
+                        <TouchableOpacity style={{ backgroundColor: 'black', padding: 10, borderRadius: 5, width: 153, height: 47, justifyContent: 'center' }} onPress={handleSubmit}>
+                            <Text style={{ color: 'white', textAlign: 'center' }}>Submit</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </View>
