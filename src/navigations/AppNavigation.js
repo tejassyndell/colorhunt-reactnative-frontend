@@ -21,9 +21,7 @@ import WishList from '../screens/WishList/wishlist';
 
 function MainNavigator() {
   return(
-    <Stack.Navigator
-   
-    >
+    <Stack.Navigator>
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='Categories' component={CategoriesScreen}/>
       <Stack.Screen name='Recipe' component={RecipeScreen}/>
