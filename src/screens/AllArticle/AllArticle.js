@@ -99,7 +99,6 @@ export default function AllArticle(props) {
     });
   }, []);
 
-
   const renderItem = ({ item }) => (
     <View key={item.id} style={{
       alignItems: 'center',

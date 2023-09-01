@@ -62,13 +62,9 @@ const getproductname = async () => {
       headerTitle: () => (
         
         
-          <View style={{position:'absolute',left:310}}>
+          <View style={{position:'absolute',left:280}}>
           <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-
           </View>
-
-
-
         
       ),
       headerRight: () => <View />,
