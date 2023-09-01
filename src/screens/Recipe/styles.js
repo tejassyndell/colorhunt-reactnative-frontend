@@ -13,15 +13,15 @@ const styles = StyleSheet.create({
   carousel: {},
 
   image: {
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
     width: '100%',
-    height: 250
+    height: 520
   },
   imageContainer: {
     flex: 1,
     justifyContent: 'center',
     width: viewportWidth,
-    height: 250
+    height: "100%"
   },
   paginationContainer: {
     flex: 1,
