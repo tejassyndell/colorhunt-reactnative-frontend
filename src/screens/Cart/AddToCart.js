@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import { ActivityIndicator } from "react-native";
 import { cartdetails, deletecartitem } from "../../api/api";
+
 const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 
 const AddToCart = (props) => {
@@ -205,14 +206,15 @@ const AddToCart = (props) => {
                                                 <TouchableOpacity
                                                     onPress={() => handleEditOrder(item.article_id)}
                                                 >
+                                                
                                                     <Image alt="edite"
-                                                        style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/sidebaricons/edit (5) 1.png")}></Image>
+                                                        style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity
                                                     onPress={() => handleDeleteOrder(item.article_id)}
                                                 >
                                                     <Image alt="Delete"
-                                                        style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/sidebaricons/edit (5) 1.png")}></Image>
+                                                        style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
