@@ -91,8 +91,7 @@ const Orderlist = (props) => {
                                     marginVertical: 10,
                                     borderRadius: 10,
                                 }}>
-                                    {/* <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                     */}
+                                  
                                     <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={require("../../../assets/sidebaricons/image 122.png")}></Image>
 
                                 </View>
@@ -158,8 +157,7 @@ const Orderlist = (props) => {
                                     marginVertical: 10,
                                     borderRadius: 10,
                                 }}>
-                                    {/* <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-         */}
+     
                                     <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={require("../../../assets/sidebaricons/image 122.png")}></Image>
 
                                 </View>
@@ -225,8 +223,7 @@ const Orderlist = (props) => {
                                     marginVertical: 10,
                                     borderRadius: 10,
                                 }}>
-                                    {/* <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-         */}
+    
                                     <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={require("../../../assets/sidebaricons/image 122.png")}></Image>
 
                                 </View>
@@ -310,7 +307,7 @@ const Orderlist = (props) => {
                                 </View>
                             </View>
                             <View style={{ width: "50%", marginLeft: "45%" }}>
-                                {/* ---- */}
+                              
                                 <View style={{ borderWidth: 1 }}>
 
                                 </View>
@@ -330,7 +327,7 @@ const Orderlist = (props) => {
                                 </View>
                             </View>
                             <View style={{ width: "50%", marginLeft: "45%" }}>
-                                {/* ---- */}
+                              
                                 <View style={{ borderWidth: 1 }}>
 
                                 </View>

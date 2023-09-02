@@ -113,7 +113,7 @@ export default function HomeScreen(props) {
         >
           <SearchBar />
           <TouchableOpacity onPress={openFilter}>
-            {" "}
+           
             <Image
               source={require("../../../assets/Nevbar/Group8922.png")}
               style={{ width: 50, height: 50, borderRadius: 10 }}

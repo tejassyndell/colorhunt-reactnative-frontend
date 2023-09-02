@@ -32,8 +32,8 @@ const AddToCart = (props) => {
             ),
             headerRight: () =>
                 <View style={{ marginRight: 20, width: 50, height: 40, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <TouchableOpacity  onPress={handleGoToOrderList}>
-                    <Image  source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
+                    <TouchableOpacity onPress={handleGoToOrderList}>
+                        <Image source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
                     </TouchableOpacity>
                 </View>,
         });
@@ -120,10 +120,10 @@ const AddToCart = (props) => {
         navigation.navigate("DetailsOfArticals", { id: ArticalId });
     }
     return (
-        <View >
-            <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
-                <View style={{ display: "flex", flexDirection: "column", height: "60%", width: "100%", backgroundColor: "#FFF" }}>
-                    <ScrollView>
+        <ScrollView nestedScrollEnabled={true}>
+            <View style={{ height: "50%", width: "100%", backgroundColor: "white", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
+                <ScrollView nestedScrollEnabled={true}>
+                    <View style={{ display: "flex", flexDirection: "column", height: "60%", width: "100%", backgroundColor: "#FFF" }}>
                         <View style={{ paddingBottom: 20 }}>
                             {orderItems.map((item) =>
                                 <View key={item.id} style={{
@@ -203,10 +203,10 @@ const AddToCart = (props) => {
                             )}
                         </View>
 
-                    </ScrollView>
 
-                </View>
-                <ScrollView style={{ height: "30%", width: "100%", backgroundColor: "#FFF" }}>
+                    </View>
+                </ScrollView>
+                <ScrollView nestedScrollEnabled={true} style={{ height: "30%", width: "100%", backgroundColor: "#FFF" }}>
                     <View style={{ padding: 10 }}>
                         <TextInput
                             value={promoCode}
@@ -258,24 +258,24 @@ const AddToCart = (props) => {
                     <View style={{
                         display: "flex",
                         flexDirection: "row",
-                        marginTop:"8%",
+                        marginTop: "8%",
                         // width: "100%",
                     }}>
-                        <View style={{width:"50%",paddingLeft:"2.8%"}}>
+                        <View style={{ width: "50%", paddingLeft: "2.8%" }}>
                             <Text>Total ({totalItems} item) :</Text>
                         </View>
                         <View style={{
                             display: "flex",
                             flexDirection: "row", gap: 5,
-                            width:"50%",
-                            paddingLeft:"20%"
+                            width: "50%",
+                            paddingLeft: "20%"
                         }}>
                             <Text >Total price</Text>
                             <Text >₹{totalPrice}</Text>
                         </View>
                     </View>
-                    <View  style={{ padding: 10 }}>
-                        <Pressable style={{width:"100%"}} onPress={handleProceedToCheckout}>
+                    <View style={{ padding: 10 }}>
+                        <Pressable style={{ width: "100%" }} onPress={handleProceedToCheckout}>
                             <Text style={{
                                 color: "white",
                                 backgroundColor: "#212121",
@@ -284,18 +284,20 @@ const AddToCart = (props) => {
                                 fontSize: 18, fontWeight: 600,
                                 textAlign: "left"
                             }}>
-                            Proceed to Checkout
+                                Proceed to Checkout
                             </Text>
-                            <Image style={{  width: 30,height:30,
-                            position: "absolute",
-                            top: "20%",
-                            left: "85%",
-                            right: 0}} source={require("../../../assets/arrow(1).png")}></Image>
+                            <Image style={{
+                                width: 30, height: 30,
+                                position: "absolute",
+                                top: "20%",
+                                left: "85%",
+                                right: 0
+                            }} source={require("../../../assets/arrow(1).png")}></Image>
                         </Pressable>
                     </View>
                 </ScrollView>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
