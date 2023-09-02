@@ -137,8 +137,8 @@ const AddToCart = (props) => {
                 </View>
             ) : (
                 <ScrollView nestedScrollEnabled={true} >
-                    <View style={{ width: "100%", height: "100%", backgroundColor: "pink", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
-                        <ScrollView nestedScrollEnabled={true} style={{height:430,backgroundColor:"green"}}>
+                    <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
+                        <ScrollView nestedScrollEnabled={true} style={{height:430,backgroundColor:"#FFF"}}>
                             <View style={{ display: "flex",flexDirection:"column", width: "100%" }}>
                                 <View style={{ paddingBottom: 20 }}>
                                     {orderItems.map((item) =>
