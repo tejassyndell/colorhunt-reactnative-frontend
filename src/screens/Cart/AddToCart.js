@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import { ActivityIndicator } from "react-native";
 import { cartdetails, deletecartitem } from "../../api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 
@@ -87,8 +88,7 @@ const AddToCart = (props) => {
 
     const handleProceedToCheckout = () => {
         const datatopass = [orderItems]
-        // localStorage.setItem('Orderlist', JSON.stringify(datatopass))
-        //   navigate(`/Orderlist`) // Update the route path as per your routing setup
+        AsyncStorage.setItem('Orderlist', JSON.stringify(datatopass));
         navigation.navigate('Orderlist');
     }
 

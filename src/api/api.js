@@ -142,3 +142,12 @@ export const deletecartitem = async (data) => {
   }
 }
 
+
+export const gettransportation = async (data) => {
+  try {
+    return   await axios.get(`${url}/gettransportation`, data)
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}
