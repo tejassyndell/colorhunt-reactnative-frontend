@@ -39,9 +39,10 @@ const ButtomNavigation = (props) => {
         style={{
           width: "98%",
           height: 70,
-          backgroundColor: "black",
+          backgroundColor: "#212121",
           flexDirection: "row",
           marginLeft:5,
+          marginBottom:10,
           borderRadius:20,
           justifyContent: "space-evenly",
         }}
@@ -57,7 +58,7 @@ const ButtomNavigation = (props) => {
 
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/Vector.svg")}
+            source={require("../../../assets/AppFooterIcons/Home_down_nav_icone.png")}
             style={{ width: 30, height: 30 }}
             
           />
@@ -73,7 +74,7 @@ const ButtomNavigation = (props) => {
           
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/History.svg")}
+            source={require("../../../assets/AppFooterIcons/order_down_nav_icone.png")}
             style={{ width: 30, height: 30 }}
             
           />
@@ -88,7 +89,7 @@ const ButtomNavigation = (props) => {
           onPress={CartPage}
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/cart.svg")}
+            source={require("../../../assets/AppFooterIcons/cart_down_nav_icone.png")}
             style={{ width: 30, height: 30 }}
           />
         </TouchableOpacity>
@@ -102,7 +103,7 @@ const ButtomNavigation = (props) => {
           onPress={NotificationPage}
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/notification.svg")}
+            source={require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")}
             style={{ width: 30, height: 35 }}
           />
         </TouchableOpacity>
@@ -116,7 +117,7 @@ const ButtomNavigation = (props) => {
           onPress={ProfilePage}
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/1000005774.svg")}
+            source={require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")}
             style={{ width: 30, height: 35 }}
           />
         </TouchableOpacity>

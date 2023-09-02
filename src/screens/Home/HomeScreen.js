@@ -64,7 +64,7 @@ export default function HomeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View style={{ marginRight: 20, width: 50, height: 40, display: "flex", justifyContent: "center",alignItems: "center" }}>
+        <View style={{ marginLeft:5, width: 50, height: 40, display: "flex", justifyContent: "center",alignItems: "center" }}>
         <TouchableOpacity onPress={() => {
           navigation.openDrawer();
         }}>
@@ -118,7 +118,7 @@ export default function HomeScreen(props) {
           <TouchableOpacity onPress={openFilter}>
            
             <Image
-              source={require("../../../assets/Nevbar/Group8922.png")}
+              source={require("../../../assets/filetr_icone.png")}
               style={{ width: 50, height: 50, borderRadius: 10 }}
             />
           </TouchableOpacity>
