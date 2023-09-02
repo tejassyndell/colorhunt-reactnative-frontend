@@ -64,11 +64,14 @@ export default function HomeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <MenuImage
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
+        <View style={{ marginRight: 20, width: 50, height: 40, display: "flex", justifyContent: "center",alignItems: "center" }}>
+        <TouchableOpacity onPress={() => {
+          navigation.openDrawer();
+        }}>
+            <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5, backgroundColor: "black" }} ></Image>
+        </TouchableOpacity>
+    </View>
+      
       ),
       headerTitle: () => (
         <View style={styles.searchContainer}>
