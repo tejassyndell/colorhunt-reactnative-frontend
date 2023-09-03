@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 0,
         paddingTop: 1,
-        position: "relative",
+        position: "absolute",
         height: 450,
         width: "100%",
         backgroundColor: "#ffffff",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         // bottom:0,
-        top:"1%",
+        top:"80%",
         elevation: 50,
         shadowOffset: { width: "100%", height: -3 }, // Offset the shadow upwards
         shadowColor: 'red',
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: "98%",
         elevation: 5,
-        marginLeft: "1%"
+        marginLeft: "1%",
+        overflow:"scroll"
     },
     size: {
         width: 40,
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
         shadowOffset: 0,
         shadowOpacity: 4
     }, size_options: {
+        paddingLeft:14,
         display: "flex",
         fontSize: 18,
         fontWeight: 500
@@ -136,9 +138,9 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         alignContent:"center",
-        width: "95%",
+        width: "100%",
         height:"12%",
-        marginTop: "4%"
+        marginTop: 32
     },
     container_grid:{
         width:"100%"
@@ -205,6 +207,7 @@ const styles = StyleSheet.create({
         flexWrap:"wrap",
         flexDirection:"row",
         width:"100%",
+        marginBottom:10
     },
     color_box_div: {
         width: "31%",
@@ -330,7 +333,7 @@ const styles = StyleSheet.create({
     article_ratio_Section:{
         display:"flex",
         flexDirection:"row",
-        width:"95%",
+        width:"100%",
         marginTop:"10%"
     },
     article_ratio_container:{
