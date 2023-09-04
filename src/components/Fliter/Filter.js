@@ -8,7 +8,7 @@ import {
   StyleSheet,
    
 } from "react-native";
-import RangeSlider from "react-native-range-slider-expo/src/RangeSlider";
+// import RangeSlider from "react-native-range-slider-expo/src/RangeSlider";
 export default function FilterComponent({
   categoriesData,
   selectedCategories, // Pass the selected categories as a prop
@@ -17,7 +17,7 @@ export default function FilterComponent({
   applyFilters,
 }) {
   const [filterText, setFilterText] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  // const [priceRange, setPriceRange] = useState([0, 1000]);
  
 
 
@@ -50,10 +50,10 @@ export default function FilterComponent({
   // Disable the button while not seletd the categarys
   const isApplyDisabled = selectedCategories.length === 0;
 
-  const handleApplyFilter = () => {
-    // Your filter application logic here
-    applyFilters();
-  };
+  // const handleApplyFilter = () => {
+  //   // Your filter application logic here
+  //   applyFilters();
+  // };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -113,31 +113,9 @@ export default function FilterComponent({
             </TouchableOpacity>
           ))}
       </View>
-      <View style={styles.sliderContainer}>
-        <Text style={styles.sliderLabel}>Min Amount: {minAmount}</Text>
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={1000}
-          step={10}
-          value={minAmount}
-          onValueChange={(value) => setMinAmount(value)}
-        />
-      </View>
-
-      {/* Maximum Amount Slider */}
-      <View style={styles.sliderContainer}>
-        <Text style={styles.sliderLabel}>Max Amount: {maxAmount}</Text>
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={1000}
-          step={10}
-          value={maxAmount}
-          onValueChange={(value) => setMaxAmount(value)}
-        />
-      </View>
-      <View style={styles.sliderContainer}>
+    
+    
+      {/* <View style={styles.sliderContainer}>
         <Text style={styles.sliderLabel}>Price Range:</Text>
         <RangeSlider
           style={styles.slider}
@@ -154,7 +132,7 @@ export default function FilterComponent({
           Min: {priceRange[0]} - Max: {priceRange[1]}
         </Text>
       </View>
-    
+     */}
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
