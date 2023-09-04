@@ -64,11 +64,14 @@ export default function HomeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <MenuImage
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
+        <View style={{ marginLeft:5, width: 50, height: 40, display: "flex", justifyContent: "center",alignItems: "center" }}>
+        <TouchableOpacity onPress={() => {
+          navigation.openDrawer();
+        }}>
+            <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5, backgroundColor: "black" }} ></Image>
+        </TouchableOpacity>
+    </View>
+      
       ),
       headerTitle: () => (
         <View style={styles.searchContainer}>
@@ -113,9 +116,9 @@ export default function HomeScreen(props) {
         >
           <SearchBar />
           <TouchableOpacity onPress={openFilter}>
-            {" "}
+           
             <Image
-              source={require("../../../assets/Nevbar/Group8922.png")}
+              source={require("../../../assets/filetr_icone.png")}
               style={{ width: 50, height: 50, borderRadius: 10 }}
             />
           </TouchableOpacity>
@@ -347,6 +350,8 @@ export default function HomeScreen(props) {
               marginLeft: "auto", // Margin on the left side
               marginRight: "auto", // Margin on the right side
               padding: 10,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius:20,
             }}
           >
             <Filter

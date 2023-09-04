@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from "axios"
-// const url = 'http://10.0.2.2:4000'
-const url = 'http://localhost:4000'
+const url = 'http://10.0.2.2:4000'
+// const url = 'http://localhost:4000'
 // const url = 'https://colorhunt-mobile-backend.sincprojects.com'
 // const url = 'https://garment-backend.sincprojects.com'
 
@@ -142,3 +142,12 @@ export const deletecartitem = async (data) => {
   }
 }
 
+
+export const gettransportation = async (data) => {
+  try {
+    return   await axios.get(`${url}/gettransportation`, data)
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}

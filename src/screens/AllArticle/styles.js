@@ -2,9 +2,6 @@ import { StyleSheet } from "react-native";
 import { RecipeCard } from "../../AppStyles";
 
 const styles = StyleSheet.create({
-  
-
-
     navBar: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -36,8 +33,6 @@ const styles = StyleSheet.create({
         position:'absolute',
         zIndex: 2,
         marginRight:120
-
-       
       },
       icon: {
         width:'100%',
@@ -46,7 +41,6 @@ const styles = StyleSheet.create({
         color:'red',
         paddingRight:10,
         paddingTop:10
-       
         // Add other icon styling here
       },
       disabledIcon: {
@@ -88,7 +82,11 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         width: "90%",
       },
-  
+      loader: {
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+      }
   
 
 });

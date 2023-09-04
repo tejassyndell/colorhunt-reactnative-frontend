@@ -1,15 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, FlatList,TouchableOpacity } from "react-native";
-import { getProductName,getWishlistData,getAddWishlist,DeleteWishlist } from "../../api/api";
+import { Text, View, Image, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
 import { FontAwesome } from '@expo/vector-icons';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
+import { ActivityIndicator } from "react-native";
 export default function WishList(props) {
   const { navigation } = props;
 
   const [nameDatas, setNameDatas] = useState([]);
   const [selectedprd, setSelectprd] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
@@ -19,6 +20,7 @@ export default function WishList(props) {
     const res = await getProductName();
     if (res.status === 200) {
       setNameDatas(res.data);
+
     }
   }
   const rmvProductWishlist = async (i) => {
@@ -40,17 +42,16 @@ export default function WishList(props) {
     }
   }
 
-    // ------- add product in wishlist start-------------
-    const getWishlist = async () => {
-      const data = {
-        party_id: 197,
-      }
-      const result = await getWishlistData(data).then((res) => {
-        setSelectprd(res.data)
-      })
+  // ------- add product in wishlist start-------------
+  const getWishlist = async () => {
+    const data = {
+      party_id: 197,
     }
-
-   
+    const result = await getWishlistData(data).then((res) => {
+      setSelectprd(res.data)
+      setIsLoading(false)
+    })
+  }
 
   useEffect(() => {
     getCategoriesname();
@@ -67,16 +68,9 @@ export default function WishList(props) {
         />
       ),
       headerTitle: () => (
-        
-        
-          <View style={{position:'absolute',left:310}}>
+        <View style={{ position: 'absolute', left: 310 }}>
           <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-
-          </View>
-
-
-
-        
+        </View>
       ),
       headerRight: () => <View />,
     });
@@ -85,12 +79,12 @@ export default function WishList(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       // headerright: () => (
-       
+
       // ),
       headerRight: () => <View />,
     });
   }, []);
-  
+
 
   const renderItem = ({ item }) => (
     <View key={item.id} style={{
@@ -112,25 +106,25 @@ export default function WishList(props) {
       },
       elevation: 4,
     }}>
-       <View id={item.id} style={styles.producticones}>
-      {selectedprd.some((i) => i.Id === item.Id) ? (
-        <TouchableOpacity
-          onPress={() => {
-            rmvProductWishlist(item);
-          }}
-        >
-          <FontAwesome
-            name="heart"
-            style={[
-              styles.icon,
-              // isLoggedin === false ? styles.disabledIcon : null,
-            ]}
-          />
-        </TouchableOpacity>
-      ) : (
-       <></>
-      )}
-    </View>
+      <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
+      </View>
       <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: 200, height: 300, borderRadius: 10 }} />
       <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
       <Text>{item.StyleDescription}</Text>
@@ -139,20 +133,30 @@ export default function WishList(props) {
   );
 
   return (
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-      <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
-        <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
-          <FlatList
-            data={selectedprd}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            numColumns={2}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingVertical: 10 }}
+    <>
+      {isLoading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator
+            size="large"
+            color="black"
           />
         </View>
-      </ScrollView>
-     
-    </View>
+      ) : (
+        <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+          <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
+            <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
+              <FlatList
+                data={selectedprd}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItem}
+                numColumns={2}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingVertical: 10 }}
+              />
+            </View>
+          </ScrollView>
+        </View>
+      )}
+    </>
   );
 }
