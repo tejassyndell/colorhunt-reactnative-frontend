@@ -252,32 +252,31 @@ export default function HomeScreen(props) {
                 key={item.id}
                 style={{
                   alignItems: "center",
-                  height: 370,
-                  width: 200,
-                  marginLeft: 5,
-                  marginRight: 5,
-                  marginBottom: 120,
-                  borderRadius: 10,
-                  borderColor: "gray",
-                  backgroundColor: "white",
-
-                  // Add shadow properties for iOS
-                  shadowColor: "rgba(0, 0, 0, 0.2)",
-                  shadowOpacity: 0.8,
-                  shadowRadius: 4,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  // Add elevation for Android
-                  elevation: 4,
+                      height: 280,
+                      width: 190,
+                      marginLeft: 5,
+                      marginRight: 5,
+                      borderRadius: 10,
+                      borderColor: "gray",
+                      backgroundColor: "#FFF",
+                      // Add shadow properties for iOS
+                      shadowColor: "rgba(0, 0, 0, 0.2)",
+                      shadowOpacity: 0.8,
+                      shadowRadius: 4,
+                      elevation:5,
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      // Add elevation for Android
+                      elevation: 4,
                 }}
               >
                 <Image
                   source={{ uri: baseImageUrl + item.Photos }}
-                  style={{ width: 200, height: 300, borderRadius: 10 }}
+                  style={{ width: 155, height: 190,elevation: 5, borderRadius: 10,paddingRight:10,paddingLeft:10 }}
                 />
-                <Text style={{ fontWeight: "bold" }}>
+                <Text style={{fontWeight: "bold",marginTop:10 }}>
                   {item.ArticleNumber}
                 </Text>
                 <Text>{item.Category}</Text>
@@ -385,43 +384,43 @@ export default function HomeScreen(props) {
             >
               {ApplyStatushBack === true
                 ? nameDatas.map((item) => (
-                  <View
-                  key={item.id}
-                  style={{
-                    alignItems: "center",
-                    height: 'auto',
-                    width: 180,
-                    marginLeft: 5,
-                    marginRight: 5,
-                    borderRadius: 10,
-                    borderColor: "gray",
-                    backgroundColor: "white",
-                    // Add shadow properties for iOS
-                    shadowColor: "rgba(0, 0, 0, 0.2)",
-                    shadowOpacity: 0.8,
-                    shadowRadius: 4,
-                    elevation:5,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                   
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      handlePress(item);
-                    }}
-                  >
-                    <Image
-                      source={require("../../../assets/demo.png")}
-                      style={{ width: 155, height: 170, borderRadius: 10 }}
-                    />
-                  </TouchableOpacity>
-                  <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                    {item.Category}
-                  </Text>
-                </View>
+
+                <View
+                      key={item.id}
+                      style={{
+                        alignItems: "center",
+                      height: 280,
+                      width: 190,
+                      marginLeft: 5,
+                      marginRight: 5,
+                      borderRadius: 10,
+                      borderColor: "gray",
+                      backgroundColor: "#FFF",
+                      // Add shadow properties for iOS
+                      shadowColor: "rgba(0, 0, 0, 0.2)",
+                      shadowOpacity: 0.8,
+                      shadowRadius: 4,
+                      elevation:5,
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      // Add elevation for Android
+                      elevation: 4,
+                      }}
+                    >
+                      <Image
+                        source={{ uri: baseImageUrl + item.Photos }}
+                        style={{ width: 155, height: 190,elevation: 5, borderRadius: 10,paddingRight:10,paddingLeft:10 }}
+                      />
+                      <Text style={{ fontWeight: "bold",marginTop:10 }}>
+                        {item.ArticleNumber}
+                      </Text>
+                      <Text>{item.Category}</Text>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {"₹" + item.ArticleRate}
+                      </Text>
+                    </View>
                 ))
                 : applyrData.map((item) => (
                   <View
@@ -429,7 +428,8 @@ export default function HomeScreen(props) {
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
-                      width: 200,
+                      width: 155,
+                      height:232,
                       marginLeft: 5,
                       marginRight: 5,
                     }}
