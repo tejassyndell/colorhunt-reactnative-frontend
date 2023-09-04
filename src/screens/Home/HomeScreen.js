@@ -29,6 +29,14 @@ export default function HomeScreen(props) {
 
   // open filter
 
+
+  //Search Functionaity - Harshil
+  const [searchText, setSearchText] = useState(""); // To store the search text
+  const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
+  const [filterDataSearch, setFilterDataSearch] = useState([])
+
+
+
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -49,6 +57,7 @@ export default function HomeScreen(props) {
         setCategoryName(res.data);
         setNameDatas(res.data);
         setApplyData(res.data);
+        setFilterDataSearch(res.data)
       }
     });
   };
@@ -64,14 +73,14 @@ export default function HomeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View style={{ marginLeft:5, width: 50, height: 40, display: "flex", justifyContent: "center",alignItems: "center" }}>
-        <TouchableOpacity onPress={() => {
-          navigation.openDrawer();
-        }}>
+        <View style={{ marginLeft: 5, width: 50, height: 40, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <TouchableOpacity onPress={() => {
+            navigation.openDrawer();
+          }}>
             <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5, backgroundColor: "black" }} ></Image>
-        </TouchableOpacity>
-    </View>
-      
+          </TouchableOpacity>
+        </View>
+
       ),
       headerTitle: () => (
         <View style={styles.searchContainer}>
@@ -95,6 +104,25 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item: item });
   };
 
+  const filterData = () => {
+    if (searchText === '') {
+      setFilteredData(nameDatas)
+    } else {
+      console.log(filterDataSearch.length)
+      const filtered = filterDataSearch.filter((item) =>
+        item.ArticleNumber.toString().includes(searchText.toString()) ||
+        item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.ArticleRate.toString().includes(searchText.toString()) ||
+        item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
+      )
+      setFilteredData(filtered)
+      console.log(filteredData.length)
+    }
+  }
+  useEffect(() => {
+    filterData();
+  }, [searchText])
   return (
     <View style={{ width: "100%", height: "100%", backgroundColor: "#FFFF" }}>
       <View style={{ marginTop: 10 }}>
@@ -114,7 +142,9 @@ export default function HomeScreen(props) {
         <View
           style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
         >
-          <SearchBar />
+          <SearchBar
+            searchPhrase={searchText}
+            setSearchPhrase={setSearchText} />
           <TouchableOpacity onPress={openFilter}>
             <Image
               source={require("../../../assets/filetr_icone.png")}
@@ -151,72 +181,175 @@ export default function HomeScreen(props) {
             showsHorizontalScrollIndicator={false}
             style={{ flex: 1, overflow: "hidden" }}
           >
-            {ApplyStatushBack === true
+            {/* {ApplyStatushBack === true
               ? nameData.map((item) => (
-                  <View
-                    key={item.id}
-                    style={{
-                      alignItems: "center",
-                      height: 370,
-                      width: 200,
-                      marginLeft: 5,
-                      marginRight: 5,
-                      borderRadius: 10,
-                      borderColor: "gray",
-                      backgroundColor: "white",
-                      // Add shadow properties for iOS
-                      shadowColor: "rgba(0, 0, 0, 0.2)",
-                      shadowOpacity: 0.8,
-                      shadowRadius: 4,
-                      shadowOffset: {
-                        width: 0,
-                        height: 2,
-                      },
-                      // Add elevation for Android
-                      elevation: 4,
+                <View
+                  key={item.id}
+                  style={{
+                    alignItems: "center",
+                    height: 370,
+                    width: 200,
+                    marginLeft: 5,
+                    marginRight: 5,
+                    borderRadius: 10,
+                    borderColor: "gray",
+                    backgroundColor: "white",
+                    // Add shadow properties for iOS
+                    shadowColor: "rgba(0, 0, 0, 0.2)",
+                    shadowOpacity: 0.8,
+                    shadowRadius: 4,
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    // Add elevation for Android
+                    elevation: 4,
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      handlePress(item);
                     }}
                   >
-                    <TouchableOpacity
-                      onPress={() => {
-                        handlePress(item);
-                      }}
-                    >
-                      <Image
-                        source={require("../../../assets/demo.png")}
-                        style={{ width: 200, height: 300, borderRadius: 10 }}
-                      />
-                    </TouchableOpacity>
-                    <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                      {item.Category}
-                    </Text>
-                  </View>
-                ))
+                    <Image
+                      source={require("../../../assets/demo.png")}
+                      style={{ width: 200, height: 300, borderRadius: 10 }}
+                    />
+                  </TouchableOpacity>
+                  <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                    {item.Category}
+                  </Text>
+                </View>
+              ))
               : applyrData.map((item) => (
-                  <View
-                    key={item.id}
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: 200,
-                      marginLeft: 5,
-                      marginRight: 5,
+                <View
+                  key={item.id}
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 200,
+                    marginLeft: 5,
+                    marginRight: 5,
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      handlePress(item);
                     }}
                   >
-                    <TouchableOpacity
-                      onPress={() => {
-                        handlePress(item);
-                      }}
-                    >
-                      <Image
-                        source={require("../../../assets/demo.png")}
-                        style={{ width: 200, height: 300, borderRadius: 10 }}
-                      />
-                    </TouchableOpacity>
-                    <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                      {item.Category}
-                    </Text>
-                  </View>
-                ))}
+                    <Image
+                      source={require("../../../assets/demo.png")}
+                      style={{ width: 200, height: 300, borderRadius: 10 }}
+                    />
+                  </TouchableOpacity>
+                  <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                    {item.Category}
+                  </Text>
+                </View>
+              ))} */}
+            {ApplyStatushBack === true ? (searchText.length > 0 ? (filteredData.map((item) => (
+              <View
+                key={item.id}
+                style={{
+                  alignItems: "center",
+                  height: 370,
+                  width: 200,
+                  marginLeft: 5,
+                  marginRight: 5,
+                  marginBottom: 120,
+                  borderRadius: 10,
+                  borderColor: "gray",
+                  backgroundColor: "white",
+
+                  // Add shadow properties for iOS
+                  shadowColor: "rgba(0, 0, 0, 0.2)",
+                  shadowOpacity: 0.8,
+                  shadowRadius: 4,
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  // Add elevation for Android
+                  elevation: 4,
+                }}
+              >
+                <Image
+                  source={{ uri: baseImageUrl + item.Photos }}
+                  style={{ width: 200, height: 300, borderRadius: 10 }}
+                />
+                <Text style={{ fontWeight: "bold" }}>
+                  {item.ArticleNumber}
+                </Text>
+                <Text>{item.Category}</Text>
+                <Text style={{ fontWeight: "bold" }}>
+                  {"₹" + item.ArticleRate}
+                </Text>
+              </View>
+            ))) : (nameData.map((item) => (
+              <View
+                key={item.id}
+                style={{
+                  alignItems: "center",
+                  height: 370,
+                  width: 200,
+                  marginLeft: 5,
+                  marginRight: 5,
+                  borderRadius: 10,
+                  borderColor: "gray",
+                  backgroundColor: "white",
+                  // Add shadow properties for iOS
+                  shadowColor: "rgba(0, 0, 0, 0.2)",
+                  shadowOpacity: 0.8,
+                  shadowRadius: 4,
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  // Add elevation for Android
+                  elevation: 4,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    handlePress(item);
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/demo.png")}
+                    style={{ width: 200, height: 300, borderRadius: 10 }}
+                  />
+                </TouchableOpacity>
+                <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                  {item.Category}
+                </Text>
+              </View>
+            ))))
+              : applyrData.map((item) => (
+                <View
+                  key={item.id}
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 200,
+                    marginLeft: 5,
+                    marginRight: 5,
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      handlePress(item);
+                    }}
+                  >
+                    <Image
+                      source={require("../../../assets/demo.png")}
+                      style={{ width: 200, height: 300, borderRadius: 10 }}
+                    />
+                  </TouchableOpacity>
+                  <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                    {item.Category}
+                  </Text>
+                </View>
+              ))}
           </ScrollView>
         </View>
         <View>
@@ -253,68 +386,68 @@ export default function HomeScreen(props) {
             >
               {ApplyStatushBack === true
                 ? nameDatas.map((item) => (
-                    <View
-                      key={item.id}
-                      style={{
-                        alignItems: "center",
-                        height: 370,
-                        width: 200,
-                        marginLeft: 5,
-                        marginRight: 5,
-                        marginBottom: 120,
-                        borderRadius: 10,
-                        borderColor: "gray",
-                        backgroundColor: "white",
+                  <View
+                    key={item.id}
+                    style={{
+                      alignItems: "center",
+                      height: 370,
+                      width: 200,
+                      marginLeft: 5,
+                      marginRight: 5,
+                      marginBottom: 120,
+                      borderRadius: 10,
+                      borderColor: "gray",
+                      backgroundColor: "white",
 
-                        // Add shadow properties for iOS
-                        shadowColor: "rgba(0, 0, 0, 0.2)",
-                        shadowOpacity: 0.8,
-                        shadowRadius: 4,
-                        shadowOffset: {
-                          width: 0,
-                          height: 2,
-                        },
-                        // Add elevation for Android
-                        elevation: 4,
-                      }}
-                    >
-                      <Image
-                        source={{ uri: baseImageUrl + item.Photos }}
-                        style={{ width: 200, height: 300, borderRadius: 10 }}
-                      />
-                      <Text style={{ fontWeight: "bold" }}>
-                        {item.ArticleNumber}
-                      </Text>
-                      <Text>{item.Category}</Text>
-                      <Text style={{ fontWeight: "bold" }}>
-                        {"₹" + item.ArticleRate}
-                      </Text>
-                    </View>
-                  ))
+                      // Add shadow properties for iOS
+                      shadowColor: "rgba(0, 0, 0, 0.2)",
+                      shadowOpacity: 0.8,
+                      shadowRadius: 4,
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      // Add elevation for Android
+                      elevation: 4,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: baseImageUrl + item.Photos }}
+                      style={{ width: 200, height: 300, borderRadius: 10 }}
+                    />
+                    <Text style={{ fontWeight: "bold" }}>
+                      {item.ArticleNumber}
+                    </Text>
+                    <Text>{item.Category}</Text>
+                    <Text style={{ fontWeight: "bold" }}>
+                      {"₹" + item.ArticleRate}
+                    </Text>
+                  </View>
+                ))
                 : applyrData.map((item) => (
-                    <View
-                      key={item.id}
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: 200,
-                        marginLeft: 5,
-                        marginRight: 5,
-                      }}
-                    >
-                      <Image
-                        source={{ uri: baseImageUrl + item.Photos }}
-                        style={{ width: 200, height: 200, borderRadius: 10 }}
-                      />
-                      <Text style={{ fontWeight: "bold" }}>
-                        {item.ArticleNumber}
-                      </Text>
-                      <Text>{item.Category}</Text>
-                      <Text style={{ fontWeight: "bold" }}>
-                        {"₹" + item.ArticleRate}
-                      </Text>
-                    </View>
-                  ))}
+                  <View
+                    key={item.id}
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 200,
+                      marginLeft: 5,
+                      marginRight: 5,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: baseImageUrl + item.Photos }}
+                      style={{ width: 200, height: 200, borderRadius: 10 }}
+                    />
+                    <Text style={{ fontWeight: "bold" }}>
+                      {item.ArticleNumber}
+                    </Text>
+                    <Text>{item.Category}</Text>
+                    <Text style={{ fontWeight: "bold" }}>
+                      {"₹" + item.ArticleRate}
+                    </Text>
+                  </View>
+                ))}
             </ScrollView>
           </View>
         </View>
