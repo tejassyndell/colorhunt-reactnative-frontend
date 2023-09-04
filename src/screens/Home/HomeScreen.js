@@ -116,7 +116,6 @@ export default function HomeScreen(props) {
         >
           <SearchBar />
           <TouchableOpacity onPress={openFilter}>
-           
             <Image
               source={require("../../../assets/filetr_icone.png")}
               style={{ width: 50, height: 50, borderRadius: 10 }}
