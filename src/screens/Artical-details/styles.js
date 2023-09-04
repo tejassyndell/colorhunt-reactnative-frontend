@@ -31,13 +31,14 @@ const styles = StyleSheet.create({
         paddingRight: 0,
         paddingTop: 1,
         position: 'absolute',
-        height:5000,
+        height:'auto',
         width: "100%",
+        bottom:0,
         zIndex: 2,
-        backgroundColor: "red",
+        backgroundColor: "#FFF",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        top: "10%", // You can use a percentage for positioning if needed
+        top: "52%", // You can use a percentage for positioning if needed
         elevation: 50,
         shadowOffset: { width: 0, height: -3 }, // Offset the shadow upwards
         shadowColor: 'black', // Specify a shadow color
@@ -48,9 +49,9 @@ const styles = StyleSheet.create({
     product_detail: {
         display: "flex",
         width: "95%",
-        height:500,
+        height:'auto',
         paddingTop: "3%",
-        flexDirection:"row"
+        flexDirection:"row",
     },
     product_detail_sec: {
         marginRight: "5%",
@@ -99,7 +100,8 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     product_detail_sec2: {
-        width: "50%"
+        width: "50%",
+        
     },
     size_label1: {
         fontSize: 15,
@@ -108,7 +110,6 @@ const styles = StyleSheet.create({
         marginLeft: "2%"
     },
     size_container2: {
-        height: 53,
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "#ded6d6",
@@ -140,8 +141,6 @@ const styles = StyleSheet.create({
         alignItems:"center",
         alignContent:"center",
         width: "100%",
-        height:"12%",
-        marginTop: 32
     },
     container_grid:{
         width:"100%"
@@ -149,7 +148,8 @@ const styles = StyleSheet.create({
     head_grid: {
         display: "flex",
         flexDirection: "row",
-        width: "100%"
+        width: "100%",
+        height:30
     },
     color_Text:{
         width:"31%",
@@ -277,6 +277,7 @@ const styles = StyleSheet.create({
         paddingLeft:0,
         paddingStart:0,
         textAlign:"center",
+        height:40,
         borderWidth: 1,
         borderColor: '#ded6d6',
         backgroundColor: 'white',
@@ -285,10 +286,14 @@ const styles = StyleSheet.create({
     top_row:{
         display:"flex",
         flexDirection:"row",
-        width:"100%"
+        width:"100%",
+       
     },
     box1:{
-        width:"33%"
+        width:"33%",
+        height:40,
+        paddingTop:1
+       
     },
     box1_btn:{
         textAlign:"left",
@@ -315,7 +320,9 @@ const styles = StyleSheet.create({
     },
     box3:{
         width:"33%",
-        marginLeft:5
+        marginLeft:5,
+        height:40,
+        paddingTop:1
     },
     box3_btn:{
         borderWidth:1,
@@ -335,14 +342,18 @@ const styles = StyleSheet.create({
         display:"flex",
         flexDirection:"row",
         width:"100%",
-        marginTop:"10%"
+        
     },
     article_ratio_container:{
-        width:"45%"
+        width:"45%",
+        marginTop:10,
+        height:40,
+        alignItems:'center'
+        
     },
     articallabel:{
         fontWeight:600,
-        marginLeft:"3%"
+        marginLeft:"3%",
     },
     article_content_r:{
         width:"98%",
@@ -360,16 +371,19 @@ const styles = StyleSheet.create({
     },
     article_ratio_content:{
         textAlign:"left",
-        textAlign:"center"
+        textAlign:"center",
+        marginTop:10
     },
     article_rate_container:{
         width:"40%",
         textAlign:"left",
-        marginLeft:"13%"
+        marginLeft:"13%",
+        marginTop:10
     },
     article_rate_content:{
         textAlign:"right",
-        textAlign:"center"
+        textAlign:"center",
+        marginTop:10
     },
     articallabel1:{
         fontWeight:500,
@@ -379,7 +393,7 @@ const styles = StyleSheet.create({
         width:"95%",
         display:"flex",
         flexDirection:"row",
-        marginTop:"20%",
+        marginTop:"11%",
         position:"relative",
         top:0,
         marginBottom:30

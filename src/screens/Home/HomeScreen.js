@@ -16,6 +16,7 @@ import { getProductName, getcateGorywithphotos } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Fliter/Filter";
+import { ActivityIndicator } from "react-native";
 
 export default function HomeScreen(props) {
   const { navigation } = props;
@@ -26,6 +27,7 @@ export default function HomeScreen(props) {
   const [applyrData, setApplyData] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // open filter
 
@@ -55,22 +57,30 @@ export default function HomeScreen(props) {
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
   //getCategoriesname
   const getCategoriesname = async () => {
-    const result = await getcateGorywithphotos().then((res) => {
-      if (res.status === 200) {
-        setCategoryName(res.data);
-        setNameData(res.data);
-        setApplyData(res.data);
+    try {
+      const result1 = await getcateGorywithphotos();
+      if (result1.status === 200) {
+        setCategoryName(result1.data);
+        setNameData(result1.data);
+        setApplyData(result1.data);
       }
-    });
-    const resul = await getProductName().then((res) => {
-      if (res.status === 200) {
-        setCategoryName(res.data);
-        setNameDatas(res.data);
-        setApplyData(res.data);
-        setFilterDataSearch(res.data)
+  
+      const result2 = await getProductName();
+      if (result2.status === 200) {
+        setCategoryName(result2.data);
+        setNameDatas(result2.data);
+        setApplyData(result2.data);
+        setFilterDataSearch(result2.data)
       }
-    });
+  
+      setIsLoading(false);
+    } catch (error) {
+      // Handle any errors that might occur during the API requests.
+      console.error(error);
+      setIsLoading(false); // Make sure to set isLoading to false in case of an error.
+    }
   };
+  
 
   useEffect(() => {
     getCategoriesname();
@@ -134,6 +144,15 @@ export default function HomeScreen(props) {
     filterData();
   }, [searchText])
   return (
+    <>
+    {isLoading ? (
+      <View style={styles.loader}>
+          <ActivityIndicator
+              size="large"
+              color="black"
+          />
+      </View>
+  ) : (
     <View style={{ width: "100%", height: "100%", backgroundColor: "#FFFF" }}>
       <View style={{ marginTop: 10 }}>
         <View>
@@ -506,5 +525,7 @@ export default function HomeScreen(props) {
         </View>
       )}
     </View>
+  )}
+  </>
   );
 }
