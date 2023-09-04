@@ -88,7 +88,8 @@ const AddToCart = (props) => {
 
     const handleProceedToCheckout = () => {
         const datatopass = [orderItems]
-        AsyncStorage.setItem('Orderlist', JSON.stringify(datatopass));
+        console.log(orderItems);
+        AsyncStorage.setItem('Orderlist', JSON.stringify(orderItems));
         navigation.navigate('Orderlist');
     }
 
@@ -139,8 +140,8 @@ const AddToCart = (props) => {
             ) : (
                 <ScrollView nestedScrollEnabled={true} >
                     <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
-                        <ScrollView nestedScrollEnabled={true} style={{height:430,backgroundColor:"#FFF"}}>
-                            <View style={{ display: "flex",flexDirection:"column", width: "100%" }}>
+                        <ScrollView nestedScrollEnabled={true} style={{ height: 430, backgroundColor: "#FFF" }}>
+                            <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                 <View style={{ paddingBottom: 20 }}>
                                     {orderItems.map((item) =>
                                         <View key={item.id} style={{
@@ -152,7 +153,8 @@ const AddToCart = (props) => {
                                             marginHorizontal: 9.5,
                                             marginTop: 15,
                                             borderRadius: 10,
-                                            height: 120
+                                            height: 150,
+                                            // maxHeight: "45%"
                                         }}>
                                             <View style={{
                                                 width: "25%",
@@ -171,7 +173,7 @@ const AddToCart = (props) => {
                                                 marginVertical: 10,
                                                 borderRadius: 10
                                             }}>
-                                                <View>
+                                                <View style={{height:"50%"}}>
                                                     <Text style={{
                                                         fontSize: 18,
                                                         fontWeight: 700, color: "#000"
@@ -181,7 +183,7 @@ const AddToCart = (props) => {
                                                         fontWeight: 400, color: "#000"
                                                     }}>{item.StyleDescription}</Text>
                                                 </View>
-                                                <View style={{ marginTop: "10%" }}>
+                                                <View style={{ marginTop: "10%",position:"relative",height:"50%" }}>
                                                     <Text style={{
                                                         fontSize: 14,
                                                         fontWeight: 400, color: "#000"
@@ -206,7 +208,7 @@ const AddToCart = (props) => {
                                                 <TouchableOpacity
                                                     onPress={() => handleEditOrder(item.article_id)}
                                                 >
-                                                
+
                                                     <Image alt="edite"
                                                         style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
                                                 </TouchableOpacity>
@@ -222,7 +224,7 @@ const AddToCart = (props) => {
                                 </View>
                             </View>
                         </ScrollView>
-                        <View nestedScrollEnabled={true} style={{ width: "100%", height:"40%", backgroundColor: "#FFF" }}>
+                        <View nestedScrollEnabled={true} style={{ width: "100%", height: "40%", backgroundColor: "#FFF" }}>
                             <View style={{ padding: 10 }}>
                                 <TextInput
                                     value={promoCode}
