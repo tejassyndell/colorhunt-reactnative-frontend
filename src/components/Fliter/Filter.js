@@ -1,3 +1,4 @@
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import React, { useState } from "react";
 import {
   View,
@@ -6,7 +7,7 @@ import {
   TextInput,
   Image,
   StyleSheet,
-   
+
 } from "react-native";
 // import RangeSlider from "react-native-range-slider-expo/src/RangeSlider";
 export default function FilterComponent({
@@ -15,10 +16,11 @@ export default function FilterComponent({
   setSelectedCategories, // Function to update selected categories
   clearFilters,
   applyFilters,
+  setrateRange
 }) {
   const [filterText, setFilterText] = useState("");
-  // const [priceRange, setPriceRange] = useState([0, 1000]);
- 
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+
 
 
 
@@ -43,23 +45,28 @@ export default function FilterComponent({
 
   const handleReset = () => {
     setSelectedCategories([]);
+    setPriceRange([0,1000]);
   };
 
-  
+
 
   // Disable the button while not seletd the categarys
-  const isApplyDisabled = selectedCategories.length === 0;
-
+  let isApplyDisabled = selectedCategories.length === 0;
+  
   // const handleApplyFilter = () => {
   //   // Your filter application logic here
   //   applyFilters();
   // };
+  handleSliderChange = (e) => {
+    // console.log(e);
+    // e[0]!==0 || e[1]!==1000? isApplyDisabled = true :""
+    setPriceRange([e[0],e[1]])
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Categories</Text>
         <TouchableOpacity onPress={handleCloseFilter}>
-          {" "}
           {/* Add this TouchableOpacity */}
           <Image
             source={require("../../../assets/FilterIcon/Close.png")}
@@ -68,20 +75,20 @@ export default function FilterComponent({
         </TouchableOpacity>
       </View>
 
-      <TextInput
+      {/* <TextInput
         placeholder="Filter by category..."
         value={filterText}
         onChangeText={(text) => setFilterText(text)}
         style={styles.input}
-      />
+      /> */}
 
       <View style={styles.categoriesContainer}>
         {categoriesData
           .filter((category) =>
             filterText
               ? category.Category.toLowerCase().includes(
-                  filterText.toLowerCase()
-                )
+                filterText.toLowerCase()
+              )
               : true
           )
           .map((category, index) => (
@@ -113,26 +120,42 @@ export default function FilterComponent({
             </TouchableOpacity>
           ))}
       </View>
-    
-    
-      {/* <View style={styles.sliderContainer}>
+
+
+      <View style={styles.sliderContainer}>
         <Text style={styles.sliderLabel}>Price Range:</Text>
-        <RangeSlider
-          style={styles.slider}
+       
+        <MultiSlider
+          values={priceRange}
+          // enableLabel // Enable labels below dots
+          // sliderLength={300} // Adjust the length as needed
+          onValuesChange={(e)=>{handleSliderChange(e)}}
           min={0}
           max={1000}
-          step={10}
-          rangeEnabled
-          gravity={"center"}
-          initialLowValue={priceRange[0]}
-          initialHighValue={priceRange[1]}
-          onChange={(low, high) => setPriceRange([low, high])}
+          step={1} // You can adjust the step size
+          
+          customMarkerLeft={(e) => (
+            <CustomSliderMarker
+              currentValue={priceRange[0]}
+              isLeftMarker={true}
+              labelStyle={styles.label}
+              
+            />
+          )}
+          customMarkerRight={(e) => (
+            <CustomSliderMarker
+              currentValue={priceRange[1]}
+              isLeftMarker={false}
+              labelStyle={styles.label}
+            />
+          )}
         />
         <Text style={styles.sliderValue}>
+
           Min: {priceRange[0]} - Max: {priceRange[1]}
         </Text>
       </View>
-     */}
+
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
@@ -142,10 +165,10 @@ export default function FilterComponent({
           <Text style={styles.buttonText}>Reset</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={applyFilters}
-          style={[styles.button, { marginLeft: 40 },  { backgroundColor: isApplyDisabled ? "gray" : "black" }, // Change button color based on disabled state
-        ]}
-        disabled={isApplyDisabled} // Set disabled attribute based on the condition
+          onPress={()=>{setrateRange(priceRange);applyFilters()}}
+          style={[styles.button, { marginLeft: 40 }, { backgroundColor: isApplyDisabled ? "gray" : "black" }, // Change button color based on disabled state
+          ]}
+          disabled={isApplyDisabled} // Set disabled attribute based on the condition
         >
           <Text style={styles.buttonText}>Apply</Text>
         </TouchableOpacity>
@@ -155,7 +178,28 @@ export default function FilterComponent({
 }
 
 // CSS of all Feild
-
+const CustomSliderMarker = (props)=>{
+ 
+    const { currentValue, isLeftMarker ,labelStyle } = props;
+    console.log(currentValue);
+    return (
+      <View style={{ alignItems: 'center' }}>
+        <View
+          style={{
+            width: 20,
+            height: 20,
+            backgroundColor: 'black', // Set dot color to black
+            borderBottomColor:"black",
+            borderRadius: 10, // Make it round
+            borderColor: 'black', // Border color
+            borderWidth: 2, // Border width
+          }}
+        />
+        <Text  style={labelStyle}>{currentValue}</Text>
+      </View>
+    );
+  
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -184,6 +228,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
+    height: "auto"
   },
   categoryItem: {
     flexDirection: "row",
@@ -193,6 +238,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     padding: 5,
+    height: "auto",
+    maxHeight: "20%"
   },
   categoryIcon: {
     width: 20,
@@ -237,4 +284,9 @@ const styles = StyleSheet.create({
   slider: {
     width: "100%",
   },
+  label: {
+    marginTop: 5, // Adjust label position
+    fontSize: 14, // Customize label font size
+    color: 'red', // Customize label color
+  }
 });

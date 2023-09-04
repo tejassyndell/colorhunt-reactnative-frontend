@@ -26,7 +26,7 @@ export default function HomeScreen(props) {
   const [applyrData, setApplyData] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
-
+  const [rateRange, setrateRange] = useState([0, 1000]);
   // open filter
 
 
@@ -43,10 +43,25 @@ export default function HomeScreen(props) {
 
   const applyFilters = (selectedCategories) => {
     // Filter your data based on selectedCategories here
-    const filteredData = applyrData.filter((item) =>
-      selectedCategories.includes(item.Category)
-    );
-  // Update the state to display the filtered data
+    console.log(rateRange,"{}{}{}{}{}{}");
+    let filteredData = [];
+    // if (rateRange[0]!==0 || rateRange[1]!==1000) {
+    //   const min = parseFloat(rateRange[0])
+    //   const max = parseFloat(rateRange[1])
+    //   if (min >= 0 && max <= 1000) {
+    //     filteredData = applyrData.filter((product) => {
+    //       return product.rate >= min && product.rate <= max
+    //     })
+    //     console.log(sdPrds)
+    //   }
+    // }
+    if (selectedCategories) {
+      filteredData = applyrData.filter((item) =>
+        selectedCategories.includes(item.Category)
+      );
+    }
+
+    // Update the state to display the filtered data
     setNameData(filteredData);
     setIsFilterVisible(false); //close the filter
   }
@@ -168,9 +183,9 @@ export default function HomeScreen(props) {
         style={{ overflow: "hidden" }}
       >
         <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
-        <Text style={{ start: 10,fontWeight:700,fontSize:18 }}>Men's </Text>
+          <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>Men's </Text>
           <Text
-            style={{ position: "absolute", end: 10,fontSize:12,fontWeight:600 }}
+            style={{ position: "absolute", end: 10, fontSize: 12, fontWeight: 600 }}
             onPress={viewAllArticles}
           >
             View All
@@ -262,31 +277,31 @@ export default function HomeScreen(props) {
                 key={item.id}
                 style={{
                   alignItems: "center",
-                      height: 280,
-                      width: 190,
-                      marginLeft: 5,
-                      marginRight: 5,
-                      borderRadius: 10,
-                      borderColor: "gray",
-                      backgroundColor: "#FFF",
-                      // Add shadow properties for iOS
-                      shadowColor: "rgba(0, 0, 0, 0.2)",
-                      shadowOpacity: 0.8,
-                      shadowRadius: 4,
-                      elevation:5,
-                      shadowOffset: {
-                        width: 0,
-                        height: 2,
-                      },
-                      // Add elevation for Android
-                      elevation: 4,
+                  height: 280,
+                  width: 190,
+                  marginLeft: 5,
+                  marginRight: 5,
+                  borderRadius: 10,
+                  borderColor: "gray",
+                  backgroundColor: "#FFF",
+                  // Add shadow properties for iOS
+                  shadowColor: "rgba(0, 0, 0, 0.2)",
+                  shadowOpacity: 0.8,
+                  shadowRadius: 4,
+                  elevation: 5,
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  // Add elevation for Android
+                  elevation: 4,
                 }}
               >
                 <Image
                   source={{ uri: baseImageUrl + item.Photos }}
-                  style={{ width: 155, height: 190,elevation: 5, borderRadius: 10,paddingRight:10,paddingLeft:10 }}
+                  style={{ width: 155, height: 190, elevation: 5, borderRadius: 10, paddingRight: 10, paddingLeft: 10 }}
                 />
-                <Text style={{fontWeight: "bold",marginTop:10 }}>
+                <Text style={{ fontWeight: "bold", marginTop: 10 }}>
                   {item.ArticleNumber}
                 </Text>
                 <Text>{item.Category}</Text>
@@ -296,41 +311,41 @@ export default function HomeScreen(props) {
               </View>
             ))) : (nameData.map((item) => (
               <View
-              key={item.id}
-              style={{
-                alignItems: "center",
-                height: 'auto',
-                width: 180,
-                marginLeft: 5,
-                marginRight: 5,
-                borderRadius: 10,
-                borderColor: "gray",
-                backgroundColor: "white",
-                // Add shadow properties for iOS
-                shadowColor: "rgba(0, 0, 0, 0.2)",
-                shadowOpacity: 0.8,
-                shadowRadius: 4,
-                elevation:5,
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  handlePress(item);
+                key={item.id}
+                style={{
+                  alignItems: "center",
+                  height: 'auto',
+                  width: 180,
+                  marginLeft: 5,
+                  marginRight: 5,
+                  borderRadius: 10,
+                  borderColor: "gray",
+                  backgroundColor: "white",
+                  // Add shadow properties for iOS
+                  shadowColor: "rgba(0, 0, 0, 0.2)",
+                  shadowOpacity: 0.8,
+                  shadowRadius: 4,
+                  elevation: 5,
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
                 }}
               >
-                <Image
-                  source={require("../../../assets/demo.png")}
-                  style={{ width: 155, height: 170, borderRadius: 10 }}
-                />
-              </TouchableOpacity>
-              <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                {item.Category}
-              </Text>
-            </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    handlePress(item);
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/demo.png")}
+                    style={{ width: 155, height: 170, borderRadius: 10 }}
+                  />
+                </TouchableOpacity>
+                <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                  {item.Category}
+                </Text>
+              </View>
             ))))
               : applyrData.map((item) => (
                 <View
@@ -369,9 +384,9 @@ export default function HomeScreen(props) {
               marginTop: 20,
             }}
           >
-            <Text style={{ start: 10,fontWeight:700,fontSize:18 }}>Kid’s </Text>
+            <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>Kid’s </Text>
             <Text
-              style={{ position: "absolute", end: 10,fontSize:12,fontWeight:600 }}
+              style={{ position: "absolute", end: 10, fontSize: 12, fontWeight: 600 }}
               onPress={viewAllArticles}
             >
               View All
@@ -395,10 +410,10 @@ export default function HomeScreen(props) {
               {ApplyStatushBack === true
                 ? nameDatas.map((item) => (
 
-                <View
-                      key={item.id}
-                      style={{
-                        alignItems: "center",
+                  <View
+                    key={item.id}
+                    style={{
+                      alignItems: "center",
                       height: 280,
                       width: 190,
                       marginLeft: 5,
@@ -410,27 +425,27 @@ export default function HomeScreen(props) {
                       shadowColor: "rgba(0, 0, 0, 0.2)",
                       shadowOpacity: 0.8,
                       shadowRadius: 4,
-                      elevation:5,
+                      elevation: 5,
                       shadowOffset: {
                         width: 0,
                         height: 2,
                       },
                       // Add elevation for Android
                       elevation: 4,
-                      }}
-                    >
-                      <Image
-                        source={{ uri: baseImageUrl + item.Photos }}
-                        style={{ width: 155, height: 190,elevation: 5, borderRadius: 10,paddingRight:10,paddingLeft:10 }}
-                      />
-                      <Text style={{ fontWeight: "bold",marginTop:10 }}>
-                        {item.ArticleNumber}
-                      </Text>
-                      <Text>{item.Category}</Text>
-                      <Text style={{ fontWeight: "bold" }}>
-                        {"₹" + item.ArticleRate}
-                      </Text>
-                    </View>
+                    }}
+                  >
+                    <Image
+                      source={{ uri: baseImageUrl + item.Photos }}
+                      style={{ width: 155, height: 190, elevation: 5, borderRadius: 10, paddingRight: 10, paddingLeft: 10 }}
+                    />
+                    <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                      {item.ArticleNumber}
+                    </Text>
+                    <Text>{item.Category}</Text>
+                    <Text style={{ fontWeight: "bold" }}>
+                      {"₹" + item.ArticleRate}
+                    </Text>
+                  </View>
                 ))
                 : applyrData.map((item) => (
                   <View
@@ -439,7 +454,7 @@ export default function HomeScreen(props) {
                       alignItems: "center",
                       justifyContent: "center",
                       width: 155,
-                      height:232,
+                      height: 232,
                       marginLeft: 5,
                       marginRight: 5,
                     }}
@@ -486,21 +501,22 @@ export default function HomeScreen(props) {
               backgroundColor: "white",
               position: "absolute",
               bottom: 0,
-              left: 0,
-              right: 0, // To make it span the full width
-              marginLeft: "auto", // Margin on the left side
-              marginRight: "auto", // Margin on the right side
-              padding: 10,
+              // left: 0,
+              // right: 0, // To make it span the full width
+              marginLeft: "5%", // Margin on the left side
+              marginRight: "5%", // Margin on the right side
+              padding: 5,
               borderTopLeftRadius: 20,
-              borderTopRightRadius:20,
+              borderTopRightRadius: 20,
             }}
           >
             <Filter
-            categoriesData={nameData}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            clearFilters={() => setIsFilterVisible(false)}
-            applyFilters={() => applyFilters(selectedCategories)}
+              categoriesData={nameData}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              clearFilters={() => setIsFilterVisible(false)}
+              applyFilters={() => applyFilters(selectedCategories)}
+              setrateRange={setrateRange}
             />
           </View>
         </View>
