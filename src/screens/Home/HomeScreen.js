@@ -77,7 +77,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const viewAllArticles = () => {
-    navigation.navigate("AllArticle"); // Replace 'AllArticlesScreen' with the name of your target screen
+    navigation.navigate("AllArticle",{ filteredData }); 
   };
 
   useLayoutEffect(() => {
@@ -191,72 +191,6 @@ export default function HomeScreen(props) {
             showsHorizontalScrollIndicator={false}
             style={{ flex: 1, overflow: "hidden" }}
           >
-            {/* {ApplyStatushBack === true
-              ? nameData.map((item) => (
-                <View
-                  key={item.id}
-                  style={{
-                    alignItems: "center",
-                    height: 370,
-                    width: 200,
-                    marginLeft: 5,
-                    marginRight: 5,
-                    borderRadius: 10,
-                    borderColor: "gray",
-                    backgroundColor: "white",
-                    // Add shadow properties for iOS
-                    shadowColor: "rgba(0, 0, 0, 0.2)",
-                    shadowOpacity: 0.8,
-                    shadowRadius: 4,
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    // Add elevation for Android
-                    elevation: 4,
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      handlePress(item);
-                    }}
-                  >
-                    <Image
-                      source={require("../../../assets/demo.png")}
-                      style={{ width: 200, height: 300, borderRadius: 10 }}
-                    />
-                  </TouchableOpacity>
-                  <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                    {item.Category}
-                  </Text>
-                </View>
-              ))
-              : applyrData.map((item) => (
-                <View
-                  key={item.id}
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 200,
-                    marginLeft: 5,
-                    marginRight: 5,
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      handlePress(item);
-                    }}
-                  >
-                    <Image
-                      source={require("../../../assets/demo.png")}
-                      style={{ width: 200, height: 300, borderRadius: 10 }}
-                    />
-                  </TouchableOpacity>
-                  <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                    {item.Category}
-                  </Text>
-                </View>
-              ))} */}
             {ApplyStatushBack === true ? (searchText.length > 0 ? (filteredData.map((item) => (
               <View
                 key={item.id}

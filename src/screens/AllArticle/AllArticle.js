@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import SearchBar from "../../components/SearchBar/searchbar";
+import { useRoute } from "@react-navigation/core";
 
 import { ActivityIndicator } from "react-native";
 export default function AllArticle(props) {
@@ -15,7 +16,7 @@ export default function AllArticle(props) {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedprd, setSelectprd] = useState([])
   const [isLoading, setIsLoading] = useState(true);
-
+  const [searchedData, setSearchedData] = useState([])
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
@@ -24,14 +25,21 @@ export default function AllArticle(props) {
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
+  const route = useRoute();
 
   // getCategoriesname
   const getCategoriesname = async () => {
-    const res = await getProductName();
+    if(route.params && route.params.filteredData){
+      setSearchedData(route.params.filteredData)
+      setIsLoading(false)
+    } else {
+      const res = await getProductName();
     if (res.status === 200) {
       setNameDatas(res.data);
       setIsLoading(false)
     }
+    }
+    
   }
   const rmvProductWishlist = async (i) => {
     console.log(i, 'r')
@@ -207,7 +215,7 @@ export default function AllArticle(props) {
           <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
             <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
               <FlatList
-                data={nameDatas}
+                data={searchedData.length > 0 ?searchedData : nameDatas}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
                 numColumns={2}
@@ -249,7 +257,7 @@ export default function AllArticle(props) {
             }}
           >
             <Filter
-              categoriesData={nameData}
+              categoriesData={nameDatas}
               clearFilters={() => setIsFilterVisible(false)}
               applyFilters={() => {
                 // Handle applying filters here
