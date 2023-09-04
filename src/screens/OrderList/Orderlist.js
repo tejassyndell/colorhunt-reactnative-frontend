@@ -11,10 +11,51 @@ const Orderlist = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const [showTransporatation, setshowTransporatation] = useState(false);
     const [transportationVal, setTransportationVal] = useState();
+    const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
+
+    // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
+    const [Transportation, setTransportation] = useState([])
+    const [OldTransportation, setOldTransportation] = useState([])
+    const [ParsedData, setParsedData] = useState([])
+    const currentDate = new Date()
+
+    // let ParsedData = [];
+    const formattedDate = `${currentDate.getMonth() + 1
+        }/${currentDate.getDate()}/${currentDate.getFullYear()}`
+    AsyncStorage.getItem('Orderlist').then((Storagedata) => {
+        if (Storagedata !== null) {
+            setParsedData(JSON.parse(Storagedata));
+        } else {
+            console.log('No data found');
+        }
+    })
+        .catch((error) => {
+            console.error('Error retrieving data:', error);
+        });
 
 
-    const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
-    const [Transportation, setTransportation] = useState(["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"])
+    const GetTransportation = async () => {
+        await gettransportation().then((response) => {
+            setTransportation(response.data)
+            setOldTransportation(response.data)
+            setIsLoading(false);
+        })
+            .catch((error) => {
+                console.error('Error fetching transportation data:', error)
+            })
+    }
+    useEffect(() => {
+        GetTransportation();
+        // setIsLoading(false);
+    }, [])
+    let totalrate = "";
+    if (ParsedData) {
+        totalrate = ParsedData.reduce((total, item) => total + parseInt(item.rate), 0)
+    }
+    else {
+        console.log(ParsedData);
+    }
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -46,13 +87,13 @@ const Orderlist = (props) => {
     }, []);
 
 
-    useEffect(() => { setIsLoading(false) }, [])
+
     const filterTransportationValue = (e) => {
         setTransportationVal(e);
-        // console.log(e);
+        console.log(e);
         setshowTransporatation(true)
         if (e !== "") {
-            let filterVal = OldTransportation.filter((item) => item.toLocaleLowerCase().includes(e.toLocaleLowerCase()))
+            let filterVal = Transportation.filter((item) => item.Name.toLocaleLowerCase().includes(e.toLocaleLowerCase()))
             console.log(filterVal);
             setTransportation(filterVal)
         }
@@ -88,12 +129,12 @@ const Orderlist = (props) => {
                                 }}
                                 // value={formattedDate}
                                 // disableFullscreenUI
-                                ><Text>03/09/2023</Text></View>
+                                ><Text>{formattedDate}</Text></View>
 
                             </View>
                             <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
                                 <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Destination:</Text>
-                                <TextInput value="Yash" style={{
+                                <TextInput value="" style={{
                                     width: "100%",
                                     borderWidth: 1, paddingVertical: 5,
                                     paddingLeft: 15, borderRadius: 10,
@@ -108,7 +149,7 @@ const Orderlist = (props) => {
                                     borderWidth: 1, paddingVertical: 5,
                                     paddingLeft: 15, borderRadius: 10,
                                     fontSize: 16, backgroundColor: "#EEE"
-                                }}></TextInput>
+                                }} placeholder="Select transportation"></TextInput>
                                 <TouchableOpacity style={{
                                     position: "absolute",
                                     top: "64%",
@@ -137,13 +178,13 @@ const Orderlist = (props) => {
                                     <View>
 
                                         {Transportation.map((item) =>
-                                            <TouchableOpacity onPress={() => console.log("Done")}>
+                                            <TouchableOpacity key={item.Id} onPress={() => setTransportationVal(item.Name)}>
                                                 <Text style={{
                                                     fontSize: 18,
                                                     fontWeight: 500,
                                                     marginVertical: 10
                                                 }
-                                                }>{item}</Text>
+                                                }>{item.Name}</Text>
                                             </TouchableOpacity>
                                         )
                                         }
@@ -154,205 +195,75 @@ const Orderlist = (props) => {
                         </View>
                         <ScrollView nestedScrollEnabled={true} style={{ height: "100%" }}>
                             <View style={{ display: "flex", flexDirection: "column", width: "100%", backgroundColor: "white" }}>
-                                <View style={{ paddingBottom: 20 }}>
+                                {ParsedData&&ParsedData.map((item, index) => (
+                                    <View style={{ paddingBottom: 20 }}>
 
-                                    <View style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        width: "95%",
-                                        backgroundColor: "#FFF",
-                                        elevation: 5,
-                                        marginHorizontal: 9.5,
-                                        marginTop: 15,
-                                        borderRadius: 10,
-                                        height: 120
-                                    }}>
                                         <View style={{
-                                            width: "25%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            marginLeft: 15,
-                                            marginVertical: 10,
-                                            borderRadius: 10,
-                                        }}>
-
-                                            <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={require("../../../assets/sidebaricons/image 122.png")}></Image>
-
-                                        </View>
-                                        <View style={{
-                                            width: "45%",
-                                            marginHorizontal: 4,
-                                            marginVertical: 10,
-                                            borderRadius: 10
-                                        }}>
-                                            <View>
-                                                <Text style={{
-                                                    fontSize: 18,
-                                                    fontWeight: 700, color: "#000"
-                                                }}>ArticleNumber</Text>
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    fontWeight: 400, color: "#000"
-                                                }}>StyleDescription</Text>
-                                            </View>
-                                            <View style={{ marginTop: "10%" }}>
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    fontWeight: 400, color: "#000"
-                                                }}>Rate:</Text>
-                                                <Text style={{
-                                                    fontSize: 17,
-                                                    fontWeight: 700, color: "#000"
-                                                }}>₹550.00</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{
-                                            width: "18%",
                                             display: "flex",
                                             flexDirection: "row",
-                                            justifyContent: "flex-end",
-                                            gap: 8,
-                                            marginLeft: 15,
-                                            marginVertical: 10,
+                                            width: "95%",
+                                            backgroundColor: "#FFF",
+                                            elevation: 5,
+                                            marginHorizontal: 9.5,
+                                            marginTop: 15,
                                             borderRadius: 10,
-
+                                            height: 150
                                         }}>
+                                            <View style={{
+                                                width: "25%",
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                marginLeft: 15,
+                                                marginVertical: 10,
+                                                borderRadius: 10,
+                                            }}>
+
+                                                <Image source={{ uri: baseImageUrl + item.Photos }} style={{ height: "100%", width: "100%", borderRadius: 10 }} ></Image>
+
+                                            </View>
+                                            <View style={{
+                                                width: "45%",
+                                                marginHorizontal: 4,
+                                                marginVertical: 10,
+                                                borderRadius: 10
+                                            }}>
+                                                <View style={{ height: "50%" }}>
+                                                    <Text style={{
+                                                        fontSize: 18,
+                                                        fontWeight: 700, color: "#000"
+                                                    }}>{item.ArticleNumber}</Text>
+                                                    <Text style={{
+                                                        fontSize: 14,
+                                                        fontWeight: 400, color: "#000"
+                                                    }}>{item.StyleDescription}</Text>
+                                                </View>
+                                                <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
+                                                    <Text style={{
+                                                        fontSize: 14,
+                                                        fontWeight: 400, color: "#000"
+                                                    }}>Rate:</Text>
+                                                    <Text style={{
+                                                        fontSize: 17,
+                                                        fontWeight: 700, color: "#000"
+                                                    }}>₹ {item.rate}</Text>
+                                                </View>
+                                            </View>
+                                            <View style={{
+                                                width: "18%",
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                justifyContent: "flex-end",
+                                                gap: 8,
+                                                marginLeft: 15,
+                                                marginVertical: 10,
+                                                borderRadius: 10,
+
+                                            }}>
+                                            </View>
                                         </View>
                                     </View>
-                                </View>
-                                <View style={{ paddingBottom: 20 }}>
-                                    <View style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        width: "95%",
-                                        backgroundColor: "#FFF",
-                                        elevation: 5,
-                                        marginHorizontal: 9.5,
-                                        marginTop: 15,
-                                        borderRadius: 10,
-                                        height: 120
-                                    }}>
-                                        <View style={{
-                                            width: "25%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            marginLeft: 15,
-                                            marginVertical: 10,
-                                            borderRadius: 10,
-                                        }}>
-
-                                            <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={require("../../../assets/sidebaricons/image 122.png")}></Image>
-
-                                        </View>
-                                        <View style={{
-                                            width: "45%",
-                                            marginHorizontal: 4,
-                                            marginVertical: 10,
-                                            borderRadius: 10
-                                        }}>
-                                            <View>
-                                                <Text style={{
-                                                    fontSize: 18,
-                                                    fontWeight: 700, color: "#000"
-                                                }}>ArticleNumber</Text>
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    fontWeight: 400, color: "#000"
-                                                }}>StyleDescription</Text>
-                                            </View>
-                                            <View style={{ marginTop: "10%" }}>
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    fontWeight: 400, color: "#000"
-                                                }}>Rate:</Text>
-                                                <Text style={{
-                                                    fontSize: 17,
-                                                    fontWeight: 700, color: "#000"
-                                                }}>₹550.00</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{
-                                            width: "18%",
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "flex-end",
-                                            gap: 8,
-                                            marginLeft: 15,
-                                            marginVertical: 10,
-                                            borderRadius: 10,
-
-                                        }}>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={{ paddingBottom: 20 }}>
-                                    <View style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        width: "95%",
-                                        backgroundColor: "#FFF",
-                                        elevation: 5,
-                                        marginHorizontal: 9.5,
-                                        marginTop: 15,
-                                        borderRadius: 10,
-                                        height: 120
-                                    }}>
-                                        <View style={{
-                                            width: "25%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            marginLeft: 15,
-                                            marginVertical: 10,
-                                            borderRadius: 10,
-                                        }}>
-
-                                            <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={require("../../../assets/sidebaricons/image 122.png")}></Image>
-
-                                        </View>
-                                        <View style={{
-                                            width: "45%",
-                                            marginHorizontal: 4,
-                                            marginVertical: 10,
-                                            borderRadius: 10
-                                        }}>
-                                            <View>
-                                                <Text style={{
-                                                    fontSize: 18,
-                                                    fontWeight: 700, color: "#000"
-                                                }}>ArticleNumber</Text>
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    fontWeight: 400, color: "#000"
-                                                }}>StyleDescription</Text>
-                                            </View>
-                                            <View style={{ marginTop: "10%" }}>
-                                                <Text style={{
-                                                    fontSize: 14,
-                                                    fontWeight: 400, color: "#000"
-                                                }}>Rate:</Text>
-                                                <Text style={{
-                                                    fontSize: 17,
-                                                    fontWeight: 700, color: "#000"
-                                                }}>₹550.00</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{
-                                            width: "18%",
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "flex-end",
-                                            gap: 8,
-                                            marginLeft: 15,
-                                            marginVertical: 10,
-                                            borderRadius: 10,
-
-                                        }}>
-                                        </View>
-                                    </View>
-                                </View>
+                                ))}
                             </View>
                         </ScrollView>
                         <View style={{
@@ -371,7 +282,7 @@ const Orderlist = (props) => {
                                             <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>Rate</Text>
                                         </View>
                                         <View style={{ width: '45%' }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹1560</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹ {totalrate}</Text>
                                         </View>
                                     </View>
                                     <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
@@ -388,7 +299,7 @@ const Orderlist = (props) => {
                                             <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
                                         </View>
                                         <View style={{ width: '45%' }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹1.7</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹2.7</Text>
                                         </View>
                                     </View>
                                     <View style={{ width: "50%", marginLeft: "45%" }}>
@@ -399,7 +310,7 @@ const Orderlist = (props) => {
                                     </View>
                                     <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
                                         <View style={{ width: '95%' }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹280.00</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹280.40</Text>
                                         </View>
                                     </View>
                                     <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
@@ -408,7 +319,7 @@ const Orderlist = (props) => {
 
                                         </View>
                                         <View style={{ width: '45%' }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹28.00</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹28.04</Text>
                                         </View>
                                     </View>
                                     <View style={{ width: "50%", marginLeft: "45%" }}>
@@ -420,7 +331,7 @@ const Orderlist = (props) => {
                                 </View>
 
                             </View>
-                            <View style={{ display: "flex", height: "100%", flexDirection: "row", padding: 10 }}>
+                            <View style={{ display: "flex", height: "100%", flexDirection: "row",paddingLeft:5 }}>
                                 <View>
                                     <Pressable style={{
                                         width: 165,
@@ -430,7 +341,8 @@ const Orderlist = (props) => {
                                             color: "white",
                                             backgroundColor: "#212121",
                                             borderRadius: 7.6, paddingHorizontal: 33,
-                                            paddingVertical: 15,
+                                            paddingBottom:15,
+                                            paddingTop:12,
                                             fontSize: 18, fontWeight: 600,
                                             textAlign: "center"
                                         }}>
