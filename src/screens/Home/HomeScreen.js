@@ -16,7 +16,6 @@ import { getProductName, getcateGorywithphotos } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Fliter/Filter";
-import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen(props) {
   const { navigation } = props;
@@ -26,12 +25,23 @@ export default function HomeScreen(props) {
   const [nameDatas, setNameDatas] = useState([]);
   const [applyrData, setApplyData] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   // open filter
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
+
+  const applyFilters = (selectedCategories) => {
+    // Filter your data based on selectedCategories here
+    const filteredData = applyrData.filter((item) =>
+      selectedCategories.includes(item.Category)
+    );
+  // Update the state to display the filtered data
+    setNameData(filteredData);
+    setIsFilterVisible(false); //close the filter
+  }
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
@@ -355,12 +365,11 @@ export default function HomeScreen(props) {
             }}
           >
             <Filter
-              categoriesData={nameData}
-              clearFilters={() => setIsFilterVisible(false)}
-              applyFilters={() => {
-                // Handle applying filters here
-                setIsFilterVisible(false);
-              }}
+            categoriesData={nameData}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            clearFilters={() => setIsFilterVisible(false)}
+            applyFilters={() => applyFilters(selectedCategories)}
             />
           </View>
         </View>
