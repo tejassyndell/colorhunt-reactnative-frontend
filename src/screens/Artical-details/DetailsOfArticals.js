@@ -190,6 +190,7 @@ const DetailsOfArticals = (props) => {
                     />
                 </View>
             ) : (
+                <>
                 <ScrollView nestedScrollEnabled={true} >
                     <View style={stylesRecipe.carouselContainer}>
                         <Carousel
@@ -218,11 +219,9 @@ const DetailsOfArticals = (props) => {
                             fontWeight: 600
                         }}>Artical No:{articleNumber}</Text>
                     </View>
-                </ScrollView>
-            )}
-           
-
+                </ScrollView>         
 <View style={styles.productDetails}>
+<ScrollView  style={{maxHeight:'100%' }} nestedScrollEnabled={true}>
     <View style={styles.product_detail} >
         <View style={styles.product_detail_sec}>
             <Text style={styles.size_label}>Size</Text>
@@ -252,7 +251,7 @@ const DetailsOfArticals = (props) => {
             </View>
         </View>
     </View>
-    <View style={styles.product_detail_sec3}>
+    <View style={styles.product_detail}>
         <View style={styles.container_grid}>
             <View style={styles.head_grid}>
                 <View style={styles.color_Text}>
@@ -305,6 +304,7 @@ const DetailsOfArticals = (props) => {
                                     </View>
                                 </View>
                             </View>
+    
                         </View>
                     </View>
                 ))}
@@ -347,7 +347,10 @@ const DetailsOfArticals = (props) => {
         </View>
 
     </View>
+    </ScrollView>
 </View>
+    </>
+            )}
                    
         </>
     )
