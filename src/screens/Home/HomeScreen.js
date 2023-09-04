@@ -350,6 +350,8 @@ export default function HomeScreen(props) {
               marginLeft: "auto", // Margin on the left side
               marginRight: "auto", // Margin on the right side
               padding: 10,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius:20,
             }}
           >
             <Filter
