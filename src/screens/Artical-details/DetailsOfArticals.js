@@ -207,6 +207,7 @@ const DetailsOfArticals = (props) => {
                         width: "100%",
                         position: "absolute",
                         top: "72%",
+                        height:'100%',
                         shadowColor: "black",
                         shadowOffset: { width: "100%", height: 0 },
                         elevation: 15,
@@ -217,6 +218,8 @@ const DetailsOfArticals = (props) => {
                             fontWeight: 600
                         }}>Artical No:{articleNumber}</Text>
                     </View>
+                    <View style={styles.section}>
+
                     <View style={styles.productDetails}>
                         <View style={styles.product_detail} >
                             <View style={styles.product_detail_sec}>
@@ -233,6 +236,9 @@ const DetailsOfArticals = (props) => {
                                             </View>
                                         ))}
                                 </View>
+                            </View>
+                            <View>
+                                
                             </View>
                             <View style={styles.product_detail_sec2}>
                                 <Text style={styles.size_label1}>Category</Text>
@@ -339,6 +345,7 @@ const DetailsOfArticals = (props) => {
                             </View>
 
                         </View>
+                    </View>
                     </View>
                 </ScrollView>
             )}

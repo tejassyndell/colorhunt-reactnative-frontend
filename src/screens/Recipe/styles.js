@@ -8,14 +8,14 @@ const styles = StyleSheet.create({
     flex: 1
   },
   carouselContainer: {
-    minHeight: 250
+    minHeight: 180
   },
   carousel: {},
 
   image: {
     // ...StyleSheet.absoluteFillObject,
     width: '100%',
-    height: 520
+    height: 500
   },
   imageContainer: {
     flex: 1,

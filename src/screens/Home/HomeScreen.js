@@ -16,6 +16,7 @@ import { getProductName, getcateGorywithphotos } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Fliter/Filter";
+import { ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen(props) {
@@ -26,6 +27,8 @@ export default function HomeScreen(props) {
   const [nameDatas, setNameDatas] = useState([]);
   const [applyrData, setApplyData] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   // open filter
 
@@ -37,21 +40,28 @@ export default function HomeScreen(props) {
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
   //getCategoriesname
   const getCategoriesname = async () => {
-    const result = await getcateGorywithphotos().then((res) => {
-      if (res.status === 200) {
-        setCategoryName(res.data);
-        setNameData(res.data);
-        setApplyData(res.data);
+    try {
+      const result1 = await getcateGorywithphotos();
+      if (result1.status === 200) {
+        setCategoryName(result1.data);
+        setNameData(result1.data);
+        setApplyData(result1.data);
       }
-    });
-    const resul = await getProductName().then((res) => {
-      if (res.status === 200) {
-        setCategoryName(res.data);
-        setNameDatas(res.data);
-        setApplyData(res.data);
+  
+      const result2 = await getProductName();
+      if (result2.status === 200) {
+        setNameDatas(result2.data);
+        setApplyData(result2.data);
       }
-    });
+  
+      setIsLoading(false);
+    } catch (error) {
+      // Handle any errors that might occur during the API requests.
+      console.error(error);
+      setIsLoading(false); // Make sure to set isLoading to false in case of an error.
+    }
   };
+  
 
   useEffect(() => {
     getCategoriesname();
@@ -96,6 +106,15 @@ export default function HomeScreen(props) {
   };
 
   return (
+    <>
+     {isLoading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator
+            size="large"
+            color="black"
+          />
+        </View>
+      ) : (
     <View style={{ width: "100%", height: "100%", backgroundColor: "#FFFF" }}>
       <View style={{ marginTop: 10 }}>
         <View>
@@ -125,12 +144,12 @@ export default function HomeScreen(props) {
       </View>
       <ScrollView
         showsHorizontalScrollIndicator={false}
-        style={{ overflow: "hidden" }}
+        style={{ overflow: "hidden" ,maxHeight:'72%' }}
       >
         <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
-          <Text style={{ start: 10 }}>Men's </Text>
+          <Text style={{ start: 10,fontWeight:700,fontSize:18 }}>Men's </Text>
           <Text
-            style={{ position: "absolute", end: 10 }}
+            style={{ position: "absolute", end: 10,fontSize:12,fontWeight:600 }}
             onPress={viewAllArticles}
           >
             View All
@@ -157,8 +176,8 @@ export default function HomeScreen(props) {
                     key={item.id}
                     style={{
                       alignItems: "center",
-                      height: 370,
-                      width: 200,
+                      height: 'auto',
+                      width: 180,
                       marginLeft: 5,
                       marginRight: 5,
                       borderRadius: 10,
@@ -168,6 +187,46 @@ export default function HomeScreen(props) {
                       shadowColor: "rgba(0, 0, 0, 0.2)",
                       shadowOpacity: 0.8,
                       shadowRadius: 4,
+                      elevation:5,
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                     
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        handlePress(item);
+                      }}
+                    >
+                      <Image
+                        source={require("../../../assets/demo.png")}
+                        style={{ width: 155, height: 170, borderRadius: 10 }}
+                      />
+                    </TouchableOpacity>
+                    <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                      {item.Category}
+                    </Text>
+                  </View>
+                ))
+              : applyrData.map((item) => (
+                  <View
+                    key={item.id}
+                    style={{
+                      alignItems: "center",
+                      height: 'auto',
+                      width: 180,
+                      marginLeft: 5,
+                      marginRight: 5,
+                      borderRadius: 10,
+                      borderColor: "gray",
+                      backgroundColor: "white",
+                      // Add shadow properties for iOS
+                      shadowColor: "rgba(0, 0, 0, 0.2)",
+                      shadowOpacity: 0.8,
+                      shadowRadius: 4,
+                      elevation:5,
                       shadowOffset: {
                         width: 0,
                         height: 2,
@@ -183,33 +242,7 @@ export default function HomeScreen(props) {
                     >
                       <Image
                         source={require("../../../assets/demo.png")}
-                        style={{ width: 200, height: 300, borderRadius: 10 }}
-                      />
-                    </TouchableOpacity>
-                    <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                      {item.Category}
-                    </Text>
-                  </View>
-                ))
-              : applyrData.map((item) => (
-                  <View
-                    key={item.id}
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: 200,
-                      marginLeft: 5,
-                      marginRight: 5,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        handlePress(item);
-                      }}
-                    >
-                      <Image
-                        source={require("../../../assets/demo.png")}
-                        style={{ width: 200, height: 300, borderRadius: 10 }}
+                        style={{ width: 155, height: 170, borderRadius: 10 }}
                       />
                     </TouchableOpacity>
                     <Text style={{ marginTop: 10, fontWeight: "bold" }}>
@@ -228,9 +261,9 @@ export default function HomeScreen(props) {
               marginTop: 20,
             }}
           >
-            <Text style={{ start: 10 }}>Kid’s </Text>
+            <Text style={{ start: 10,fontWeight:700,fontSize:18 }}>Kid’s </Text>
             <Text
-              style={{ position: "absolute", end: 10 }}
+              style={{ position: "absolute", end: 10,fontSize:12,fontWeight:600 }}
               onPress={viewAllArticles}
             >
               View All
@@ -257,32 +290,31 @@ export default function HomeScreen(props) {
                       key={item.id}
                       style={{
                         alignItems: "center",
-                        height: 370,
-                        width: 200,
-                        marginLeft: 5,
-                        marginRight: 5,
-                        marginBottom: 120,
-                        borderRadius: 10,
-                        borderColor: "gray",
-                        backgroundColor: "white",
-
-                        // Add shadow properties for iOS
-                        shadowColor: "rgba(0, 0, 0, 0.2)",
-                        shadowOpacity: 0.8,
-                        shadowRadius: 4,
-                        shadowOffset: {
-                          width: 0,
-                          height: 2,
-                        },
-                        // Add elevation for Android
-                        elevation: 4,
+                      height: 280,
+                      width: 190,
+                      marginLeft: 5,
+                      marginRight: 5,
+                      borderRadius: 10,
+                      borderColor: "gray",
+                      backgroundColor: "#FFF",
+                      // Add shadow properties for iOS
+                      shadowColor: "rgba(0, 0, 0, 0.2)",
+                      shadowOpacity: 0.8,
+                      shadowRadius: 4,
+                      elevation:5,
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      // Add elevation for Android
+                      elevation: 4,
                       }}
                     >
                       <Image
                         source={{ uri: baseImageUrl + item.Photos }}
-                        style={{ width: 200, height: 300, borderRadius: 10 }}
+                        style={{ width: 155, height: 190,elevation: 5, borderRadius: 10,paddingRight:10,paddingLeft:10 }}
                       />
-                      <Text style={{ fontWeight: "bold" }}>
+                      <Text style={{ fontWeight: "bold",marginTop:10 }}>
                         {item.ArticleNumber}
                       </Text>
                       <Text>{item.Category}</Text>
@@ -297,14 +329,15 @@ export default function HomeScreen(props) {
                       style={{
                         alignItems: "center",
                         justifyContent: "center",
-                        width: 200,
+                        width: 155,
+                        height:232,
                         marginLeft: 5,
                         marginRight: 5,
                       }}
                     >
                       <Image
                         source={{ uri: baseImageUrl + item.Photos }}
-                        style={{ width: 200, height: 200, borderRadius: 10 }}
+                        style={{ width: 130, height: 170, borderRadius: 10 }}
                       />
                       <Text style={{ fontWeight: "bold" }}>
                         {item.ArticleNumber}
@@ -363,5 +396,8 @@ export default function HomeScreen(props) {
         </View>
       )}
     </View>
+      )}
+    </>
+
   );
 }

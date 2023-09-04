@@ -24,30 +24,50 @@ const styles = StyleSheet.create({
         width: "100%",
 
     },
-    productDetails: {
-        display: "flex",
+    section:{
         paddingBottom: 0,
         paddingLeft: 5,
         paddingRight: 0,
         paddingTop: 1,
-        position: "absolute",
-        height: 450,
+        position: 'absolute',
+        height: 'auto',
         width: "100%",
-        backgroundColor: "#ffffff",
+        zIndex: 2,
+        
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        // bottom:0,
-        top:"80%",
+        top: "80%", // You can use a percentage for positioning if needed
         elevation: 50,
-        shadowOffset: { width: "100%", height: -3 }, // Offset the shadow upwards
-        shadowColor: 'red',
-        shadowOpacity: 5,
+        shadowOffset: { width: 0, height: -3 }, // Offset the shadow upwards
+        shadowColor: 'black', // Specify a shadow color
+        shadowOpacity: 0.5, // Set the shadow opacity within the valid range (0-1)
         shadowRadius: 5,
 
     },
+    productDetails: {
+        paddingBottom: 0,
+        paddingLeft: 5,
+        paddingRight: 0,
+        paddingTop: 1,
+        position: 'absolute',
+        height:5000,
+        width: "100%",
+        zIndex: 2,
+        backgroundColor: "red",
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        top: "80%", // You can use a percentage for positioning if needed
+        elevation: 50,
+        shadowOffset: { width: 0, height: -3 }, // Offset the shadow upwards
+        shadowColor: 'black', // Specify a shadow color
+        shadowOpacity: 0.5, // Set the shadow opacity within the valid range (0-1)
+        shadowRadius: 5,
+      },
+      
     product_detail: {
         display: "flex",
         width: "95%",
+        height:500,
         paddingTop: "3%",
         flexDirection:"row"
     },
