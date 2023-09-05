@@ -93,9 +93,9 @@ export default function DrawerContainer(props) {
 
 
         </View>
-        <View style={{ height: '41%', width: '100%', alignItems: "center",justifyContent:'flex-end' }}>
-          <Image source={require('../../../assets/sidebaricons/image_98.png')} style={{ width: 161, height: 161, position: 'absolute', bottom: '1%' }} />
-          <Text style={{ color: 'rgba(255, 255, 255, 1)', fontSize: 12, position: 'absolute', bottom: '-3%' }}>Design By SYNDELL Inc.</Text>
+        <View style={{ position: 'absolute' ,bottom: 20,alignItems:'center',width:'100%',right:20 }}>
+          <Image source={require('../../../assets/sidebaricons/image_98.png')} style={{ width: 161, height: 161, }} />
+          <Text style={{ color: 'rgba(255, 255, 255, 1)', fontSize: 12, }}>Design By SYNDELL Inc.</Text>
         </View>
       </View>
 
