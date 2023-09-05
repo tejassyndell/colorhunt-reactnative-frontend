@@ -118,7 +118,7 @@ const Orderlist = (props) => {
             ) : (
                 <ScrollView nestedScrollEnabled={true}>
                     <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
-                        <View style={{ display: "flex", flexDirection: "column", width: "100%", backgroundColor: "white" }}>
+                        <View style={{ display: "flex", flexDirection: "column", width: "100%", height:260, backgroundColor: "#FFF" }}>
                             <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
                                 <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Date:</Text>
                                 <View style={{
@@ -194,7 +194,7 @@ const Orderlist = (props) => {
                             }
                         </View>
                         <ScrollView nestedScrollEnabled={true} style={{ height: "100%" }}>
-                            <View style={{ display: "flex", flexDirection: "column", width: "100%", backgroundColor: "white" }}>
+                            <View style={{ display: "flex", flexDirection: "column", height:380,width: "100%", backgroundColor: "#FFF" }}>
                                 {ParsedData&&ParsedData.map((item, index) => (
                                     <View key={item.id} style={{ paddingBottom: 20 }}>
 
@@ -203,7 +203,11 @@ const Orderlist = (props) => {
                                             flexDirection: "row",
                                             width: "95%",
                                             backgroundColor: "#FFF",
-                                            elevation: 5,
+                                            elevation: 20,
+                                            shadowColor: '#000000',
+                                            shadowOffset: { width: 0, height: 0 },
+                                            shadowOpacity: 0.4,
+                                            shadowRadius: 4,
                                             marginHorizontal: 9.5,
                                             marginTop: 15,
                                             borderRadius: 10,
@@ -354,7 +358,7 @@ const Orderlist = (props) => {
                                 <View style={{
                                     display: "flex",
                                     flexDirection: "row", gap: 5,
-                                    paddingLeft: 32,
+                                    paddingLeft: 30,
                                     paddingTop: "2%",
                                     width:"50%"
                                 }}>
@@ -362,7 +366,7 @@ const Orderlist = (props) => {
                                         <Text style={{ fontSize: 15, fontWeight: 500 }}>Total price:</Text>
                                     </View>
                                     <View style={{}}>
-                                        <Text style={{ fontSize: 22, fontWeight: 700 }}>₹500.00</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: 700 }}>₹500.00</Text>
                                     </View>
                                 </View>
                             </View>

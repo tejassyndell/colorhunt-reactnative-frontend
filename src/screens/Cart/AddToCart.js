@@ -138,155 +138,174 @@ const AddToCart = (props) => {
                     />
                 </View>
             ) : (
-                <View style={{width: "100%", height: "100%",backgroundColor: "#FFF"}}>
-<ScrollView nestedScrollEnabled={true}  >
-                    <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF", borderTopColor: "black",  }}>
-                        <ScrollView nestedScrollEnabled={true} style={{ height: 430, backgroundColor: "#FFF" }}>
-                            <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                                <View style={{ paddingBottom: 20 }}>
-                                    {orderItems.map((item) =>
-                                        <View key={item.id} style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            width: "95%",
-                                            backgroundColor: "#FFF",
-                                            elevation: 5,
-                                            marginHorizontal: 9.5,
-                                            marginTop: 15,
-                                            borderRadius: 10,
-                                            height: 150,
-                                            // maxHeight: "45%"
-                                        }}>
-                                            <View style={{
-                                                width: "25%",
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                marginLeft: 15,
-                                                marginVertical: 10,
-                                                borderRadius: 10,
-                                            }}>
-                                                <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                            </View>
-                                            <View style={{
-                                                width: "45%",
-                                                marginHorizontal: 4,
-                                                marginVertical: 10,
-                                                borderRadius: 10
-                                            }}>
-                                                <View style={{height:"50%"}}>
-                                                    <Text style={{
-                                                        fontSize: 18,
-                                                        fontWeight: 700, color: "#000"
-                                                    }}>{item.ArticleNumber}</Text>
-                                                    <Text style={{
-                                                        fontSize: 14,
-                                                        fontWeight: 400, color: "#000"
-                                                    }}>{item.StyleDescription}</Text>
-                                                </View>
-                                                <View style={{ marginTop: "10%",position:"relative",height:"50%" }}>
-                                                    <Text style={{
-                                                        fontSize: 14,
-                                                        fontWeight: 400, color: "#000"
-                                                    }}>Rate:</Text>
-                                                    <Text style={{
-                                                        fontSize: 17,
-                                                        fontWeight: 700, color: "#000"
-                                                    }}>₹{item.rate}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={{
-                                                width: "18%",
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                justifyContent: "flex-end",
-                                                gap: 8,
-                                                marginLeft: 15,
-                                                marginVertical: 10,
-                                                borderRadius: 10,
+                orderItems.length === 0 ?
+                    <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
+                        <Text style={{ fontSize: 30, fontWeight: "bolder", top: 200 }}>Your cart is Empty</Text>
+                        <TouchableOpacity  onPress={() => navigation.navigate("Home")} style={{height:52}}>
+                            <Text style={{
+                                backgroundColor: "black",
+                                padding: 10,
+                                fontSize:20,
+                                alignItems: "center",
+                                borderRadius: 5,
+                                flex: 1,
+                                color: "white", top: 250
+                            }}>Containue Shopping</Text>
 
-                                            }}>
-                                                <TouchableOpacity
-                                                    onPress={() => handleEditOrder(item.article_id)}
-                                                >
+                        </TouchableOpacity>
 
-                                                    <Image alt="edite"
-                                                        style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity
-                                                    onPress={() => handleDeleteOrder(item.article_id)}
-                                                >
-                                                    <Image alt="Delete"
-                                                        style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
-                                                </TouchableOpacity>
-                                            </View>
+                    </View> :
+
+
+                    <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}>
+                        <ScrollView nestedScrollEnabled={true}  >
+                            <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF", borderTopColor: "black", }}>
+                                <ScrollView nestedScrollEnabled={true} style={{ height: 430, backgroundColor: "#FFF" }}>
+                                    <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                                        <View style={{ paddingBottom: 20 }}>
+                                            {orderItems.map((item) =>
+                                                <View key={item.id} style={{
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    width: "95%",
+                                                    backgroundColor: "#FFF",
+                                                    elevation: 5,
+                                                    marginHorizontal: 9.5,
+                                                    marginTop: 15,
+                                                    borderRadius: 10,
+                                                    height: 150,
+                                                    // maxHeight: "45%"
+                                                }}>
+                                                    <View style={{
+                                                        width: "25%",
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        marginLeft: 15,
+                                                        marginVertical: 10,
+                                                        borderRadius: 10,
+                                                    }}>
+                                                        <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                    </View>
+                                                    <View style={{
+                                                        width: "45%",
+                                                        marginHorizontal: 4,
+                                                        marginVertical: 10,
+                                                        borderRadius: 10
+                                                    }}>
+                                                        <View style={{ height: "50%" }}>
+                                                            <Text style={{
+                                                                fontSize: 18,
+                                                                fontWeight: 700, color: "#000"
+                                                            }}>{item.ArticleNumber}</Text>
+                                                            <Text style={{
+                                                                fontSize: 14,
+                                                                fontWeight: 400, color: "#000"
+                                                            }}>{item.StyleDescription}</Text>
+                                                        </View>
+                                                        <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
+                                                            <Text style={{
+                                                                fontSize: 14,
+                                                                fontWeight: 400, color: "#000"
+                                                            }}>Rate:</Text>
+                                                            <Text style={{
+                                                                fontSize: 17,
+                                                                fontWeight: 700, color: "#000"
+                                                            }}>₹{item.rate}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{
+                                                        width: "18%",
+                                                        display: "flex",
+                                                        flexDirection: "row",
+                                                        justifyContent: "flex-end",
+                                                        gap: 8,
+                                                        marginLeft: 15,
+                                                        marginVertical: 10,
+                                                        borderRadius: 10,
+
+                                                    }}>
+                                                        <TouchableOpacity
+                                                            onPress={() => handleEditOrder(item.article_id)}
+                                                        >
+
+                                                            <Image alt="edite"
+                                                                style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                            onPress={() => handleDeleteOrder(item.article_id)}
+                                                        >
+                                                            <Image alt="Delete"
+                                                                style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            )}
                                         </View>
-                                    )}
+                                    </View>
+                                </ScrollView>
+                                <View nestedScrollEnabled={true} style={{ width: "100%", height: 100, backgroundColor: "#FFF" }}>
+                                    <View style={{ padding: 10 }}>
+                                        <TextInput
+                                            value={promoCode}
+                                            onChange={handlePromoCodeChange}
+                                            style={{
+                                                width: "100%",
+                                                borderWidth: 1, paddingVertical: 18,
+                                                paddingLeft: 15, borderRadius: 10,
+                                                fontSize: 18, backgroundColor: "#EEE"
+                                            }} keyboardType="default" placeholder="Promo Code">
+                                        </TextInput>
+                                        <Pressable onPress={handleApplyPromoCode} style={{
+                                            width: "100%",
+                                            position: "absolute",
+                                            top: "33.5%",
+                                            left: "70%",
+                                            right: 0
+                                        }}>
+                                            <Text style={{
+                                                color: "white",
+                                                backgroundColor: "#212121",
+                                                borderRadius: 7.6, width: 100, paddingHorizontal: 18,
+                                                paddingVertical: 9,
+                                                fontSize: 18, fontWeight: 600,
+                                                textAlign: "center"
+                                            }}>Apply</Text>
+                                        </Pressable>
+                                    </View>
+
+                                </View>
+                                <View style={{
+                                    display: "flex",
+                                    justifyContent: "flex-end",
+                                    alignItems: "flex-end",
+                                    width: "100%",
+                                    backgroundColor: "#FFF",
+                                    // marginBottom: "2%"
+                                }}>
+                                    <Pressable onPress={handleAddMoreItems} style={{ marginRight: 10 }}>
+                                        <Text style={{
+                                            color: "white",
+                                            backgroundColor: "#212121",
+                                            borderRadius: 7.6, width: 150, paddingHorizontal: 18,
+                                            paddingVertical: 9,
+                                            fontSize: 18, fontWeight: 600,
+                                            textAlign: "center"
+                                        }}>
+                                            Add more
+                                        </Text>
+                                    </Pressable>
                                 </View>
                             </View>
                         </ScrollView>
-                        <View nestedScrollEnabled={true} style={{ width: "100%", height: 100, backgroundColor: "#FFF" }}>
-                            <View style={{ padding: 10 }}>
-                                <TextInput
-                                    value={promoCode}
-                                    onChange={handlePromoCodeChange}
-                                    style={{
-                                        width: "100%",
-                                        borderWidth: 1, paddingVertical: 18,
-                                        paddingLeft: 15, borderRadius: 10,
-                                        fontSize: 18, backgroundColor: "#EEE"
-                                    }} keyboardType="default" placeholder="Promo Code">
-                                </TextInput>
-                                <Pressable onPress={handleApplyPromoCode} style={{
-                                    width: "100%",
-                                    position: "absolute",
-                                    top: "33.5%",
-                                    left: "70%",
-                                    right: 0
-                                }}>
-                                    <Text style={{
-                                        color: "white",
-                                        backgroundColor: "#212121",
-                                        borderRadius: 7.6, width: 100, paddingHorizontal: 18,
-                                        paddingVertical: 9,
-                                        fontSize: 18, fontWeight: 600,
-                                        textAlign: "center"
-                                    }}>Apply</Text>
-                                </Pressable>
-                            </View>
-                         
-                        </View>
+
+
                         <View style={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                                alignItems: "flex-end",
-                                width: "100%",
-                                backgroundColor:"#FFF",
-                                // marginBottom: "2%"
-                            }}>
-                                <Pressable onPress={handleAddMoreItems} style={{marginRight:10}}>
-                                    <Text style={{
-                                        color: "white",
-                                        backgroundColor: "#212121",
-                                        borderRadius: 7.6, width: 150, paddingHorizontal: 18,
-                                        paddingVertical: 9,
-                                        fontSize: 18, fontWeight: 600,
-                                        textAlign: "center"
-                                    }}>
-                                        Add more
-                                    </Text>
-                                </Pressable>
-                            </View>
-                    </View>
-                </ScrollView>
-                   
-                
-                           <View style={{
-                            position:'absolute',
-                            bottom:0,
-                            backgroundColor:"#FFF"
-                           }}>
-                           <View style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            backgroundColor: "#FFF"
+                        }}>
+                            <View style={{
                                 display: "flex",
                                 flexDirection: "row",
                                 marginTop: "3%",
@@ -326,9 +345,9 @@ const AddToCart = (props) => {
                                     }} source={require("../../../assets/arrow(1).png")}></Image>
                                 </Pressable>
                             </View>
-                           </View>
-                </View>
-                
+                        </View>
+                    </View>
+
             )
             }
         </>

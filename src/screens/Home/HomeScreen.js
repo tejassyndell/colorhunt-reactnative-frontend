@@ -113,7 +113,7 @@ export default function HomeScreen(props) {
           <TouchableOpacity onPress={() => {
             navigation.openDrawer();
           }}>
-            <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5, backgroundColor: "black" }} ></Image>
+            <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5 }} ></Image>
           </TouchableOpacity>
         </View>
 
