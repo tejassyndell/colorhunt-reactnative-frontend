@@ -9,29 +9,35 @@ import RecipesListScreen from '../screens/RecipesList/RecipesListScreen';
 import DrawerContainer from '../screens/DrawerContainer/DrawerContainer';
 import IngredientScreen from '../screens/Ingredient/IngredientScreen';
 import SearchScreen from '../screens/Search/SearchScreen';
+import AllArticleScreen from '../screens/AllArticle/AllArticle';
 import IngredientsDetailsScreen from '../screens/IngredientsDetails/IngredientsDetailsScreen';
-
+import Userprofile from '../screens/UserProfile/Userprofile';
+import Contact from '../screens/Contact-Us/Contact';
+import DetailsOfArticals from '../screens/Artical-details/DetailsOfArticals';
+import AddToCart from '../screens/Cart/AddToCart';
+import CategorisWiseArticle from '../screens/CategorisWiseArticle/CategorisWiseArticle';
+import WishList from '../screens/WishList/wishlist';
+import Orderlist from '../screens/OrderList/Orderlist';
  const Stack = createStackNavigator();
 
 function MainNavigator() {
   return(
-    <Stack.Navigator
-      screenOptions={{
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            textAlign: 'center',
-            alignSelf: 'center',
-            flex: 1,
-          }
-      }}
-    >
+    <Stack.Navigator>
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='Categories' component={CategoriesScreen}/>
       <Stack.Screen name='Recipe' component={RecipeScreen}/>
       <Stack.Screen name='RecipesList' component={RecipesListScreen} />
       <Stack.Screen name='Ingredient' component={IngredientScreen} />
       <Stack.Screen name='Search' component={SearchScreen} />
+      <Stack.Screen name="AllArticle" component={AllArticleScreen} />
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
+      <Stack.Screen name='Profile' component={Userprofile} />
+      <Stack.Screen name='Contact' component={Contact} />
+      <Stack.Screen name='DetailsOfArticals' component={DetailsOfArticals} />
+      <Stack.Screen name='Wishlist' component={WishList} />
+      <Stack.Screen name='CategorisWiseArticle' component={CategorisWiseArticle} />
+      <Stack.Screen name='cart_list' component={AddToCart} />
+      <Stack.Screen name='Orderlist' component={Orderlist}/>
     </Stack.Navigator>
   )
 } 
@@ -44,7 +50,6 @@ function DrawerStack() {
   return(
     <Drawer.Navigator
       drawerPosition='left'
-      initialRouteName='Main'
       drawerStyle={{
         width: 250
       }}
