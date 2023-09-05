@@ -120,7 +120,7 @@ const Orderlist = (props) => {
                     <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
                         <View style={{ display: "flex", flexDirection: "column", width: "100%", height:260, backgroundColor: "#FFF" }}>
                             <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Date:</Text>
+                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Date</Text>
                                 <View style={{
                                     width: "100%",
                                     borderWidth: 1, paddingVertical: 10,
@@ -133,7 +133,7 @@ const Orderlist = (props) => {
 
                             </View>
                             <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Destination:</Text>
+                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Destination</Text>
                                 <TextInput value="" style={{
                                     width: "100%",
                                     borderWidth: 1, paddingVertical: 5,
@@ -143,7 +143,7 @@ const Orderlist = (props) => {
 
                             </View>
                             <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Transportation:</Text>
+                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Transportation</Text>
                                 <TextInput value={transportationVal} onChangeText={(e) => filterTransportationValue(e)} style={{
                                     width: "100%",
                                     borderWidth: 1, paddingVertical: 5,
@@ -175,7 +175,7 @@ const Orderlist = (props) => {
                                     paddingBottom: 18
                                 }} nestedScrollEnabled={true}>
 
-                                    <View>
+                                    <View >
 
                                         {Transportation.map((item) =>
                                             <TouchableOpacity key={item.Id} onPress={() => setTransportationVal(item.Name)}>

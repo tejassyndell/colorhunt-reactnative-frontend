@@ -328,23 +328,26 @@ const DetailsOfArticals = (props) => {
             <Text style={{ fontSize: 16, fontWeight: 600, color: "black" }}>{formatPrice(totalPrice)}</Text>
         </View>
         <View style={styles.addto_card_container}>
-            <Pressable
-                style={[
-                    styles.addto_cart_btn,
-                    {
-                        backgroundColor: totalQuantity === 0 ? 'gray' : 'black',
-                        opacity: totalQuantity === 0 ? 0.5 : 1,
-                    },
-                ]}
-                onPress={() => addtocart(197, id)}
-                disabled={totalQuantity === 0}
-            >
-                <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <Image source={require('../../../assets/icons/icon.png')} style={{marginRight:10}} />
-                <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18 }}>Add To Cart</Text>
-                </View>
-            </Pressable>
-        </View>
+  <Pressable
+    style={[
+      styles.addto_cart_btn,
+      {
+        backgroundColor: totalQuantity === 0 ? 'gray' : 'black',
+        opacity: totalQuantity === 0 ? 0.5 : 1,
+      },
+    ]}
+    onPress={() => addtocart(197, id)}
+    disabled={totalQuantity === 0}
+  >
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 15 }} />
+      <Text style={{ color: 'white', textAlign: 'center', fontWeight: 600, fontSize: 18 }}>
+        Add to cart
+      </Text>
+    </View>
+  </Pressable>
+</View>
+
 
     </View>
     </ScrollView>

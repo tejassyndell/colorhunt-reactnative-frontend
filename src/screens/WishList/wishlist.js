@@ -76,7 +76,7 @@ export default function WishList(props) {
           <Text style={{
             textAlign: "center",
             fontSize: 25, fontWeight: 700, width: "100%"
-          }}>WishList</Text>
+          }}>Wishlist</Text>
         </View>
       ),
       headerRight: () => <View style={{ position: 'absolute', left: 310 }}>
