@@ -85,11 +85,13 @@ const getproductname = async () => {
     <TouchableOpacity onPress={()=>  navigation.navigate("DetailsOfArticals", { id:item.Id })}>
     <View key={item.id} style={{
       alignItems: 'center',
-      height: 260,
-      width: 200,
-      marginLeft: 5,
-      marginRight: 5,
-      marginBottom: 20,
+      height: "auto",
+      paddingBottom:10,
+      width: 180,
+      // gap:10,
+      marginLeft: "2%",
+      marginRight: "3%",
+      marginBottom: 40,
       borderRadius: 10,
       borderColor: 'gray',
       backgroundColor: 'white',
@@ -100,7 +102,7 @@ const getproductname = async () => {
         width: 0,
         height: 2,
       },
-      elevation: 4,
+      elevation: 100,
     }}>
 
       <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: 155, height: 200, borderRadius: 10 }} />
