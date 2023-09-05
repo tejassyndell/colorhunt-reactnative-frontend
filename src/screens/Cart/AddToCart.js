@@ -138,8 +138,9 @@ const AddToCart = (props) => {
                     />
                 </View>
             ) : (
-                <ScrollView nestedScrollEnabled={true} >
-                    <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
+                <View style={{width: "100%", height: "100%",backgroundColor: "#FFF"}}>
+<ScrollView nestedScrollEnabled={true}  >
+                    <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF", borderTopColor: "black",  }}>
                         <ScrollView nestedScrollEnabled={true} style={{ height: 430, backgroundColor: "#FFF" }}>
                             <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                 <View style={{ paddingBottom: 20 }}>
@@ -224,7 +225,7 @@ const AddToCart = (props) => {
                                 </View>
                             </View>
                         </ScrollView>
-                        <View nestedScrollEnabled={true} style={{ width: "100%", height: "40%", backgroundColor: "#FFF" }}>
+                        <View nestedScrollEnabled={true} style={{ width: "100%", height: 100, backgroundColor: "#FFF" }}>
                             <View style={{ padding: 10 }}>
                                 <TextInput
                                     value={promoCode}
@@ -253,14 +254,17 @@ const AddToCart = (props) => {
                                     }}>Apply</Text>
                                 </Pressable>
                             </View>
-                            <View style={{
+                         
+                        </View>
+                        <View style={{
                                 display: "flex",
                                 justifyContent: "flex-end",
                                 alignItems: "flex-end",
-                                width: "97.5%",
-                                marginTop: "5%"
+                                width: "100%",
+                                backgroundColor:"#FFF",
+                                // marginBottom: "2%"
                             }}>
-                                <Pressable onPress={handleAddMoreItems}>
+                                <Pressable onPress={handleAddMoreItems} style={{marginRight:10}}>
                                     <Text style={{
                                         color: "white",
                                         backgroundColor: "#212121",
@@ -273,10 +277,19 @@ const AddToCart = (props) => {
                                     </Text>
                                 </Pressable>
                             </View>
-                            <View style={{
+                    </View>
+                </ScrollView>
+                   
+                
+                           <View style={{
+                            position:'absolute',
+                            bottom:0,
+                            backgroundColor:"#FFF"
+                           }}>
+                           <View style={{
                                 display: "flex",
                                 flexDirection: "row",
-                                marginTop: "8%",
+                                marginTop: "3%",
                                 // width: "100%",
                             }}>
                                 <View style={{ width: "50%", paddingLeft: "2.8%" }}>
@@ -313,9 +326,9 @@ const AddToCart = (props) => {
                                     }} source={require("../../../assets/arrow(1).png")}></Image>
                                 </Pressable>
                             </View>
-                        </View>
-                    </View>
-                </ScrollView>
+                           </View>
+                </View>
+                
             )
             }
         </>
