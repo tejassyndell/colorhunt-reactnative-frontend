@@ -109,7 +109,7 @@ export default function HomeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View style={{ marginLeft: 5, width: 50, height: 40, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <View style={{ marginLeft: 5, width: 50, height: 100,display: "flex", justifyContent: "center", alignItems: "center" }}>
           <TouchableOpacity onPress={() => {
             navigation.openDrawer();
           }}>

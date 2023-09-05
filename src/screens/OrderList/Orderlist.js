@@ -331,11 +331,12 @@ const Orderlist = (props) => {
                                 </View>
 
                             </View>
-                            <View style={{ display: "flex", height: "100%", flexDirection: "row",paddingLeft:5 }}>
-                                <View>
+                            <View style={{ display: "flex", backgroundColor:"#FFF", height: "100%", flexDirection: "row" }}>
+                                <View style={{width:"50%"}}>
                                     <Pressable style={{
                                         width: 165,
-                                        height: 50
+                                        height: 50,
+                                        marginLeft:5
                                     }}>
                                         <Text style={{
                                             color: "white",
@@ -353,8 +354,9 @@ const Orderlist = (props) => {
                                 <View style={{
                                     display: "flex",
                                     flexDirection: "row", gap: 5,
-                                    paddingLeft: "12%",
-                                    paddingTop: "2%"
+                                    paddingLeft: 32,
+                                    paddingTop: "2%",
+                                    width:"50%"
                                 }}>
                                     <View style={{ paddingTop: 5 }}>
                                         <Text style={{ fontSize: 15, fontWeight: 500 }}>Total price:</Text>
