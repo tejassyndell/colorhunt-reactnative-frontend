@@ -113,7 +113,7 @@ export default function HomeScreen(props) {
           <TouchableOpacity onPress={() => {
             navigation.openDrawer();
           }}>
-            <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5, backgroundColor: "black" }} ></Image>
+            <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5}} ></Image>
           </TouchableOpacity>
         </View>
 
@@ -271,20 +271,21 @@ export default function HomeScreen(props) {
                 style={{
                   alignItems: "center",
                   height: 'auto',
-                  width: 180,
+                  width: 200,
                   marginLeft: 5,
                   marginRight: 5,
+                  marginTop:10,
+                  marginBottom:10,                  
                   borderRadius: 10,
                   borderColor: "gray",
                   backgroundColor: "white",
-                  // Add shadow properties for iOS
-                  shadowColor: "rgba(0, 0, 0, 0.2)",
-                  shadowOpacity: 0.8,
+                  shadowColor: "#000000",
+                  shadowOpacity: 0.4,
                   shadowRadius: 4,
-                  elevation: 5,
+                  elevation: 10,
                   shadowOffset: {
                     width: 0,
-                    height: 2,
+                    height: 0,
                   },
                 }}
               >
@@ -295,10 +296,10 @@ export default function HomeScreen(props) {
                 >
                   <Image
                     source={require("../../../assets/demo.png")}
-                    style={{ width: 155, height: 170, borderRadius: 10 }}
+                    style={{ width: 155, height: 170, borderRadius: 10,marginTop:10 }}
                   />
                 </TouchableOpacity>
-                <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                <Text style={{ marginTop: 10,  fontWeight: "bold",marginBottom:10 }}>
                   {item.Category}
                 </Text>
               </View>
@@ -332,6 +333,9 @@ export default function HomeScreen(props) {
           </ScrollView>
         </View>
         <View>
+
+        </View>
+        <View style={{marginTop:10}}>
           <View
             style={{
               width: "100%",
@@ -374,20 +378,18 @@ export default function HomeScreen(props) {
                       width: 190,
                       marginLeft: 5,
                       marginRight: 5,
+                      marginBottom:120,
                       borderRadius: 10,
                       borderColor: "gray",
-                      backgroundColor: "#FFF",
-                      // Add shadow properties for iOS
-                      shadowColor: "rgba(0, 0, 0, 0.2)",
-                      shadowOpacity: 0.8,
+                      backgroundColor: "white",
+                      shadowColor: "#000000",
+                      shadowOpacity: 0.4,
                       shadowRadius: 4,
-                      elevation: 5,
+                      elevation: 10,
                       shadowOffset: {
                         width: 0,
-                        height: 2,
+                        height: 0,
                       },
-                      // Add elevation for Android
-                      elevation: 4,
                     }}
                   >
                     <Image

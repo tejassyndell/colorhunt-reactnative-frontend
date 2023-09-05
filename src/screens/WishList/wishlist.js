@@ -98,23 +98,24 @@ export default function WishList(props) {
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={()=>  navigation.navigate("DetailsOfArticals", { id:item.Id })}>
     <View key={item.id} style={{
-      alignItems: 'center',
-      height: 370,
-      width: 200,
-      marginLeft: 5,
-      marginRight: 5,
-      marginBottom: 20,
-      borderRadius: 10,
-      borderColor: 'gray',
-      backgroundColor: 'white',
-      shadowColor: 'rgba(0, 0, 0, 0.2)',
-      shadowOpacity: 0.8,
-      shadowRadius: 4,
-      shadowOffset: {
-        width: 0,
-        height: 2,
+     alignItems: "center",
+     height: 'auto',
+     width: 180,
+     marginLeft: 5,
+     marginRight: 20,
+     marginTop:20,
+     borderRadius: 10,
+     borderColor: "gray",
+     backgroundColor: "white",
+     // Add shadow properties for iOS
+     shadowColor: "#000000",
+     shadowOpacity: 0.4,
+     shadowRadius: 4,
+     elevation:10,
+     shadowOffset: {
+       width: 0,
+       height: 0,
       },
-      elevation: 4,
     }}>
       <View id={item.id} style={styles.producticones}>
         {selectedprd.some((i) => i.Id === item.Id) ? (
@@ -135,7 +136,7 @@ export default function WishList(props) {
           <></>
         )}
       </View>
-      <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: 200, height: 300, borderRadius: 10 }} />
+      <Image source={{ uri: baseImageUrl + item.article_photos }} style={{  width: 155, height: 170, borderRadius: 10 }} />
       <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
       <Text>{item.StyleDescription}</Text>
       <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate}</Text>

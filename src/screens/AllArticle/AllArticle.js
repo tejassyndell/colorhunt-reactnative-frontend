@@ -162,13 +162,13 @@ export default function AllArticle(props) {
       borderColor: "gray",
       backgroundColor: "white",
       // Add shadow properties for iOS
-      shadowColor: "rgba(0, 0, 0, 0.2)",
-      shadowOpacity: 0.8,
+      shadowColor: "#000000",
+      shadowOpacity: 0.4,
       shadowRadius: 4,
-      elevation:5,
+      elevation:10,
       shadowOffset: {
         width: 0,
-        height: 2,
+        height: 0,
       },
     }}>
       <View id={item.id} style={styles.producticones}>
