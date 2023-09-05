@@ -72,16 +72,16 @@ export default function WishList(props) {
           display: "flex",
           flexDirection: "row",
           width: "100%"
-      }}>
+        }}>
           <Text style={{
-              textAlign: "center",
-              fontSize: 25, fontWeight: 700, width: "100%"
+            textAlign: "center",
+            fontSize: 25, fontWeight: 700, width: "100%"
           }}>WishList</Text>
-      </View>
+        </View>
       ),
-      headerRight: () => <View style={{ position: 'absolute', left:310 }}>
-      <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-    </View>,
+      headerRight: () => <View style={{ position: 'absolute', left: 310 }}>
+        <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+      </View>,
     });
   }, []);
 
@@ -154,23 +154,45 @@ export default function WishList(props) {
           />
         </View>
       ) : (
-        <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-          {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
-          
-            <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
-              <FlatList
-                data={selectedprd}
-                initialNumToRender={10}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-                numColumns={2}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingVertical: 10 }}
-              />
+        
+          selectedprd.length === 0 ?
+            <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
+              <Text style={{ fontSize: 30, fontWeight: "bolder", top: 200 }}>Your WishList is Empty</Text>
+              <TouchableOpacity  onPress={() => navigation.navigate("Home")} style={{height:52}}>
+                <Text style={{
+                  backgroundColor: "black",
+                  padding: 10,
+                  fontSize:20,
+                  alignItems: "center",
+                  borderRadius: 5,
+                  flex: 1,
+                  color: "white", top: 250
+                }}>Containue Shopping</Text>
+
+              </TouchableOpacity>
+
+            </View> :
+            <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+              {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
+
+              <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
+                <FlatList
+                  data={selectedprd}
+                  initialNumToRender={10}
+                  keyExtractor={(item) => item.id}
+                  renderItem={renderItem}
+                  numColumns={2}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingVertical: 10 }}
+                />
+              </View>
+
+              {/* </ScrollView> */}
             </View>
-            
-          {/* </ScrollView> */}
-        </View>
+        
+
+
+
       )}
     </>
   );
