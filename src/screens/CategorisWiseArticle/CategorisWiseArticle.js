@@ -132,10 +132,11 @@ const getproductname = async () => {
             />
           </TouchableOpacity>
         </View>
-      <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
+      {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
         <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
           <FlatList
             data={nameDatas}
+            initialNumToRender={10}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
             numColumns={2}
@@ -143,7 +144,7 @@ const getproductname = async () => {
             contentContainerStyle={{ paddingVertical: 10 }}
           />
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
       {isFilterVisible ? null : (
         <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
           <ButtomNavigation navigation={navigation} />

@@ -227,6 +227,7 @@ export default function HomeScreen(props) {
             style={{ flex: 1, overflow: "hidden" }}
           >
             {ApplyStatushBack === true ? (searchText.length > 0 ? (filteredData.map((item) => (
+               <TouchableOpacity onPress={()=>  navigation.navigate("DetailsOfArticals", { id:item.Id })}>
               <View
                 key={item.id}
                 style={{
@@ -263,6 +264,7 @@ export default function HomeScreen(props) {
                   {"₹" + item.ArticleRate}
                 </Text>
               </View>
+              </TouchableOpacity>
             ))) : (nameData.map((item) => (
               <View
                 key={item.id}

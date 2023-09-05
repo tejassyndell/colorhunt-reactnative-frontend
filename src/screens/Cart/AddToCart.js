@@ -224,7 +224,7 @@ const AddToCart = (props) => {
                                 </View>
                             </View>
                         </ScrollView>
-                        <View nestedScrollEnabled={true} style={{ width: "100%", height: "40%", backgroundColor: "#FFF" }}>
+                        <View nestedScrollEnabled={true} style={{ width: "100%", height: "auto", backgroundColor: "#FFF" }}>
                             <View style={{ padding: 10 }}>
                                 <TextInput
                                     value={promoCode}

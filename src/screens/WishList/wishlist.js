@@ -68,11 +68,20 @@ export default function WishList(props) {
         />
       ),
       headerTitle: () => (
-        <View style={{ position: 'absolute', left: 310 }}>
-          <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-        </View>
+        <View style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%"
+      }}>
+          <Text style={{
+              textAlign: "center",
+              fontSize: 25, fontWeight: 700, width: "100%"
+          }}>WishList</Text>
+      </View>
       ),
-      headerRight: () => <View />,
+      headerRight: () => <View style={{ position: 'absolute', left:310 }}>
+      <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+    </View>,
     });
   }, []);
 
@@ -87,6 +96,7 @@ export default function WishList(props) {
 
 
   const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={()=>  navigation.navigate("DetailsOfArticals", { id:item.Id })}>
     <View key={item.id} style={{
       alignItems: 'center',
       height: 370,
@@ -130,6 +140,7 @@ export default function WishList(props) {
       <Text>{item.StyleDescription}</Text>
       <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate}</Text>
     </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -143,10 +154,12 @@ export default function WishList(props) {
         </View>
       ) : (
         <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-          <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
+          {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
+          
             <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
               <FlatList
                 data={selectedprd}
+                initialNumToRender={10}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
                 numColumns={2}
@@ -154,7 +167,8 @@ export default function WishList(props) {
                 contentContainerStyle={{ paddingVertical: 10 }}
               />
             </View>
-          </ScrollView>
+            
+          {/* </ScrollView> */}
         </View>
       )}
     </>
