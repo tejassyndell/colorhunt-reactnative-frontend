@@ -103,6 +103,7 @@ const AddToCart = (props) => {
             await deletecartitem(data);
             const updatedcartitems = orderItems.filter((item) => item.article_id !== article_id)
             setOrderItems(updatedcartitems)
+            console.log("Done");
         } catch (error) {
             console.log('Erro deleting article:', error)
         }
@@ -330,10 +331,10 @@ const AddToCart = (props) => {
                             </View>
                         </View>
                         <View style={{ padding: 10 }}>
-                            <Pressable style={{ width: "100%" }} onPress={handleProceedToCheckout}>
+                            <Pressable disabled={totalPrice!=0?false:true} style={{ width: "100%" }} onPress={handleProceedToCheckout}>
                                 <Text style={{
-                                    color: "white",
-                                    backgroundColor: "#212121",
+                                    color:"white",
+                                    backgroundColor:totalPrice!=0?"#212121":"#212121B2" ,
                                     borderRadius: 10, paddingHorizontal: 20,
                                     paddingVertical: 15,
                                     fontSize: 18, fontWeight: 600,
