@@ -13,6 +13,10 @@ export default function AllArticle(props) {
   const [nameDatas, setNameDatas] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
+   //Search Functionaity - Harshil
+   const [searchText, setSearchText] = useState(""); // To store the search text
+   const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
+   const [filterDataSearch, setFilterDataSearch] = useState([])
   const route = useRoute();
   const { item } = route.params;
 
@@ -38,6 +42,7 @@ const getproductname = async () => {
             const sdPrds = res.data.slice() // Use the fetched data
             const fildata = sdPrds.filter((item) => item.Category === category)
             setNameDatas(fildata)
+            setFilterDataSearch(fildata)
             // setFiltereddata(fildata)
             // setFilterDataSearch(fildata)
         }
@@ -119,14 +124,34 @@ const getproductname = async () => {
     const openFilter = () => {
       setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
     };
-
+    const filterData = () => {
+      if (searchText === '') {
+        setFilteredData(nameDatas)
+      } else {
+        console.log(filterDataSearch.length)
+        const filtered = filterDataSearch.filter((item) =>
+          item.ArticleNumber.toString().includes(searchText.toString()) ||
+          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.ArticleRate.toString().includes(searchText.toString()) ||
+          item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
+        )
+        setFilteredData(filtered)
+        console.log(filteredData.length)
+        setNameDatas(filtered)
+      }
+    }
+    useEffect(() => {
+      filterData();
+    }, [searchText])
   return (
     
     <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
        <View
           style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
         >
-          <SearchBar />
+          <SearchBar searchPhrase={searchText}
+            setSearchPhrase={setSearchText}/>
           <TouchableOpacity onPress={openFilter}>
             <Image
               source={require("../../../assets/filetr_icone.png")}
