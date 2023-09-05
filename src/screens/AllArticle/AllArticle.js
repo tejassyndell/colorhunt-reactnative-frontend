@@ -29,13 +29,16 @@ export default function AllArticle(props) {
 
   // getCategoriesname
   const getCategoriesname = async () => {
-    if(route.params && route.params.filteredData){
+    if(route.params && route.params.filteredData.length > 0){
       setSearchedData(route.params.filteredData)
       setIsLoading(false)
+      console.log(searchedData)
     } else {
       const res = await getProductName();
+      console.log(res.data)
     if (res.status === 200) {
       setNameDatas(res.data);
+      setFilterDataSearch(res.data)
       setIsLoading(false)
     }
     }
@@ -117,7 +120,37 @@ export default function AllArticle(props) {
     });
   }, []);
 
+    //Search Functionaity - Harshil
+    const [searchText, setSearchText] = useState(""); // To store the search text
+    const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
+    const [filterDataSearch, setFilterDataSearch] = useState([])
+
+    const filterData = () => {
+      if (searchText === '') {
+        setFilteredData(nameDatas)
+      } else {
+        console.log("namedata s lenght",nameDatas.length)
+        console.log("filterdatasearch lenght",filterDataSearch.length)
+        const filtered = filterDataSearch.filter((item) =>
+          item.ArticleNumber.toString().includes(searchText.toString()) ||
+          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.ArticleRate.toString().includes(searchText.toString()) ||
+          item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
+        )
+        console.log("filtered lenght",filtered.length)
+        setFilteredData(filtered)
+        console.log("filteredData.length after filter",filteredData.length)
+        setNameDatas(filtered)
+        console.log("namedata after filter lenght",nameDatas.length)
+      }
+    }
+    useEffect(() => {
+      filterData();
+    }, [searchText])
+
   const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={()=>  navigation.navigate("DetailsOfArticals", { id:item.Id })}>
     <View key={item.id} style={{
       alignItems: "center",
       height: 'auto',
@@ -174,6 +207,7 @@ export default function AllArticle(props) {
       <Text>{item.Category}</Text>
       <Text style={{ fontWeight: 'bold',marginBottom:10 }}>{"₹" + item.ArticleRate}</Text>
     </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -191,7 +225,8 @@ export default function AllArticle(props) {
         <View
           style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
         >
-          <SearchBar />
+          <SearchBar searchPhrase={searchText}
+            setSearchPhrase={setSearchText}/>
           <TouchableOpacity onPress={openFilter}>
             <Image
               source={require("../../../assets/filetr_icone.png")}
@@ -212,7 +247,7 @@ export default function AllArticle(props) {
             All Articles
           </Text>
         </View>
-          <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}>
+          {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
             <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
               <FlatList
                 data={searchedData.length > 0 ?searchedData : nameDatas}
@@ -223,7 +258,7 @@ export default function AllArticle(props) {
                 contentContainerStyle={{ paddingVertical: 10 }}
               />
             </View>
-          </ScrollView>
+          {/* </ScrollView> */}
           {isFilterVisible ? null : (
         <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
           <ButtomNavigation navigation={navigation} />
