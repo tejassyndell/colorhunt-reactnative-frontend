@@ -157,7 +157,7 @@ export default function WishList(props) {
         
           selectedprd.length === 0 ?
             <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: "bolder", top: 200 }}>Your WishList is Empty</Text>
+              <Text style={{ fontSize: 30, fontWeight: "bolder", top: 200 }}>Your wishList is Empty</Text>
               <TouchableOpacity  onPress={() => navigation.navigate("Home")} style={{height:52}}>
                 <Text style={{
                   backgroundColor: "black",
