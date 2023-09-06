@@ -60,7 +60,7 @@ const getproductname = async () => {
       headerLeft: () => (
         <MenuBackArrow
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.goBack();
           }}
         />
       ),

@@ -63,7 +63,7 @@ export default function WishList(props) {
       headerLeft: () => (
         <MenuBackArrow
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.goBack();
           }}
         />
       ),

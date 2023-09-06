@@ -24,7 +24,7 @@ export default function Userprofile(props) {
             headerLeft: () => (
                 <MenuBackArrow
                     onPress={() => {
-                        navigation.navigate('Home');
+                        navigation.goBack();
                     }}
                 />
             ),
