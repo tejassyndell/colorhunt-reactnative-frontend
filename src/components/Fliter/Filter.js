@@ -20,13 +20,7 @@ export default function FilterComponent({
 }) {
   const [filterText, setFilterText] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
-
-
-
-
-
-
-
+  
   const handleCategorySelect = (category) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories(

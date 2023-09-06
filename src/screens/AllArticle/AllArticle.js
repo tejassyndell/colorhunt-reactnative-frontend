@@ -221,7 +221,6 @@ export default function AllArticle(props) {
         </View>
       ) : (
         <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-         
         <View
           style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
         >

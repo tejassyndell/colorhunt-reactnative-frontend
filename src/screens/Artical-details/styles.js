@@ -425,9 +425,10 @@ const styles = StyleSheet.create({
     main_total_div: {
         width: "30%"
     },
-    addto_card_container: {
-        width: "50%",
-        marginLeft: "24%"
+    addto_card_container:{
+        width:208,
+        height:50,
+        marginLeft:"16%"
     },
     addto_cart_btn: {
         backgroundColor: "black",
