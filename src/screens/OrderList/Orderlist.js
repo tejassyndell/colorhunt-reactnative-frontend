@@ -5,6 +5,7 @@ import { gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
+import { TouchableWithoutFeedback } from "react-native";
 
 const Orderlist = (props) => {
     const { navigation } = props;
@@ -382,6 +383,7 @@ const Orderlist = (props) => {
                         animationType="slide"
                         onRequestClose={() => setIsModalVisible(false)}
                     >
+                        <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
                         <View
                             style={{
                                 flex: 1,
@@ -441,6 +443,7 @@ const Orderlist = (props) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        </TouchableWithoutFeedback>
                     </Modal>
 
                 </ScrollView>
