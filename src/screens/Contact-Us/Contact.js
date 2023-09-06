@@ -70,7 +70,7 @@ export default function Contact(props) {
                         style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300 }}
                     />
                     <View style={{position: 'absolute', top: 58, marginLeft:5}} >
-                    {showValidationErrors && userName === '' && <Text style={{ color: 'red', fontSize:10 }}>This Field is Required</Text>}
+                    {showValidationErrors && userName === '' && <Text style={{ color: 'red', fontSize:10 }}>This field is required</Text>}
                     </View>
                     <TextInput
                         placeholder="Email"
@@ -79,7 +79,7 @@ export default function Contact(props) {
                         style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300, marginTop: 20 }}
                     />
                     <View style={{position:'absolute', top:133, marginLeft:5}}>
-                    {showValidationErrors && email === '' && <Text style={{ color: 'red', fontSize:10 }}>This field is Required</Text>}
+                    {showValidationErrors && email === '' && <Text style={{ color: 'red', fontSize:10 }}>This field is required</Text>}
                     </View>
                     <TextInput
                         placeholder="Subject"
@@ -88,7 +88,7 @@ export default function Contact(props) {
                         style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300, marginTop: 20 }}
                     />
                     <View style={{position:'absolute', top:207, marginLeft:5}}>
-                    {showValidationErrors && subject === '' && <Text style={{ color: 'red', fontSize:10 }}>This Field is Required</Text>}
+                    {showValidationErrors && subject === '' && <Text style={{ color: 'red', fontSize:10 }}>This field is required</Text>}
                     </View>
                     <TextInput
                         placeholder="Message"
@@ -98,7 +98,7 @@ export default function Contact(props) {
                         style={{ borderWidth: 1, borderRadius: 5, padding: 10, margin: 5, width: 300, marginTop: 20 }}
                     />
                     <View style={{position:'absolute',top:283, marginLeft:5}}>
-                    {showValidationErrors && message === '' && <Text style={{ color: 'red', fontSize:10 }}>This Field is Required</Text>}
+                    {showValidationErrors && message === '' && <Text style={{ color: 'red', fontSize:10 }}>This field is required</Text>}
                     </View>
                     <View style={{  justifyContent: 'center', alignItems: 'center', marginTop:30 }}>
                         <TouchableOpacity style={{ backgroundColor: 'black', padding: 10, borderRadius: 5, width: 153, height: 47, justifyContent: 'center' }} onPress={handleSubmit}>
