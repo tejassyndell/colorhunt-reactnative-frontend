@@ -60,7 +60,7 @@ export default function DrawerContainer(props) {
             title="Notifications"
             source={require("../../../assets/sidebaricons/notification.png")}
             onPress={() => {
-              navigation.navigate("Search");
+              navigation.navigate("Notification");
               navigation.closeDrawer();
             }}
           />
