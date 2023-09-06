@@ -69,19 +69,21 @@ export default function WishList(props) {
       ),
       headerTitle: () => (
         <View style={{
-          display: "flex",
           flexDirection: "row",
           width: "100%"
         }}>
           <Text style={{
             textAlign: "center",
-            fontSize: 25, fontWeight: 700, width: "100%"
-          }}>WishList</Text>
+            fontSize: 25,
+            left:10,
+            fontWeight: "700",
+            width: "100%"
+          }}>Wishlist</Text>
+          <View style={{ position: 'absolute', left: 310, zIndex: 2 }}>
+            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+          </View>
         </View>
       ),
-      headerRight: () => <View style={{ position: 'absolute', left: 310 }}>
-        <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-      </View>,
     });
   }, []);
 
@@ -106,17 +108,22 @@ export default function WishList(props) {
      marginTop:20,
      borderRadius: 10,
      borderColor: "gray",
-     backgroundColor: "white",
      // Add shadow properties for iOS
-     shadowColor: "#000000",
-     shadowOpacity: 0.4,
-     shadowRadius: 4,
-     elevation:10,
-     shadowOffset: {
-       width: 0,
-       height: 0,
-      },
+    
     }}>
+        <View style={{
+       width: 155,
+       height: 190,
+       borderColor: "gray",
+       shadowColor: "#000000",
+       shadowOpacity: 0.9,
+       shadowRadius: 4,
+       elevation: 10, // For Android, use elevation
+       shadowOffset: {
+         width: 0,
+         height: 0,
+       },
+      }}>
       <View id={item.id} style={styles.producticones}>
         {selectedprd.some((i) => i.Id === item.Id) ? (
           <TouchableOpacity
@@ -136,10 +143,13 @@ export default function WishList(props) {
           <></>
         )}
       </View>
-      <Image source={{ uri: baseImageUrl + item.article_photos }} style={{  width: 155, height: 170, borderRadius: 10 }} />
-      <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
-      <Text>{item.StyleDescription}</Text>
-      <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate}</Text>
+    
+      <Image source={{ uri: baseImageUrl + item.article_photos }} style={{  width: 155, height: 190, borderRadius: 10 }} />
+
+      </View>
+      <Text style={{ fontWeight: 'bold',marginTop:12 }}>{item.ArticleNumber}</Text>
+      <Text style={{marginTop:3}}>{item.StyleDescription}</Text>
+      <Text style={{ fontWeight: 'bold',marginTop:3 }}>{"₹" + item.ArticleRate + '.00'}</Text>
     </View>
     </TouchableOpacity>
   );

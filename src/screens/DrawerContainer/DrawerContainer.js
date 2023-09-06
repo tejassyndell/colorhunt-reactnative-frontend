@@ -35,10 +35,10 @@ export default function DrawerContainer(props) {
           <MenuButton
             title="Orders History"
             source={require("../../../assets/sidebaricons/order.png")}
-            // onPress={() => {
-            //   navigation.navigate("Orderlist");
-            //   navigation.closeDrawer();
-            // }}
+            onPress={() => {
+              navigation.navigate("DetailsOfArticals");
+              navigation.closeDrawer();
+            }}
           />
           <MenuButton
             title="Cart"

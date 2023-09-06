@@ -109,12 +109,27 @@ const getproductname = async () => {
       },
       elevation: 100,
     }}>
-
-      <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: 155, height: 200, borderRadius: 10 }} />
-
+      <View style={{
+          borderColor: "gray",
+          width: 155,
+          height: 170,
+          shadowColor: "#000000",
+          shadowOpacity: 0.4,
+          shadowRadius: 4,
+          elevation: 10, // This is for Android, use shadow properties for iOS
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+      }}>
+      <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: 155, height: 170, borderRadius: 10 }} />
+        </View>      
+<View style={{marginTop:20}}>
       <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
       <Text>{item.Category}</Text>
       <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate}</Text>
+  
+</View>
     </View>
     </TouchableOpacity>
   );
