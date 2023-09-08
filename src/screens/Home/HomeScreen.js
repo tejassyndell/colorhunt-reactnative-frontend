@@ -16,9 +16,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { getProductName, getcateGorywithphotos, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
-import Filter from "../../components/Fliter/Filter";
 import { ActivityIndicator } from "react-native";
-
+import Filter from "../../components/Filter/Filter";
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
@@ -29,6 +28,8 @@ export default function HomeScreen(props) {
   const [selectedprd, setSelectprd] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+  const [finalData, setFinalData] = useState([])
   const [isLoading, setIsLoading] = useState(true);
 
   const [rateRange, setrateRange] = useState([0, 1000]);
@@ -40,36 +41,11 @@ export default function HomeScreen(props) {
   const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
   const [filterDataSearch, setFilterDataSearch] = useState([])
 
-
-
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
 
-  const applyFilters = (selectedCategories) => {
-    // Filter your data based on selectedCategories here
-    console.log(rateRange, "{}{}{}{}{}{}");
-    let filteredData = [];
-    // if (rateRange[0]!==0 || rateRange[1]!==1000) {
-    //   const min = parseFloat(rateRange[0])
-    //   const max = parseFloat(rateRange[1])
-    //   if (min >= 0 && max <= 1000) {
-    //     filteredData = applyrData.filter((product) => {
-    //       return product.rate >= min && product.rate <= max
-    //     })
-    //     console.log(sdPrds)
-    //   }
-    // }
-    if (selectedCategories) {
-      filteredData = applyrData.filter((item) =>
-        selectedCategories.includes(item.Category)
-      );
-    }
 
-    // Update the state to display the filtered data
-    setNameData(filteredData);
-    setIsFilterVisible(false); //close the filter
-  }
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
@@ -174,7 +150,7 @@ export default function HomeScreen(props) {
       ),
       headerRight: () =>
         <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
-          <TouchableOpacity onPress={()=>{navigation.navigate("Profile")}}>
+          <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
             <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
         </View>,
@@ -205,12 +181,27 @@ export default function HomeScreen(props) {
         item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
       )
       setFilteredData(filtered)
+      setFinalData(filtered)
       console.log(filteredData.length)
     }
   }
   useEffect(() => {
     filterData();
   }, [searchText])
+  const handleFilterChange = (categories, priceRange) => {
+    setSelectedCategories(categories);
+    setSelectedPriceRange(priceRange);
+    console.log(selectedCategories, "Sc")
+  };
+  useEffect(() => {
+    // This effect runs whenever selectedCategories change
+    const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category));
+    setFinalData(abc);
+  }, [selectedCategories]); // Add selectedCategories as a dependency
+
+  const handleCloseFilter = (isClosed) => {
+    setIsFilterVisible(isClosed)
+  };
   return (
     <>
       {isLoading ? (
@@ -278,38 +269,85 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-                {ApplyStatushBack === true ? (searchText.length > 0 ? (filteredData.map((item) => (
+                {console.log(finalData)}
+                {ApplyStatushBack === true ? (finalData.length > 0 ? (finalData.map((item) => (
                   <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}>
-                    {/* <View
-                key={item.id}
-                style={{
-                  alignItems: "center",
-                  marginLeft: 5,
-                  marginRight: 5,
-                  borderRadius: 10,
-                  shadowOpacity: 0.8,
-                  shadowRadius: 4,
-                  elevation: 5,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  // Add elevation for Android
-                  elevation: 4,
-                }}
-              >
-                <Image
-                  source={{ uri: baseImageUrl + item.Photos }}
-                  style={{ width: 155, height: 190, elevation: 5, borderRadius: 10, paddingRight: 10, paddingLeft: 10 }}
-                />
-                <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                  {item.ArticleNumber}
-                </Text>
-                <Text>{item.Category}</Text>
-                <Text style={{ fontWeight: "bold" }}>
-                  {"₹" + item.ArticleRate}
-                </Text>
-              </View> */}
+                    <View
+                        key={item.id}
+                        style={{
+                          alignItems: "center",
+                          height: 280,
+                          width: 160,
+                          marginLeft: 5,
+                          marginRight: 5,
+                          marginBottom: 120,
+                          borderRadius: 10,
+
+                        }}
+                      >
+                        <View style={{
+                          width: 155,
+                          height: 190,
+                          borderColor: "gray",
+                          shadowColor: "#000000",
+                          shadowOpacity: 0.9,
+                          shadowRadius: 4,
+                          elevation: 10, // For Android, use elevation
+                          shadowOffset: {
+                            width: 0,
+                            height: 0,
+                          },
+                        }}>
+                          <View id={item.id} style={styles.producticones}>
+                            {selectedprd.some((i) => i.Id === item.Id) ? (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  rmvProductWishlist(item);
+                                }}
+                              >
+                                <FontAwesome
+                                  name="heart"
+                                  style={[
+                                    styles.icon,
+                                    // isLoggedin === false ? styles.disabledIcon : null,
+                                  ]}
+                                />
+                              </TouchableOpacity>
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  addArticleWishlist(item);
+                                }}
+                              >
+                                <FontAwesome
+                                  name="heart-o"
+                                  style={[
+                                    styles.disabledIcon,
+                                    // isLoggedin === false ? styles.disabledIcon : null,
+                                  ]}
+                                />
+                              </TouchableOpacity>
+                            )}
+                          </View>
+                          <Image
+                            source={{ uri: baseImageUrl + item.Photos }}
+                            style={{
+                              width: "94%",
+                              height: 190,
+                              borderRadius: 10,
+
+                            }}
+                          />
+                        </View>
+
+                        <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                          {item.ArticleNumber}
+                        </Text>
+                        <Text>{item.Category}</Text>
+                        <Text style={{ fontWeight: "bold" }}>
+                          {"₹" + item.ArticleRate}
+                        </Text>
+                      </View>
                   </TouchableOpacity>
                 ))) : (nameData.map((item) => (
                   <View
@@ -354,8 +392,6 @@ export default function HomeScreen(props) {
                           }}
                         />
                       </View>
-
-
                     </TouchableOpacity>
                     <Text style={{ marginTop: 10, fontWeight: "bold", marginBottom: 10 }}>
                       {item.Category}
@@ -453,8 +489,6 @@ export default function HomeScreen(props) {
                             width: 0,
                             height: 0,
                           },
-
-
                         }}>
                           <View id={item.id} style={styles.producticones}>
                             {selectedprd.some((i) => i.Id === item.Id) ? (
@@ -570,14 +604,8 @@ export default function HomeScreen(props) {
                   borderTopRightRadius: 20,
                 }}
               >
-                <Filter
-                  categoriesData={nameData}
-                  selectedCategories={selectedCategories}
-                  setSelectedCategories={setSelectedCategories}
-                  clearFilters={() => setIsFilterVisible(false)}
-                  applyFilters={() => applyFilters(selectedCategories)}
-                  setrateRange={setrateRange}
-                />
+                <Filter onFilterChange={handleFilterChange}
+                  onCloseFilter={handleCloseFilter} />
               </View>
             </View>
           )}
