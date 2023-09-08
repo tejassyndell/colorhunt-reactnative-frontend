@@ -75,7 +75,7 @@ export default function WishList(props) {
           <Text style={{
             textAlign: "center",
             fontSize: 25,
-            left:10,
+            left: 10,
             fontWeight: "700",
             width: "100%"
           }}>Wishlist</Text>
@@ -98,59 +98,59 @@ export default function WishList(props) {
 
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={()=>  navigation.navigate("DetailsOfArticals", { id:item.Id })}>
-    <View key={item.id} style={{
-     alignItems: "center",
-     height: 'auto',
-     width: 180,
-     marginLeft: 5,
-     marginRight: 20,
-     marginTop:20,
-     borderRadius: 10,
-     borderColor: "gray",
-     // Add shadow properties for iOS
-    
-    }}>
-        <View style={{
-       width: 155,
-       height: 190,
-       borderColor: "gray",
-       shadowColor: "#000000",
-       shadowOpacity: 0.9,
-       shadowRadius: 4,
-       elevation: 10, // For Android, use elevation
-       shadowOffset: {
-         width: 0,
-         height: 0,
-       },
-      }}>
-      <View id={item.id} style={styles.producticones}>
-        {selectedprd.some((i) => i.Id === item.Id) ? (
-          <TouchableOpacity
-            onPress={() => {
-              rmvProductWishlist(item);
-            }}
-          >
-            <FontAwesome
-              name="heart"
-              style={[
-                styles.icon,
-                // isLoggedin === false ? styles.disabledIcon : null,
-              ]}
-            />
-          </TouchableOpacity>
-        ) : (
-          <></>
-        )}
-      </View>
-    
-      <Image source={{ uri: baseImageUrl + item.article_photos }} style={{  width: 155, height: 190, borderRadius: 10 }} />
+    <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}>
+      <View key={item.id} style={{
+        alignItems: "center",
+        height: 'auto',
+        width: 180,
+        marginLeft: 5,
+        marginRight: 20,
+        marginTop: 20,
+        borderRadius: 10,
+        borderColor: "gray",
+        // Add shadow properties for iOS
 
+      }}>
+        <View style={{
+          width: 155,
+          height: 190,
+          borderColor: "gray",
+          shadowColor: "#000000",
+          shadowOpacity: 0.9,
+          shadowRadius: 4,
+          elevation: 10, // For Android, use elevation
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+        }}>
+          <View id={item.id} style={styles.producticones}>
+            {selectedprd.some((i) => i.Id === item.Id) ? (
+              <TouchableOpacity
+                onPress={() => {
+                  rmvProductWishlist(item);
+                }}
+              >
+                <FontAwesome
+                  name="heart"
+                  style={[
+                    styles.icon,
+                    // isLoggedin === false ? styles.disabledIcon : null,
+                  ]}
+                />
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
+          </View>
+
+          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: 155, height: 190, borderRadius: 10 }} />
+
+        </View>
+        <Text style={{ fontWeight: 'bold', marginTop: 12 }}>{item.ArticleNumber}</Text>
+        <Text style={{ marginTop: 3 }}>{item.StyleDescription}</Text>
+        <Text style={{ fontWeight: 'bold', marginTop: 3 }}>{"₹" + item.ArticleRate + '.00'}</Text>
       </View>
-      <Text style={{ fontWeight: 'bold',marginTop:12 }}>{item.ArticleNumber}</Text>
-      <Text style={{marginTop:3}}>{item.StyleDescription}</Text>
-      <Text style={{ fontWeight: 'bold',marginTop:3 }}>{"₹" + item.ArticleRate + '.00'}</Text>
-    </View>
     </TouchableOpacity>
   );
 
@@ -164,42 +164,42 @@ export default function WishList(props) {
           />
         </View>
       ) : (
-        
-          selectedprd.length === 0 ?
-            <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
-              <Text style={{ fontSize: 30, fontWeight: "bolder", top: 200 }}>Your wishList is Empty</Text>
-              <TouchableOpacity  onPress={() => navigation.navigate("Home")} style={{height:52}}>
-                <Text style={{
-                  backgroundColor: "black",
-                  padding: 10,
-                  fontSize:20,
-                  alignItems: "center",
-                  borderRadius: 5,
-                  flex: 1,
-                  color: "white", top: 250
-                }}>Containue Shopping</Text>
+        selectedprd.length === 0 ?
+          <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
+            <Text style={{ fontSize: 40, fontWeight: "bolder", top: 200, textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your WishList is {"\n"} Empty</Text>
+            <TouchableOpacity
+              style={{
+                width: 189,
+                height: 50,
+                borderRadius: 10,
+                backgroundColor: "black",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 380,
+              }}
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Text style={{ color: "white" }}>Continue Shopping</Text>
+            </TouchableOpacity>
+          </View> :
+          <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+            {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
 
-              </TouchableOpacity>
-
-            </View> :
-            <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-              {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
-
-              <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
-                <FlatList
-                  data={selectedprd}
-                  initialNumToRender={10}
-                  keyExtractor={(item) => item.id}
-                  renderItem={renderItem}
-                  numColumns={2}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingVertical: 10 }}
-                />
-              </View>
-
-              {/* </ScrollView> */}
+            <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
+              <FlatList
+                data={selectedprd}
+                initialNumToRender={10}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItem}
+                numColumns={2}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingVertical: 10 }}
+              />
             </View>
-        
+
+            {/* </ScrollView> */}
+          </View>
+
 
 
 
