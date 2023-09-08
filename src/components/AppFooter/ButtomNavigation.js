@@ -37,12 +37,13 @@ const ButtomNavigation = (props) => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View
         style={{
-          width: "98%",
+          width: "96%",
           height: 70,
           backgroundColor: "#212121",
           flexDirection: "row",
-          marginLeft:5,
-          marginBottom:10,
+          marginLeft:"2%",
+          marginRight:"2%",
+          marginBottom:"4%",
           borderRadius:20,
           justifyContent: "space-evenly",
         }}
@@ -59,7 +60,7 @@ const ButtomNavigation = (props) => {
         >
           <Image
             source={require("../../../assets/AppFooterIcons/Home_down_nav_icone.png")}
-            style={{ width: 30, height: 30 }}
+            style={{ width: 45, height: 45 }}
             
           />
         </TouchableOpacity>
@@ -75,7 +76,7 @@ const ButtomNavigation = (props) => {
         >
           <Image
             source={require("../../../assets/AppFooterIcons/order_down_nav_icone.png")}
-            style={{ width: 30, height: 30 }}
+            style={{ width: 45, height: 45 }}
             
           />
         </TouchableOpacity>
@@ -90,7 +91,7 @@ const ButtomNavigation = (props) => {
         >
           <Image
             source={require("../../../assets/AppFooterIcons/cart_down_nav_icone.png")}
-            style={{ width: 30, height: 30 }}
+            style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -104,7 +105,7 @@ const ButtomNavigation = (props) => {
         >
           <Image
             source={require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")}
-            style={{ width: 30, height: 35 }}
+            style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -118,7 +119,7 @@ const ButtomNavigation = (props) => {
         >
           <Image
             source={require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")}
-            style={{ width: 30, height: 35 }}
+            style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>
       </View>

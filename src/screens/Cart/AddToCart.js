@@ -16,11 +16,14 @@ const AddToCart = (props) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
-                <MenuBackArrow
-                    onPress={() => {
-                        navigation.navigate('Home');
-                    }}
-                />
+                <View style={{ marginTop: 2 }}>
+                    <MenuBackArrow
+                        onPress={() => {
+                            navigation.navigate('Home');
+                        }}
+                    />
+                </View>
+
             ),
             headerTitle: () => (
                 <View style={{
@@ -34,12 +37,7 @@ const AddToCart = (props) => {
                     }}>Cart</Text>
                 </View>
             ),
-            headerRight: () =>
-                <View style={{ marginRight: 20, width: 50, height: 40, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <TouchableOpacity onPress={handleGoToOrderList}>
-                        <Image source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
-                    </TouchableOpacity>
-                </View>,
+            headerRight: () => <View />
         });
     }, []);
 
@@ -103,6 +101,7 @@ const AddToCart = (props) => {
             await deletecartitem(data);
             const updatedcartitems = orderItems.filter((item) => item.article_id !== article_id)
             setOrderItems(updatedcartitems)
+            console.log("Done");
         } catch (error) {
             console.log('Erro deleting article:', error)
         }
@@ -137,186 +136,254 @@ const AddToCart = (props) => {
                         color="black"
                     />
                 </View>
-            ) : (
-                <ScrollView nestedScrollEnabled={true} >
-                    <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
-                        <ScrollView nestedScrollEnabled={true} style={{ height: 430, backgroundColor: "#FFF" }}>
-                            <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-                                <View style={{ paddingBottom: 20 }}>
-                                    {orderItems.map((item) =>
-                                        <View key={item.id} style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            width: "95%",
-                                            backgroundColor: "#FFF",
-                                            elevation: 5,
-                                            marginHorizontal: 9.5,
-                                            marginTop: 15,
-                                            borderRadius: 10,
-                                            height: 150,
-                                            // maxHeight: "45%"
-                                        }}>
-                                            <View style={{
-                                                width: "25%",
-                                                display: "flex",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                marginLeft: 15,
-                                                marginVertical: 10,
-                                                borderRadius: 10,
-                                            }}>
-                                                <Image style={{ height: "100%", width: "100%", borderRadius: 10 }} source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                            </View>
-                                            <View style={{
-                                                width: "45%",
-                                                marginHorizontal: 4,
-                                                marginVertical: 10,
-                                                borderRadius: 10
-                                            }}>
-                                                <View style={{height:"50%"}}>
-                                                    <Text style={{
-                                                        fontSize: 18,
-                                                        fontWeight: 700, color: "#000"
-                                                    }}>{item.ArticleNumber}</Text>
-                                                    <Text style={{
-                                                        fontSize: 14,
-                                                        fontWeight: 400, color: "#000"
-                                                    }}>{item.StyleDescription}</Text>
-                                                </View>
-                                                <View style={{ marginTop: "10%",position:"relative",height:"50%" }}>
-                                                    <Text style={{
-                                                        fontSize: 14,
-                                                        fontWeight: 400, color: "#000"
-                                                    }}>Rate:</Text>
-                                                    <Text style={{
-                                                        fontSize: 17,
-                                                        fontWeight: 700, color: "#000"
-                                                    }}>₹{item.rate}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={{
-                                                width: "18%",
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                justifyContent: "flex-end",
-                                                gap: 8,
-                                                marginLeft: 15,
-                                                marginVertical: 10,
-                                                borderRadius: 10,
+            ) : ( 
+                orderItems.length === 0 ? 
+                <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
+                    <Text style={{ fontSize: 40, fontWeight: "bolder", top: 200, textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your Cart is {"\n"} Empty</Text>
+                    <TouchableOpacity
+                        style={{
+                            width: 189,
+                            height: 50,
+                            borderRadius: 10,
+                            backgroundColor: "black",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginTop: 380,
+                        }}
+                        onPress={() => navigation.navigate("Home")}
+                    >
+                        <Text style={{ color: "white" }}>Create Order</Text>
+                    </TouchableOpacity>
 
-                                            }}>
-                                                <TouchableOpacity
-                                                    onPress={() => handleEditOrder(item.article_id)}
-                                                >
 
-                                                    <Image alt="edite"
-                                                        style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity
-                                                    onPress={() => handleDeleteOrder(item.article_id)}
-                                                >
-                                                    <Image alt="Delete"
-                                                        style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
-                                                </TouchableOpacity>
-                                            </View>
+                </View>
+            : 
+                <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF",borderTopColor: "#828282", borderTopWidth: 1 }}>
+                    <View style={{ width: "100%", backgroundColor: "#FFF" }}>
+
+                        <ScrollView nestedScrollEnabled={true}  >
+                            <View style={{ width: "100%", backgroundColor: "#FFF", borderTopColor: "black", }}>
+                                <ScrollView nestedScrollEnabled={true} style={{ backgroundColor: "#FFF", height: "auto", maxHeight: 450 }}>
+                                    <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                                        <View style={{ paddingBottom: 20 }}>
+                                            {orderItems.map((item) =>
+                                                <View key={item.id} style={{
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    width: "95%",
+                                                    backgroundColor: "#FFF",
+                                                    elevation: 5,
+                                                    marginHorizontal: 9.5,
+                                                    marginTop: 15,
+                                                    borderRadius: 10,
+                                                    height: 150,
+                                                    paddingVertical: 5,
+
+                                                    // maxHeight: "45%"
+                                                }}>
+                                                    <View style={{
+                                                        width: "35%",
+                                                        // width: 120,
+                                                        // height: 102.746,
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        marginLeft: 2,
+                                                        marginVertical: 10,
+                                                        borderRadius: 10,
+                                                    }}>
+                                                        <Image style={{
+                                                            height: "100%",
+                                                            width: "68%",
+                                                            borderRadius: 10,
+                                                        }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                    </View>
+                                                    <View style={{
+                                                        width: "35%",
+                                                        marginHorizontal: 4,
+                                                        marginVertical: 10,
+                                                        borderRadius: 10
+                                                    }}>
+                                                        <View style={{ height: "50%" }}>
+                                                            <Text style={{
+                                                                fontSize: 18,
+                                                                fontWeight: 700, color: "#000"
+                                                            }}>{item.ArticleNumber}</Text>
+                                                            <Text style={{
+                                                                fontSize: 14,
+                                                                fontWeight: 400, color: "#000"
+                                                            }}>{item.StyleDescription}</Text>
+                                                        </View>
+                                                        <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
+                                                            <Text style={{
+                                                                fontSize: 14,
+                                                                fontWeight: 400, color: "#000"
+                                                            }}>Rate</Text>
+                                                            <Text style={{
+                                                                fontSize: 17,
+                                                                fontWeight: 700, color: "#000"
+                                                            }}>₹{item.rate}.00</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={{
+                                                        width: "18%",
+                                                        display: "flex",
+                                                        flexDirection: "row",
+                                                        justifyContent: "flex-end",
+                                                        gap: 8,
+                                                        marginLeft: 15,
+                                                        marginVertical: 10,
+                                                        borderRadius: 10,
+
+                                                    }}>
+                                                        <TouchableOpacity
+                                                            onPress={() => handleEditOrder(item.article_id)}
+                                                        >
+
+                                                            <Image alt="edite"
+                                                                style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity
+                                                            onPress={() => handleDeleteOrder(item.article_id)}
+                                                        >
+                                                            <Image alt="Delete"
+                                                                style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            )}
                                         </View>
-                                    )}
-                                </View>
+                                    </View>
+                                </ScrollView>
+
                             </View>
                         </ScrollView>
-                        <View nestedScrollEnabled={true} style={{ width: "100%", height: "40%", backgroundColor: "#FFF" }}>
-                            <View style={{ padding: 10 }}>
-                                <TextInput
-                                    value={promoCode}
-                                    onChange={handlePromoCodeChange}
-                                    style={{
+
+
+
+
+                        <View >
+                            <View nestedScrollEnabled={true} style={{ width: "100%", backgroundColor: "#FFF" }}>
+                                <View style={{ padding: 10 }}>
+                                    <TextInput
+                                        value={promoCode}
+                                        onChange={handlePromoCodeChange}
+                                        style={{
+                                            width: "100%",
+                                            height: 56,
+                                            borderWidth: 1, paddingVertical: 18,
+                                            paddingLeft: 15, borderRadius: 10,
+                                            fontSize: 18, backgroundColor: "#EEE", borderColor: "#E4E7EA"
+                                        }} keyboardType="default" placeholder="Promo Code">
+                                    </TextInput>
+                                    <Pressable onPress={handleApplyPromoCode} style={{
                                         width: "100%",
-                                        borderWidth: 1, paddingVertical: 18,
-                                        paddingLeft: 15, borderRadius: 10,
-                                        fontSize: 18, backgroundColor: "#EEE"
-                                    }} keyboardType="default" placeholder="Promo Code">
-                                </TextInput>
-                                <Pressable onPress={handleApplyPromoCode} style={{
-                                    width: "100%",
-                                    position: "absolute",
-                                    top: "33.5%",
-                                    left: "70%",
-                                    right: 0
-                                }}>
-                                    <Text style={{
-                                        color: "white",
-                                        backgroundColor: "#212121",
-                                        borderRadius: 7.6, width: 100, paddingHorizontal: 18,
-                                        paddingVertical: 9,
-                                        fontSize: 18, fontWeight: 600,
-                                        textAlign: "center"
-                                    }}>Apply</Text>
-                                </Pressable>
-                            </View>
-                            <View style={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                                alignItems: "flex-end",
-                                width: "97.5%",
-                                marginTop: "5%"
-                            }}>
-                                <Pressable onPress={handleAddMoreItems}>
-                                    <Text style={{
-                                        color: "white",
-                                        backgroundColor: "#212121",
-                                        borderRadius: 7.6, width: 150, paddingHorizontal: 18,
-                                        paddingVertical: 9,
-                                        fontSize: 18, fontWeight: 600,
-                                        textAlign: "center"
-                                    }}>
-                                        Add more
-                                    </Text>
-                                </Pressable>
-                            </View>
-                            <View style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                marginTop: "8%",
-                                // width: "100%",
-                            }}>
-                                <View style={{ width: "50%", paddingLeft: "2.8%" }}>
-                                    <Text>Total ({totalItems} item) :</Text>
-                                </View>
-                                <View style={{
-                                    display: "flex",
-                                    flexDirection: "row", gap: 5,
-                                    width: "50%",
-                                    paddingLeft: "20%"
-                                }}>
-                                    <Text >Total price</Text>
-                                    <Text >₹{totalPrice}</Text>
-                                </View>
-                            </View>
-                            <View style={{ padding: 10 }}>
-                                <Pressable style={{ width: "100%" }} onPress={handleProceedToCheckout}>
-                                    <Text style={{
-                                        color: "white",
-                                        backgroundColor: "#212121",
-                                        borderRadius: 7.6, paddingHorizontal: 20,
-                                        paddingVertical: 15,
-                                        fontSize: 18, fontWeight: 600,
-                                        textAlign: "left"
-                                    }}>
-                                        Proceed to Checkout
-                                    </Text>
-                                    <Image style={{
-                                        width: 30, height: 30,
                                         position: "absolute",
-                                        top: "20%",
-                                        left: "85%",
+                                        top: "30.5%",
+                                        left: "74%",
                                         right: 0
-                                    }} source={require("../../../assets/arrow(1).png")}></Image>
-                                </Pressable>
+                                    }}>
+                                        <Text style={{
+                                            color: "white",
+                                            backgroundColor: "#212121",
+                                            borderRadius: 7.6, width: 100, paddingHorizontal: 18,
+                                            paddingVertical: 9,
+                                            fontSize: 18, fontWeight: 600,
+                                            textAlign: "center"
+                                        }}>Apply</Text>
+                                    </Pressable>
+                                </View>
+
+                                {/* </View> */}
+
+                            </View>
+
+                        </View>
+
+                    </View>
+                    <View style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        backgroundColor: "#FFF",
+                        width: '100%'
+                    }}>
+                        <View style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            alignItems: "flex-end",
+                            width: "100%",
+                            backgroundColor: "#FFF",
+                            marginBottom: "2%"
+                        }}>
+                            <Pressable onPress={handleAddMoreItems} style={{ marginRight: 10 }}>
+                                <Text style={{
+                                    color: "white",
+                                    backgroundColor: "#212121",
+                                    borderRadius: 7.6, width: 150, paddingHorizontal: 22,
+                                    paddingVertical: 9,
+                                    fontSize: 18, fontWeight: 600,
+                                    textAlign: "center"
+                                }}>
+                                    Add More
+                                </Text>
+                            </Pressable>
+                        </View>
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row", gap: 5,
+                            width: "100%",
+                            justifyContent:"flex-end",
+                            alignItems:"flex-end",
+                            paddingRight:12,
+                            marginTop:6
+                        }}>
+                            <Text style={{ fontSize: 12, fontWeight: 700}}>Total price</Text>
+                        </View>
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            backgroundColor: "#FFF"
+                        }}>
+                            <View style={{ width: "50%", paddingLeft: "2.8%", marginBottom: 4 }}>
+                                <Text style={{ fontSize: 18, fontWeight: 600 }}>Total ({totalItems} item) :</Text>
+                            </View>
+                            <View style={{
+                                display: "flex",
+                                flexDirection: "row", gap: 5,
+                                width: "50%",
+                                justifyContent:"flex-end",
+                                alignItems:"flex-end",
+                                paddingRight:12,
+                                // paddingLeft: "14%"
+                            }}>
+                                <Text style={{ fontSize: 18, fontWeight: 700 }}>₹{totalPrice}.00</Text>
                             </View>
                         </View>
+                        <View style={{ padding: 10 }}>
+                            <Pressable disabled={totalPrice != 0 ? false : true} style={{ width: "100%" }} onPress={handleProceedToCheckout}>
+                                <Text style={{
+                                    color: "white",
+                                    backgroundColor: totalPrice != 0 ? "#212121" : "#212121B2",
+                                    borderRadius: 10, paddingHorizontal: 20,
+                                    paddingVertical: 15,
+                                    fontSize: 18, fontWeight: 600,
+                                    textAlign: "left"
+                                }}>
+                                    Proceed to Checkout
+                                </Text>
+                                <Image style={{
+                                    width: 30, height: 30,
+                                    position: "absolute",
+                                    top: "20%",
+                                    left: "89%",
+                                    right: 0
+                                }} source={require("../../../assets/arrow(1).png")}></Image>
+                            </Pressable>
+                        </View>
                     </View>
-                </ScrollView>
-            )
+                </View>
+            
+                    )
             }
         </>
 

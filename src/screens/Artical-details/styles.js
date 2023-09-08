@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
     container: {
         // flex: 1,
         // zIndex:0
-        overflow:"scroll",
-        height:"100%"
+        overflow: "scroll",
+        height: "100%"
     },
     image: {
         ...StyleSheet.absoluteFillObject,
@@ -24,34 +24,34 @@ const styles = StyleSheet.create({
         width: "100%",
 
     },
- 
+
     productDetails: {
         paddingBottom: 0,
-        paddingLeft: 5,
-        paddingRight: 0,
+        paddingLeft: 12,
+        paddingRight: 6,
         paddingTop: 1,
         position: 'absolute',
-        height:'auto',
+        height: 'auto',
         width: "100%",
-        bottom:0,
+        bottom: 0,
         zIndex: 2,
         backgroundColor: "#FFF",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        top: "52%", // You can use a percentage for positioning if needed
+        top: "47%", // You can use a percentage for positioning if needed
         elevation: 50,
-        shadowOffset: { width: 0, height: -3 }, // Offset the shadow upwards
-        shadowColor: 'black', // Specify a shadow color
-        shadowOpacity: 0.5, // Set the shadow opacity within the valid range (0-1)
+        shadowOffset: { width: 0, height: 0 }, // Offset the shadow upwards
+        shadowColor: '#000000', // Specify a shadow color
+        shadowOpacity: 0.9, // Set the shadow opacity within the valid range (0-1)
         shadowRadius: 5,
-      },
-      
+    },
+
     product_detail: {
         display: "flex",
         width: "95%",
-        height:'auto',
-        paddingTop: "3%",
-        flexDirection:"row",
+        height: 'auto',
+        paddingTop: "5%",
+        flexDirection: "row",
     },
     product_detail_sec: {
         marginRight: "5%",
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 600,
         color: "black",
-        marginLeft: "2%"
+        marginLeft: "2%",
+        marginBottom: 10
     },
     size_container1: {
         display: "flex",
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
         width: "98%",
         elevation: 5,
         marginLeft: "1%",
-        overflow:"scroll"
+        overflow: "scroll"
     },
     size: {
         width: 40,
@@ -97,17 +98,20 @@ const styles = StyleSheet.create({
     },
     size_a: {
         marginTop: 3,
-        textAlign: "center"
+        textAlign: "center",
+        color: 'rgba(0, 0, 0, 0.60)',
+        fontWeight:600,
     },
     product_detail_sec2: {
         width: "50%",
-        
+
     },
     size_label1: {
         fontSize: 15,
         fontWeight: 600,
         color: "black",
-        marginLeft: "2%"
+        marginLeft: "18%",
+        marginBottom: 10
     },
     size_container2: {
         borderWidth: 1,
@@ -117,14 +121,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#f4f4f4",
         padding: 12,
         display: "flex",
+        height: 52,
         justifyContent: "center",
-        width: "98%",
+        width: "80%",
         elevation: 5,
-        shadowColor: "#0000004d",
-        shadowOffset: 0,
-        shadowOpacity: 4
+        marginStart: 32,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 }, // Offset the shadow downwards
+        shadowOpacity: 0.9,
+        shadowRadius: 2,
+        elevation: 5,
     }, size_options: {
-        paddingLeft:14,
+        paddingLeft: 8,
         display: "flex",
         fontSize: 18,
         fontWeight: 500
@@ -132,40 +140,52 @@ const styles = StyleSheet.create({
     size_p: {
         marginTop: 0,
         marginBottom: "1%",
-        fontSize: 18,
-        textAlign: "center"
+        fontSize: 13,
+        color: 'rgba(0, 0, 0, 0.60)',
+        textAlign: "center",
+        fontWeight:600,
     },
     product_detail_sec3: {
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
-        alignContent:"center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
         width: "100%",
     },
-    container_grid:{
-        width:"100%"
+    container_grid: {
+        width: "100%"
     },
     head_grid: {
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        height:30
+        height: 30
     },
-    color_Text:{
-        width:"31%",
-        textAlign:"left"
+    color_Text: {
+        width: "31%",
+        textAlign: "left"
     },
-    available_Text:{
-        width:"37%",
-        textAlign:"left"
+    available_Text: {
+        width: "37%",
+        textAlign: "left"
     },
-    qty_Text:{
-        width:"31%",
-        textAlign:"left"
+    qty_Text: {
+        width: "31%",
+        textAlign: "left"
     },
-    color_box_Text:{ width:"31%",paddingRight:20},
-    available_box_Text:{ width:"37%"},
-    qty_box_Text:{ width:"31%",display:"flex",paddingLeft:20},
+    color_box_Text: { width: "31%", paddingRight: 20 },
+    available_box_Text: {
+        width: "34%",
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0 }, // Offset the shadow downwards
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+        elevation: 3, // Use elevation to create a shadow on Android
+        backgroundColor: 'transparent', // Add a background color to see the shadow
+        // Add padding to the container
+        borderRadius: 6,
+    },
+    qty_box_Text: { width: "31%", display: "flex", paddingLeft: 20 },
     color_div: {
         width: "31%",
         textAlign: "left"
@@ -199,16 +219,17 @@ const styles = StyleSheet.create({
         color: "black",
         marginLeft: 20
     },
-    body_main_con:{
-        display:"flex",
-        width:"100%",
+    body_main_con: {
+        display: "flex",
+        width: "100%",
     },
     row: {
         display: "flex",
-        flexWrap:"wrap",
-        flexDirection:"row",
-        width:"100%",
-        marginBottom:10
+        flexWrap: "wrap",
+        flexDirection: "row",
+        width: "100%",
+        marginTop: 2,
+        marginBottom: 5
     },
     color_box_div: {
         width: "31%",
@@ -219,11 +240,13 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
+        color: 'rgba(0, 0, 0, 0.60)',
         elevation: 2,
         borderWidth: 1,
         borderColor: '#ded6d6',
         backgroundColor: 'white',
         borderRadius: 10,
+        fontWeight:600,
         height: 40,
         justifyContent: 'center',
         textAlign: "center",
@@ -231,17 +254,11 @@ const styles = StyleSheet.create({
         paddingVertical: 7, // Equivalent to padding: 7px 0px;
     },
     available_box_div: {
-        width: "37%",
-        paddingLeft:12,
-        paddingRight:12
+        width: "100%",
+
     },
     available_box: {
         width: '98%',
-        shadowColor: '#00000017',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 1,
-        shadowRadius: 4,
-        elevation: 2,
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',
@@ -252,19 +269,21 @@ const styles = StyleSheet.create({
         borderColor: '#ded6d6',
         backgroundColor: 'white',
         borderRadius: 10,
+        color: 'rgba(0, 0, 0, 0.60)',
+        fontWeight:600
     },
     qty_box_div: {
         width: "31%",
-        maxWidth:"100%",
+        maxWidth: "100%",
         display: "flex",
-        flexDirection:"row"
+        flexDirection: "row"
     },
     // row:{
     //     flexShrink:0,
     //     maxWidth:"100%"
     // },
     qty_box: {
-        width: '98%',
+        width: '130%',
         shadowColor: '#000000',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.4,
@@ -274,147 +293,153 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Center content horizontally
         // paddingTop: 7,
         // paddingBottom:7,
-        paddingLeft:0,
-        paddingStart:0,
-        textAlign:"center",
-        height:40,
+        paddingLeft: 0,
+        paddingStart: 0,
+        textAlign: "center",
+        height: 40,
         borderWidth: 1,
         borderColor: '#ded6d6',
         backgroundColor: 'white',
         borderRadius: 10,
     },
-    top_row:{
-        display:"flex",
-        flexDirection:"row",
-        width:"100%",
-       
+    top_row: {
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+
     },
-    box1:{
-        width:"33%",
-        height:40,
-        paddingTop:1
-       
+    box1: {
+        width: "33%",
+        height: 40,
+        paddingTop: 1
+
     },
-    box1_btn:{
-        textAlign:"left",
-        borderRadius:10,
-        paddingBottom:0,backgroundColor:"white",
-        borderWidth:1,
-        borderStyle:"solid",
-        borderColor:"#0000004d",
-        marginHorizontal:0,
+    box1_btn: {
+        textAlign: "left",
+        borderRadius: 10,
+        paddingBottom: 0, backgroundColor: "white",
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: "#0000004d",
+        marginHorizontal: 0,
         // height:"100%",
-        paddingBottom:3,
-       marginVertical:0
+        paddingBottom: 3,
+        marginVertical: 0
     },
-    box1_btn_text:{
-        fontSize:25,
-        textAlign:"center"
+    box1_btn_text: {
+        fontSize: 25,
+        textAlign: "center",
+        fontWeight: 600,
     },
-    box2:{
-        width:"33%",
-        height:"96%",
-        display:"flex",
-        justifyContent:"center",
-        alignContent:"center"
+    box2: {
+        width: "33%",
+        height: "96%",
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center"
     },
-    box3:{
-        width:"33%",
-        marginLeft:5,
-        height:40,
-        paddingTop:1
+    box3: {
+        width: "33%",
+        marginLeft: 5,
+        height: 40,
+        paddingTop: 1
     },
-    box3_btn:{
-        borderWidth:1,
-        borderStyle:"solid",
-        borderColor:"#0000004d",
-        textAlign:"right",
-        borderRadius:10,
-        backgroundColor:"white",
-        marginHorizontal:0,
+    box3_btn: {
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: "#0000004d",
+        textAlign: "right",
+        borderRadius: 10,
+        backgroundColor: "white",
+        marginHorizontal: 0,
         // height:"100%",
-        paddingBottom:3,
-        marginLeft:-3,
-        marginRight:3
+        paddingBottom: 3,
+        marginLeft: -3,
+        marginRight: 3
     },
 
-    article_ratio_Section:{
-        display:"flex",
-        flexDirection:"row",
-        width:"100%",
-        
+    article_ratio_Section: {
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+
     },
-    article_ratio_container:{
-        width:"45%",
-        marginTop:10,
-        height:40,
-        alignItems:'center'
-        
+    article_ratio_container: {
+        width: "45%",
+        marginTop: 10,
+        height: 40,
+
     },
-    articallabel:{
-        fontWeight:600,
-        marginLeft:"3%",
+    articallabel: {
+        fontWeight: 600,
+        marginLeft: "3%",
+        textAlign: 'left',
+
     },
-    article_content_r:{
-        width:"98%",
-        elevation:5,
-        fontSize:18,
-        fontWeight:500,
-        borderColor:"#ded6d6",
-        borderWidth:1,
-        borderStyle:"solid",
-        borderRadius:10,
-        height:53,
-        paddingHorizontal:0,
-        paddingVertical:10,
-        backgroundColor:"#f4f4f4"
+    article_content_r: {
+        width: "80.5%",
+        elevation: 5,
+        fontSize: 18,
+        fontWeight: 500,
+        borderColor: "#ded6d6",
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderRadius: 10,
+        paddingTop:13,
+        height: 53,
+        justifyContent: 'center',
+        paddingHorizontal: 0,
+        paddingVertical: 10,
+        backgroundColor: "#f4f4f4",
+        color: '#626262',
     },
-    article_ratio_content:{
-        textAlign:"left",
-        textAlign:"center",
-        marginTop:10
+    article_ratio_content: {
+        textAlign: "left",
+        textAlign: "center",
+        marginTop: 10
     },
-    article_rate_container:{
-        width:"40%",
-        textAlign:"left",
-        marginLeft:"13%",
-        marginTop:10
+    article_rate_container: {
+        width: "40%",
+        textAlign: "left",
+        marginLeft: "13%",
+        marginTop: 10
     },
-    article_rate_content:{
-        textAlign:"right",
-        textAlign:"center",
-        marginTop:10
+    article_rate_content: {
+        textAlign: "right",
+        textAlign: "center",
+        marginTop: 10
     },
-    articallabel1:{
-        fontWeight:500,
-        marginLeft:"5%"
+    articallabel1: {
+        fontWeight: 500,
+        marginLeft: "5%"
     },
-    total_price_container:{
-        width:"95%",
-        display:"flex",
-        flexDirection:"row",
-        marginTop:"11%",
-        position:"relative",
-        top:0,
-        marginBottom:30
+    total_price_container: {
+        width: "95%",
+        display: "flex",
+        flexDirection: "row",
+        marginTop: "11%",
+        position: "relative",
+        top: 0,
+        marginBottom: 5
     },
-    main_total_div:{
-        width:"30%"
+    main_total_div: {
+        width: "30%"
     },
     addto_card_container:{
-        width:"50%",
-        marginLeft:"24%"
+        width:208,
+        height:50,
+        marginLeft:"16%"
     },
-    addto_cart_btn:{
-        backgroundColor:"black",
-        borderRadius:10,
-        paddingHorizontal:20,
-        paddingVertical:10
+    addto_cart_btn: {
+        backgroundColor: "black",
+        borderRadius: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 10
     },
     loader: {
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center'
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 
