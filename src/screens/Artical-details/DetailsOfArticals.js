@@ -191,7 +191,7 @@ const DetailsOfArticals = (props) => {
                 </View>
             ) : (
                 <>
-                    <ScrollView nestedScrollEnabled={true} >
+                    <ScrollView nestedScrollEnabled={true} style={{borderTopWidth:1,borderColor:"black"}}>
                         <View style={stylesRecipe.carouselContainer}>
                             <Carousel
                                 data={articlePhotos}
@@ -207,7 +207,7 @@ const DetailsOfArticals = (props) => {
                         <View style={{
                             width: "100%",
                             position: "absolute",
-                            top: "85%",
+                            top: "75%",
                             height: '100%',
                             // shadowOffset: { width: "100%", height: 0 },
                             elevation: 15,

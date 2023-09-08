@@ -55,7 +55,7 @@ export default function Contact(props) {
     }, []);
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' ,borderTopColor: "#828282", borderTopWidth: 1}}>
             <TouchableOpacity>
                 <View >
                     <Image source={require('../../../assets/ContactPagePNG/contact.png')} />

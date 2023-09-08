@@ -137,7 +137,7 @@ const AddToCart = (props) => {
                     />
                 </View>
             ) : (
-                <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}>
+                <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF",borderTopColor: "#828282", borderTopWidth: 1 }}>
                     <View style={{ width: "100%", backgroundColor: "#FFF" }}>
 
                         <ScrollView nestedScrollEnabled={true}  >
@@ -167,14 +167,13 @@ const AddToCart = (props) => {
                                                         display: "flex",
                                                         justifyContent: "center",
                                                         alignItems: "center",
-                                                        marginLeft: 15,
+                                                        marginLeft: 2,
                                                         marginVertical: 10,
                                                         borderRadius: 10,
-                                                        elevation: 15
                                                     }}>
                                                         <Image style={{
                                                             height: "100%",
-                                                            width: "79.5%",
+                                                            width: "68%",
                                                             borderRadius: 10,
                                                         }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
                                                     </View>
@@ -206,7 +205,7 @@ const AddToCart = (props) => {
                                                         </View>
                                                     </View>
                                                     <View style={{
-                                                        width: "15%",
+                                                        width: "18%",
                                                         display: "flex",
                                                         flexDirection: "row",
                                                         justifyContent: "flex-end",
@@ -253,7 +252,7 @@ const AddToCart = (props) => {
                                             height: 56,
                                             borderWidth: 1, paddingVertical: 18,
                                             paddingLeft: 15, borderRadius: 10,
-                                            fontSize: 18, backgroundColor: "#EEE"
+                                            fontSize: 18, backgroundColor: "#EEE", borderColor: "#E4E7EA"
                                         }} keyboardType="default" placeholder="Promo Code">
                                     </TextInput>
                                     <Pressable onPress={handleApplyPromoCode} style={{
@@ -299,7 +298,7 @@ const AddToCart = (props) => {
                                 <Text style={{
                                     color: "white",
                                     backgroundColor: "#212121",
-                                    borderRadius: 7.6, width: 150, paddingHorizontal: 18,
+                                    borderRadius: 7.6, width: 150, paddingHorizontal: 22,
                                     paddingVertical: 9,
                                     fontSize: 18, fontWeight: 600,
                                     textAlign: "center"
@@ -310,29 +309,40 @@ const AddToCart = (props) => {
                         </View>
                         <View style={{
                             display: "flex",
-                            flexDirection: "row",
-                            marginTop: "3%",
-                            backgroundColor: "#FFF"
-                            // width: "100%",
+                            flexDirection: "row", gap: 5,
+                            width: "100%",
+                            justifyContent:"flex-end",
+                            alignItems:"flex-end",
+                            paddingRight:12,
+                            marginTop:6
                         }}>
-                            <View style={{ width: "50%", paddingLeft: "2.8%" }}>
+                            <Text style={{ fontSize: 12, fontWeight: 700}}>Total price</Text>
+                        </View>
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            backgroundColor: "#FFF"
+                        }}>
+                            <View style={{ width: "50%", paddingLeft: "2.8%", marginBottom: 4 }}>
                                 <Text style={{ fontSize: 18, fontWeight: 600 }}>Total ({totalItems} item) :</Text>
                             </View>
                             <View style={{
                                 display: "flex",
                                 flexDirection: "row", gap: 5,
                                 width: "50%",
-                                paddingLeft: "14%"
+                                justifyContent:"flex-end",
+                                alignItems:"flex-end",
+                                paddingRight:12,
+                                // paddingLeft: "14%"
                             }}>
-                                <Text style={{ fontSize: 12, fontWeight: 700, paddingTop: 3 }}>Total price</Text>
                                 <Text style={{ fontSize: 18, fontWeight: 700 }}>₹{totalPrice}.00</Text>
                             </View>
                         </View>
                         <View style={{ padding: 10 }}>
-                            <Pressable disabled={totalPrice!=0?false:true} style={{ width: "100%" }} onPress={handleProceedToCheckout}>
+                            <Pressable disabled={totalPrice != 0 ? false : true} style={{ width: "100%" }} onPress={handleProceedToCheckout}>
                                 <Text style={{
-                                    color:"white",
-                                    backgroundColor:totalPrice!=0?"#212121":"#212121B2" ,
+                                    color: "white",
+                                    backgroundColor: totalPrice != 0 ? "#212121" : "#212121B2",
                                     borderRadius: 10, paddingHorizontal: 20,
                                     paddingVertical: 15,
                                     fontSize: 18, fontWeight: 600,

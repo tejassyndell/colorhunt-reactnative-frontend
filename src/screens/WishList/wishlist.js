@@ -79,22 +79,27 @@ export default function WishList(props) {
             fontWeight: "700",
             width: "100%"
           }}>Wishlist</Text>
-          <View style={{ position: 'absolute', left: 310, zIndex: 2 }}>
-            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-          </View>
+       
         </View>
       ),
+      headerRight:()=>(
+        <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
+        <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
+          <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+        </TouchableOpacity>
+      </View>
+      )
     });
   }, []);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      // headerright: () => (
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     // headerright: () => (
 
-      // ),
-      headerRight: () => <View />,
-    });
-  }, []);
+  //     // ),
+  //     headerRight: () => <View />,
+  //   });
+  // }, []);
 
 
   const renderItem = ({ item }) => (
@@ -166,7 +171,7 @@ export default function WishList(props) {
       ) : (
         
           selectedprd.length === 0 ?
-            <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
+            <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" ,borderTopColor: "#828282", borderTopWidth: 1}}>
               <Text style={{ fontSize: 30, fontWeight: "bolder", top: 200 }}>Your wishList is Empty</Text>
               <TouchableOpacity  onPress={() => navigation.navigate("Home")} style={{height:52}}>
                 <Text style={{

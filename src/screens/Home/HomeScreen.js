@@ -170,19 +170,14 @@ export default function HomeScreen(props) {
 
       ),
       headerTitle: () => (
-        <View style={{ justifyContent: 'center' }}>
-          <View>
-            <Pressable >
-            </Pressable>
-          </View>
-
-          <View style={{ position: 'absolute', left: 300, }}>
-            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-          </View>
-        </View>
-
+        <View />
       ),
-      headerRight: () => <View />,
+      headerRight: () =>
+        <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
+          <TouchableOpacity onPress={()=>{navigation.navigate("Profile")}}>
+            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+          </TouchableOpacity>
+        </View>,
     });
   }, []);
 
@@ -495,7 +490,7 @@ export default function HomeScreen(props) {
                           <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
-                              width: 155,
+                              width: "94%",
                               height: 190,
                               borderRadius: 10,
 

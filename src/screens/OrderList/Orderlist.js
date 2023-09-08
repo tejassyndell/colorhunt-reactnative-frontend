@@ -123,14 +123,15 @@ const Orderlist = (props) => {
             ) : (
                 <View style={{ height: "100%", width: "100%", backgroundColor: "white" }}>
                     <ScrollView nestedScrollEnabled={true}>
-                        <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "black", borderWidth: 1, borderStyle: "solid" }}>
+                        <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "#828282", borderTopWidth: 1, borderStyle: "solid" }}>
                             <View style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", backgroundColor: "#FFF" }}>
                                 <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Date</Text>
                                     <View style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 10,
-                                        paddingLeft: 15, borderRadius: 10,
+                                        paddingLeft: 15,borderRadius: 6,
+                                        borderColor:"#E4E7EA",
                                         fontSize: 18, backgroundColor: "#EEE"
                                     }}
                                     // value={formattedDate}
@@ -143,7 +144,8 @@ const Orderlist = (props) => {
                                     <TextInput value="" style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 5,
-                                        paddingLeft: 15, borderRadius: 10,
+                                        paddingLeft: 15, borderRadius: 6,
+                                        borderColor:"#E4E7EA",
                                         fontSize: 16, backgroundColor: "#EEE"
                                     }}></TextInput>
 
@@ -153,19 +155,20 @@ const Orderlist = (props) => {
                                     <TextInput value={transportationVal} onChangeText={(e) => filterTransportationValue(e)} style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 5,
-                                        paddingLeft: 15, borderRadius: 10,
+                                        paddingLeft: 15, borderRadius: 6,
+                                        borderColor:"#E4E7EA",
                                         fontSize: 16, backgroundColor: "#EEE"
                                     }} placeholder="Select transportation"></TextInput>
                                     <TouchableOpacity style={{
                                         position: "absolute",
-                                        top: "64%",
+                                        top: "70%",
                                         left: "95%",
                                         right: 0
                                     }} onPress={() => { Transportation.length !== 0 ? setshowTransporatation(!showTransporatation) : "" }}>
                                         <Image style={{
-                                            width: 25, height: 25,
+                                            width: 20, height: 20,
 
-                                        }} source={require("../../../assets/DownArrow(1).jpg")}></Image>
+                                        }} source={require("../../../assets/DownArrow(1).png")}></Image>
                                     </TouchableOpacity>
                                 </View>
                                 {
@@ -176,9 +179,11 @@ const Orderlist = (props) => {
                                         borderWidth: 1,
                                         backgroundColor: "#EEEEEE",
                                         marginHorizontal: 20,
-                                        borderRadius: 10,
+                                        borderRadius: 6,
+                                        borderColor:"#E4E7EA",
                                         paddingHorizontal: 10,
-                                        paddingBottom: 18
+                                        paddingBottom: 18,
+                                        width:"90%",
                                     }} nestedScrollEnabled={true}>
 
                                         <View>
@@ -206,14 +211,14 @@ const Orderlist = (props) => {
                                             <View style={{
                                                 display: "flex",
                                                 flexDirection: "row",
-                                                width: "95%",
+                                                width: "90%",
                                                 backgroundColor: "#FFF",
-                                                elevation: 20,
+                                                elevation: 10,
                                                 shadowColor: '#000000',
                                                 shadowOffset: { width: 0, height: 0 },
                                                 shadowOpacity: 0.4,
                                                 shadowRadius: 4,
-                                                marginHorizontal: 9.5,
+                                                marginHorizontal: 20,
                                                 marginTop: 15,
                                                 borderRadius: 10,
                                                 height: 150,
@@ -226,15 +231,14 @@ const Orderlist = (props) => {
                                                     display: "flex",
                                                     justifyContent: "center",
                                                     alignItems: "center",
-                                                    marginLeft: 5,
                                                     marginVertical: 10,
                                                     borderRadius: 10,
-                                                    elevation: 15
+                                                    
                                                 }}>
 
                                                     <Image source={{ uri: baseImageUrl + item.Photos }} style={{
                                                         height: "100%",
-                                                        width: "79.5%", borderRadius: 10
+                                                        width: "70%", borderRadius: 10
                                                     }} ></Image>
 
                                                 </View>
@@ -258,11 +262,11 @@ const Orderlist = (props) => {
                                                         <Text style={{
                                                             fontSize: 14,
                                                             fontWeight: 400, color: "#000"
-                                                        }}>Rate:</Text>
+                                                        }}>Rate</Text>
                                                         <Text style={{
                                                             fontSize: 17,
                                                             fontWeight: 700, color: "#000"
-                                                        }}>₹ {item.rate}</Text>
+                                                        }}>₹{item.rate}.00</Text>
                                                     </View>
                                                 </View>
                                                 {/* <View style={{
@@ -349,7 +353,7 @@ const Orderlist = (props) => {
                                     </View>
 
                                 </View>
-                                <View style={{ display: "flex", backgroundColor: "#FFF", height: "100%", flexDirection: "row" }}>
+                                <View style={{ display: "flex", backgroundColor: "#FFF", height: "auto", flexDirection: "row" }}>
                                     <View style={{ width: "50%" }}>
                                         <Pressable style={{
                                             width: 165,
@@ -373,15 +377,15 @@ const Orderlist = (props) => {
                                         display: "flex",
                                         flexDirection: "row", gap: 5,
                                         // paddingLeft: 30,
-                                        justifyContent:"flex-end",
+                                        justifyContent: "flex-end",
                                         // paddingTop: "2%",
                                         width: "50%",
-                                        alignItems:"flex-end",
-                                        height:50,
-                                        gap:5,
-                                        paddingBottom:20,paddingRight:4
+                                        alignItems: "flex-end",
+                                        height: 50,
+                                        gap: 5,
+                                        paddingBottom: 20, paddingRight: 4
                                     }}>
-                                        <View style={{paddingBottom:2}}>
+                                        <View style={{ paddingBottom: 2 }}>
                                             <Text style={{ fontSize: 15, fontWeight: 500 }}>Total price</Text>
                                         </View>
                                         <View style={{}}>
@@ -392,73 +396,73 @@ const Orderlist = (props) => {
                             </View>
                         </View>
                         <Modal
-                        visible={isModalVisible}
-                        transparent={true}
-                        animationType="slide"
-                        onRequestClose={() => setIsModalVisible(false)}
-                    >
-                        <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
-                        <View
-                            style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                            }}
+                            visible={isModalVisible}
+                            transparent={true}
+                            animationType="slide"
+                            onRequestClose={() => setIsModalVisible(false)}
                         >
-                            <View
-                                style={{
-                                    width: 390,
-                                    height: 410,
-                                    backgroundColor: "white",
-                                    borderRadius: 10,
-                                    alignItems: "center",
-                                    padding: 20,
-                                }}
-                            >
-                                <Image
-                                    source={require("../../../assets/icons/Modalicon.png")}
-                                    style={{ width: 100, height: 100, marginBottom: 30, marginTop:30 }}
-                                />
-
-                                <Text style={{ fontSize: 32, fontWeight: 700, marginBottom: 10 }}>
-                                    Successful!
-                                </Text>
-
-                                <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 20, fontWeight:500,color:"rgba(0, 0, 0, 0.70)" }}>
-                                "Your Order Is {"\n"} Confirmed Successfully"
-                                </Text>
-
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        setIsModalVisible(false);
-                                        navigation.navigate('Home');
-                                    }}
+                            <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                                <View
                                     style={{
-                                        backgroundColor: "black",
-                                        width: 189,
-                                        height: 50,
-                                        borderRadius: 10,
+                                        flex: 1,
                                         justifyContent: "center",
                                         alignItems: "center",
-                                        marginVertical:20
+                                        backgroundColor: "rgba(0, 0, 0, 0.5)",
                                     }}
                                 >
-                                    <Text
+                                    <View
                                         style={{
-                                            fontSize: 18,
-                                            fontWeight: 700,
-                                            color: "white",
-                                            paddingHorizontal:15
+                                            width: 360,
+                                            height: 390,
+                                            backgroundColor: "white",
+                                            borderRadius: 25,
+                                            alignItems: "center",
+                                            padding: 5
                                         }}
                                     >
-                                        Continue Shopping
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        </TouchableWithoutFeedback>
-                    </Modal>
+                                        <Image
+                                            source={require("../../../assets/icons/Modalicon.png")}
+                                            style={{ width: 100, height: 100, marginBottom: 20, marginTop: 30 }}
+                                        />
+
+                                        <Text style={{ fontSize: 32, fontWeight: 700, marginBottom: 10 }}>
+                                            Successful!
+                                        </Text>
+
+                                        <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 20, fontWeight: 500, color: "rgba(0, 0, 0, 0.70)" }}>
+                                            "Your Order Is {"\n"} Confirmed Successfully"
+                                        </Text>
+
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                setIsModalVisible(false);
+                                                navigation.navigate('Home');
+                                            }}
+                                            style={{
+                                                backgroundColor: "black",
+                                                width: 189,
+                                                height: 50,
+                                                borderRadius: 10,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                marginVertical: 20
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontSize: 18,
+                                                    fontWeight: 700,
+                                                    color: "white",
+                                                    paddingHorizontal: 15
+                                                }}
+                                            >
+                                                Continue Shopping
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </Modal>
                     </ScrollView>
                 </View>
             )}</>
