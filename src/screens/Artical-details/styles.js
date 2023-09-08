@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: "98%",
         elevation: 5,
+        shadowColor:"gray",
         marginLeft: "1%",
         overflow: "scroll"
     },
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
         width: "80%",
         elevation: 5,
         marginStart: 32,
-        shadowColor: '#000',
+        shadowColor: 'gray',
         shadowOffset: { width: 0, height: 2 }, // Offset the shadow downwards
         shadowOpacity: 0.9,
         shadowRadius: 2,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     color_box_Text: { width: "31%", paddingRight: 20 },
     available_box_Text: {
         width: "34%",
-        shadowColor: '#000',
+        shadowColor: 'gray',
         shadowOffset: { width: 0, height: 0 }, // Offset the shadow downwards
         shadowOpacity: 0.5,
         shadowRadius: 2,
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     },
     color_box: {
         width: '98%',
-        shadowColor: '#000',
+        shadowColor: 'gray',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
@@ -284,7 +285,7 @@ const styles = StyleSheet.create({
     // },
     qty_box: {
         width: '130%',
-        shadowColor: '#000000',
+        shadowColor: 'gray',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.4,
         shadowRadius: 4,
@@ -379,6 +380,7 @@ const styles = StyleSheet.create({
     article_content_r: {
         width: "80.5%",
         elevation: 5,
+        shadowColor:"gray",
         fontSize: 18,
         fontWeight: 500,
         borderColor: "#ded6d6",

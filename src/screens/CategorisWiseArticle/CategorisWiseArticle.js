@@ -100,7 +100,7 @@ export default function AllArticle(props) {
       borderColor: "gray",
       backgroundColor: "white",
       // Add shadow properties for iOS
-      shadowColor: "#000000",
+      shadowColor: "gray",
       shadowOpacity: 0.4,
       shadowRadius: 4,
       elevation: 10,
@@ -113,8 +113,9 @@ export default function AllArticle(props) {
       <View style={{
         width: "100%", display: "flex", justifyContent: "center", alignItems: "center",
         paddingTop: 8,
-        elevation: 15,
-        shadowColor: 'grey',
+        elevation: 20,
+        borderColor: "gray",
+        shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
         <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "78%", height: 180, borderRadius: 10 }} />

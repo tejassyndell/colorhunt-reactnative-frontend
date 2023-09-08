@@ -130,8 +130,8 @@ const Orderlist = (props) => {
                                     <View style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 10,
-                                        paddingLeft: 15,borderRadius: 6,
-                                        borderColor:"#E4E7EA",
+                                        paddingLeft: 15, borderRadius: 6,
+                                        borderColor: "#E4E7EA",
                                         fontSize: 18, backgroundColor: "#EEE"
                                     }}
                                     // value={formattedDate}
@@ -145,7 +145,7 @@ const Orderlist = (props) => {
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 5,
                                         paddingLeft: 15, borderRadius: 6,
-                                        borderColor:"#E4E7EA",
+                                        borderColor: "#E4E7EA",
                                         fontSize: 16, backgroundColor: "#EEE"
                                     }}></TextInput>
 
@@ -156,7 +156,7 @@ const Orderlist = (props) => {
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 5,
                                         paddingLeft: 15, borderRadius: 6,
-                                        borderColor:"#E4E7EA",
+                                        borderColor: "#E4E7EA",
                                         fontSize: 16, backgroundColor: "#EEE"
                                     }} placeholder="Select transportation"></TextInput>
                                     <TouchableOpacity style={{
@@ -180,10 +180,10 @@ const Orderlist = (props) => {
                                         backgroundColor: "#EEEEEE",
                                         marginHorizontal: 20,
                                         borderRadius: 6,
-                                        borderColor:"#E4E7EA",
+                                        borderColor: "#E4E7EA",
                                         paddingHorizontal: 10,
                                         paddingBottom: 18,
-                                        width:"90%",
+                                        width: "90%",
                                     }} nestedScrollEnabled={true}>
 
                                         <View>
@@ -203,8 +203,8 @@ const Orderlist = (props) => {
                                     </ScrollView>
                                 }
                             </View>
-                            <ScrollView nestedScrollEnabled={true} style={{ height: "100%" }}>
-                                <View style={{ display: "flex", flexDirection: "column", height: "auto", maxHeight: 380, width: "100%", backgroundColor: "#FFF" }}>
+                            <View style={{ display: "flex", flexDirection: "column", height: "auto", maxHeight: 380, width: "100%", backgroundColor: "#FFFFFF" }}>
+                                <ScrollView nestedScrollEnabled={true} >
                                     {ParsedData && ParsedData.map((item, index) => (
                                         <View key={item.id} style={{ paddingBottom: 20 }}>
 
@@ -214,7 +214,7 @@ const Orderlist = (props) => {
                                                 width: "90%",
                                                 backgroundColor: "#FFF",
                                                 elevation: 10,
-                                                shadowColor: '#000000',
+                                                shadowColor: 'gray',
                                                 shadowOffset: { width: 0, height: 0 },
                                                 shadowOpacity: 0.4,
                                                 shadowRadius: 4,
@@ -223,6 +223,7 @@ const Orderlist = (props) => {
                                                 borderRadius: 10,
                                                 height: 150,
                                                 paddingVertical: 5,
+                                                backgroundColor: "#FFF"
                                             }}>
                                                 <View style={{
                                                     width: "35%",
@@ -233,7 +234,7 @@ const Orderlist = (props) => {
                                                     alignItems: "center",
                                                     marginVertical: 10,
                                                     borderRadius: 10,
-                                                    
+
                                                 }}>
 
                                                     <Image source={{ uri: baseImageUrl + item.Photos }} style={{
@@ -284,8 +285,8 @@ const Orderlist = (props) => {
                                             </View>
                                         </View>
                                     ))}
-                                </View>
-                            </ScrollView>
+                                </ScrollView>
+                            </View>
                             <View style={{
                                 height: 250,
                                 // height:"100%",

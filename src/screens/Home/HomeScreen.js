@@ -323,7 +323,7 @@ export default function HomeScreen(props) {
                       marginTop: 10,
                       marginBottom: 10,
                       borderRadius: 10,
-
+                      
                     }}
                   >
                     <TouchableOpacity
@@ -332,25 +332,26 @@ export default function HomeScreen(props) {
                       }}
                     >
                       <View style={{
-                        borderColor: "gray",
-                        width: 155,
-                        height: 170,
-                        shadowColor: "#000000",
-                        shadowOpacity: 0.4,
-                        shadowRadius: 4,
-                        elevation: 10, // This is for Android, use shadow properties for iOS
-                        shadowOffset: {
-                          width: 0,
-                          height: 0,
-                        },
-                      }}>
+                          marginTop:5,
+                          width: 155,
+                          height: 190,
+                          borderColor: "gray",
+                          shadowColor: "gray",
+                          shadowOpacity: 0.9,
+                          shadowRadius: 10,
+                          elevation: 10,
+                          shadowOffset: {
+                            width: 0,
+                            height: 0,
+                          },
+                        }}>
                         <Image
                           source={require("../../../assets/demo.png")}
                           style={{
-                            width: 155,
-                            height: 170,
+                            width: "100%",
+                            height: 190,
                             borderRadius: 10,
-
+                          
                           }}
                         />
                       </View>
@@ -442,13 +443,14 @@ export default function HomeScreen(props) {
                         }}
                       >
                         <View style={{
+                          marginTop:5,
                           width: 155,
                           height: 190,
                           borderColor: "gray",
-                          shadowColor: "#000000",
+                          shadowColor: "gray",
                           shadowOpacity: 0.9,
                           shadowRadius: 4,
-                          elevation: 10, // For Android, use elevation
+                          elevation: 5, // For Android, use elevation
                           shadowOffset: {
                             width: 0,
                             height: 0,

@@ -191,7 +191,7 @@ const DetailsOfArticals = (props) => {
                 </View>
             ) : (
                 <>
-                    <ScrollView nestedScrollEnabled={true} style={{borderTopWidth:1,borderColor:"black"}}>
+                    <ScrollView nestedScrollEnabled={true} >
                         <View style={stylesRecipe.carouselContainer}>
                             <Carousel
                                 data={articlePhotos}

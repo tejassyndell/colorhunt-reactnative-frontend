@@ -79,15 +79,15 @@ export default function WishList(props) {
             fontWeight: "700",
             width: "100%"
           }}>Wishlist</Text>
-       
+
         </View>
       ),
-      headerRight:()=>(
+      headerRight: () => (
         <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
-        <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
-          <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
+            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+          </TouchableOpacity>
+        </View>
       )
     });
   }, []);
@@ -149,11 +149,11 @@ export default function WishList(props) {
             )}
           </View>
 
-          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: 155, height: 190, borderRadius: 10 }} />
+          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: "92%", height: 190, borderRadius: 10 }} />
 
         </View>
         <Text style={{ fontWeight: 'bold', marginTop: 12 }}>{item.ArticleNumber}</Text>
-        <Text style={{ marginTop: 3 }}>{item.StyleDescription}</Text>
+        <Text style={{ marginTop: 3 }}>{item.Title}</Text>
         <Text style={{ fontWeight: 'bold', marginTop: 3 }}>{"₹" + item.ArticleRate + '.00'}</Text>
       </View>
     </TouchableOpacity>
