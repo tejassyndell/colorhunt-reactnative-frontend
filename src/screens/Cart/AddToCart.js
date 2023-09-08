@@ -136,7 +136,28 @@ const AddToCart = (props) => {
                         color="black"
                     />
                 </View>
-            ) : (
+            ) : ( 
+                orderItems.length === 0 ? 
+                <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
+                    <Text style={{ fontSize: 40, fontWeight: "bolder", top: 200, textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your Cart is {"\n"} Empty</Text>
+                    <TouchableOpacity
+                        style={{
+                            width: 189,
+                            height: 50,
+                            borderRadius: 10,
+                            backgroundColor: "black",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginTop: 380,
+                        }}
+                        onPress={() => navigation.navigate("Home")}
+                    >
+                        <Text style={{ color: "white" }}>Create Order</Text>
+                    </TouchableOpacity>
+
+
+                </View>
+            : 
                 <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF",borderTopColor: "#828282", borderTopWidth: 1 }}>
                     <View style={{ width: "100%", backgroundColor: "#FFF" }}>
 
@@ -361,8 +382,8 @@ const AddToCart = (props) => {
                         </View>
                     </View>
                 </View>
-
-            )
+            
+                    )
             }
         </>
 
