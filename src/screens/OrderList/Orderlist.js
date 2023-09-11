@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState, useEffect } from "react";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Pressable, Modal } from "react-native";
-import { gettransportation } from "../../api/api";
+import { addso, gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
@@ -21,8 +21,24 @@ const Orderlist = (props) => {
     const currentDate = new Date()
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const AddSo =async ()=>{
+        const data={
+            Transportation:Transportation,
+            transportationVal:transportationVal,
+            ParsedData:ParsedData
+        }
+        console.log(data);
+        // await addso();
+    }
     const showSuccessModal = () => {
+        const data={
+            Transportation:Transportation,
+            transportationVal:transportationVal,
+            ParsedData:ParsedData
+        }
+        console.log(data);
         setIsModalVisible(true);
+        AddSo();
     };
     // let ParsedData = [];
     const formattedDate = `${currentDate.getMonth() + 1
@@ -108,6 +124,8 @@ const Orderlist = (props) => {
             setshowTransporatation(false)
         }
     }
+
+ 
     return (
         <>
             {isLoading ? (

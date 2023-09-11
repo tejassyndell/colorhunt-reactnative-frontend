@@ -174,3 +174,13 @@ export const gettransportation = async (data) => {
     console.log(err, 'err in react api')
   }
 }
+
+
+export const addso = async (data) => {
+  try {
+    return   await axios.get(`${url}/addso`, data)
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}
