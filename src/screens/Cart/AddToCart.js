@@ -1,11 +1,12 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Pressable } from "react-native";
-import { useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { ActivityIndicator } from "react-native";
 import { cartdetails, deletecartitem } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 
@@ -60,9 +61,15 @@ const AddToCart = (props) => {
                 console.log('Error fetching data:', error)
             })
     }
-    useEffect(() => {
-        cartDetails();
-    }, [])
+
+    useFocusEffect(
+        React.useCallback(()=>{
+            cartDetails();
+        },[])
+    )
+    // useEffect(() => {
+    //     cartDetails();
+    // },[])
 
     const handlePromoCodeChange = (event) => {
         setPromoCode(event.target.value)

@@ -42,6 +42,7 @@ const Orderlist = (props) => {
     const GetTransportation = async () => {
         await gettransportation().then((response) => {
             setTransportation(response.data)
+            setTransportationVal(response.data[0].Name)
             setOldTransportation(response.data)
             setIsLoading(false);
         })
@@ -152,24 +153,36 @@ const Orderlist = (props) => {
                                 </View>
                                 <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Transportation</Text>
-                                    <TextInput value={transportationVal} onChangeText={(e) => filterTransportationValue(e)} style={{
+                                   
+                                    {/* <TextInput  value={transportationVal} onChangeText={(e) => filterTransportationValue(e)}   style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 5,
                                         paddingLeft: 15, borderRadius: 6,
                                         borderColor: "#E4E7EA",
                                         fontSize: 16, backgroundColor: "#EEE"
-                                    }} placeholder="Select transportation"></TextInput>
-                                    <TouchableOpacity style={{
-                                        position: "absolute",
-                                        top: "70%",
+                                        
+                                    }} editable={false}  placeholder="Select transportation"></TextInput> */}
+                                    <View style={{
+                                        width: "100%",
+                                        borderWidth: 1, paddingVertical: 10,
+                                        paddingLeft: 15, borderRadius: 6,
+                                        borderColor: "#E4E7EA",
+                                        fontSize: 16, backgroundColor: "#EEE",
+                                        display:"flex",
+                                        flexDirection:"row"
+                                    }}>
+                                    <Text>{transportationVal}</Text>
+                                    <TouchableOpacity style={{ position: "absolute",
+                                        top: "64%",
                                         left: "95%",
-                                        right: 0
-                                    }} onPress={() => { Transportation.length !== 0 ? setshowTransporatation(!showTransporatation) : "" }}>
+                                        right: 0}} onPress={() => { Transportation.length !== 0 ? setshowTransporatation(!showTransporatation) : "" }}>
+
                                         <Image style={{
                                             width: 20, height: 20,
 
                                         }} source={require("../../../assets/DownArrow(1).png")}></Image>
                                     </TouchableOpacity>
+                                    </View>
                                 </View>
                                 {
                                     showTransporatation && Transportation.length !== 0 &&
@@ -189,7 +202,7 @@ const Orderlist = (props) => {
                                         <View>
 
                                             {Transportation.map((item) =>
-                                                <TouchableOpacity key={item.Id} onPress={() => setTransportationVal(item.Name)}>
+                                                <TouchableOpacity key={item.Id} onPress={() => {setTransportationVal(item.Name);setshowTransporatation(!showTransporatation)}}>
                                                     <Text style={{
                                                         fontSize: 16,
                                                         marginVertical: 10
@@ -297,7 +310,7 @@ const Orderlist = (props) => {
                                     // height:"100%",
                                     display: "flex",
                                     flexDirection: "row",
-                                    // marginTop: 10
+                                    paddingTop: 30
                                 }}>
                                     <View style={{ width: "100%", paddingLeft: "60%" }}>
                                         <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
@@ -336,7 +349,7 @@ const Orderlist = (props) => {
                                                 <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹280.40</Text>
                                             </View>
                                         </View>
-                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
+                                        {/* <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
                                             <View style={{ width: '50%', paddingTop: 2 }}>
                                                 <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>Discount</Text>
 
@@ -344,7 +357,7 @@ const Orderlist = (props) => {
                                             <View style={{ width: '45%' }}>
                                                 <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹28.04</Text>
                                             </View>
-                                        </View>
+                                        </View> */}
                                         <View style={{ width: "50%", marginLeft: "45%" }}>
 
                                             <View style={{ borderWidth: 1 }}>

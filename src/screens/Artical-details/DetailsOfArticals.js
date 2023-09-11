@@ -39,8 +39,8 @@ const DetailsOfArticals = (props) => {
     const [isZoomed, setIsZoomed] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [updateCart,setUpdateCart]=useState(false);
-    const [articalCartId,setArticalCartId]=useState();
+    const [updateCart, setUpdateCart] = useState(false);
+    const [articalCartId, setArticalCartId] = useState();
     const ArticleDetailsData = async () => {
         let data = {
             ArticleId: id,
@@ -120,7 +120,7 @@ const DetailsOfArticals = (props) => {
                     navigation.navigate('cart_list', { totalPrice });
                 } else {
                     setIsModalVisible(true);
-                   
+
                     setArticalCartId(res.data[0].id);
                 }
             })
@@ -191,7 +191,7 @@ const DetailsOfArticals = (props) => {
         });
     }, []);
 
-    const updateArticalInCart=async ()=>{
+    const updateArticalInCart = async () => {
         if (!combinedArray) {
             console.log('undefined')
             return
@@ -202,15 +202,13 @@ const DetailsOfArticals = (props) => {
         console.log('cqty to string ', colorwiseQuantitiesTOstring)
         console.log(totalPrice)
         const data = {
-            id : articalCartId,
+            id: articalCartId,
             Quantity: colorwiseQuantitiesTOstring,
             rate: totalPrice,
         }
-        await updateCartArticale(data).then((res)=>{
+        await updateCartArticale(data).then((res) => {
             console.log(res.data);
-            if(res.data.affectedRows==1){
-                navigation.navigate('cart_list', { totalPrice });
-            }
+            navigation.navigate('cart_list', { totalPrice });
         })
     }
     return (
@@ -436,8 +434,8 @@ const DetailsOfArticals = (props) => {
                                                 width: "100%",
                                                 display: "flex",
                                                 flexDirection: "row",
-                                                position:"absolute",
-                                                bottom:0
+                                                position: "absolute",
+                                                bottom: 0
                                             }}>
                                                 <TouchableOpacity
                                                     onPress={() => {
@@ -447,11 +445,11 @@ const DetailsOfArticals = (props) => {
                                                         backgroundColor: "black",
                                                         width: "50%",
                                                         height: 50,
-                                                        borderBottomLeftRadius:25,
+                                                        borderBottomLeftRadius: 25,
                                                         justifyContent: "center",
                                                         alignItems: "center",
-                                                        borderWidth:1,
-                                                        borderColor:"white"
+                                                        borderWidth: 1,
+                                                        borderColor: "white"
                                                     }}
                                                 >
                                                     <Text
@@ -477,8 +475,8 @@ const DetailsOfArticals = (props) => {
                                                         borderBottomRightRadius: 25,
                                                         justifyContent: "center",
                                                         alignItems: "center",
-                                                        borderWidth:1,
-                                                        borderColor:"white"
+                                                        borderWidth: 1,
+                                                        borderColor: "white"
                                                     }}
                                                 >
                                                     <Text
