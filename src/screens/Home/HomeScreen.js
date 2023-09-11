@@ -61,8 +61,6 @@ export default function HomeScreen(props) {
       user_id: 197,
       article_id: i.Id,
     }
-
-    console.log(data)
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist()
@@ -73,12 +71,10 @@ export default function HomeScreen(props) {
   }
 
   const rmvProductWishlist = async (i) => {
-    console.log(i, 'r')
     let data = {
       party_id: 197,
       article_id: i.Id,
     }
-    console.log(data)
 
     try {
       await DeleteWishlist(data).then((res) => {
@@ -130,7 +126,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const viewAllArticles = () => {
-    navigation.navigate("AllArticle", { filteredData });
+    navigation.navigate("AllArticle", { finalData });
   };
 
   useLayoutEffect(() => {
@@ -164,7 +160,6 @@ export default function HomeScreen(props) {
 
   const handlePress = (item) => {
     // ategoryNames(item);
-    console.log(item);
     navigation.navigate("CategorisWiseArticle", { item: item });
   };
 
@@ -172,7 +167,6 @@ export default function HomeScreen(props) {
     if (searchText === '') {
       setFilteredData(nameDatas)
     } else {
-      console.log(filterDataSearch.length)
       const filtered = filterDataSearch.filter((item) =>
         item.ArticleNumber.toString().includes(searchText.toString()) ||
         item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -182,7 +176,6 @@ export default function HomeScreen(props) {
       )
       setFilteredData(filtered)
       setFinalData(filtered)
-      console.log(filteredData.length)
     }
   }
   useEffect(() => {
@@ -191,13 +184,16 @@ export default function HomeScreen(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(selectedCategories, "Sc")
+    
   };
   useEffect(() => {
     // This effect runs whenever selectedCategories change
-    const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category));
+    console.log(selectedCategories, "Sc")
+    console.log(selectedPriceRange,"Range")
+    const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category) && item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]);
+    console.log(abc.length)
     setFinalData(abc);
-  }, [selectedCategories]); // Add selectedCategories as a dependency
+  }, [selectedCategories,selectedPriceRange]); // Add selectedCategories as a dependency
 
   const handleCloseFilter = (isClosed) => {
     setIsFilterVisible(isClosed)
@@ -269,7 +265,6 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-                {console.log(finalData)}
                 {ApplyStatushBack === true ? (finalData.length > 0 ? (finalData.map((item) => (
                   <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}>
                     <View
@@ -607,7 +602,7 @@ export default function HomeScreen(props) {
                 }}
               >
                 <Filter onFilterChange={handleFilterChange}
-                  onCloseFilter={handleCloseFilter} />
+                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} />
               </View>
             </View>
           )}

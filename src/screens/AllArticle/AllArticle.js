@@ -29,8 +29,8 @@ export default function AllArticle(props) {
 
   // getCategoriesname
   const getCategoriesname = async () => {
-    if (route.params && route.params.filteredData.length > 0) {
-      setSearchedData(route.params.filteredData)
+    if (route.params && route.params.finalData.length > 0) {
+      setSearchedData(route.params.finalData)
       setIsLoading(false)
       console.log(searchedData)
     } else {

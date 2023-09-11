@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { getCategories } from "../../api/api";
-export default function Filter({onFilterChange, onCloseFilter}) {
+export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
     const [data, setData] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState(Scategories);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 700]);
     const defaultPriceRange = [0, 700];
+    const min = 0;
+    const max = 700;
 
     const getCategoriesname = async () => {
         try {
@@ -46,6 +49,13 @@ export default function Filter({onFilterChange, onCloseFilter}) {
     const closeFilter = () => {
         onCloseFilter(false)
     }
+
+    const onValueChange = (newValues) => {
+        setSelectedPriceRange(newValues);
+    };
+    useEffect(()=>{
+        setSelectedCategories(Scategories)
+    },[Scategories])
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -88,6 +98,30 @@ export default function Filter({onFilterChange, onCloseFilter}) {
                     </TouchableOpacity>
                 ))}
             </View>
+            <View style={styles.container2}>
+                <Text style={styles.label}>Price Range: {selectedPriceRange[0]} - {selectedPriceRange[1]}</Text>
+                <View style={styles.sliderContainer}>
+                    <MultiSlider
+                        values={selectedPriceRange}
+                        sliderLength={280} // Customize the slider length as needed
+                        onValuesChange={onValueChange}
+                        min={min}
+                        max={max}
+                        step={100}
+                        allowOverlap={false} // Prevent thumbs from overlapping
+                        snapped // Ensure values are snapped to step intervals
+                        pressedMarkerStyle={{ backgroundColor: 'black' }}
+                        customMarker={CustomMarker}
+                        thumbTintColor="transparent"
+                        selectedStyle={{
+                            backgroundColor: 'black',
+                        }}
+                        unselectedStyle={{
+                            backgroundColor: 'lightgray',
+                        }}
+                    />
+                </View>
+            </View>
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                     onPress={resetFilters}
@@ -105,6 +139,21 @@ export default function Filter({onFilterChange, onCloseFilter}) {
         </View>
     );
 }
+const CustomMarker = () => (
+    <View
+        style={{
+            width: 12, // Adjust the width of the thumb as needed
+            height: 12, // Adjust the height of the thumb as needed
+            borderRadius: 12, // Make it a circle
+            backgroundColor: "black", // Set the color of the thumbs to black
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1, // Add zIndex to ensure it appears above the track
+        }}
+    >
+    </View>
+);
+
 
 const styles = StyleSheet.create({
     container: {
@@ -181,5 +230,18 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: "white",
+    },
+    container2: {
+        marginTop: 30
+        // flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+    },
+    label: {
+        fontSize: 18,
+        marginBottom: 10,
+    },
+    sliderContainer: {
+        width: '100%',
     },
 });
