@@ -107,11 +107,9 @@ const AddToCart = (props) => {
         }
     }
     const handleEditOrder = (article_id) => {
-        const ArticalId = article_id
-        // const PartyId = 197
-        //   navigate(`/editarticledetails/${ArticalId}`)
-        //   navigation.navigate('',{}) disable for this time....
-        // navigate('/editarticledetails')
+        const id = article_id
+        navigation.navigate('DetailsOfArticals',{ id });
+
     }
     const totalItems = orderItems.length
     const totalPrice = orderItems.reduce((total, item) => total + item.rate, 0)
