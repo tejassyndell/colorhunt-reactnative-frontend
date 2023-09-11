@@ -115,6 +115,7 @@ export const Profiledata = async(data) => {
     console.log(err,'err in react api')
     throw err
   }}
+
 export const addto_cart = async (data) => {
   try {
     return  await axios.post(`${url}/addtocart`, data)
@@ -123,6 +124,28 @@ export const addto_cart = async (data) => {
     console.log(err, 'err in react api')
   }
 }
+
+  
+export const findfromthecart = async (data) => {
+  try {
+    return  await axios.post(`${url}/findfromthecart`, data)
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}
+
+  
+export const updateCartArticale = async (data) => {
+  try {
+   
+    return  await axios.post(`${url}/updateCartArticale`, data)
+  } catch (err) {
+   
+    console.log(err, 'err in react api')
+  }
+}
+
 
 export const cartdetails = async () => {
   try {

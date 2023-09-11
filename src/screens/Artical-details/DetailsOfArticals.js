@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableHighlight, Dimensions, Pressable } from "react-native"
-import { ArticleDetails, addto_cart } from '../../api/api'
+import { View, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Pressable, Modal } from "react-native"
+import { ArticleDetails, addto_cart, findfromthecart, updateCartArticale } from '../../api/api'
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react"
 import { useRoute } from "@react-navigation/native"
@@ -10,6 +10,8 @@ import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { ActivityIndicator } from "react-native";
 import bagicon from '../../../assets/icons/icon.png'
+import { TouchableWithoutFeedback } from "react-native";
+
 const DetailsOfArticals = (props) => {
     const { navigation } = props;
     const { width: viewportWidth } = Dimensions.get("window");
@@ -36,7 +38,9 @@ const DetailsOfArticals = (props) => {
     const [subcategory, setSubcategory] = useState()
     const [isZoomed, setIsZoomed] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
-
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [updateCart,setUpdateCart]=useState(false);
+    const [articalCartId,setArticalCartId]=useState();
     const ArticleDetailsData = async () => {
         let data = {
             ArticleId: id,
@@ -110,13 +114,20 @@ const DetailsOfArticals = (props) => {
         }
         try {
             console.log(data);
-            const response = await addto_cart(data);
-            console.log('APi Response:', response.data)
+            await findfromthecart(data).then(async (res) => {
+                if (res.data.id == -1) {
+                    await addto_cart(data);
+                    navigation.navigate('cart_list', { totalPrice });
+                } else {
+                    setIsModalVisible(true);
+                   
+                    setArticalCartId(res.data[0].id);
+                }
+            })
         } catch (error) {
             console.log('Error Adding to Cart:', error)
         }
         // navigate('/cart_list', { state: { totalPrice } })
-        navigation.navigate('cart_list', { totalPrice });
     }
 
     const totalPrice = Object.keys(quantities).reduce(
@@ -179,6 +190,29 @@ const DetailsOfArticals = (props) => {
             ),
         });
     }, []);
+
+    const updateArticalInCart=async ()=>{
+        if (!combinedArray) {
+            console.log('undefined')
+            return
+        }
+        const colorwiseQuantities = combinedArray.map((coloritem) => quantities[coloritem.index])
+        console.log('colorwise quantity :', colorwiseQuantities)
+        const colorwiseQuantitiesTOstring = colorwiseQuantities.join(',')
+        console.log('cqty to string ', colorwiseQuantitiesTOstring)
+        console.log(totalPrice)
+        const data = {
+            id : articalCartId,
+            Quantity: colorwiseQuantitiesTOstring,
+            rate: totalPrice,
+        }
+        await updateCartArticale(data).then((res)=>{
+            console.log(res.data);
+            if(res.data.affectedRows==1){
+                navigation.navigate('cart_list', { totalPrice });
+            }
+        })
+    }
     return (
 
         <>
@@ -231,7 +265,7 @@ const DetailsOfArticals = (props) => {
                         position: 'absolute',
                         zIndex: 2,
                         top: "41.5%",
-                        borderRadius:30,
+                        borderRadius: 30,
                         elevation: 16, // Use elevation to create a shadow on Android
                         shadowOffset: { width: 0, height: 50 }, // Offset the shadow downwards
                         shadowColor: ' #f8f8ff',
@@ -307,7 +341,7 @@ const DetailsOfArticals = (props) => {
 
                                                                 </View>
                                                                 <View style={styles.box2}>
-                                                                    <Text style={{ textAlign: "center",fontWeight:'bold' }}>{quantities[item.index]}</Text>
+                                                                    <Text style={{ textAlign: "center", fontWeight: 'bold' }}>{quantities[item.index]}</Text>
                                                                 </View>
                                                                 <View style={styles.box3}>
                                                                     <Pressable
@@ -356,14 +390,113 @@ const DetailsOfArticals = (props) => {
                                         onPress={() => addtocart(197, id)}
                                         disabled={totalQuantity === 0}
                                     >
-                                        <View style={{ flexDirection: 'row', alignItems: 'center',width:'100%' }}>
-                                            <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2,marginLeft:10 }} />
-                                            <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18,width:'80%' }}>Add To Cart</Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                                            <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2, marginLeft: 10 }} />
+                                            <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add To Cart</Text>
                                         </View>
                                     </Pressable>
                                 </View>
 
                             </View>
+                            <Modal
+                                visible={isModalVisible}
+                                transparent={true}
+                                animationType="slide"
+                                onRequestClose={() => setIsModalVisible(false)}
+                            >
+                                <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                width: 360,
+                                                height: 320,
+                                                backgroundColor: "white",
+                                                borderRadius: 25,
+                                                alignItems: "center",
+                                                // padding: 5
+                                            }}
+                                        >
+                                            <Image
+                                                source={require("../../../assets/update_cart.png")}
+                                                style={{ width: 100, height: 100, marginBottom: 20, marginTop: 30 }}
+                                            />
+
+                                            <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 30, fontWeight: 500, color: "rgba(0, 0, 0, 0.70)" }}>
+                                                Are you sure {"\n"} you want to update this {"\n"} artical in cart.
+                                            </Text>
+                                            <View style={{
+
+                                                width: "100%",
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                position:"absolute",
+                                                bottom:0
+                                            }}>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        setIsModalVisible(false);
+                                                    }}
+                                                    style={{
+                                                        backgroundColor: "black",
+                                                        width: "50%",
+                                                        height: 50,
+                                                        borderBottomLeftRadius:25,
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        borderWidth:1,
+                                                        borderColor:"white"
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            fontSize: 18,
+                                                            fontWeight: 700,
+                                                            color: "white",
+                                                            paddingHorizontal: 15
+                                                        }}
+                                                    >
+                                                        No
+                                                    </Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        setIsModalVisible(false);
+                                                        updateArticalInCart();
+                                                    }}
+                                                    style={{
+                                                        backgroundColor: "black",
+                                                        width: "50%",
+                                                        height: 50,
+                                                        borderBottomRightRadius: 25,
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        borderWidth:1,
+                                                        borderColor:"white"
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            fontSize: 18,
+                                                            fontWeight: 700,
+                                                            color: "white",
+                                                            paddingHorizontal: 15
+                                                        }}
+                                                    >
+                                                        Yes
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </Modal>
                         </ScrollView>
                     </View>
                 </>

@@ -149,9 +149,9 @@ export default function HomeScreen(props) {
         <View />
       ),
       headerRight: () =>
-        <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
+      <View style={{ marginRight: 5, width: 50, height: 100, display: "flex", justifyContent: "center", alignItems: "center" }}>
           <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
-            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+            <Image style={{ width: 38, height: 38, borderRadius: 5 }} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
         </View>,
     });
