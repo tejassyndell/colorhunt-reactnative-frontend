@@ -115,9 +115,9 @@ export default function AllArticle(props) {
         </View>),
     });
   }, []);
-    
 
-  
+
+
   useEffect(() => {
     filterData();
   }, [searchText, nameDatas])
@@ -133,15 +133,15 @@ export default function AllArticle(props) {
         item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
         item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
       )
-      console.log(filtered.length,"length")
+      console.log(filtered.length, "length")
       setFinalData(filtered)
-      console.log(finalData.length,"FD")
-      console.log(finalData,"final DTAA :")
+      console.log(finalData.length, "FD")
+      console.log(finalData, "final DTAA :")
     }
   }
 
   const renderItem = ({ item }) => (
-    <View  style={{
+    <View style={{
       alignItems: "center",
       height: 'auto',
       width: "44.8%",
@@ -193,16 +193,18 @@ export default function AllArticle(props) {
           </TouchableOpacity>
         )}
       </View>
-      <View style={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center",
-      paddingTop:8,
-      elevation: 20,
-      borderColor: "gray",
-      shadowColor: '#c0c0c0', 
-      borderRadius: 10}}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "80%", height: 180 ,borderRadius: 10}} />
+      <View style={{
+        width: "100%", display: "flex", justifyContent: "center", alignItems: "center",
+        paddingTop: 8,
+        elevation: 20,
+        borderColor: "gray",
+        shadowColor: '#c0c0c0',
+        borderRadius: 10
+      }}>
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "80%", height: 180, borderRadius: 10 }} />
       </View>
       <View style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{display: "flex", justifyContent: "center", alignItems: "center" ,marginTop:10}}>
+        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 10 }}>
 
           <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
           <Text>{item.Category}</Text>
@@ -211,7 +213,7 @@ export default function AllArticle(props) {
       </View>
 
     </View>
-  
+
   );
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
@@ -221,14 +223,14 @@ export default function AllArticle(props) {
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev)
   };
-  
-  useEffect(()=>{
-    console.log(selectedCategories,"sca")
-    console.log(selectedPriceRange,"spa")
+
+  useEffect(() => {
+    console.log(selectedCategories, "sca")
+    console.log(selectedPriceRange, "spa")
     const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category) && item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]);
     setFinalData(abc)
-    console.log(abc,"filtered Data by Range and Category :")
-  },[selectedCategories],[selectedPriceRange])
+    console.log(abc, "filtered Data by Range and Category :")
+  }, [selectedCategories], [selectedPriceRange])
   return (
     <>
       {isLoading ? (

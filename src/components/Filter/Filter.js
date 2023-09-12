@@ -53,9 +53,21 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
     const onValueChange = (newValues) => {
         setSelectedPriceRange(newValues);
     };
-    useEffect(()=>{
+    useEffect(() => {
         setSelectedCategories(Scategories)
-    },[Scategories])
+    }, [Scategories])
+
+    const renderStepMarkers = () => {
+        const markers = [];
+        for (let i = min; i <= max; i += step) {
+            markers.push(
+                <View key={i} style={styles.marker}>
+                    <Text style={styles.markerText}>{i}</Text>
+                </View>
+            );
+        }
+        return markers;
+    };
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -95,7 +107,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
                                 <View style={styles.radioInnerCircle} />
                             )}
                         </View>
-                        
+
                     </TouchableOpacity>
                 ))}
             </View>
@@ -104,7 +116,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
                 <View style={styles.sliderContainer}>
                     <MultiSlider
                         values={selectedPriceRange}
-                        sliderLength={280} // Customize the slider length as needed
+                        sliderLength={320} // Customize the slider length as needed
                         onValuesChange={onValueChange}
                         min={min}
                         max={max}
@@ -192,11 +204,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginVertical: 5,
         width: "48%",
+        height: 150,
         borderWidth: 1,
-        borderRadius: 5,
+        borderColor: "rgba(0, 0, 0, 0.25)", // Border color
+        borderRadius: 8,
         padding: 5,
         height: "auto",
         maxHeight: "20%",
+        justifyContent: "space-between",
+        shadowColor: "rgba(0, 0, 0, 0.25)",
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 1,
+        shadowRadius: 2,
+        elevation: 20, // For Android
     },
     radioButton: {
         width: 20,
@@ -205,7 +225,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         justifyContent: "center",
         alignItems: "center",
-        marginRight: 10,
+        marginRight: 3,
     },
     radioInnerCircle: {
         width: 12,
@@ -215,7 +235,8 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         fontSize: 12,
-        marginLeft: 5,
+        marginLeft: 3,
+        fontWeight: 500
     },
     buttonsContainer: {
         flexDirection: "row",
@@ -224,19 +245,18 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: "black",
-        padding: 10,
+        justifyContent: 'center',
         alignItems: "center",
-        borderRadius: 5,
-        flex: 1,
+        borderRadius: 8,
+        width: 76,
+        height: 38
     },
     buttonText: {
         color: "white",
+        fontSize: 18
     },
     container2: {
         marginTop: 30
-        // flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
     },
     label: {
         fontSize: 18,
@@ -245,4 +265,5 @@ const styles = StyleSheet.create({
     sliderContainer: {
         width: '100%',
     },
+
 });
