@@ -77,6 +77,14 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
                         ]}
                         onPress={() => handleCategorySelect(item.Category)}
                     >
+                        <Text
+                            style={[
+                                styles.categoryText,
+                                selectedCategories.includes(item.Category) && {},
+                            ]}
+                        >
+                            {item.Category}
+                        </Text>
                         <View
                             style={[
                                 styles.radioButton,
@@ -87,14 +95,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
                                 <View style={styles.radioInnerCircle} />
                             )}
                         </View>
-                        <Text
-                            style={[
-                                styles.categoryText,
-                                selectedCategories.includes(item.Category) && {},
-                            ]}
-                        >
-                            {item.Category}
-                        </Text>
+                        
                     </TouchableOpacity>
                 ))}
             </View>

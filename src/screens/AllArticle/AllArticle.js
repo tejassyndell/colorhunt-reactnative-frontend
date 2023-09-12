@@ -7,16 +7,19 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import SearchBar from "../../components/SearchBar/searchbar";
 import { useRoute } from "@react-navigation/core";
+import Filter from "../../components/Filter/Filter";
 
 import { ActivityIndicator } from "react-native";
 export default function AllArticle(props) {
   const { navigation } = props;
-
+  const [finalData, setFinalData] = useState([])
   const [nameDatas, setNameDatas] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedprd, setSelectprd] = useState([])
   const [isLoading, setIsLoading] = useState(true);
-  const [searchedData, setSearchedData] = useState([])
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+  const [searchText, setSearchText] = useState(""); // To store the search text
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
@@ -30,15 +33,13 @@ export default function AllArticle(props) {
   // getCategoriesname
   const getCategoriesname = async () => {
     if (route.params && route.params.finalData.length > 0) {
-      setSearchedData(route.params.finalData)
+      setFinalData(route.params.finalData)
       setIsLoading(false)
-      console.log(searchedData)
     } else {
       const res = await getProductName();
-      console.log(res.data)
       if (res.status === 200) {
         setNameDatas(res.data);
-        setFilterDataSearch(res.data)
+        setFinalData(res.data)
         setIsLoading(false)
       }
     }
@@ -114,46 +115,33 @@ export default function AllArticle(props) {
         </View>),
     });
   }, []);
+    
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     // headerright: () => (
-  //     // ),
-  //     headerRight: () => <View />,
-  //   });
-  // }, []);
-
-  //Search Functionaity - Harshil
-  const [searchText, setSearchText] = useState(""); // To store the search text
-  const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
-  const [filterDataSearch, setFilterDataSearch] = useState([])
+  
+  useEffect(() => {
+    filterData();
+  }, [searchText, nameDatas])
 
   const filterData = () => {
     if (searchText === '') {
-      setFilteredData(nameDatas)
+      setFinalData(nameDatas)
     } else {
-      console.log("namedata s lenght", nameDatas.length)
-      console.log("filterdatasearch lenght", filterDataSearch.length)
-      const filtered = filterDataSearch.filter((item) =>
+      const filtered = nameDatas.filter((item) =>
         item.ArticleNumber.toString().includes(searchText.toString()) ||
         item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
         item.ArticleRate.toString().includes(searchText.toString()) ||
         item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
         item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
       )
-      console.log("filtered lenght", filtered.length)
-      setFilteredData(filtered)
-      console.log("filteredData.length after filter", filteredData.length)
-      setNameDatas(filtered)
-      console.log("namedata after filter lenght", nameDatas.length)
+      console.log(filtered.length,"length")
+      setFinalData(filtered)
+      console.log(finalData.length,"FD")
+      console.log(finalData,"final DTAA :")
     }
   }
-  useEffect(() => {
-    filterData();
-  }, [searchText])
 
   const renderItem = ({ item }) => (
-    <View key={item.id} style={{
+    <View  style={{
       alignItems: "center",
       height: 'auto',
       width: "44.8%",
@@ -225,7 +213,22 @@ export default function AllArticle(props) {
     </View>
   
   );
-
+  const handleFilterChange = (categories, priceRange) => {
+    setSelectedCategories(categories);
+    setSelectedPriceRange(priceRange);
+    setSearchText(""); // Reset the search text
+  };
+  const handleCloseFilter = () => {
+    setIsFilterVisible((prev) => !prev)
+  };
+  
+  useEffect(()=>{
+    console.log(selectedCategories,"sca")
+    console.log(selectedPriceRange,"spa")
+    const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category) && item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]);
+    setFinalData(abc)
+    console.log(abc,"filtered Data by Range and Category :")
+  },[selectedCategories],[selectedPriceRange])
   return (
     <>
       {isLoading ? (
@@ -264,8 +267,9 @@ export default function AllArticle(props) {
           </View>
           {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
           <View style={{ position: 'relative', backgroundColor: "#FFFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
+            {console.log(finalData.length)}
             <FlatList
-              data={searchedData.length > 0 ? searchedData : nameDatas}
+              data={finalData}
               keyExtractor={(item) => item.id}
               renderItem={renderItem}
               numColumns={2}
@@ -306,14 +310,8 @@ export default function AllArticle(props) {
                   padding: 10,
                 }}
               >
-                <Filter
-                  categoriesData={nameDatas}
-                  clearFilters={() => setIsFilterVisible(false)}
-                  applyFilters={() => {
-                    // Handle applying filters here
-                    setIsFilterVisible(false);
-                  }}
-                />
+                <Filter onFilterChange={handleFilterChange}
+                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} />
               </View>
             </View>
           )}

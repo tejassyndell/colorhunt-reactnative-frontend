@@ -4,13 +4,8 @@ import {
   View,
   Image,
   ScrollView,
-  Pressable,
   TouchableOpacity,
-  Keyboard,
-  TextInput,
-  Button,
 } from "react-native";
-import MenuImage from "../../components/MenuImage/MenuImage";
 import styles from "./styles";
 import { FontAwesome } from '@expo/vector-icons';
 import { getProductName, getcateGorywithphotos, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
@@ -31,21 +26,12 @@ export default function HomeScreen(props) {
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
   const [finalData, setFinalData] = useState([])
   const [isLoading, setIsLoading] = useState(true);
-
-  const [rateRange, setrateRange] = useState([0, 1000]);
-  // open filter
-
-
-  //Search Functionaity - Harshil
-  const [searchText, setSearchText] = useState(""); // To store the search text
-  const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
+  const [searchText, setSearchText] = useState("");
   const [filterDataSearch, setFilterDataSearch] = useState([])
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
-
-
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
@@ -120,7 +106,6 @@ export default function HomeScreen(props) {
     }
   };
 
-
   useEffect(() => {
     getCategoriesname();
   }, []);
@@ -153,19 +138,13 @@ export default function HomeScreen(props) {
     });
   }, []);
 
-  const onPressRecipe = (item) => {
-    const id = 883;
-    navigation.navigate("DetailsOfArticals", { id: id });
-  };
-
   const handlePress = (item) => {
-    // ategoryNames(item);
     navigation.navigate("CategorisWiseArticle", { item: item });
   };
 
   const filterData = () => {
     if (searchText === '') {
-      setFilteredData(nameDatas)
+
     } else {
       const filtered = filterDataSearch.filter((item) =>
         item.ArticleNumber.toString().includes(searchText.toString()) ||
@@ -174,7 +153,6 @@ export default function HomeScreen(props) {
         item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
         item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
       )
-      setFilteredData(filtered)
       setFinalData(filtered)
     }
   }
@@ -184,16 +162,16 @@ export default function HomeScreen(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    
+    setSearchText("")
+
   };
   useEffect(() => {
-    // This effect runs whenever selectedCategories change
     console.log(selectedCategories, "Sc")
-    console.log(selectedPriceRange,"Range")
+    console.log(selectedPriceRange, "Range")
     const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category) && item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]);
     console.log(abc.length)
     setFinalData(abc);
-  }, [selectedCategories,selectedPriceRange]); // Add selectedCategories as a dependency
+  }, [selectedCategories, selectedPriceRange]);
 
   const handleCloseFilter = (isClosed) => {
     setIsFilterVisible(isClosed)
@@ -268,81 +246,81 @@ export default function HomeScreen(props) {
                 {ApplyStatushBack === true ? (finalData.length > 0 ? (finalData.map((item) => (
                   <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}>
                     <View
-                        key={item.id}
-                        style={{
-                          alignItems: "center",
-                          height: 280,
-                          width: 160,
-                          marginLeft: 5,
-                          marginRight: 5,
-                          marginBottom: 120,
-                          borderRadius: 10,
+                      key={item.id}
+                      style={{
+                        alignItems: "center",
+                        height: 280,
+                        width: 160,
+                        marginLeft: 5,
+                        marginRight: 5,
+                        marginBottom: 120,
+                        borderRadius: 10,
 
-                        }}
-                      >
-                        <View style={{
-                          width: 155,
-                          height: 190,
-                          borderColor: "gray",
-                          shadowColor: "#000000",
-                          shadowOpacity: 0.9,
-                          shadowRadius: 4,
-                          elevation: 10, // For Android, use elevation
-                          shadowOffset: {
-                            width: 0,
-                            height: 0,
-                          },
-                        }}>
-                          <View id={item.id} style={styles.producticones}>
-                            {selectedprd.some((i) => i.Id === item.Id) ? (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  rmvProductWishlist(item);
-                                }}
-                              >
-                                <FontAwesome
-                                  name="heart"
-                                  style={[
-                                    styles.icon,
-                                    // isLoggedin === false ? styles.disabledIcon : null,
-                                  ]}
-                                />
-                              </TouchableOpacity>
-                            ) : (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  addArticleWishlist(item);
-                                }}
-                              >
-                                <FontAwesome
-                                  name="heart-o"
-                                  style={[
-                                    styles.disabledIcon,
-                                    // isLoggedin === false ? styles.disabledIcon : null,
-                                  ]}
-                                />
-                              </TouchableOpacity>
-                            )}
-                          </View>
-                          <Image
-                            source={{ uri: baseImageUrl + item.Photos }}
-                            style={{
-                              width: "94%",
-                              height: 190,
-                              borderRadius: 10,
-
-                            }}
-                          />
+                      }}
+                    >
+                      <View style={{
+                        width: 155,
+                        height: 190,
+                        borderColor: "gray",
+                        shadowColor: "#000000",
+                        shadowOpacity: 0.9,
+                        shadowRadius: 4,
+                        elevation: 10, // For Android, use elevation
+                        shadowOffset: {
+                          width: 0,
+                          height: 0,
+                        },
+                      }}>
+                        <View id={item.id} style={styles.producticones}>
+                          {selectedprd.some((i) => i.Id === item.Id) ? (
+                            <TouchableOpacity
+                              onPress={() => {
+                                rmvProductWishlist(item);
+                              }}
+                            >
+                              <FontAwesome
+                                name="heart"
+                                style={[
+                                  styles.icon,
+                                  // isLoggedin === false ? styles.disabledIcon : null,
+                                ]}
+                              />
+                            </TouchableOpacity>
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => {
+                                addArticleWishlist(item);
+                              }}
+                            >
+                              <FontAwesome
+                                name="heart-o"
+                                style={[
+                                  styles.disabledIcon,
+                                  // isLoggedin === false ? styles.disabledIcon : null,
+                                ]}
+                              />
+                            </TouchableOpacity>
+                          )}
                         </View>
+                        <Image
+                          source={{ uri: baseImageUrl + item.Photos }}
+                          style={{
+                            width: "94%",
+                            height: 190,
+                            borderRadius: 10,
 
-                        <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                          {item.ArticleNumber}
-                        </Text>
-                        <Text>{item.Category}</Text>
-                        <Text style={{ fontWeight: "bold" }}>
-                          {"₹" + item.ArticleRate}
-                        </Text>
+                          }}
+                        />
                       </View>
+
+                      <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                        {item.ArticleNumber}
+                      </Text>
+                      <Text>{item.Category}</Text>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {"₹" + item.ArticleRate}
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 ))) : (nameData.map((item) => (
                   <View
@@ -356,7 +334,7 @@ export default function HomeScreen(props) {
                       marginTop: 10,
                       marginBottom: 10,
                       borderRadius: 10,
-                      
+
                     }}
                   >
                     <TouchableOpacity
@@ -365,26 +343,26 @@ export default function HomeScreen(props) {
                       }}
                     >
                       <View style={{
-                          marginTop:5,
-                          width: 155,
-                          height: 190,
-                          borderColor: "gray",
-                          shadowColor: "gray",
-                          shadowOpacity: 0.9,
-                          shadowRadius: 10,
-                          elevation: 10,
-                          shadowOffset: {
-                            width: 0,
-                            height: 0,
-                          },
-                        }}>
+                        marginTop: 5,
+                        width: 155,
+                        height: 190,
+                        borderColor: "gray",
+                        shadowColor: "gray",
+                        shadowOpacity: 0.9,
+                        shadowRadius: 10,
+                        elevation: 10,
+                        shadowOffset: {
+                          width: 0,
+                          height: 0,
+                        },
+                      }}>
                         <Image
                           source={require("../../../assets/demo.png")}
                           style={{
                             width: "100%",
                             height: 190,
                             borderRadius: 10,
-                          
+
                           }}
                         />
                       </View>
@@ -474,7 +452,7 @@ export default function HomeScreen(props) {
                         }}
                       >
                         <View style={{
-                          marginTop:5,
+                          marginTop: 5,
                           width: 155,
                           height: 190,
                           borderColor: "gray",
