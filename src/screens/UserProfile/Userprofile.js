@@ -12,7 +12,7 @@ export default function Userprofile(props) {
     },[])
     const fetchprofiledata = async () => {
         try{
-            const data = { party_id:3}
+            const data = { party_id:197}
             const response = await Profiledata(data);
             setprofile(response.data)
         } catch(err) {

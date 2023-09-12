@@ -48,6 +48,7 @@ const DetailsOfArticals = (props) => {
         }
         try {
             const res = await ArticleDetails(data)
+            console.log(res.data);
             console.log('dd', res.data.photos)
             setArticlePhotos(res.data.photos)
             setArticleCategory(res.data.calculatedData[0].Category)

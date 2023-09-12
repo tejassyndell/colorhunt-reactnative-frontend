@@ -175,10 +175,9 @@ export const gettransportation = async (data) => {
   }
 }
 
-
 export const addso = async (data) => {
   try {
-    return   await axios.get(`${url}/addso`, data)
+    return   await axios.post(`${url}/addso`, data)
   } catch (err) {
    
     console.log(err, 'err in react api')

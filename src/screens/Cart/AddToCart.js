@@ -54,6 +54,7 @@ const AddToCart = (props) => {
                 ...item,
                 Quantity: JSON.parse(item.Quantity),
             }))
+            console.log(parsedOrderItems);
             setOrderItems(parsedOrderItems)
             setIsLoading(false);
         })

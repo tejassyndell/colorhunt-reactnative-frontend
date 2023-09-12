@@ -10,6 +10,7 @@ import { TouchableWithoutFeedback } from "react-native";
 const Orderlist = (props) => {
     const { navigation } = props;
     const [isLoading, setIsLoading] = useState(true);
+    const [destinationVal,setDestinationVal]=useState("");
     const [showTransporatation, setshowTransporatation] = useState(false);
     const [transportationVal, setTransportationVal] = useState();
     const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
@@ -22,22 +23,26 @@ const Orderlist = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const AddSo =async ()=>{
+        let Articldata = ParsedData.map(({ article_id, articleRate,ArticleColor,ArticleOpenFlag,Quantity}) => ({ article_id, articleRate,ArticleColor,ArticleOpenFlag,Quantity }))
         const data={
-            Transportation:Transportation,
-            transportationVal:transportationVal,
-            ParsedData:ParsedData
+            Date:currentDate,
+            Destination:destinationVal,
+            Transporter:transportationVal,
+            GSTType:"GST",
+            GST:"",
+            GST_Percentage:"",
+            PartyId:197,
+            Remarks:"",
+            SoNumberId:"Add",
+            UserId:38,
+            DataArticle:Articldata,
+            NoPacksNew:null
         }
-        console.log(data);
-        // await addso();
+        console.log("-=-=-=-",data);
+        await addso(data);
     }
     const showSuccessModal = () => {
-        const data={
-            Transportation:Transportation,
-            transportationVal:transportationVal,
-            ParsedData:ParsedData
-        }
-        console.log(data);
-        setIsModalVisible(true);
+        // setIsModalVisible(true);
         AddSo();
     };
     // let ParsedData = [];
@@ -160,13 +165,13 @@ const Orderlist = (props) => {
                                 </View>
                                 <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Destination</Text>
-                                    <TextInput value="" style={{
+                                    <TextInput value={destinationVal} style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 5,
                                         paddingLeft: 15, borderRadius: 6,
                                         borderColor: "#E4E7EA",
                                         fontSize: 16, backgroundColor: "#EEE"
-                                    }}></TextInput>
+                                    }} onChangeText={(e) => setDestinationVal(e)}></TextInput>
 
                                 </View>
                                 <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
