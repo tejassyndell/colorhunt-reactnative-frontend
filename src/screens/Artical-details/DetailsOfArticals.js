@@ -59,7 +59,7 @@ const DetailsOfArticals = (props) => {
             setArticleColorver(JSON.parse(res.data.calculatedData[0].ArticleColor))
             setArticlenumber(res.data.calculatedData[0].ArticleNumber)
             setSalesnopacks(res.data.calculatedData[0].SalesNoPacks)
-            setNopacks(res.data.calculatedData[0].SalesNoPacks)
+            setNopacks(res.data.calculatedData[0].NoPacks)
             console.log(nopacks)
             // const salesnopackstoArray = res.data.calculatedData[0].SalesNoPacks.split(",");
             // const salesnopackstoArray = [1, 2, 3, 4]
@@ -346,8 +346,7 @@ const DetailsOfArticals = (props) => {
                                                                     <Pressable
                                                                         style={styles.box3_btn}
                                                                         onPress={() => handleIncrease(item.index)}
-                                                                        disabled={quantities[item.index] >= nopacks }
-                                                                        
+                                                                        disabled={quantities[item.index] >= nopacks}
                                                                     >
                                                                         <Text style={styles.box1_btn_text}>+</Text>
                                                                     </Pressable>
