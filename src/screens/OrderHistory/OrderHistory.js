@@ -3,11 +3,13 @@ import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useState, useLayoutEffect } from 'react';
 import { Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const OrderHistory = (props) => {
     const { navigation } = props;
     const [isLoading, setIsLoading] = useState(true);
     const [toggle, setToggle] = useState(true)
+    const [orderstatus,setOrderstatus]=useState(true);
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -41,25 +43,112 @@ const OrderHistory = (props) => {
                 <View style={styles.pendin_complete_cnt}>
                     <View style={styles.pc_btn_cnt}>
                         <View style={{ width: "49%" }}>
-                            <Pressable style={toggle ? styles.pending_btn : styles.complete_btn} onPress={() => setToggle(!toggle)}>
+                            <Pressable style={toggle ? styles.pending_btn : styles.complete_btn} onPress={() =>{ setToggle(!toggle);setOrderstatus(true)}}>
                                 <Text style={toggle ? styles.pending_text : styles.complete_text}>Pending</Text>
                             </Pressable>
                         </View>
                         <View style={{ width: "49%" }}>
-                            <Pressable style={toggle ? styles.complete_btn : styles.pending_btn} onPress={() => setToggle(!toggle)}>
+                            <Pressable style={toggle ? styles.complete_btn : styles.pending_btn} onPress={() =>{ setToggle(!toggle);setOrderstatus(false)}}>
                                 <Text style={toggle ? styles.complete_text : styles.pending_text}>Completed</Text>
                             </Pressable>
                         </View>
                     </View>
                 </View>
                 <View style={styles.calender_cnt}>
-                    <View style={{ padding: 10,paddingRight:32 }}>
-                        <TouchableOpacity onPress={()=>console.log("done")}>
-                        <Image style={{ height: 20, width: 20 }} source={require("../../../assets/calaender.png")}></Image> 
+                    <View style={{ padding: 10, paddingRight: 32 }}>
+                        <TouchableOpacity onPress={() => console.log("done")}>
+                            <Image style={{ height: 20, width: 20 }} source={require("../../../assets/calaender.png")}></Image>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
+            {orderstatus?
+            <View style={orderstyles.order_cnt}>
+                <ScrollView nestedScrollEnabled={true}>
+                    <View style={orderstyles.data_cnt}>
+                        <View style={{ width: "62%" }}>
+                            <View style={{ gap: 8 }}>
+                                <View style={orderstyles.text_cnt}>
+                                    <Text style={orderstyles.txt_titile}>SO No  :</Text>
+                                    <Text style={orderstyles.txt_val}>NRS(JHCPL)33/23-24</Text>
+                                </View>
+                                <View >
+                                    <View style={orderstyles.text_cnt}>
+                                        <Text style={orderstyles.txt_titile}>Pieces :</Text>
+                                        <Text style={orderstyles.txt_val}>1</Text>
+                                    </View>
+                                </View>
+                                <View >
+                                    <View style={orderstyles.text_cnt}>
+                                        <Text style={orderstyles.txt_titile}>Order Total :</Text>
+                                        <Text style={orderstyles.txt_val}>195</Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                        </View>
+                        <View style={{ width: "38%" }}>
+                            <View style={{ height:"53%" }}>
+                                <View style={orderstyles.text_cnt}>
+                                    <Text style={orderstyles.txt_titile}>Date :</Text>
+                                    <Text style={orderstyles.txt_val}>20/09/2023</Text>
+                                </View>
+                            </View>
+                            <View style={orderstyles.pending_icon}>
+                                <View style={orderstyles.pending_icon_text}>
+                                    <Image style={{ width: 15, height: 16 }} source={require("../../../assets/timer_1.png")}></Image>
+                                    <Text style={{ fontSize: 10.854, fontWeight: 700 ,color:'#FF0203'}} >Pending</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                   
+                </ScrollView>
+            </View>:
+             <View style={orderstyles.order_cnt}>
+             <ScrollView nestedScrollEnabled={true}>
+                 <View style={orderstyles.data_cnt}>
+                     <View style={{ width: "62%" }}>
+                         <View style={{ gap: 8 }}>
+                             <View style={orderstyles.text_cnt}>
+                                 <Text style={orderstyles.txt_titile}>Outward No :</Text>
+                                 <Text style={orderstyles.txt_val}>140/23-24</Text>
+                             </View>
+                             <View >
+                                 <View style={orderstyles.text_cnt}>
+                                     <Text style={orderstyles.txt_titile}>Pieces :</Text>
+                                     <Text style={orderstyles.txt_val}>1</Text>
+                                 </View>
+                             </View>
+                             <View >
+                                 <View style={orderstyles.text_cnt}>
+                                     <Text style={orderstyles.txt_titile}>Order Total :</Text>
+                                     <Text style={orderstyles.txt_val}>195</Text>
+                                 </View>
+                             </View>
+                         </View>
+
+                     </View>
+                     <View style={{ width: "38%" }}>
+                         <View style={{ height:"53%" }}>
+                             <View style={orderstyles.text_cnt}>
+                                 <Text style={orderstyles.txt_titile}>Date :</Text>
+                                 <Text style={orderstyles.txt_val}>11/06/2024</Text>
+                             </View>
+                         </View>
+                         <View style={orderstyles.pending_icon}>
+                             <View style={orderstyles.complete_icon_text}>
+                                 <Image style={{ width: 15, height: 16 }} source={require("../../../assets/Right_complete.png")}></Image>
+                                 <Text style={{ fontSize: 10.854, fontWeight: 700 ,color:'#7AC848'}} >Completed</Text>
+                             </View>
+                         </View>
+                     </View>
+                 </View>
+                
+             </ScrollView>
+         </View>
+            }
+            
         </View>
     )
 }
@@ -124,5 +213,71 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "flex-end",
         alignItems: "flex-end"
+    }
+});
+
+const orderstyles = StyleSheet.create({
+    order_cnt: {
+        height: "100%",
+        width: "100%",
+        backgroundColor: "#FFF",
+        marginTop: 14
+    },
+    data_cnt: {
+        backgroundColor: "#FFF",
+        margin: 14,
+        borderRadius: 12,
+        padding: 10,
+        display: "flex",
+        flexDirection: "row",
+        gap: 8,
+        height:100,
+        elevation:5
+    },
+    pending_icon: {
+        display: 'flex', flexDirection: "row", justifyContent: "flex-end", alignItems: "flex-end",
+        height:"45%",paddingVertical:2
+    },
+    pending_icon_text: {
+        backgroundColor: "#FFD1D1",
+        borderWidth: 0.659,
+        paddingTop: 6,
+        paddingBottom: 6.34,
+        borderRadius: 5.268,
+        borderColor: "#FF0203",
+        width: "65%",marginRight:8,
+        display: 'flex', flexDirection: "row",
+        gap: 10,
+        justifyContent:"center",
+        alignContent:"center",
+        // margin:2,
+    },
+    text_cnt: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 5
+    },
+    txt_titile: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: "#000000B2"
+    },
+    txt_val: {
+        fontSize: 15,
+        fontWeight: 700,
+        color: "#000000"
+    },
+    complete_icon_text:{
+        backgroundColor: "#E1FFD3",
+        borderWidth: 0.659,
+        paddingTop: 6,
+        paddingBottom: 6.34,
+        borderRadius: 5.268,
+        borderColor: "#81CD60",
+        width: "68%",marginRight:8,
+        display: 'flex', flexDirection: "row",
+        gap: 10,
+        justifyContent:"center",
+        alignContent:"center",
     }
 });
