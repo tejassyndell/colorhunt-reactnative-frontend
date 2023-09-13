@@ -21,7 +21,7 @@ export default function AllArticle(props) {
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [minArticleRate, setMinArticleRate] = useState(null);
-const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [maxArticleRate, setMaxArticleRate] = useState(null);
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
@@ -332,7 +332,7 @@ const [maxArticleRate, setMaxArticleRate] = useState(null);
               >
                 <Filter onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
-                  maxArticleRate={maxArticleRate}/>
+                  maxArticleRate={maxArticleRate} />
               </View>
             </View>
           )}

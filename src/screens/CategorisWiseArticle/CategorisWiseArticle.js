@@ -19,19 +19,19 @@ export default function AllArticle(props) {
   const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
   const [filterDataSearch, setFilterDataSearch] = useState([])
   const [minArticleRate, setMinArticleRate] = useState(null);
-const [maxArticleRate, setMaxArticleRate] = useState(null);
-const [selectedPriceRange, setSelectedPriceRange] = useState([]);
-const [selectedCategories, setSelectedCategories] = useState([]);
-const [finalData, setFinalData] = useState([])
+  const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [finalData, setFinalData] = useState([])
   const route = useRoute();
   const { item } = route.params;
 
   //   console.log('.............',item.Category);
   const category = item.Category;
   useEffect(() => {
-    setSelectedCategories([category]); 
+    setSelectedCategories([category]);
   }, []);
-  
+
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
@@ -39,7 +39,7 @@ const [finalData, setFinalData] = useState([])
     try {
       const res = await getProductName()
       if (res.status === 200) {
-        const sdPrds = res.data.slice() 
+        const sdPrds = res.data.slice()
         const fildata = sdPrds.filter((item) => item.Category === category)
         setNameDatas(fildata)
         setFilterDataSearch(fildata)
@@ -120,7 +120,7 @@ const [finalData, setFinalData] = useState([])
         <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "78%", height: 180, borderRadius: 10 }} />
       </View>
       <View style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{display: "flex", justifyContent: "center", alignItems: "center" ,marginTop:10}}>
+        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 10 }}>
 
           <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
           <Text>{item.Category}</Text>
@@ -253,8 +253,8 @@ const [finalData, setFinalData] = useState([])
             }}
           >
             <Filter onFilterChange={handleFilterChange}
-                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
-                  maxArticleRate={maxArticleRate} />
+              onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
+              maxArticleRate={maxArticleRate} />
           </View>
         </View>
       )}

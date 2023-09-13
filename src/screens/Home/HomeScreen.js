@@ -29,7 +29,7 @@ export default function HomeScreen(props) {
   const [searchText, setSearchText] = useState("");
   const [filterDataSearch, setFilterDataSearch] = useState([])
   const [minArticleRate, setMinArticleRate] = useState(null);
-const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [maxArticleRate, setMaxArticleRate] = useState(null);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -195,7 +195,7 @@ const [maxArticleRate, setMaxArticleRate] = useState(null);
     console.log(maxArticleRate)
   }, [nameDatas]);
 
-  
+
 
   return (
     <>
@@ -602,7 +602,7 @@ const [maxArticleRate, setMaxArticleRate] = useState(null);
               >
                 <Filter onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
-                  maxArticleRate={maxArticleRate}/>
+                  maxArticleRate={maxArticleRate} />
               </View>
             </View>
           )}
