@@ -19,6 +19,7 @@ import CategorisWiseArticle from '../screens/CategorisWiseArticle/CategorisWiseA
 import WishList from '../screens/WishList/wishlist';
 import Orderlist from '../screens/OrderList/Orderlist';
 import Notification from '../screens/Notification/Notification';
+import OrderHistory from '../screens/OrderHistory/OrderHistory';
  const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -40,6 +41,7 @@ function MainNavigator() {
       <Stack.Screen name='cart_list' component={AddToCart} />
       <Stack.Screen name='Orderlist' component={Orderlist}/>
       <Stack.Screen name='Notification' component={Notification} />
+      <Stack.Screen name='ordershistroy' component={OrderHistory}/>
     </Stack.Navigator>
   )
 } 

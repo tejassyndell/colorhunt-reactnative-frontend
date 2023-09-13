@@ -1,0 +1,697 @@
+/* top bar css start*/
+.header-navbtn{
+    display: flex;
+    align-items: center;
+}
+.promise_date,.loading_date{
+    padding: 0px !important;
+}
+
+/* .top-btngroup{
+    display: flex;
+}
+.top-button {
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    border: none;
+    background-color: #000;
+    padding: 12px 24px;
+    border-radius: 8px;
+    margin-right: 8px;
+    white-space: nowrap;
+    line-height: 1rem;
+}
+.top-button:hover {
+    background-color: #000;
+    color: #fff;
+}
+.top-button:active{
+    color: #fff !important;
+    background-color: #000 !important;
+    box-shadow: none;
+} */
+.dropdown-btn{
+    margin-top: 0px;
+    border: none;
+    padding: 0px;
+}
+.product-varss{
+    font-size: 20px;
+    padding: 1px 12px;
+    border-radius: 10px;
+
+}
+/* .top-button button {
+    background-color: transparent;
+    border: none;
+    font: inherit;
+    padding: 0px;
+} */
+.users-table-title {
+    font-size: 26px;
+    flex-wrap: wrap;
+}
+/* .userdetail-head {
+    width: 85%;
+    justify-content: flex-end;
+    margin-left: auto;
+} */
+/* .search-input {
+    margin-right: 8px;
+    max-width: 330px;
+}
+.export-grp {
+    display: flex;
+    align-items: center;
+} */
+/* top bar css end */
+
+/* table css start */
+.card-body{
+    padding: 0px;
+}
+td {
+    font-size: 16px;
+}
+th {
+    font-size: 16px;
+}
+.table-head-th {
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 700;
+    color:  rgba(0, 0, 0, 0.326) !important;
+}
+.orders-table {
+    width: 150%;
+    margin-bottom: 30px;
+}
+.variation_table{
+    width: 200%;
+    margin-bottom: 30px;
+}
+.products_variation_code{
+    padding: 12px;
+    border: none;
+    column-gap: 6px;
+    word-break: initial !important;
+}
+img.sortin-icon{
+    width: 15px;
+    height: 11px;
+}
+.users-table thead tr th{
+    padding: 12px 8px 12px 13.5px;
+}
+.users-table tbody tr td, .users-table tbody tr th {
+    padding: 12px;
+    border: none;
+    column-gap: 6px;
+    word-break: break-word;
+}
+.action-btn {
+    width: 30px;
+    height: 30px;
+    /* margin: 0px 6px; */
+    border: none;
+    background-color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hidden-btn{
+    /* visibility: hidden; */
+    background-color: grey
+}
+.viewordertablerow td{
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+.action-btn img {
+    width: 15px;
+    height: 15px;
+}
+.variationListmainDiv .action-btn img {
+    width: 30px;
+    height: 30px;
+}
+.ViewVariations{
+    height: 30px;
+    display: grid;
+    align-items: center;
+    margin-right: 7px;
+    color: #000000;
+}
+.action-btn:disabled {
+    opacity: 0.5;
+}
+.table-overflow {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-radius: 12px;
+}
+.table-overflow::-webkit-scrollbar {
+  height: 10px;
+}
+.table-overflow::-webkit-scrollbar-track {
+  background-color: #E8E8E8;
+  border-radius: 100px;
+}
+.table-overflow::-webkit-scrollbar-thumb {
+  height: 10pxt;
+  background-color: #7A7A7A;
+  border-radius: 100px;
+}
+.view-orderpage .table-overflow::-webkit-scrollbar-track{
+    display: none;
+}
+.table-overflow::-webkit-scrollbar:vertical {
+  display: none;
+}
+.users-table.orders-table{
+    box-shadow: none;
+}
+.view-table th, .view-table td {
+    border: none;
+}
+.view-table th {
+    white-space: nowrap;
+    font-size: 18px;
+    color: #000;
+}
+.view-table td{
+    font-size: 16px;
+    margin-bottom: 0px;
+    letter-spacing: 1px;
+    padding-left: 0px;
+}
+.view-table{
+    width: auto;
+}
+.users-table.customer-order tbody td{
+    border-top: 1px solid #d8dbe0;
+}
+table.customer-order thead tr th {
+    padding: 20px 8px 20px 8px;
+}
+.customer-order .table-head-th {
+    font-size: 20px;
+    font-weight: 700;
+    
+}
+.customer-order td {
+    font-size: 18px;
+}
+.order-details .total-amount {
+    font-size: 22px;
+}
+.order-details td {
+    font-size: 18px;
+}
+.orderpopupvalue{
+    color: #A6AABB;
+
+}
+/* table css end */
+p{
+    margin-bottom: 0px;
+}
+.currency-symbol{
+    font-family: math, monspace, system-ui;
+}
+.add_new_order{
+    display: block;
+    /* width: 56%; */
+}
+.SelectBoxtitle{
+    padding: 20px 0 10px 0;
+    font-size: 20px;
+}
+
+select#select_customer_id {
+    border: 0;
+    font-family: Gill Sans;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 34px;
+    letter-spacing: 0px;
+    text-align: left;
+    padding: 14px 0px 17px 14px;
+    width: 374px;
+    height: 187px;
+    border-radius: 0px;
+}
+.order-checkbox {
+    width: 15px;
+    height: 15px;
+    vertical-align: text-top;
+    margin-left: 15px;
+    margin-top: 2px;
+}
+.status-icon{
+    white-space: nowrap;
+}
+.status-icon img{
+    margin: 0px;
+    width: 25px;
+    height: 25px;
+    vertical-align: text-bottom;
+    cursor: unset;
+}
+.action{
+    text-align: center;
+}
+.orders-table .tbl-col-action {
+    justify-content: center;
+}
+/* model css start */
+.modal.orders-model {
+    width: 95%;
+    padding-left: 0px;
+    padding-right: 0px;
+    height: 500px;
+    overflow: scroll;
+
+}
+.orders-model .orders-table {
+    width: 100%;
+}
+.cancel-btn{
+    margin-right: 30px;
+}
+.sage-close{
+    border: 1px solid #000;
+    text-transform: none;
+}
+
+.push-model .modal-body{
+    width: 250px;
+    margin: 0px auto;
+    text-align: center;
+}
+.push-model .modal-dialog{
+    width: 320px;
+}
+.push-model img{
+    margin-bottom: 30px;
+}
+.push-model h3{
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: #000000;
+    font-size: 26px;
+}
+.push-model p{
+    font-size: 18px;
+    color: #9F9F9F;
+}
+.push-model .modal-footer{
+    justify-content: space-evenly;
+    border-top: 0px;
+}
+/* model css end */
+/* date-filter css start */
+.date-filter .modal-dialog{
+    width: 320px;
+}
+.date-filter .modal-body{
+    margin: 0px auto;
+}
+.date-filter p{
+    margin: 6px 0px;
+}
+.date-filter .modal-content {
+    border-radius: 15px;
+    background-color: #000;
+    color: #fff;
+}
+.date-filter .react-date-picker__wrapper {
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+}
+.date-filter .react-date-picker {
+    width: 100%;
+}
+.date-filter .date-input {
+    text-align: center;
+}
+.date-filter .modal-footer {
+    display: flex;
+    justify-content: space-evenly;
+}
+.white-btn {
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+    text-transform: none;
+}
+.white-btn:active, .white-btn:hover{
+    color: #000 !important;
+    background-color: #fff !important;
+    border: 1px solid #000 !important;
+}
+.date-filter .react-date-picker__inputGroup__input:invalid {
+    background: transparent;
+}
+.date-filter .react-calendar__navigation__arrow {
+    color: #7D671A;
+}
+.date-filter .react-calendar__navigation__label__labelText {
+    color: #7D671A;
+}
+.date-filter .react-calendar__month-view__weekdays {
+    color: #7D671A;
+}
+.date-filter .react-calendar__navigation {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000;
+}
+.date-filter .react-calendar__month-view__days__day {
+    color: #000;
+}
+.date-filter .react-calendar__month-view__days__day--neighboringMonth {
+    color: #757575;
+}
+.date-filter abbr[title] {
+    text-decoration: none;
+}
+.date-filter .react-calendar__tile--now {
+    background-color: transparent;
+}
+.date-filter .react-calendar__tile--active {
+    color: #fff;
+    background-color: #7D671A;
+}
+.date-filter .react-date-picker__calendar {
+    transform: translateX(-69px);
+    width: 318px;
+}
+.date-filter .react-calendar__tile:disabled {
+    color: #757575;
+    background-color: #fff;
+}
+.date-filter .react-calendar__navigation button:disabled {
+    color: #757575;
+    background-color: #fff;
+}
+.react-date-picker__button:enabled:hover .react-date-picker__button__icon, .react-date-picker__button:enabled:focus .react-date-picker__button__icon {
+    stroke: #000 !important;
+}
+.react-date-picker__inputGroup__input:focus-visible {
+    outline: none;
+}
+.react-date-picker__inputGroup__button:nth-child(1){
+    display: none;
+} 
+/* date-filter css end */
+/* view order css start */
+.view-orderpage{
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 15px;
+}
+.customer-order {
+    box-shadow: none;
+    /* text-align: center; */
+}
+.customer-detail{
+    padding: 0px 0px 10px 3px;
+}
+.order-details{
+    display: flex;
+    flex-wrap: wrap;
+}
+.placeorderinputs{
+    width: 100px !important;
+}
+.order-calc{
+    padding: 0px 15px 30px 10px;
+    white-space: nowrap;
+}
+.order-calc div{
+    padding:0px;
+}
+.total-amount {
+    font-size: 26px;
+}
+.total-top{
+    border-top: 1px solid #000;
+}
+.change-btn{
+    margin-bottom: 1rem;
+}
+
+/* VariatioinList Css */
+.navigationbtns{
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 15px;
+    padding: 10px;
+}
+.navigationbtns .viewVariationBtn{
+    margin-left: 15px;
+    background: linear-gradient(180deg, #191919 0%, #42424A 100%);
+    /* box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25); */
+    color: #FFFFFF;
+    border: none;
+    text-transform: capitalize !important;
+}
+.error.noDatatoDisplay {
+    padding: 20px 0px;
+    display: flex;
+    justify-content: center;
+}
+
+/* media query start */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+    .users-table thead tr th {
+        line-height: 16px;
+    }
+    td {
+        font-size: 18px;
+    }
+    .action-btn {
+        width: 30px;
+        height: 30px;
+    }
+    .action-btn img {
+        width: 16px;
+        height: 16px;
+    }
+    .top-button{
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+    .form-control{
+        font-size: 14px;
+    }
+    .orders-model .orders-table {
+        width: 110%;
+    }
+}
+@media only screen and (max-width: 1199px){
+    .view-table{
+        margin-bottom: 0px;
+    }
+    .view-table th{
+        min-width: 240px;
+    }
+    th.total-amount {
+        min-width: auto;
+    }
+}
+@media only screen and (max-width: 767px){
+    .pagination{
+        margin-right: 0px;
+    }
+    /* .top-button{
+        font-size: 14px;
+        padding: 10px 14px;
+    } */
+    .form-control{
+        font-size: 14px;
+    }
+    /* .userdetail-head {
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        width: 100%;
+        justify-content: unset;
+    } */
+    p{
+        margin-bottom: 0px;
+    }
+    .users-table {
+        width: auto;
+    }
+    /* .table-head-th {
+        font-size: 20px;
+    } */
+    td {
+        font-size: 18px;
+    }
+    .order-checkbox {
+        width: 16px;
+        height: 16px;
+        vertical-align: text-top;
+    }
+    .status-icon img {
+        width: 20px;
+        height: 20px;
+    }
+    .action-btn {
+        width: 30px;
+        height: 30px;
+    }
+    .action-btn img {
+        width: 16px;
+        height: 16px;
+    }
+    .orders-model .orders-table {
+        width: 120%;
+    }
+    .view-orderpage .table-overflow::-webkit-scrollbar-track{
+        display: block;
+    }
+    .customer-order {
+        width: 120%;
+    }
+}
+@media only screen and (max-width: 575px){
+    .date-filter .modal-dialog, .push-model .modal-dialog {
+        margin: 0.5rem auto;
+        width: 250px;
+    }
+}
+@media only screen and (max-width: 375px){
+    .top-btngroup {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .view-table th {
+        font-size: 14px;
+    }
+    .view-table td {
+        font-size: 12px;
+    }
+    .view-table th {
+        white-space: unset;
+        min-width: 145px;
+        max-width: 145px;
+        padding: 8px 0px;
+    }
+    th.total-amount {
+        min-width: auto;
+    }
+    .order-details td {
+        font-size: 18px;
+    }
+    .order-calc {
+        flex-direction: column-reverse;
+    }
+    .order-calc>div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .order-details .change-btn {
+        margin: 0px;
+    }
+}
+/* media query end */
+
+/*Ashvini CSS*/
+.shipping-address-div{
+    background: #FFFFFF;
+    border-radius: 15px;
+    border: none;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+}
+.place-order-btn-group{
+    display: flex;
+    justify-content: center;
+}
+.place-order-btn-group button{
+    /* background: #000; */
+    background: #7D671A;
+    border-radius: 10px;
+    color: #fff;
+    border: none;
+    width: 300px;
+    height: 50px;
+    margin: 30px;
+    font-size: 20px;
+    font-weight: 600;
+}
+.place-order-btn-group button:hover{
+    /* background: #000; */
+    background: #7D671A;
+    border-radius: 10px;
+    color: #fff;
+    border: none;
+    width: 300px;
+    height: 50px;
+    margin: 30px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.total-amount-div{
+    display: block;
+    float: right;
+}
+.total-amount{
+    display: flex;
+}
+.total-amount p{
+    font-size: 18px;
+}
+.react-date-picker__wrapper{
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    color: var(--cui-input-color, rgba(44, 56, 74, 0.95));
+}
+.react-date-picker__clear-button{
+    display: none !important;
+}
+.users-table .th_text{
+    /* white-space: pre-wrap; */
+}
+.Qnty-picker{
+    width: 100px;
+}
+/* .order-body .Qnty-picker{
+    min-width: 50px;
+} */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/* .modal.orders-model {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-radius: 12px;
+} */
+.modal.orders-model::-webkit-scrollbar {
+  height: 10px; 
+}
+.modal.orders-model::-webkit-scrollbar-track {
+  background-color: #E8E8E8;
+  border-radius: 100px;
+}
+.modal.orders-model::-webkit-scrollbar-thumb {
+  height: 10pxt;
+  background-color: #7A7A7A;
+  border-radius: 100px;
+}
+.td_product_code{
+    width: 16%;
+    word-break: break-word;
+}

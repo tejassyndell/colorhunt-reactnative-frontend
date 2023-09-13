@@ -1,0 +1,127 @@
+
+else if (productValues.Category == '4') {
+	 else {
+          console.log('Base Submitted')
+          const createVariations = () => {
+            const variations = [];  
+              for (let i = 0; i < productValues.BaseSizes.map((mattress) => mattress.value).length; i++) {
+                for (let j = 0; j < productValues.Springs.map((Springs) => Springs.value).length; j++) {
+                // for (const baseFabricColour of productValues.BaseFabricColour) {
+                  // for (const feetOption of productValues.FeetOption) {
+                    for (let n = 0; n < productValues.FeetOption.map((FeetOption) => FeetOption.value).length; n++) {
+                    for (let m = 0; m < productValues.FootBoard.map((FootBoard) => FootBoard.value).length; m++) {
+                     // for (let l = 0; l < productValues.HeadboardSizes.map((HeadboardSizes) => HeadboardSizes.value).length; l++) {
+                          for (let k = 0; k < productValues.Drawers.map((Drawers) => Drawers.value).length; k++) {
+                            const typeOne = () => {
+                              const variation = {
+                                MattressSizeGroup: productValues.MattressSizes[i].value,
+                                SpringGroup: productValues.Springs[j].value,
+                                // BaseFabricColourGroup: baseFabricColour.value,
+                                FeetOptionGroup: productValues.FeetOption[n].value,
+                                FootBoardGroup: productValues.FootBoard[m].value,
+                                DrawersGroup: productValues.Drawers[k].value,
+                                 HeadboardSizesGroup: productValues.HeadboardSizes[l].value,
+                                // IsFootboard : "NO",
+                                variationcode: `${productValues.group}` + `${productValues.Springs[j].code}` + `${productValues.BaseSizes[i].code}` + "-"  + "-" + `${productValues.group}` + `${productValues.Springs[j].code}` + `${productValues.BaseSizes[i].code}` + `${productValues.FeetOption[n].code}` + `${productValues.Drawers[k].code}`+ `${productValues.FootBoard[m].code}`
+                              };
+                            variations.push(variation); 
+                            }
+                            
+                            typeOne();
+                            //typeTwo();
+                           // typeFive();
+                           // typeSix();
+                           // typeThree();
+                           // typeFour();
+                            console.log(productValues.FeetOption[n].code);
+                        }
+                      }
+                   // }
+                  // }
+                }
+              }
+            }
+            return variations;
+          };
+
+          // Example usage
+          let variations = createVariations()
+
+          // Print variations with desired format
+             variations.forEach((variation) => {
+            const variationString = `Name: ${productValues.Name} - BaseSize: ${variation.BaseSizesGroup} - Base Fabric Colour: ${variation.BaseFabricColourGroup} - Feet Option: ${variation.FeetOptionGroup} - Foot Board: ${variation.FootBoardGroup} - Drawers: ${variation.DrawersGroup}`
+            console.log(variationString)
+          })
+
+          variations = Array.from(new Set(variations.map(JSON.stringify)), JSON.parse);
+
+          let deletedValues = []
+          let addedValues = []
+          const newdatas = variations.filter((value) => !Oldvariations.includes(value))
+          //to get new added varitions
+          variations.forEach((variation) => {
+            let matchFound = false;
+          
+            for (let i = 0; i < Oldvariations.length; i++) {
+              const existingVariation = Oldvariations[i];
+              // Check if the common fields between the old and new arrays match
+              if (
+                existingVariation.mat_size === variation.BaseSizesGroup &&
+                existingVariation.springs === variation.SpringGroup &&
+                existingVariation.base_fab_color === variation.BaseFabricColourGroup &&
+                existingVariation.feet_options === variation.FeetOptionGroup &&
+                existingVariation.foot_board === variation.FootBoardGroup &&
+                existingVariation.drawers === variation.DrawersGroup
+              ) {
+                matchFound = true;
+                break;
+              }
+            }
+          
+            // If the variation does not have a match in Oldvariations, mark it as a newly added value
+            if (!matchFound) {
+              addedValues.push(variation);
+            }
+          });
+          
+          
+
+          Oldvariations.forEach((Oldvariations) => {
+            let matchFound = false
+            for (let i = 0; i < variations.length; i++) {
+              const selectedOption = variations[i]
+              // Check if the common fields between the old and new arrays match
+              if (
+                Oldvariations.mat_size === selectedOption.BaseSizesGroup &&
+                Oldvariations.springs === selectedOption.SpringGroup &&
+                Oldvariations.base_fab_color === selectedOption.BaseFabricColourGroup &&
+                Oldvariations.feet_options === selectedOption.FeetOptionGroup &&
+                Oldvariations.foot_board === selectedOption.FootBoardGroup &&
+                Oldvariations.drawers === selectedOption.DrawersGroup
+              ) {
+                matchFound = true
+                break
+              }
+            }
+
+            // If an existing variation does not have a match in the selected options, mark it as a deleted value
+            if (!matchFound) {
+              deletedValues.push(Oldvariations)
+            }
+          })
+
+          //  API call function
+          // const productAPIData = {
+          //   product: productValues,
+          //   deletedValuesdata: deletedValues,
+          //   AddedValuesdata: addedValues,
+          // }
+        const formData = new FormData();
+        formData.append('product', JSON.stringify(productValues));
+        formData.append('product_group', JSON.stringify(variations));
+        formData.append('deletedValuesdata', JSON.stringify(deletedValues));
+        formData.append('AddedValuesdata', JSON.stringify(addedValues));
+
+        submitdata(formData)
+        }
+      }
