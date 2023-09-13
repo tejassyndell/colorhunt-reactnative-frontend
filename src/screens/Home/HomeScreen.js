@@ -28,7 +28,8 @@ export default function HomeScreen(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [filterDataSearch, setFilterDataSearch] = useState([])
-
+  const [minArticleRate, setMinArticleRate] = useState(null);
+const [maxArticleRate, setMaxArticleRate] = useState(null);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -176,6 +177,26 @@ export default function HomeScreen(props) {
   const handleCloseFilter = (isClosed) => {
     setIsFilterVisible(isClosed)
   };
+
+  useEffect(() => {
+    const minRate = nameDatas.reduce((min, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate < min ? articleRate : min;
+    }, Infinity);
+
+    const maxRate = nameDatas.reduce((max, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate > max ? articleRate : max;
+    }, -Infinity);
+
+    setMinArticleRate(minRate);
+    console.log(minArticleRate)
+    setMaxArticleRate(maxRate);
+    console.log(maxArticleRate)
+  }, [nameDatas]);
+
+  
+
   return (
     <>
       {isLoading ? (
@@ -580,7 +601,8 @@ export default function HomeScreen(props) {
                 }}
               >
                 <Filter onFilterChange={handleFilterChange}
-                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} />
+                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
+                  maxArticleRate={maxArticleRate}/>
               </View>
             </View>
           )}

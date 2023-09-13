@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { getCategories } from "../../api/api";
-export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
+export default function Filter({ onFilterChange, onCloseFilter, Scategories,
+    minArticleRate,
+    maxArticleRate, }) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 700]);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate,maxArticleRate]);
     const defaultPriceRange = [0, 700];
-    const min = 0;
-    const max = 700;
-
+    
     const getCategoriesname = async () => {
         try {
             const result1 = await getCategories();
@@ -56,18 +56,6 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
     useEffect(() => {
         setSelectedCategories(Scategories)
     }, [Scategories])
-
-    const renderStepMarkers = () => {
-        const markers = [];
-        for (let i = min; i <= max; i += step) {
-            markers.push(
-                <View key={i} style={styles.marker}>
-                    <Text style={styles.markerText}>{i}</Text>
-                </View>
-            );
-        }
-        return markers;
-    };
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -118,9 +106,9 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
                         values={selectedPriceRange}
                         sliderLength={320} // Customize the slider length as needed
                         onValuesChange={onValueChange}
-                        min={min}
-                        max={max}
-                        step={100}
+                        min={minArticleRate}
+                        max={maxArticleRate}
+                        step={10}
                         allowOverlap={false} // Prevent thumbs from overlapping
                         snapped // Ensure values are snapped to step intervals
                         pressedMarkerStyle={{ backgroundColor: 'black' }}
@@ -136,16 +124,25 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories }) {
                 </View>
             </View>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity
+            <TouchableOpacity
+                    style={[
+                        styles.resetButton,
+                        {
+                            backgroundColor: selectedCategories.length > 0 ? "black" : "white",
+                            color: selectedCategories.length > 0 ? "white" : "black",
+                        },
+                    ]}
                     onPress={resetFilters}
-                    style={[styles.button, { marginRight: 40 }]}
                 >
-                    <Text style={styles.buttonText}>Reset</Text>
+                    <Text
+                        style={{
+                            color: selectedCategories.length > 0 ? "white" : "black",
+                        }}
+                    >
+                        Reset
+                    </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.button, { marginLeft: 40 }]}
-                    onPress={applyFilters}
-                >
+                <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
                     <Text style={styles.buttonText}>Apply</Text>
                 </TouchableOpacity>
             </View>
@@ -251,10 +248,6 @@ const styles = StyleSheet.create({
         width: 76,
         height: 38
     },
-    buttonText: {
-        color: "white",
-        fontSize: 18
-    },
     container2: {
         marginTop: 30
     },
@@ -265,5 +258,27 @@ const styles = StyleSheet.create({
     sliderContainer: {
         width: '100%',
     },
-
+    resetButton: {
+        backgroundColor: 'white',
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 7.6,
+        height: 38,
+        width: 76,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    applyButton: {
+        backgroundColor: 'black',
+        borderRadius: 7.6,
+        height: 38,
+        width: 76,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        color: "white",
+        fontSize:18,
+        fontWeight:600
+    }
 });

@@ -20,6 +20,8 @@ export default function AllArticle(props) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
   const [searchText, setSearchText] = useState(""); // To store the search text
+  const [minArticleRate, setMinArticleRate] = useState(null);
+const [maxArticleRate, setMaxArticleRate] = useState(null);
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
@@ -231,6 +233,22 @@ export default function AllArticle(props) {
     setFinalData(abc)
     console.log(abc, "filtered Data by Range and Category :")
   }, [selectedCategories], [selectedPriceRange])
+  useEffect(() => {
+    const minRate = finalData.reduce((min, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate < min ? articleRate : min;
+    }, Infinity);
+
+    const maxRate = finalData.reduce((max, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate > max ? articleRate : max;
+    }, -Infinity);
+
+    setMinArticleRate(minRate);
+    console.log(minArticleRate)
+    setMaxArticleRate(maxRate);
+    console.log(maxArticleRate)
+  }, [finalData]);
   return (
     <>
       {isLoading ? (
@@ -313,7 +331,8 @@ export default function AllArticle(props) {
                 }}
               >
                 <Filter onFilterChange={handleFilterChange}
-                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} />
+                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
+                  maxArticleRate={maxArticleRate}/>
               </View>
             </View>
           )}
