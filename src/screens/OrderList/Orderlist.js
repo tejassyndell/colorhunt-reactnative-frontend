@@ -10,7 +10,7 @@ import { TouchableWithoutFeedback } from "react-native";
 const Orderlist = (props) => {
     const { navigation } = props;
     const [isLoading, setIsLoading] = useState(true);
-    const [destinationVal,setDestinationVal]=useState("");
+    const [destinationVal, setDestinationVal] = useState("");
     const [showTransporatation, setshowTransporatation] = useState(false);
     const [transportationVal, setTransportationVal] = useState();
     const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
@@ -22,27 +22,31 @@ const Orderlist = (props) => {
     const currentDate = new Date()
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const AddSo =async ()=>{
-        let Articldata = ParsedData.map(({ article_id, articleRate,ArticleColor,ArticleOpenFlag,Quantity}) => ({ article_id, articleRate,ArticleColor,ArticleOpenFlag,Quantity }))
-        const data={
-            Date:currentDate,
-            Destination:destinationVal,
-            Transporter:transportationVal,
-            GSTType:"GST",
-            GST:"",
-            GST_Percentage:"",
-            PartyId:197,
-            Remarks:"",
-            SoNumberId:"Add",
-            UserId:38,
-            DataArticle:Articldata,
-            NoPacksNew:null
+    const AddSo = async () => {
+        let Articldata = ParsedData.map(({ article_id, articleRate, ArticleColor, ArticleOpenFlag, Quantity }) => ({ article_id, articleRate, ArticleColor, ArticleOpenFlag, Quantity }))
+        const data = {
+            Date: currentDate,
+            Destination: destinationVal,
+            Transporter: transportationVal,
+            GSTType: "GST",
+            GST: "",
+            GST_Percentage: "",
+            PartyId: 197,
+            Remarks: "",
+            SoNumberId: "Add",
+            UserId: 38,
+            DataArticle: Articldata,
+            NoPacksNew: null
         }
-        console.log("-=-=-=-",data);
-        await addso(data);
+        console.log("-=-=-=-", data);
+        await addso(data).then((res) => {
+            if (res.status === 200) {
+                setIsModalVisible(true);
+            }
+        })
     }
     const showSuccessModal = () => {
-        // setIsModalVisible(true);
+
         AddSo();
     };
     // let ParsedData = [];
@@ -130,7 +134,7 @@ const Orderlist = (props) => {
         }
     }
 
- 
+
     return (
         <>
             {isLoading ? (
@@ -176,7 +180,7 @@ const Orderlist = (props) => {
                                 </View>
                                 <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Transportation</Text>
-                                   
+
                                     {/* <TextInput  value={transportationVal} onChangeText={(e) => filterTransportationValue(e)}   style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: 5,
@@ -191,20 +195,22 @@ const Orderlist = (props) => {
                                         paddingLeft: 15, borderRadius: 6,
                                         borderColor: "#E4E7EA",
                                         fontSize: 16, backgroundColor: "#EEE",
-                                        display:"flex",
-                                        flexDirection:"row"
+                                        display: "flex",
+                                        flexDirection: "row"
                                     }}>
-                                    <Text>{transportationVal}</Text>
-                                    <TouchableOpacity style={{ position: "absolute",
-                                        top: "64%",
-                                        left: "95%",
-                                        right: 0}} onPress={() => { Transportation.length !== 0 ? setshowTransporatation(!showTransporatation) : "" }}>
+                                        <Text>{transportationVal}</Text>
+                                        <TouchableOpacity style={{
+                                            position: "absolute",
+                                            top: "64%",
+                                            left: "95%",
+                                            right: 0
+                                        }} onPress={() => { Transportation.length !== 0 ? setshowTransporatation(!showTransporatation) : "" }}>
 
-                                        <Image style={{
-                                            width: 20, height: 20,
+                                            <Image style={{
+                                                width: 20, height: 20,
 
-                                        }} source={require("../../../assets/DownArrow(1).png")}></Image>
-                                    </TouchableOpacity>
+                                            }} source={require("../../../assets/DownArrow(1).png")}></Image>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                                 {
@@ -225,7 +231,7 @@ const Orderlist = (props) => {
                                         <View>
 
                                             {Transportation.map((item) =>
-                                                <TouchableOpacity key={item.Id} onPress={() => {setTransportationVal(item.Name);setshowTransporatation(!showTransporatation)}}>
+                                                <TouchableOpacity key={item.Id} onPress={() => { setTransportationVal(item.Name); setshowTransporatation(!showTransporatation) }}>
                                                     <Text style={{
                                                         fontSize: 16,
                                                         marginVertical: 10

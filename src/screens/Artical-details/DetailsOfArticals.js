@@ -61,9 +61,9 @@ const DetailsOfArticals = (props) => {
             setSalesnopacks(res.data.calculatedData[0].SalesNoPacks)
             setNopacks(res.data.calculatedData[0].NoPacks)
             console.log(nopacks)
-            // const salesnopackstoArray = res.data.calculatedData[0].SalesNoPacks.split(",");
+            const salesnopackstoArray = res.data.calculatedData[0].SalesNoPacks.split(",");
             // const salesnopackstoArray = [1, 2, 3, 4]
-            const salesnopackstoArray = [nopacks]
+            // const salesnopackstoArray = [nopacks]
             setAvailableStock(salesnopackstoArray.map((stock) => parseInt(stock)))
             console.log(availableStock)
             setIsLoading(false);
@@ -322,7 +322,7 @@ const DetailsOfArticals = (props) => {
                                                         <Text style={styles.color_box}>{item.Name}</Text>
                                                     </View>
                                                     <View style={styles.available_box_Text}>
-                                                        <Text style={styles.available_box}>{nopacks}</Text>
+                                                        <Text style={styles.available_box}>{item.available}</Text>
                                                     </View>
 
                                                     <View style={styles.qty_box_Text}>
