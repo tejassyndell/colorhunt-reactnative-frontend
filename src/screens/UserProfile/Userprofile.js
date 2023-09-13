@@ -15,7 +15,7 @@ export default function Userprofile(props) {
     try {
       let partyData = await AsyncStorage.getItem("UserData");
       partyData = JSON.parse(partyData);
-
+      console.log(partyData);
       const data = { party_id: partyData[0].Id };
       const response = await Profiledata(data);
       setprofile(response.data);

@@ -9,9 +9,10 @@ import {
   Keyboard,
   TextInput,
   Button,
+  Modal,
 } from "react-native";
 import MenuImage from "../../components/MenuImage/MenuImage";
-import styles from "./styles";
+import styles from "./SkipHomePageStyle";
 import { FontAwesome } from "@expo/vector-icons";
 import {
   getProductName,
@@ -24,8 +25,9 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Fliter/Filter";
 import { ActivityIndicator } from "react-native";
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 
-export default function HomeScreen(props) {
+export default function SkipHomeScreen(props) {
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
   const [ApplyStatushBack, setApplyStatushBack] = useState(true);
@@ -38,8 +40,16 @@ export default function HomeScreen(props) {
   const [isLoading, setIsLoading] = useState(true);
 
   const [rateRange, setrateRange] = useState([0, 1000]);
-  // open filter
+  //  Open a Create Account toggle
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
 
+  const openCreateAccountModal = () => {
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
   //Search Functionaity - Harshil
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
@@ -83,13 +93,10 @@ export default function HomeScreen(props) {
   };
 
   const addArticleWishlist = async (i) => {
-    let data = {
-      user_id: 197,
-      article_id: i.Id,
-    };
-
-    console.log(data);
     try {
+      let partyData = await AsyncStorage.getItem("UserData");
+      partyData = JSON.parse(partyData);
+
       await getAddWishlist(data).then((res) => {
         getWishlist();
       });
@@ -100,13 +107,11 @@ export default function HomeScreen(props) {
 
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
-    let data = {
-      party_id: 197,
-      article_id: i.Id,
-    };
-    console.log(data);
 
     try {
+      let partyData = await AsyncStorage.getItem("UserData");
+      partyData = JSON.parse(partyData);
+      console.log(partyData);
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
           getWishlist();
@@ -155,7 +160,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const viewAllArticles = () => {
-    navigation.navigate("AllArticle", { filteredData });
+    navigation.navigate("", { filteredData });
   };
 
   useLayoutEffect(() => {
@@ -193,11 +198,7 @@ export default function HomeScreen(props) {
             padding: 4,
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Profile");
-            }}
-          >
+          <TouchableOpacity onPress={openCreateAccountModal}>
             <Image
               style={styles.searchIcon}
               source={require("../../../assets/Nevbar/Profile.png")}
@@ -210,13 +211,13 @@ export default function HomeScreen(props) {
 
   const onPressRecipe = (item) => {
     const id = 883;
-    navigation.navigate("DetailsOfArticals", { id: id });
+    navigation.navigate("", { id: id });
   };
 
   const handlePress = (item) => {
     // ategoryNames(item);
     console.log(item);
-    navigation.navigate("CategorisWiseArticle", { item: item });
+    navigation.navigate("", { item: item });
   };
 
   const filterData = () => {
@@ -276,7 +277,7 @@ export default function HomeScreen(props) {
                 searchPhrase={searchText}
                 setSearchPhrase={setSearchText}
               />
-              <TouchableOpacity onPress={openFilter}>
+              <TouchableOpacity onPress={openCreateAccountModal}>
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{ width: 40, height: 40, borderRadius: 10 }}
@@ -300,7 +301,7 @@ export default function HomeScreen(props) {
                   fontSize: 12,
                   fontWeight: 600,
                 }}
-                onPress={viewAllArticles}
+                onPress={openCreateAccountModal}
               >
                 View All
               </Text>
@@ -324,43 +325,8 @@ export default function HomeScreen(props) {
                   ? searchText.length > 0
                     ? filteredData.map((item) => (
                         <TouchableOpacity
-                          onPress={() =>
-                            navigation.navigate("DetailsOfArticals", {
-                              id: item.Id,
-                            })
-                          }
-                        >
-                          {/* <View
-                key={item.id}
-                style={{
-                  alignItems: "center",
-                  marginLeft: 5,
-                  marginRight: 5,
-                  borderRadius: 10,
-                  shadowOpacity: 0.8,
-                  shadowRadius: 4,
-                  elevation: 5,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  // Add elevation for Android
-                  elevation: 4,
-                }}
-              >
-                <Image
-                  source={{ uri: baseImageUrl + item.Photos }}
-                  style={{ width: 155, height: 190, elevation: 5, borderRadius: 10, paddingRight: 10, paddingLeft: 10 }}
-                />
-                <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                  {item.ArticleNumber}
-                </Text>
-                <Text>{item.Category}</Text>
-                <Text style={{ fontWeight: "bold" }}>
-                  {"₹" + item.ArticleRate}
-                </Text>
-              </View> */}
-                        </TouchableOpacity>
+                          onPress={openCreateAccountModal}
+                        ></TouchableOpacity>
                       ))
                     : nameData.map((item) => (
                         <View
@@ -376,11 +342,7 @@ export default function HomeScreen(props) {
                             borderRadius: 10,
                           }}
                         >
-                          <TouchableOpacity
-                            onPress={() => {
-                              handlePress(item);
-                            }}
-                          >
+                          <TouchableOpacity onPress={openCreateAccountModal}>
                             <View
                               style={{
                                 borderColor: "gray",
@@ -428,11 +390,7 @@ export default function HomeScreen(props) {
                           marginRight: 5,
                         }}
                       >
-                        <TouchableOpacity
-                          onPress={() => {
-                            handlePress(item);
-                          }}
-                        >
+                        <TouchableOpacity onPress={openCreateAccountModal}>
                           <Image
                             source={require("../../../assets/demo.png")}
                             style={{
@@ -470,7 +428,7 @@ export default function HomeScreen(props) {
                     fontSize: 12,
                     fontWeight: 600,
                   }}
-                  onPress={viewAllArticles}
+                  onPress={openCreateAccountModal}
                 >
                   View All
                 </Text>
@@ -649,6 +607,18 @@ export default function HomeScreen(props) {
               </View>
             </View>
           )}
+          <Modal
+            visible={isCreateAccountVisible}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={closeCreateAccountModal}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <CreateAccount onClose={closeCreateAccountModal} />
+              </View>
+            </View>
+          </Modal>
         </View>
       )}
     </>

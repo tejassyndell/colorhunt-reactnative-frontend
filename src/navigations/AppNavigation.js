@@ -20,6 +20,7 @@ import WishList from "../screens/WishList/wishlist";
 import Orderlist from "../screens/OrderList/Orderlist";
 import Notification from "../screens/Notification/Notification";
 import Login from "../screens/Login/Login";
+import SkipHomeScreen from "../screens/SkipHomePage/SkipHomePage";
 const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -51,6 +52,7 @@ function MainNavigator() {
       />
       <Stack.Screen name="cart_list" component={AddToCart} />
       <Stack.Screen name="Orderlist" component={Orderlist} />
+      <Stack.Screen name="Skip" component={SkipHomeScreen} />
       <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );

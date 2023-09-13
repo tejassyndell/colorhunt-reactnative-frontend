@@ -155,3 +155,12 @@ export const phoneNumberValidation = async (data) => {
     console.log(err, "err in react api");
   }
 };
+
+//  Submit a Create new party
+export const UserData = async (data) => {
+  try {
+    return await axios.post(`${url}/UserData`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};

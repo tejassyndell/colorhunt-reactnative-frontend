@@ -51,11 +51,9 @@ const DetailsOfArticals = (props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
 
   const ArticleDetailsData = async () => {
-    let data = {
-      ArticleId: id,
-      PartyId: 197,
-    };
     try {
+      let partyData = await AsyncStorage.getItem("UserData");
+      partyData = JSON.parse(partyData);
       const res = await ArticleDetails(data);
       console.log("dd", res.data.photos);
       setArticlePhotos(res.data.photos);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useFocusEffect } from "@react-navigation/native";
 const Login = (props) => {
   const { navigation } = props;
 
@@ -17,12 +17,26 @@ const Login = (props) => {
   const [otp, setOTP] = useState(["", "", "", ""]); // Array to store OTP digits
   const [showLogin, setShowLogin] = useState(true);
 
+  // Reset Every thing
+  useFocusEffect(
+    useCallback(() => {
+      setPhoneNumber(""); // Reset phone number
+      setOTP(["", "", "", ""]); // Reset OTP
+      setShowLogin(true); // Reset to the login view
+    }, [])
+  );
   // Handle "Next" or "Verify" button click
   const handleNextOrVerify = async () => {
     if (showLogin) {
       // Check if phone number is valid (for simplicity, checking if it's 10 digits)
-      if (phoneNumber.length === 10) {
+      if (phoneNumber.length === 10 || !phoneNumber) {
         try {
+          if (!phoneNumber) {
+            // Skip phone number validation and navigate to Home
+            navigation.navigate("Skip");
+            return;
+          }
+
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
@@ -126,7 +140,11 @@ const Login = (props) => {
             keyboardType="numeric"
             maxLength={10}
             value={phoneNumber}
-            onChangeText={(text) => setPhoneNumber(text)}
+            onChangeText={(text) => {
+              // Input validation: allow only numeric characters
+              const numericText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+              setPhoneNumber(numericText);
+            }}
           />
         ) : (
           <View
