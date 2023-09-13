@@ -53,9 +53,9 @@ const OrderHistory = (props) => {
                     </View>
                 </View>
                 <View style={styles.calender_cnt}>
-                    <View style={{ padding: 10,paddingRight:25 }}>
-                        <TouchableOpacity onPress={()=>console.log("calender")}>
-                            
+                    <View style={{ padding: 10,paddingRight:32 }}>
+                        <TouchableOpacity onPress={()=>console.log("done")}>
+                        <Image style={{ height: 20, width: 20 }} source={require("../../../assets/calaender.png")}></Image> 
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     first_cnt: {
         width: "100%",
         height: 100,
-        backgroundColor: "pink"
+        backgroundColor: "#FFF"
     },
     pendin_complete_cnt: {
         width: "89%",
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     calender_cnt: {
-        backgroundColor: "lightgreen",
+        backgroundColor: "#FFF",
         display: 'flex',
         flexDirection: "row",
         justifyContent: "flex-end",
