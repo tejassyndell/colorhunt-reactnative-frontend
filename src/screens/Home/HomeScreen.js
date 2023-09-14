@@ -1,14 +1,14 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
 import styles from "./styles";
-import { FontAwesome } from '@expo/vector-icons';
-import { getProductName, getcateGorywithphotos, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
+import { FontAwesome } from "@expo/vector-icons";
+import {
+  getProductName,
+  getcateGorywithphotos,
+  getWishlistData,
+  getAddWishlist,
+  DeleteWishlist,
+} from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import { ActivityIndicator } from "react-native";
@@ -20,14 +20,14 @@ export default function HomeScreen(props) {
   const [nameData, setNameData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
   const [applyrData, setApplyData] = useState([]);
-  const [selectedprd, setSelectprd] = useState([])
+  const [selectedprd, setSelectprd] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
-  const [finalData, setFinalData] = useState([])
+  const [finalData, setFinalData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const [filterDataSearch, setFilterDataSearch] = useState([])
+  const [filterDataSearch, setFilterDataSearch] = useState([]);
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const openFilter = () => {
@@ -35,48 +35,47 @@ export default function HomeScreen(props) {
   };
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
-    const data = {
-      party_id: 197,
-    }
+    let partyData = await AsyncStorage.getItem("UserData");
+    partyData = JSON.parse(partyData);
     const result = await getWishlistData(data).then((res) => {
-      setSelectprd(res.data)
-    })
-  }
+      setSelectprd(res.data);
+    });
+  };
 
   const addArticleWishlist = async (i) => {
     let data = {
       user_id: 197,
       article_id: i.Id,
-    }
+    };
     try {
       await getAddWishlist(data).then((res) => {
-        getWishlist()
-      })
+        getWishlist();
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const rmvProductWishlist = async (i) => {
     let data = {
       party_id: 197,
       article_id: i.Id,
-    }
+    };
 
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist()
+          getWishlist();
         }
-      })
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getCategoriesname();
-    getWishlist()
+    getWishlist();
   }, []);
 
   // uploard url image
@@ -96,7 +95,7 @@ export default function HomeScreen(props) {
         setCategoryName(result2.data);
         setNameDatas(result2.data);
         setApplyData(result2.data);
-        setFilterDataSearch(result2.data)
+        setFilterDataSearch(result2.data);
       }
 
       setIsLoading(false);
@@ -118,24 +117,50 @@ export default function HomeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View style={{ marginLeft: 5, width: 50, height: 100, display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <TouchableOpacity onPress={() => {
-            navigation.openDrawer();
-          }}>
-            <Image source={require('../../../assets/sidbarOpenIcone.png')} style={{ width: 38, height: 38, borderRadius: 5 }} ></Image>
+        <View
+          style={{
+            marginLeft: 5,
+            width: 50,
+            height: 100,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+          >
+            <Image
+              source={require("../../../assets/sidbarOpenIcone.png")}
+              style={{ width: 38, height: 38, borderRadius: 5 }}
+            ></Image>
           </TouchableOpacity>
         </View>
-
       ),
-      headerTitle: () => (
-        <View />
-      ),
-      headerRight: () =>
-        <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
-          <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
-            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+      headerTitle: () => <View />,
+      headerRight: () => (
+        <View
+          style={{
+            marginHorizontal: 10,
+            width: "auto",
+            height: "auto",
+            padding: 4,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Profile");
+            }}
+          >
+            <Image
+              style={styles.searchIcon}
+              source={require("../../../assets/Nevbar/Profile.png")}
+            />
           </TouchableOpacity>
-        </View>,
+        </View>
+      ),
     });
   }, []);
 
@@ -144,38 +169,44 @@ export default function HomeScreen(props) {
   };
 
   const filterData = () => {
-    if (searchText === '') {
-
+    if (searchText === "") {
     } else {
-      const filtered = filterDataSearch.filter((item) =>
-        item.ArticleNumber.toString().includes(searchText.toString()) ||
-        item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.ArticleRate.toString().includes(searchText.toString()) ||
-        item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
-      )
-      setFinalData(filtered)
+      const filtered = filterDataSearch.filter(
+        (item) =>
+          item.ArticleNumber.toString().includes(searchText.toString()) ||
+          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.ArticleRate.toString().includes(searchText.toString()) ||
+          item.StyleDescription.toLowerCase().includes(
+            searchText.toLowerCase()
+          ) ||
+          item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFinalData(filtered);
     }
-  }
+  };
   useEffect(() => {
     filterData();
-  }, [searchText])
+  }, [searchText]);
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    setSearchText("")
-
+    setSearchText("");
   };
   useEffect(() => {
-    console.log(selectedCategories, "Sc")
-    console.log(selectedPriceRange, "Range")
-    const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category) && item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]);
-    console.log(abc.length)
+    console.log(selectedCategories, "Sc");
+    console.log(selectedPriceRange, "Range");
+    const abc = nameDatas.filter(
+      (item) =>
+        selectedCategories.includes(item.Category) &&
+        item.ArticleRate >= selectedPriceRange[0] &&
+        item.ArticleRate <= selectedPriceRange[1]
+    );
+    console.log(abc.length);
     setFinalData(abc);
   }, [selectedCategories, selectedPriceRange]);
 
   const handleCloseFilter = (isClosed) => {
-    setIsFilterVisible(isClosed)
+    setIsFilterVisible(isClosed);
   };
 
   useEffect(() => {
@@ -190,24 +221,21 @@ export default function HomeScreen(props) {
     }, -Infinity);
 
     setMinArticleRate(minRate);
-    console.log(minArticleRate)
+    console.log(minArticleRate);
     setMaxArticleRate(maxRate);
-    console.log(maxArticleRate)
+    console.log(maxArticleRate);
   }, [nameDatas]);
-
-
 
   return (
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator
-            size="large"
-            color="black"
-          />
+          <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}>
+        <View
+          style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
+        >
           <View style={{ marginTop: 10 }}>
             <View>
               <Text
@@ -223,11 +251,16 @@ export default function HomeScreen(props) {
               </Text>
             </View>
             <View
-              style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                width: "87%",
+              }}
             >
               <SearchBar
                 searchPhrase={searchText}
-                setSearchPhrase={setSearchText} />
+                setSearchPhrase={setSearchText}
+              />
               <TouchableOpacity onPress={openFilter}>
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
@@ -241,9 +274,17 @@ export default function HomeScreen(props) {
             style={{ overflow: "hidden" }}
           >
             <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
-              <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>Men's </Text>
+              <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
+                Men's{" "}
+              </Text>
               <Text
-                style={{ position: "absolute", color: 'rgba(102, 102, 102, 1)', end: 10, fontSize: 12, fontWeight: 600 }}
+                style={{
+                  position: "absolute",
+                  color: "rgba(102, 102, 102, 1)",
+                  end: 10,
+                  fontSize: 12,
+                  fontWeight: 600,
+                }}
                 onPress={viewAllArticles}
               >
                 View All
@@ -264,166 +305,183 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-                {ApplyStatushBack === true ? (finalData.length > 0 ? (finalData.map((item) => (
-                  <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}>
-                    <View
-                      key={item.id}
-                      style={{
-                        alignItems: "center",
-                        height: 280,
-                        width: 160,
-                        marginLeft: 5,
-                        marginRight: 5,
-                        marginBottom: 120,
-                        borderRadius: 10,
+                {ApplyStatushBack === true
+                  ? finalData.length > 0
+                    ? finalData.map((item) => (
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("DetailsOfArticals", {
+                              id: item.Id,
+                            })
+                          }
+                        >
+                          <View
+                            key={item.id}
+                            style={{
+                              alignItems: "center",
+                              height: 280,
+                              width: 160,
+                              marginLeft: 5,
+                              marginRight: 5,
+                              marginBottom: 120,
+                              borderRadius: 10,
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: 155,
+                                height: 190,
+                                borderColor: "gray",
+                                shadowColor: "#000000",
+                                shadowOpacity: 0.9,
+                                shadowRadius: 4,
+                                elevation: 10, // For Android, use elevation
+                                shadowOffset: {
+                                  width: 0,
+                                  height: 0,
+                                },
+                              }}
+                            >
+                              <View id={item.id} style={styles.producticones}>
+                                {selectedprd.some((i) => i.Id === item.Id) ? (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      rmvProductWishlist(item);
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart"
+                                      style={[
+                                        styles.icon,
+                                        // isLoggedin === false ? styles.disabledIcon : null,
+                                      ]}
+                                    />
+                                  </TouchableOpacity>
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      addArticleWishlist(item);
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart-o"
+                                      style={[
+                                        styles.disabledIcon,
+                                        // isLoggedin === false ? styles.disabledIcon : null,
+                                      ]}
+                                    />
+                                  </TouchableOpacity>
+                                )}
+                              </View>
+                              <Image
+                                source={{ uri: baseImageUrl + item.Photos }}
+                                style={{
+                                  width: "94%",
+                                  height: 190,
+                                  borderRadius: 10,
+                                }}
+                              />
+                            </View>
 
-                      }}
-                    >
-                      <View style={{
-                        width: 155,
-                        height: 190,
-                        borderColor: "gray",
-                        shadowColor: "#000000",
-                        shadowOpacity: 0.9,
-                        shadowRadius: 4,
-                        elevation: 10, // For Android, use elevation
-                        shadowOffset: {
-                          width: 0,
-                          height: 0,
-                        },
-                      }}>
-                        <View id={item.id} style={styles.producticones}>
-                          {selectedprd.some((i) => i.Id === item.Id) ? (
-                            <TouchableOpacity
-                              onPress={() => {
-                                rmvProductWishlist(item);
+                            <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                              {item.ArticleNumber}
+                            </Text>
+                            <Text>{item.Category}</Text>
+                            <Text style={{ fontWeight: "bold" }}>
+                              {"₹" + item.ArticleRate}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      ))
+                    : nameData.map((item) => (
+                        <View
+                          key={item.id}
+                          style={{
+                            alignItems: "center",
+                            height: "auto",
+                            width: 165,
+                            marginLeft: 5,
+                            marginRight: 5,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            borderRadius: 10,
+                          }}
+                        >
+                          <TouchableOpacity
+                            onPress={() => {
+                              handlePress(item);
+                            }}
+                          >
+                            <View
+                              style={{
+                                marginTop: 5,
+                                width: 155,
+                                height: 190,
+                                borderColor: "gray",
+                                shadowColor: "gray",
+                                shadowOpacity: 0.9,
+                                shadowRadius: 10,
+                                elevation: 10,
+                                shadowOffset: {
+                                  width: 0,
+                                  height: 0,
+                                },
                               }}
                             >
-                              <FontAwesome
-                                name="heart"
-                                style={[
-                                  styles.icon,
-                                  // isLoggedin === false ? styles.disabledIcon : null,
-                                ]}
+                              <Image
+                                source={require("../../../assets/demo.png")}
+                                style={{
+                                  width: "100%",
+                                  height: 190,
+                                  borderRadius: 10,
+                                }}
                               />
-                            </TouchableOpacity>
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => {
-                                addArticleWishlist(item);
-                              }}
-                            >
-                              <FontAwesome
-                                name="heart-o"
-                                style={[
-                                  styles.disabledIcon,
-                                  // isLoggedin === false ? styles.disabledIcon : null,
-                                ]}
-                              />
-                            </TouchableOpacity>
-                          )}
+                            </View>
+                          </TouchableOpacity>
+                          <Text
+                            style={{
+                              marginTop: 10,
+                              fontWeight: "bold",
+                              marginBottom: 10,
+                            }}
+                          >
+                            {item.Category}
+                          </Text>
                         </View>
-                        <Image
-                          source={{ uri: baseImageUrl + item.Photos }}
-                          style={{
-                            width: "94%",
-                            height: 190,
-                            borderRadius: 10,
-
-                          }}
-                        />
-                      </View>
-
-                      <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                        {item.ArticleNumber}
-                      </Text>
-                      <Text>{item.Category}</Text>
-                      <Text style={{ fontWeight: "bold" }}>
-                        {"₹" + item.ArticleRate}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))) : (nameData.map((item) => (
-                  <View
-                    key={item.id}
-                    style={{
-                      alignItems: "center",
-                      height: 'auto',
-                      width: 165,
-                      marginLeft: 5,
-                      marginRight: 5,
-                      marginTop: 10,
-                      marginBottom: 10,
-                      borderRadius: 10,
-
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        handlePress(item);
-                      }}
-                    >
-                      <View style={{
-                        marginTop: 5,
-                        width: 155,
-                        height: 190,
-                        borderColor: "gray",
-                        shadowColor: "gray",
-                        shadowOpacity: 0.9,
-                        shadowRadius: 10,
-                        elevation: 10,
-                        shadowOffset: {
-                          width: 0,
-                          height: 0,
-                        },
-                      }}>
-                        <Image
-                          source={require("../../../assets/demo.png")}
-                          style={{
-                            width: "100%",
-                            height: 190,
-                            borderRadius: 10,
-
-                          }}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                    <Text style={{ marginTop: 10, fontWeight: "bold", marginBottom: 10 }}>
-                      {item.Category}
-                    </Text>
-                  </View>
-                ))))
+                      ))
                   : applyrData.map((item) => (
-                    <View
-                      key={item.id}
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: 200,
-                        marginLeft: 5,
-                        marginRight: 5,
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => {
-                          handlePress(item);
+                      <View
+                        key={item.id}
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: 200,
+                          marginLeft: 5,
+                          marginRight: 5,
                         }}
                       >
-                        <Image
-                          source={require("../../../assets/demo.png")}
-                          style={{ width: 200, height: 300, borderRadius: 10 }}
-                        />
-                      </TouchableOpacity>
-                      <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                        {item.Category}
-                      </Text>
-                    </View>
-                  ))}
+                        <TouchableOpacity
+                          onPress={() => {
+                            handlePress(item);
+                          }}
+                        >
+                          <Image
+                            source={require("../../../assets/demo.png")}
+                            style={{
+                              width: 200,
+                              height: 300,
+                              borderRadius: 10,
+                            }}
+                          />
+                        </TouchableOpacity>
+                        <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                          {item.Category}
+                        </Text>
+                      </View>
+                    ))}
               </ScrollView>
             </View>
-            <View>
-
-            </View>
+            <View></View>
             <View style={{ marginTop: 10 }}>
               <View
                 style={{
@@ -433,9 +491,17 @@ export default function HomeScreen(props) {
                   marginTop: 20,
                 }}
               >
-                <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>Kid’s </Text>
+                <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
+                  Kid’s{" "}
+                </Text>
                 <Text
-                  style={{ position: "absolute", end: 10, color: 'rgba(102, 102, 102, 1)', fontSize: 12, fontWeight: 600 }}
+                  style={{
+                    position: "absolute",
+                    end: 10,
+                    color: "rgba(102, 102, 102, 1)",
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
                   onPress={viewAllArticles}
                 >
                   View All
@@ -458,116 +524,120 @@ export default function HomeScreen(props) {
                 >
                   {ApplyStatushBack === true
                     ? nameDatas.map((item) => (
-
-                      <View
-                        key={item.id}
-                        style={{
-                          alignItems: "center",
-                          height: 280,
-                          width: 160,
-                          marginLeft: 5,
-                          marginRight: 5,
-                          marginBottom: 120,
-                          borderRadius: 10,
-
-                        }}
-                      >
-                        <View style={{
-                          marginTop: 5,
-                          width: 155,
-                          height: 190,
-                          borderColor: "gray",
-                          shadowColor: "gray",
-                          shadowOpacity: 0.9,
-                          shadowRadius: 4,
-                          elevation: 5, // For Android, use elevation
-                          shadowOffset: {
-                            width: 0,
-                            height: 0,
-                          },
-                        }}>
-                          <View id={item.id} style={styles.producticones}>
-                            {selectedprd.some((i) => i.Id === item.Id) ? (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  rmvProductWishlist(item);
-                                }}
-                              >
-                                <FontAwesome
-                                  name="heart"
-                                  style={[
-                                    styles.icon,
-                                    // isLoggedin === false ? styles.disabledIcon : null,
-                                  ]}
-                                />
-                              </TouchableOpacity>
-                            ) : (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  addArticleWishlist(item);
-                                }}
-                              >
-                                <FontAwesome
-                                  name="heart-o"
-                                  style={[
-                                    styles.disabledIcon,
-                                    // isLoggedin === false ? styles.disabledIcon : null,
-                                  ]}
-                                />
-                              </TouchableOpacity>
-                            )}
+                        <View
+                          key={item.id}
+                          style={{
+                            alignItems: "center",
+                            height: 280,
+                            width: 160,
+                            marginLeft: 5,
+                            marginRight: 5,
+                            marginBottom: 120,
+                            borderRadius: 10,
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: 155,
+                              height: 190,
+                              borderColor: "gray",
+                              shadowColor: "#000000",
+                              shadowOpacity: 0.9,
+                              shadowRadius: 4,
+                              elevation: 10, // For Android, use elevation
+                              shadowOffset: {
+                                width: 0,
+                                height: 0,
+                              },
+                            }}
+                          >
+                            <View id={item.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    rmvProductWishlist(item);
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart"
+                                    style={[
+                                      styles.icon,
+                                      // isLoggedin === false ? styles.disabledIcon : null,
+                                    ]}
+                                  />
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    addArticleWishlist(item);
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart-o"
+                                    style={[
+                                      styles.disabledIcon,
+                                      // isLoggedin === false ? styles.disabledIcon : null,
+                                    ]}
+                                  />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            <Image
+                              source={{ uri: baseImageUrl + item.Photos }}
+                              style={{
+                                width: "94%",
+                                height: 190,
+                                borderRadius: 10,
+                              }}
+                            />
                           </View>
+
+                          <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text>{item.Category}</Text>
+                          <Text style={{ fontWeight: "bold" }}>
+                            {"₹" + item.ArticleRate}
+                          </Text>
+                        </View>
+                      ))
+                    : applyrData.map((item) => (
+                        <View
+                          key={item.id}
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: 155,
+                            height: 232,
+                            marginLeft: 5,
+                            marginRight: 5,
+                          }}
+                        >
                           <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
-                              width: "94%",
-                              height: 190,
+                              width: 200,
+                              height: 200,
                               borderRadius: 10,
-
                             }}
                           />
+                          <Text style={{ fontWeight: "bold" }}>
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text>{item.Category}</Text>
+                          <Text style={{ fontWeight: "bold" }}>
+                            {"₹" + item.ArticleRate}
+                          </Text>
                         </View>
-
-                        <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                          {item.ArticleNumber}
-                        </Text>
-                        <Text>{item.Category}</Text>
-                        <Text style={{ fontWeight: "bold" }}>
-                          {"₹" + item.ArticleRate}
-                        </Text>
-                      </View>
-                    ))
-                    : applyrData.map((item) => (
-                      <View
-                        key={item.id}
-                        style={{
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: 155,
-                          height: 232,
-                          marginLeft: 5,
-                          marginRight: 5,
-                        }}
-                      >
-                        <Image
-                          source={{ uri: baseImageUrl + item.Photos }}
-                          style={{ width: 200, height: 200, borderRadius: 10 }}
-                        />
-                        <Text style={{ fontWeight: "bold" }}>
-                          {item.ArticleNumber}
-                        </Text>
-                        <Text>{item.Category}</Text>
-                        <Text style={{ fontWeight: "bold" }}>
-                          {"₹" + item.ArticleRate}
-                        </Text>
-                      </View>
-                    ))}
+                      ))}
                 </ScrollView>
               </View>
             </View>
           </ScrollView>
           {isFilterVisible ? null : (
-            <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+            <View
+              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+            >
               <ButtomNavigation navigation={navigation} />
             </View>
           )}
@@ -600,9 +670,13 @@ export default function HomeScreen(props) {
                   borderTopRightRadius: 20,
                 }}
               >
-                <Filter onFilterChange={handleFilterChange}
-                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
-                  maxArticleRate={maxArticleRate} />
+                <Filter
+                  onFilterChange={handleFilterChange}
+                  onCloseFilter={handleCloseFilter}
+                  Scategories={selectedCategories}
+                  minArticleRate={minArticleRate}
+                  maxArticleRate={maxArticleRate}
+                />
               </View>
             </View>
           )}
