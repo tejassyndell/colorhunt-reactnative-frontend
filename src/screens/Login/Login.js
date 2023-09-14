@@ -18,13 +18,19 @@ const Login = (props) => {
   const [showLogin, setShowLogin] = useState(true);
 
   // Reset Every thing
-  useFocusEffect(
-    useCallback(() => {
+  const clearAndReset = useCallback(async () => {
+    try {
+      await AsyncStorage.removeItem("UserData"); // Clear the stored user data
       setPhoneNumber(""); // Reset phone number
       setOTP(["", "", "", ""]); // Reset OTP
       setShowLogin(true); // Reset to the login view
-    }, [])
-  );
+    } catch (error) {
+      console.error("Error clearing AsyncStorage:", error);
+      alert("An error occurred while clearing data.");
+    }
+  }, []);
+
+  useFocusEffect(clearAndReset);
   // Handle "Next" or "Verify" button click
   const handleNextOrVerify = async () => {
     if (showLogin) {
@@ -32,11 +38,13 @@ const Login = (props) => {
       if (phoneNumber.length === 10 || !phoneNumber) {
         try {
           if (!phoneNumber) {
+            console.log("{}{}{}{}{}{}{}{}{}");
             // Skip phone number validation and navigate to Home
+            await AsyncStorage.removeItem("UserData");
             navigation.navigate("Skip");
             return;
+          } else {
           }
-
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
