@@ -263,6 +263,7 @@ export default function AllArticle(props) {
     setIsFilterVisible((prev) => !prev);
   };
 
+<<<<<<< Updated upstream
   useEffect(
     () => {
       console.log(selectedCategories, "sca");
@@ -279,6 +280,23 @@ export default function AllArticle(props) {
     [selectedCategories],
     [selectedPriceRange]
   );
+=======
+  useEffect(() => {
+    const filteredData = nameDatas.filter((item) => {
+      const isCategoryMatch = selectedCategories.length === 0 || selectedCategories.includes(item.Category);
+      const isPriceRangeMatch = (
+        selectedPriceRange.length === 0 ||
+        (item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1])
+      );
+  
+      return isCategoryMatch && isPriceRangeMatch;
+    });
+  
+    setFinalData(filteredData);
+    console.log(finalData.length,"fd kength")
+  }, [selectedCategories, selectedPriceRange, nameDatas]);
+  
+>>>>>>> Stashed changes
   useEffect(() => {
     const minRate = finalData.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
@@ -333,6 +351,7 @@ export default function AllArticle(props) {
             </Text>
           </View>
           {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
+<<<<<<< Updated upstream
           <View
             style={{
               position: "relative",
@@ -344,9 +363,13 @@ export default function AllArticle(props) {
             }}
           >
             {console.log(finalData.length)}
+=======
+          <View style={{ position: 'relative', backgroundColor: "#FFFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
+            {console.log(finalData.length,"when render")}
+>>>>>>> Stashed changes
             <FlatList
               data={finalData}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.Id}
               renderItem={renderItem}
               numColumns={2}
               showsHorizontalScrollIndicator={false}

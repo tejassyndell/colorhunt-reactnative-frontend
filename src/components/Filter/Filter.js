@@ -70,7 +70,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
             <View style={styles.categoriesContainer}>
                 {data.map((item) => (
                     <TouchableOpacity
-                        key={item.Category}
+                        key={item.Id}
                         style={[
                             styles.categoryItem,
                             selectedCategories.includes(item.Category) && {},
@@ -80,7 +80,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         <Text
                             style={[
                                 styles.categoryText,
-                                selectedCategories.includes(item.Category) && {},
+                                selectedCategories.includes(item.Category) && {backgroundColor:'white'},
                             ]}
                         >
                             {item.Category}
@@ -88,7 +88,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         <View
                             style={[
                                 styles.radioButton,
-                                selectedCategories.includes(item.Category) && {},
+                                selectedCategories.includes(item.Category) && {backgroundColor:'white'},
                             ]}
                         >
                             {selectedCategories.includes(item.Category) && (
