@@ -23,7 +23,7 @@ import {
 } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
-import Filter from "../../components/Fliter/Filter";
+// import Filter from "../../components/Fliter/Filter";
 import { ActivityIndicator } from "react-native";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 
