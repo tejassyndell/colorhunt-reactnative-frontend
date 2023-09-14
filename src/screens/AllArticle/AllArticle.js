@@ -52,6 +52,7 @@ export default function AllArticle(props) {
     } else {
       const res = await getProductName();
       if (res.status === 200) {
+        console.log(res.data);
         setNameDatas(res.data);
         setFinalData(res.data);
         setIsLoading(false);

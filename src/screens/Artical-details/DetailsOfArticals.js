@@ -362,7 +362,7 @@ const DetailsOfArticals = (props) => {
                                   <Pressable
                                     style={styles.box3_btn}
                                     onPress={() => handleIncrease(item.index)}
-                                    disabled={quantities[item.index] >= nopacks}
+                                    disabled={quantities[item.index] >= item.available}
                                   >
                                     <Text style={styles.box1_btn_text}>+</Text>
                                   </Pressable>
