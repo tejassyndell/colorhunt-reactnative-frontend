@@ -191,6 +191,14 @@ export default function HomeScreen(props) {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
     setSearchText("");
+    const filteredData = nameDatas.filter(
+      (item) =>
+        selectedCategories.includes(item.Category) &&
+        item.ArticleRate >= selectedPriceRange[0] &&
+        item.ArticleRate <= selectedPriceRange[1]
+    );
+  
+    setFinalData(filteredData);
   };
   useEffect(() => {
     console.log(selectedCategories, "Sc");
@@ -238,6 +246,7 @@ export default function HomeScreen(props) {
         >
           <View style={{ marginTop: 10 }}>
             <View>
+
               <Text
                 style={{
                   fontSize: 25,
@@ -245,6 +254,7 @@ export default function HomeScreen(props) {
                   paddingLeft: 20,
                   height: 30,
                   alignItems: "center",
+                  fontFamily:"Glory-Regular"
                 }}
               >
                 Welcome
