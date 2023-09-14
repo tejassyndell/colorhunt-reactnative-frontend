@@ -21,6 +21,7 @@ import Orderlist from "../screens/OrderList/Orderlist";
 import Notification from "../screens/Notification/Notification";
 import Login from "../screens/Login/Login";
 import SkipHomeScreen from "../screens/SkipHomePage/SkipHomePage";
+import OrderHistory from '../screens/OrderHistory/OrderHistory';
 const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -54,6 +55,7 @@ function MainNavigator() {
       <Stack.Screen name="Orderlist" component={Orderlist} />
       <Stack.Screen name="Skip" component={SkipHomeScreen} />
       <Stack.Screen name="Notification" component={Notification} />
+      <Stack.Screen name='ordershistroy' component={OrderHistory}/>
     </Stack.Navigator>
   );
 }

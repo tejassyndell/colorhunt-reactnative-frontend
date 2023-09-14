@@ -64,25 +64,18 @@ export default function AllArticle(props) {
         />
       ),
       headerTitle: () => (
-
-
-        <View style={{ position: 'absolute', left: 280 }}>
-          <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
-        </View>
-
+        <View />
       ),
-      headerRight: () => <View />,
+      headerRight: () => (
+        <View style={{ marginRight:5, width: 50, height: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <TouchableOpacity onPress={() => { navigation.navigate("Profile") }} >
+            <Image  style={{ width: 38, height: 38, borderRadius: 5 }} source={require("../../../assets/Nevbar/Profile.png")} />
+          </TouchableOpacity>
+        </View>),
     });
   }, []);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      // headerright: () => (
 
-      // ),
-      headerRight: () => <View />,
-    });
-  }, []);
 
   const renderItem = ({ item }) => (
     // console.log(item,"fffffff"),
