@@ -291,7 +291,7 @@ export default function SkipHomeScreen(props) {
           >
             <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
               <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
-                Men's{" "}
+                Men's
               </Text>
               <Text
                 style={{
@@ -418,7 +418,7 @@ export default function SkipHomeScreen(props) {
                 }}
               >
                 <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
-                  Kid’s{" "}
+                  Kid’s
                 </Text>
                 <Text
                   style={{

@@ -112,7 +112,7 @@ const Login = (props) => {
         style={{
           width: "100%",
           alignItems: "center",
-          top: 610,
+          top: 450,
           height: "100%",
         }}
       >
