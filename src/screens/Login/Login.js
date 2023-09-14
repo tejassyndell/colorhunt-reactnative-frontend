@@ -1,29 +1,46 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   ImageBackground,
+  StyleSheet,
+  Dimensions,
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+
 const Login = (props) => {
   const { navigation } = props;
 
   // State variables
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [otp, setOTP] = useState(["", "", "", ""]); // Array to store OTP digits
+  const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
+  // Function to clear data when the component is first loaded
+  const clearDataOnFirstLoad = useCallback(async () => {
+    try {
+      await AsyncStorage.removeItem("UserData");
+    } catch (error) {
+      console.error("Error clearing AsyncStorage:", error);
+      alert("An error occurred while clearing data.");
+    }
+  }, []);
 
-  // Reset Every thing
+  // Call clearDataOnFirstLoad only once when the component is first loaded
+  useFocusEffect(clearDataOnFirstLoad);
+  // Reset everything
   const clearAndReset = useCallback(async () => {
     try {
-      await AsyncStorage.removeItem("UserData"); // Clear the stored user data
-      setPhoneNumber(""); // Reset phone number
-      setOTP(["", "", "", ""]); // Reset OTP
-      setShowLogin(true); // Reset to the login view
+      await AsyncStorage.removeItem("UserData");
+      setPhoneNumber("");
+      setOTP(["", "", "", ""]);
+      setShowLogin(true);
     } catch (error) {
       console.error("Error clearing AsyncStorage:", error);
       alert("An error occurred while clearing data.");
@@ -31,7 +48,6 @@ const Login = (props) => {
   }, []);
 
   useFocusEffect(clearAndReset);
-  // Handle "Next" or "Verify" button click
   const handleNextOrVerify = async () => {
     if (showLogin) {
       // Check if phone number is valid (for simplicity, checking if it's 10 digits)
@@ -87,130 +103,155 @@ const Login = (props) => {
       }
     }
   };
+  const otpInput = [useRef(), useRef(), useRef(), useRef()];
   // Function to handle OTP digit input
   const handleOTPDigitChange = (index, text) => {
     const newOTP = [...otp];
     newOTP[index] = text;
     setOTP(newOTP);
+
+    if (text && index < 3) {
+      otpInput[index + 1].current.focus();
+    }
+    if (!text && index > 0) {
+      otpInput[index - 1].current.focus();
+    }
   };
 
   // Determine the button label based on the current state
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
-
   return (
-    <ImageBackground
-      source={require("../../../assets/Login/mainlogo.png")}
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        borderTopLeftRadius: 40,
-        margin: 25,
-      }}
-    >
-      <View
-        style={{
-          width: "100%",
-          alignItems: "center",
-          top: 610,
-          height: "100%",
-        }}
+    <View style={styles.container}>
+      <ImageBackground
+        source={require("../../../assets/Login/mainlogo.png")}
+        style={styles.backgroundImage}
+        resizeMode="cover"
       >
-        <Text
-          style={{
-            color: "white",
-            fontSize: 30,
-            fontWeight: "bold",
-            marginBottom: 10,
-          }}
-        >
-          {showLogin ? "Welcome!" : "OTP Verification"}
-        </Text>
-        <Text style={{ color: "#FFFFFFB2", fontSize: 16, fontWeight: "bold" }}>
-          {showLogin
-            ? "Please Login To Continue"
-            : "Enter the 4-digit OTP sent to your phone"}
-        </Text>
-        {showLogin ? (
-          <TextInput
-            style={{
-              width: "90%",
-              height: 50,
-              borderColor: "gray",
-              borderWidth: 1,
-              marginTop: 20,
-              backgroundColor: "white",
-              fontSize: 20,
-              borderRadius: 10,
-              paddingLeft: 10,
-            }}
-            placeholder="Phone Number"
-            keyboardType="numeric"
-            maxLength={10}
-            value={phoneNumber}
-            onChangeText={(text) => {
-              // Input validation: allow only numeric characters
-              const numericText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-              setPhoneNumber(numericText);
-            }}
-          />
-        ) : (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "80%",
-              marginTop: 20,
-            }}
-          >
-            {[0, 1, 2, 3].map((index) => (
-              <TextInput
-                key={index}
-                style={{
-                  width: "22%",
-                  height: 50,
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  backgroundColor: "white",
-                  fontSize: 20,
-                  borderRadius: 10,
-                  textAlign: "center",
-                }}
-                placeholder=""
-                keyboardType="numeric"
-                maxLength={1}
-                value={otp[index]}
-                onChangeText={(text) => handleOTPDigitChange(index, text)}
-              />
-            ))}
-          </View>
-        )}
-        <TouchableOpacity
-          style={{
-            backgroundColor: "black",
-            width: 148,
-            height: 50,
-            borderRadius: 14,
-            marginTop: 80,
-            justifyContent: "center",
-            left: 110,
-          }}
-          onPress={handleNextOrVerify}
-        >
-          <Text
-            style={{
-              color: "white",
-              fontSize: 25,
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
-            {buttonLabel}
+        {/* Content inside the ImageBackground */}
+        <View style={styles.contentContainer}>
+          <Text style={styles.title}>Welcome!</Text>
+          <Text style={styles.subtitle}>
+            {showLogin
+              ? "Please Login To Continue"
+              : "Enter the 4-digit OTP sent to your phone"}
           </Text>
-        </TouchableOpacity>
-      </View>
-    </ImageBackground>
+          {showLogin ? (
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              keyboardType="numeric"
+              maxLength={10}
+              value={phoneNumber}
+              onChangeText={(text) => {
+                // Input validation: allow only numeric characters
+                const numericText = text.replace(/[^0-9]/g, "");
+                setPhoneNumber(numericText);
+              }}
+            />
+          ) : (
+            <View style={styles.otpContainer}>
+              {otp.map((digit, index) => (
+                <TextInput
+                  key={index}
+                  style={styles.otpInput}
+                  placeholder=""
+                  keyboardType="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChangeText={(text) => handleOTPDigitChange(index, text)}
+                  ref={otpInput[index]}
+                />
+              ))}
+            </View>
+          )}
+
+          <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
+            <Text style={styles.buttonText}>{buttonLabel}</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  backgroundImage: {
+    width: "100%",
+    height: "100%",
+    flex: 1,
+    resizeMode: "cover",
+    padding: 0,
+  },
+  contentContainer: {
+    flex: 1,
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 20,
+    marginLeft: "5%",
+    marginRight: "5%",
+  },
+  title: {
+    color: "white",
+    fontSize: windowWidth * 0.08,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  subtitle: {
+    color: "#FFFFFFB2",
+    fontSize: windowWidth * 0.035,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  input: {
+    width: "100%",
+    height: windowHeight * 0.07,
+    borderColor: "gray",
+    borderWidth: 1,
+    backgroundColor: "white",
+    fontSize: windowWidth * 0.06,
+    borderRadius: windowWidth * 0.04,
+    paddingLeft: 10,
+    alignContent: "space-between",
+  },
+  otpContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+    width: "90%",
+  },
+  otpInput: {
+    width: "22%",
+    height: windowHeight * 0.08,
+    borderColor: "gray",
+    borderWidth: 1,
+    backgroundColor: "white",
+    fontSize: windowWidth * 0.04,
+    borderRadius: windowWidth * 0.04,
+    textAlign: "center",
+  },
+  button: {
+    backgroundColor: "black",
+    width: "40%",
+    height: windowHeight * 0.07,
+    borderRadius: windowWidth * 0.04,
+    marginTop: 40,
+    justifyContent: "center",
+    marginLeft: "60%",
+  },
+  buttonText: {
+    color: "white",
+
+    fontSize: windowWidth * 0.05,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});
 
 export default Login;

@@ -8,46 +8,39 @@ import { useFocusEffect } from "@react-navigation/native";
 
 export default function DrawerContainer(props) {
   const { navigation, onPress } = props;
-  const [userData, setUserData] = useState();
+  const [userName, setUserName] = useState("");
 
-  const clearUserData = async () => {
+  const [userDataFetched, setUserDataFetched] = useState(false);
+
+  const fetchUserName = async () => {
     try {
-      await AsyncStorage.removeItem("UserData");
-      console.log(clearUserData);
-      // Optionally, you can also clear other relevant data if needed.
+      let storedName = await AsyncStorage.getItem("UserData");
+      storedName = JSON.parse(storedName);
+      if (storedName && storedName[0]?.Name) {
+        setUserName(storedName[0].Name);
+        setUserDataFetched(true); // Set the flag to true after fetching the data
+      }
     } catch (error) {
-      console.error("Error clearing user data from AsyncStorage:", error);
+      console.error("Error fetching user's name from AsyncStorage:", error);
     }
   };
-  useFocusEffect(
-    React.useCallback(async () => {
-      // Function to fetch user data from AsyncStorage
-      // const fetchUserData = async () => {
-      try {
-        const storedUserData = await AsyncStorage.getItem("UserData");
-        console.log("Stored User Data (Raw):", storedUserData);
 
-        if (storedUserData) {
-          const userData = JSON.parse(storedUserData);
-          console.log("Stored User Data (Parsed):", userData);
+  useEffect(() => {
+    if (!userDataFetched) {
+      fetchUserName();
+    }
+  }, []);
 
-          if (userData) {
-            setUserData(userData);
-            console.log(userData[0], "-------");
-          } else {
-            console.log("Name field is missing in user data.", userData);
-          }
-        } else {
-          console.log("No user data found in AsyncStorage.");
-        }
-      } catch (error) {
-        console.error("Error fetching user data from AsyncStorage:", error);
-      }
-      // };
-
-      // Call the function to fetch user data
-    }, [])
-  );
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      // You can also clear specific keys if needed
+      // await AsyncStorage.removeItem("UserData");
+      console.log("AsyncStorage cleared successfully");
+    } catch (error) {
+      console.error("Error clearing AsyncStorage:", error);
+    }
+  };
 
   return (
     <View style={styles.content}>
@@ -81,7 +74,7 @@ export default function DrawerContainer(props) {
               style={{ color: "#ffff", left: 10 }}
               onPress={() => navigation.navigate("Profile")}
             >
-              {userData ? userData[0].Name : ""}
+              {userName}
             </Text>
           </View>
           <View style={{ marginTop: 12 }}>
@@ -146,12 +139,11 @@ export default function DrawerContainer(props) {
         />
 
         <TouchableOpacity
-          onPress={async () => {
-            await clearUserData();
-            navigation.navigate("login");
-            navigation.closeDrawer();
-          }}
           style={{ flexDirection: "row", marginLeft: 10, marginTop: 50 }}
+          onPress={() => {
+            clearAsyncStorage();
+            navigation.navigate("login"); // Replace with your login or home screen route
+          }}
         >
           <Image
             source={require("../../../assets/sidebaricons/download-4.png")}
@@ -190,3 +182,32 @@ DrawerContainer.propTypes = {
     navigate: PropTypes.func.isRequired,
   }),
 };
+// useFocusEffect(
+//   React.useCallback(async () => {
+//     // Function to fetch user data from AsyncStorage
+//     // const fetchUserData = async () => {
+//     try {
+//       const storedUserData = await AsyncStorage.getItem("UserData");
+//       console.log("Stored User Data (Raw):", storedUserData);
+
+//       if (storedUserData) {
+//         const userData = JSON.parse(storedUserData);
+//         console.log("Stored User Data (Parsed):", userData);
+
+//         if (userData) {
+//           setUserData(userData);
+//           console.log(userData[0], "-------");
+//         } else {
+//           console.log("Name field is missing in user data.", userData);
+//         }
+//       } else {
+//         console.log("No user data found in AsyncStorage.");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching user data from AsyncStorage:", error);
+//     }
+//     // };
+
+//     // Call the function to fetch user data
+//   }, [])
+// );

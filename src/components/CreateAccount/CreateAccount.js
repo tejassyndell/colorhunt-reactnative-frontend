@@ -275,7 +275,11 @@ const CreateAccount = ({ onClose }) => {
       <View style={styles.rowContainer}>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, stateError && styles.inputError]}
+            style={[
+              styles.input,
+              stateError && styles.inputError,
+              { marginRight: 5 },
+            ]}
             placeholder="State"
             value={state}
             onChangeText={(text) => handleInputChange("state", text)}
@@ -287,7 +291,11 @@ const CreateAccount = ({ onClose }) => {
         </View>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, cityError && styles.inputError]}
+            style={[
+              styles.input,
+              cityError && styles.inputError,
+              { marginLeft: 5 },
+            ]}
             placeholder="City"
             value={city}
             onChangeText={(text) => handleInputChange("city", text)}
@@ -299,7 +307,11 @@ const CreateAccount = ({ onClose }) => {
       <View style={styles.rowContainer}>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, countryError && styles.inputError]}
+            style={[
+              styles.input,
+              countryError && styles.inputError,
+              { marginRight: 5 },
+            ]}
             placeholder="Country"
             value={country}
             onChangeText={(text) => handleInputChange("country", text)}
@@ -311,7 +323,11 @@ const CreateAccount = ({ onClose }) => {
         </View>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, pinCodeError && styles.inputError]}
+            style={[
+              styles.input,
+              pinCodeError && styles.inputError,
+              { marginLeft: 5 },
+            ]}
             placeholder="Pincode"
             value={pinCode}
             onChangeText={(text) => handleInputChange("pinCode", text)}
@@ -333,9 +349,14 @@ const CreateAccount = ({ onClose }) => {
         <Text style={styles.errorText}>{contactPersonError}</Text>
       ) : null}
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleFormSubmit}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
+      <View style={{ width: "100%", alignItems: "center" }}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleFormSubmit}
+        >
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -348,12 +369,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
-    justifyContent: "space-between",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginLeft: 90,
+    textAlign: "center",
+    width: "90%",
   },
   input: {
     height: 40,
@@ -380,7 +401,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 50,
     fontSize: 20,
-    marginLeft: 120,
   },
   submitButtonText: {
     color: "white",
@@ -406,7 +426,6 @@ const styles = StyleSheet.create({
   },
   flex1: {
     flex: 1,
-    marginRight: 10,
   },
 });
 

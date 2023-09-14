@@ -77,6 +77,7 @@ export default function HomeScreen(props) {
   const getWishlist = async () => {
     let partyData = await AsyncStorage.getItem("UserData");
     partyData = JSON.parse(partyData);
+    console.log(partyData[0].Id, "------");
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
     });
@@ -117,7 +118,7 @@ export default function HomeScreen(props) {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     getCategoriesname();
     getWishlist();
   }, []);
