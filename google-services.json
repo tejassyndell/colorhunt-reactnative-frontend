@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "984994054912",
+    "project_id": "colorhuntfcm",
+    "storage_bucket": "colorhuntfcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984994054912:android:840c8ca2b02fe61e0e29e5",
+        "android_client_info": {
+          "package_name": "com.colorhuntapp.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdrUyFdepmk9ndre4lR8bbTd8P1hSN7f8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
