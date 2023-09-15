@@ -10,38 +10,34 @@ export default function DrawerContainer(props) {
   const { navigation, onPress } = props;
   const [userName, setUserName] = useState("");
 
-  const [userDataFetched, setUserDataFetched] = useState(false);
-
   const fetchUserName = async () => {
     try {
-      let storedName = await AsyncStorage.getItem("UserData");
+      let storedName = await AsyncStorage.getItem("UserData"); // Replace with the key you used to store the user's name
       storedName = JSON.parse(storedName);
-      if (storedName && storedName[0]?.Name) {
+      if (storedName && storedName.length > 0) {
         setUserName(storedName[0].Name);
-        setUserDataFetched(true); // Set the flag to true after fetching the data
       }
     } catch (error) {
       console.error("Error fetching user's name from AsyncStorage:", error);
     }
   };
 
-  useEffect(() => {
-    if (!userDataFetched) {
+  // Fetch the user's name from AsyncStorage when the component is focused
+
+  useFocusEffect(
+    React.useCallback(() => {
       fetchUserName();
-    }
-  }, []);
+    }, [])
+  );
 
   const clearAsyncStorage = async () => {
     try {
       await AsyncStorage.clear();
-      // You can also clear specific keys if needed
-      // await AsyncStorage.removeItem("UserData");
       console.log("AsyncStorage cleared successfully");
     } catch (error) {
       console.error("Error clearing AsyncStorage:", error);
     }
   };
-
   return (
     <View style={styles.content}>
       <View style={styles.container}>

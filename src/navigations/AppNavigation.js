@@ -25,7 +25,7 @@ const Stack = createStackNavigator();
 
 function MainNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ unmountInactiveRoutes: true }}>
       <Stack.Screen
         name="login"
         component={Login}
@@ -67,7 +67,7 @@ function DrawerStack() {
       drawerStyle={{
         width: 250,
       }}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, unmountOnBlur: false }}
       drawerContent={({ navigation }) => (
         <DrawerContainer navigation={navigation} />
       )}
