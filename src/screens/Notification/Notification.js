@@ -1,123 +1,89 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button,TextInput,SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import messaging from '@react-native-firebase/messaging';
-import axios from 'axios';
-
-import PushNotification from 'react-native-push-notification';
 import * as Notifications from 'expo-notifications';
 
 export default function Notification() {
   const [token, setToken] = useState('');
+  const [title, setTitle] = useState('');
+  const [bodydec, setbodydec] = useState('');
 
+  console.log('title',title);
+  console.log('dec..',bodydec);
   useEffect(() => {
-    // Define channel options
-    const channelOptions = {
-      name: 'Colorhunt app', // Descriptive name
-      description: 'Test', // Description
-      priority: Notifications.AndroidNotificationPriority.HIGH, // High priority
-      sound: true, // Enable sound
-      vibrate: true, // Enable vibration
+    const getToken = async () => {
+      try {
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status === 'granted') {
+          const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+          console.log('Expo Push Token:', pushToken);
+          setToken(pushToken);
+        } else {
+          console.log('Notification permission denied');
+        }
+      } catch (error) {
+        console.error('Error requesting permission:', error);
+      }
     };
 
-    // Create the notification channel
-    Notifications.setNotificationChannelAsync('colorhunt', channelOptions)
-      .then(() => {
-        console.log('Notification channel created');
-      })
-      .catch((error) => {
-        console.error('Error creating notification channel:', error);
-      });
+    getToken();
   }, []);
 
-  const getNotification = async (registrationToken) => {
+  const sendNotification = async () => {
     try {
-      const tokenData = {
-        registrationToken: registrationToken,
-      };
-      const response = await axios.post('http://10.0.2.2:8020/getNotification', tokenData);
-      console.log('Notification sent successfully:', response.data);
-    } catch (err) {
-      console.error('Error sending notification:', err);
-    }
-  };
-
-  const requestUserPermission = async () => {
-    try {
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-      if (enabled) {
-        console.log('Authorization status:', authStatus);
-        return true;
-      } else {
-        console.log('Permission denied');
-        return false;
-      }
+      await fetch('http://10.0.2.2:8020/getNotification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          registrationToken: token,
+          title: title,
+          body: bodydec,
+        }),
+      });
+      console.log('Notification sent successfully');
     } catch (error) {
-      console.error('Error requesting permission:', error);
-      return false;
+      console.error('Error sending notification:', error);
     }
   };
 
-  const pushNotificationsss = async () => {
-    const isPermissionGranted = await requestUserPermission();
-
-    if (isPermissionGranted) {
-      try {
-        const remoteToken = await messaging().getToken();
-        console.log('FCM Token:', remoteToken);
-        // setToken(remoteToken);
-        // getNotification(remoteToken);
-      } catch (error) {
-        console.error('Error getting FCM token:', error);
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        const { title, body } = notification.request.content;
+        console.log('Notification Title:', title);
+        console.log('Notification Body:', body);
+        // Display the notification in the Expo app using Expo's built-in notification UI
+        Notifications.presentNotificationAsync({
+          title: title,
+          body: body,
+        });
       }
+    );
 
-      // Check whether an initial notification is available
-      messaging()
-        .getInitialNotification()
-        .then(async (remoteMessage) => {
-          if (remoteMessage) {
-            console.log(
-              'Notification caused app to open from quit state:',
-              remoteMessage.notification
-            );
-          }
-        });
-      
-      // Assume a message-notification contains a "type" property in the data payload of the screen to open
-      messaging().onNotificationOpenedApp(async (remoteMessage) => {
-        console.log(
-          'Notification caused app to open from background state:',
-          remoteMessage.notification
-        );
-      });
-
-      // Register background handler
-      messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-        console.log('Message handled in the background!', remoteMessage);
-      });
-
-      // Listen for incoming FCM messages
-      const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-        // Display the notification using PushNotification
-        PushNotification.localNotification({
-          channelId: 'colorhunt',
-          title: remoteMessage.notification.title,
-          message: remoteMessage.notification.body,
-        });
-      });
-
-      return unsubscribe;
-    }
-  };
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{token}</Text>
-      <Button title="Click Me" onPress={pushNotificationsss} />
+      <SafeAreaView>
+      <TextInput
+        style={styles.input}
+        onChangeText={setTitle}
+        placeholder="useless placeholder"
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        onChangeText={setbodydec}
+        placeholder="useless placeholder"
+        keyboardType="numeric"
+      />
+    </SafeAreaView>
+      <Button title="Send Notification" onPress={sendNotification} />
       <StatusBar style="auto" />
     </View>
   );
@@ -130,4 +96,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
 });
+
