@@ -181,9 +181,9 @@ const DetailsOfArticals = (props) => {
 
   const renderImage = ({ item, index }) => (
     <TouchableOpacity onPress={() => openImageZoom(item)}>
-      <View style={stylesRecipe.imageContainer}>
+      <View >
         <Image
-          style={stylesRecipe.image}
+          style={{ width: "100%", height: 550 }}
           source={{ uri: baseImageUrl + item }}
         />
       </View>
@@ -239,284 +239,178 @@ const DetailsOfArticals = (props) => {
           />
         </View>
       ) : (
-        <>
-          <ScrollView nestedScrollEnabled={true} >
-            <View style={stylesRecipe.carouselContainer}>
-              <Carousel
-                data={articlePhotos}
-                renderItem={renderImage}
-                sliderWidth={viewportWidth}
-                itemWidth={viewportWidth}
-                loop={true}
-                autoplay={true}
-                autoplayInterval={3000}
-              >
-              </Carousel>
+        <View style={{backgroundColor:"#FFF"}}>
+          <ScrollView nestedScrollEnabled={true}>
+            <View style={{ zIndex: 1 }}>
+              <View style={{ backgroundColor: "#FFF", width: '100%', height: 400 }}>
+                <Carousel
+                  data={articlePhotos}
+                  renderItem={renderImage}
+                  sliderWidth={viewportWidth}
+                  itemWidth={viewportWidth}
+                  loop={true}
+                  autoplay={true}
+                  autoplayInterval={3000}
+                >
+                </Carousel>
+              </View>
             </View>
-            <View style={{
-              width: "100%",
-              position: "absolute",
-              top: "75%",
-              height: '100%',
-              // shadowOffset: { width: "100%", height: 0 },
-              elevation: 15,
-              elevation: 50,
-              shadowOffset: { width: 0, height: 0 }, // Offset the shadow upwards
-              shadowColor: '#000000', // Specify a shadow color
-              shadowOpacity: 0.9, // Set the shadow opacity within the valid range (0-1)
-              shadowRadius: 5,
-            }}>
-              <Text style={{
-                fontSize: 26,
-                textAlign: "center",
-                fontWeight: 600
-              }}>Article No:{articleNumber}</Text>
+
+            <View style={{ zIndex: 2, position: 'absolute', top: "41.5%", left: 0, right: 0, bottom: 0 }}>
+              <Image
+                style={{ width: "100%", height: 74 }}
+                source={require("../../../assets/Rectangle_18898.png")}
+              />
+              <View style={{ zIndex: 3, position: 'absolute', top: 20, left: 0, right: 0, justifyContent: 'center', alignItems: 'center' }}>
+                <Text
+                  style={{
+                    fontSize: 26,
+                    textAlign: "center",
+                    fontWeight: 600,
+                    color: "black",
+                  }}
+                >
+                  Article No: {articleNumber}
+                </Text>
+              </View>
             </View>
-          </ScrollView>
-          <View style={{
-            width: '100%',
-            height: 50,
-            backgroundColor: 'transparent',
-            position: 'absolute',
-            zIndex: 2,
-            top: "41.5%",
-            borderRadius: 30,
-            elevation: 16, // Use elevation to create a shadow on Android
-            shadowOffset: { width: 0, height: 50 }, // Offset the shadow downwards
-            shadowColor: ' #f8f8ff',
-            shadowOpacity: 0.5,
-          }}></View>
-          <View style={styles.productDetails}>
-            <ScrollView style={{ maxHeight: '100%' }} nestedScrollEnabled={true}>
-              <View style={styles.product_detail} >
-                <View style={styles.product_detail_sec}>
-                  <Text style={styles.size_label}>Size</Text>
-                  <View style={styles.size_container1}>
-                    {articleSizeData &&
-                      articleSizeData.map((item, index) => (
-                        <View style={styles.size_options} key={index}>
-                          <View style={styles.size}>
-                            <Text href="/" style={styles.size_a} onPress={() => handleSizeClick(item.Name)}>
-                              {item.Name}
-                            </Text>
-                          </View>
-                        </View>
-                      ))}
-                  </View>
-                </View>
+
+            <View style={{ zIndex: 2 }}>
+              <View style={{ backgroundColor: "#FFF", elevation: 5, shadowColor: "gray", width: '100%', height: "100%", borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
                 <View>
 
-                </View>
-                <View style={styles.product_detail_sec2}>
-                  <Text style={styles.size_label1}>Category</Text>
-                  <View style={styles.size_container2}>
-                    <View style={styles.size_options}>
-
-                      <Text style={styles.size_p}>{subcategory}</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.product_detail}>
-                <View style={styles.container_grid}>
-                  <View style={styles.head_grid}>
-                    <View style={styles.color_Text}>
-                      <Text style={styles.color_title}>Color</Text>
-                    </View>
-                    <View style={styles.available_Text}>
-                      <Text style={styles.available_title}>Available in Stock</Text>
-                    </View>
-                    <View style={styles.qty_Text}>
-                      <Text style={styles.qty_title}>Add Qty.</Text>
-                    </View>
-                  </View>
-                  <View style={styles.body_main_con}>
-                    {combinedArray.map((item) => (
-                      <View key={item.Id}>
-                        <View style={styles.row} >
-                          <View style={styles.color_box_Text}>
-                            <Text style={styles.color_box}>{item.Name}</Text>
-                          </View>
-                          <View style={styles.available_box_Text}>
-                            <Text style={styles.available_box}>{item.available}</Text>
-                          </View>
-
-                          <View style={styles.qty_box_Text}>
-                            <View style={styles.qty_box}>
-                              <View style={styles.top_row}>
-                                <View style={styles.box1}>
-                                  <Pressable
-                                    style={styles.box1_btn}
-                                    onPress={() => handleDecrease(item.index)}
-                                    disabled={quantities[item.index] <= 0}
-                                  >
-                                    <Text style={styles.box1_btn_text}>-</Text>
-                                  </Pressable>
-
-
-                                </View>
-                                <View style={styles.box2}>
-                                  <Text style={{ textAlign: "center", fontWeight: 'bold' }}>{quantities[item.index]}</Text>
-                                </View>
-                                <View style={styles.box3}>
-                                  <Pressable
-                                    style={styles.box3_btn}
-                                    onPress={() => handleIncrease(item.index)}
-                                    disabled={quantities[item.index] >= item.available}
-                                  >
-                                    <Text style={styles.box1_btn_text}>+</Text>
-                                  </Pressable>
-                                </View>
+                  <View style={styles.product_detail} >
+                    <View style={styles.product_detail_sec}>
+                      <Text style={styles.size_label}>Size</Text>
+                      <View style={styles.size_container1}>
+                        {articleSizeData &&
+                          articleSizeData.map((item, index) => (
+                            <View style={styles.size_options} key={index}>
+                              <View style={styles.size}>
+                                <Text href="/" style={styles.size_a} onPress={() => handleSizeClick(item.Name)}>
+                                  {item.Name}
+                                </Text>
                               </View>
                             </View>
-                          </View>
+                          ))}
+                      </View>
+                    </View>
+                    <View>
 
+                    </View>
+                    <View style={styles.product_detail_sec2}>
+                      <Text style={styles.size_label1}>Category</Text>
+                      <View style={styles.size_container2}>
+                        <View style={styles.size_options}>
+
+                          <Text style={styles.size_p}>{subcategory}</Text>
                         </View>
                       </View>
-                    ))}
-                  </View>
-                </View>
-              </View>
-              <View style={styles.article_ratio_Section}>
-                <View style={styles.article_ratio_container}>
-                  <Text style={styles.articallabel}>Article Ratio</Text>
-                  <Text style={[styles.article_ratio_content, styles.article_content_r]}>{articleRatio}</Text>
-                </View>
-
-                <View style={styles.article_rate_container}>
-                  <Text style={styles.articallabel1}>Article Rate</Text>
-                  <Text style={[styles.article_rate_content, styles.article_content_r]}>{articleRate / 10}</Text>
-                </View>
-              </View>
-              <View style={styles.total_price_container}>
-                <View style={styles.main_total_div} >
-                  <Text style={{ fontSize: 10, fontWeight: 400 }}>Total Price</Text>
-                  <Text style={{ fontSize: 16, fontWeight: 600, color: "black" }}>{formatPrice(totalPrice)}</Text>
-                </View>
-                <View style={styles.addto_card_container}>
-                  <Pressable
-                    style={[
-                      styles.addto_cart_btn,
-                      {
-                        backgroundColor: totalQuantity === 0 ? 'gray' : 'black',
-                        opacity: totalQuantity === 0 ? 0.5 : 1,
-                      },
-                    ]}
-                    onPress={() => addtocart(197, id)}
-                    disabled={totalQuantity === 0}
-                  >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-                      <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2, marginLeft: 10 }} />
-                      <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add To Cart</Text>
                     </View>
-                  </Pressable>
-                </View>
+                  </View>
+                  <View style={styles.product_detail}>
+                    <View style={styles.container_grid}>
+                      <View style={styles.head_grid}>
+                        <View style={styles.color_Text}>
+                          <Text style={styles.color_title}>Color</Text>
+                        </View>
+                        <View style={styles.available_Text}>
+                          <Text style={styles.available_title}>Available in Stock</Text>
+                        </View>
+                        <View style={styles.qty_Text}>
+                          <Text style={styles.qty_title}>Add Qty.</Text>
+                        </View>
+                      </View>
+                      <View style={styles.body_main_con}>
+                        {combinedArray.map((item) => (
+                          <View key={item.Id}>
+                            <View style={styles.row} >
+                              <View style={styles.color_box_Text}>
+                                <Text style={styles.color_box}>{item.Name}</Text>
+                              </View>
+                              <View style={styles.available_box_Text}>
+                                <Text style={styles.available_box}>{item.available}</Text>
+                              </View>
 
-              </View>
-              <Modal
-                visible={isModalVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={() => setIsModalVisible(false)}
-              >
-                <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: "rgba(0, 0, 0, 0.5)",
-                    }}
-                  >
-                    <View
-                      style={{
-                        width: 360,
-                        height: 320,
-                        backgroundColor: "white",
-                        borderRadius: 25,
-                        alignItems: "center",
-                        // padding: 5
-                      }}
-                    >
-                      <Image
-                        source={require("../../../assets/update_cart.png")}
-                        style={{ width: 100, height: 100, marginBottom: 20, marginTop: 30 }}
-                      />
+                              <View style={styles.qty_box_Text}>
+                                <View style={styles.qty_box}>
+                                  <View style={styles.top_row}>
+                                    <View style={styles.box1}>
+                                      <Pressable
+                                        style={styles.box1_btn}
+                                        onPress={() => handleDecrease(item.index)}
+                                        disabled={quantities[item.index] <= 0}
+                                      >
+                                        <Text style={styles.box1_btn_text}>-</Text>
+                                      </Pressable>
 
-                      <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 30, fontWeight: 500, color: "rgba(0, 0, 0, 0.70)" }}>
-                        Are you sure {"\n"} you want to update this {"\n"} artical in cart.
-                      </Text>
-                      <View style={{
 
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "row",
-                        position: "absolute",
-                        bottom: 0
-                      }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            setIsModalVisible(false);
-                          }}
-                          style={{
-                            backgroundColor: "black",
-                            width: "50%",
-                            height: 50,
-                            borderBottomLeftRadius: 25,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderWidth: 1,
-                            borderColor: "white"
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              fontWeight: 700,
-                              color: "white",
-                              paddingHorizontal: 15
-                            }}
-                          >
-                            No
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => {
-                            setIsModalVisible(false);
-                            updateArticalInCart();
-                          }}
-                          style={{
-                            backgroundColor: "black",
-                            width: "50%",
-                            height: 50,
-                            borderBottomRightRadius: 25,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderWidth: 1,
-                            borderColor: "white"
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              fontWeight: 700,
-                              color: "white",
-                              paddingHorizontal: 15
-                            }}
-                          >
-                            Yes
-                          </Text>
-                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.box2}>
+                                      <Text style={{ textAlign: "center", fontWeight: 'bold' }}>{quantities[item.index]}</Text>
+                                    </View>
+                                    <View style={styles.box3}>
+                                      <Pressable
+                                        style={styles.box3_btn}
+                                        onPress={() => handleIncrease(item.index)}
+                                        disabled={quantities[item.index] >= item.available}
+                                      >
+                                        <Text style={styles.box1_btn_text}>+</Text>
+                                      </Pressable>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>
+
+                            </View>
+                          </View>
+                        ))}
                       </View>
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
-              </Modal>
+                  <View style={styles.article_ratio_Section}>
+                    <View style={styles.article_ratio_container}>
+                      <Text style={styles.articallabel}>Article Ratio</Text>
+                      <Text style={[styles.article_ratio_content, styles.article_content_r]}>{articleRatio}</Text>
+                    </View>
 
-            </ScrollView>
+                    <View style={styles.article_rate_container}>
+                      <Text style={styles.articallabel1}>Article Rate</Text>
+                      <Text style={[styles.article_rate_content, styles.article_content_r]}>{articleRate / 10}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.total_price_container}>
+                    <View style={styles.main_total_div} >
+                      <Text style={{ fontSize: 10, fontWeight: 400 }}>Total Price</Text>
+                      <Text style={{ fontSize: 16, fontWeight: 600, color: "black" }}>{formatPrice(totalPrice)}</Text>
+                    </View>
+                    <View style={styles.addto_card_container}>
+                      <Pressable
+                        style={[
+                          styles.addto_cart_btn,
+                          {
+                            backgroundColor: totalQuantity === 0 ? 'gray' : 'black',
+                            opacity: totalQuantity === 0 ? 0.5 : 1,
+                          },
+                        ]}
+                        onPress={() => addtocart(197, id)}
+                        disabled={totalQuantity === 0}
+                      >
+                        <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                          <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2, marginLeft: 10 }} />
+                          <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add To Cart</Text>
+                        </View>
+                      </Pressable>
+                    </View>
 
-          </View>
-        </>
+                  </View>
+
+                </View>
+              </View>
+            </View>
+
+          </ScrollView>
+        </View>
       )}
       <Modal visible={isImageZoomVisible} transparent={true}>
         <View style={styles.modalContainer} onPress={closeModal}>
