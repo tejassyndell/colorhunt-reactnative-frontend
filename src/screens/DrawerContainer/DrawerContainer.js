@@ -61,14 +61,21 @@ export default function DrawerContainer(props) {
               marginTop: 30,
             }}
           >
-            <Image
-              source={require("../../../assets/sidebaricons/1171274903.png")}
-              style={{ width: 50, height: 50 }}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate("")}>
+              <Image
+                source={require("../../../assets/sidebaricons/1171274903.png")}
+                style={{ width: 50, height: 50 }}
+              />
+            </TouchableOpacity>
 
             <Text
-              style={{ color: "#ffff", left: 10 }}
-              onPress={() => navigation.navigate("Profile")}
+              style={{
+                color: "#ffff",
+                left: 10,
+                fontSize: 19,
+                height: 50,
+                paddingTop: 10,
+              }}
             >
               {userName}
             </Text>

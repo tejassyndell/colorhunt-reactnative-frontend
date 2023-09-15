@@ -19,17 +19,32 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import { useRoute } from "@react-navigation/core";
+// import Filter from "../../components/Filter/Filter";
 
 import { ActivityIndicator } from "react-native";
 export default function AllArticle(props) {
   const { navigation } = props;
-
+  const [finalData, setFinalData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchedData, setSearchedData] = useState([]);
-  // uploard url image
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+  const [searchText, setSearchText] = useState(""); // To store the search text
+  const [minArticleRate, setMinArticleRate] = useState(null);
+  const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [PartyId, setPartyId] = useState();
+  const setLocalstorageData = async () => {
+    let partyData = await AsyncStorage.getItem("UserData");
+    partyData = JSON.parse(partyData);
+    console.log(partyData[0].Id);
+    setPartyId(partyData[0].Id);
+    // uploard url image
+  };
+  useEffect(() => {
+    setLocalstorageData();
+  }, []);
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
 
   // open filter
@@ -41,16 +56,14 @@ export default function AllArticle(props) {
 
   // getCategoriesname
   const getCategoriesname = async () => {
-    if (route.params && route.params.filteredData.length > 0) {
-      setSearchedData(route.params.filteredData);
+    if (route.params && route.params.finalData.length > 0) {
+      setFinalData(route.params.finalData);
       setIsLoading(false);
-      console.log(searchedData);
     } else {
       const res = await getProductName();
-      console.log(res.data);
       if (res.status === 200) {
         setNameDatas(res.data);
-        setFilterDataSearch(res.data);
+        setFinalData(res.data);
         setIsLoading(false);
       }
     }
@@ -58,7 +71,7 @@ export default function AllArticle(props) {
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
     let data = {
-      party_id: 197,
+      party_id: PartyId,
       article_id: i.Id,
     };
     console.log(data);
@@ -77,7 +90,7 @@ export default function AllArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id: 197,
+      party_id: PartyId,
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -86,7 +99,7 @@ export default function AllArticle(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: PartyId,
       article_id: i.Id,
     };
 
@@ -139,26 +152,15 @@ export default function AllArticle(props) {
     });
   }, []);
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     // headerright: () => (
-  //     // ),
-  //     headerRight: () => <View />,
-  //   });
-  // }, []);
-
-  //Search Functionaity - Harshil
-  const [searchText, setSearchText] = useState(""); // To store the search text
-  const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
-  const [filterDataSearch, setFilterDataSearch] = useState([]);
+  useEffect(() => {
+    filterData();
+  }, [searchText, nameDatas]);
 
   const filterData = () => {
     if (searchText === "") {
-      setFilteredData(nameDatas);
+      setFinalData(nameDatas);
     } else {
-      console.log("namedata s lenght", nameDatas.length);
-      console.log("filterdatasearch lenght", filterDataSearch.length);
-      const filtered = filterDataSearch.filter(
+      const filtered = nameDatas.filter(
         (item) =>
           item.ArticleNumber.toString().includes(searchText.toString()) ||
           item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -168,20 +170,15 @@ export default function AllArticle(props) {
           ) ||
           item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
       );
-      console.log("filtered lenght", filtered.length);
-      setFilteredData(filtered);
-      console.log("filteredData.length after filter", filteredData.length);
-      setNameDatas(filtered);
-      console.log("namedata after filter lenght", nameDatas.length);
+      console.log(filtered.length, "length");
+      setFinalData(filtered);
+      console.log(finalData.length, "FD");
+      console.log(finalData, "final DTAA :");
     }
   };
-  useEffect(() => {
-    filterData();
-  }, [searchText]);
 
   const renderItem = ({ item }) => (
     <View
-      key={item.id}
       style={{
         alignItems: "center",
         height: "auto",
@@ -194,7 +191,7 @@ export default function AllArticle(props) {
         borderColor: "gray",
         backgroundColor: "white",
         // Add shadow properties for iOS
-        shadowColor: "#000000",
+        shadowColor: "gray",
         shadowOpacity: 0.4,
         shadowRadius: 4,
         elevation: 10,
@@ -242,8 +239,9 @@ export default function AllArticle(props) {
           justifyContent: "center",
           alignItems: "center",
           paddingTop: 8,
-          elevation: 15,
-          shadowColor: "grey",
+          elevation: 20,
+          borderColor: "gray",
+          shadowColor: "#c0c0c0",
           borderRadius: 10,
         }}
       >
@@ -280,7 +278,47 @@ export default function AllArticle(props) {
       </View>
     </View>
   );
+  const handleFilterChange = (categories, priceRange) => {
+    setSelectedCategories(categories);
+    setSelectedPriceRange(priceRange);
+    setSearchText(""); // Reset the search text
+  };
+  const handleCloseFilter = () => {
+    setIsFilterVisible((prev) => !prev);
+  };
 
+  useEffect(
+    () => {
+      console.log(selectedCategories, "sca");
+      console.log(selectedPriceRange, "spa");
+      const abc = nameDatas.filter(
+        (item) =>
+          selectedCategories.includes(item.Category) &&
+          item.ArticleRate >= selectedPriceRange[0] &&
+          item.ArticleRate <= selectedPriceRange[1]
+      );
+      setFinalData(abc);
+      console.log(abc, "filtered Data by Range and Category :");
+    },
+    [selectedCategories],
+    [selectedPriceRange]
+  );
+  useEffect(() => {
+    const minRate = finalData.reduce((min, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate < min ? articleRate : min;
+    }, Infinity);
+
+    const maxRate = finalData.reduce((max, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate > max ? articleRate : max;
+    }, -Infinity);
+
+    setMinArticleRate(minRate);
+    console.log(minArticleRate);
+    setMaxArticleRate(maxRate);
+    console.log(maxArticleRate);
+  }, [finalData]);
   return (
     <>
       {isLoading ? (
@@ -329,8 +367,9 @@ export default function AllArticle(props) {
               paddingHorizontal: 10,
             }}
           >
+            {console.log(finalData.length)}
             <FlatList
-              data={searchedData.length > 0 ? searchedData : nameDatas}
+              data={finalData}
               keyExtractor={(item) => item.id}
               renderItem={renderItem}
               numColumns={2}
@@ -374,12 +413,11 @@ export default function AllArticle(props) {
                 }}
               >
                 <Filter
-                  categoriesData={nameDatas}
-                  clearFilters={() => setIsFilterVisible(false)}
-                  applyFilters={() => {
-                    // Handle applying filters here
-                    setIsFilterVisible(false);
-                  }}
+                  onFilterChange={handleFilterChange}
+                  onCloseFilter={handleCloseFilter}
+                  Scategories={selectedCategories}
+                  minArticleRate={minArticleRate}
+                  maxArticleRate={maxArticleRate}
                 />
               </View>
             </View>

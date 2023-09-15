@@ -6,8 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { UserData } from "../../api/api";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const CreateAccount = ({ onClose }) => {
   const [name, setName] = useState("");
@@ -368,22 +371,22 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: windowHeight * 0.05,
   },
   title: {
-    fontSize: 24,
+    fontSize: windowWidth * 0.06,
     fontWeight: "bold",
     textAlign: "center",
     width: "90%",
   },
   input: {
-    height: 40,
+    height: windowHeight * 0.05,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
-    paddingLeft: 10,
-    fontSize: 18,
+    paddingLeft: windowWidth * 0.02,
+    fontSize: windowWidth * 0.03,
   },
   inputError: {
     borderColor: "red",
@@ -394,18 +397,19 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   submitButton: {
-    width: 130,
+    width: windowWidth * 0.3,
     backgroundColor: "black",
-    padding: 14,
+    padding: 18,
     borderRadius: 5,
     alignItems: "center",
-    height: 50,
-    fontSize: 20,
+    height: windowHeight * 0.06,
+
+    marginTop: windowHeight * 0.04,
   },
   submitButtonText: {
     color: "white",
-    fontSize: 16,
     fontWeight: "bold",
+    fontSize: windowWidth * 0.04,
   },
   closeButton: {
     backgroundColor: "black",

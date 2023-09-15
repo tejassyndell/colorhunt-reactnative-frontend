@@ -1,16 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  ScrollView,
-  Pressable,
-  TouchableOpacity,
-  Keyboard,
-  TextInput,
-  Button,
-} from "react-native";
-import MenuImage from "../../components/MenuImage/MenuImage";
+import { Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -22,9 +11,8 @@ import {
 } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
-import Filter from "../../components/Fliter/Filter";
 import { ActivityIndicator } from "react-native";
-
+import Filter from "../../components/Fliter/Filter";
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
@@ -35,49 +23,20 @@ export default function HomeScreen(props) {
   const [selectedprd, setSelectprd] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+  const [finalData, setFinalData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const [rateRange, setrateRange] = useState([0, 1000]);
-  // open filter
-
-  //Search Functionaity - Harshil
-  const [searchText, setSearchText] = useState(""); // To store the search text
-  const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
+  const [searchText, setSearchText] = useState("");
   const [filterDataSearch, setFilterDataSearch] = useState([]);
-
+  const [minArticleRate, setMinArticleRate] = useState(null);
+  const [maxArticleRate, setMaxArticleRate] = useState(null);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
-  };
-
-  const applyFilters = (selectedCategories) => {
-    // Filter your data based on selectedCategories here
-    console.log(rateRange, "{}{}{}{}{}{}");
-    let filteredData = [];
-    // if (rateRange[0]!==0 || rateRange[1]!==1000) {
-    //   const min = parseFloat(rateRange[0])
-    //   const max = parseFloat(rateRange[1])
-    //   if (min >= 0 && max <= 1000) {
-    //     filteredData = applyrData.filter((product) => {
-    //       return product.rate >= min && product.rate <= max
-    //     })
-    //     console.log(sdPrds)
-    //   }
-    // }
-    if (selectedCategories) {
-      filteredData = applyrData.filter((item) =>
-        selectedCategories.includes(item.Category)
-      );
-    }
-
-    // Update the state to display the filtered data
-    setNameData(filteredData);
-    setIsFilterVisible(false); //close the filter
   };
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     let partyData = await AsyncStorage.getItem("UserData");
     partyData = JSON.parse(partyData);
-    console.log(partyData[0].Id, "------");
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
     });
@@ -88,8 +47,6 @@ export default function HomeScreen(props) {
       user_id: 197,
       article_id: i.Id,
     };
-
-    console.log(data);
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist();
@@ -100,12 +57,10 @@ export default function HomeScreen(props) {
   };
 
   const rmvProductWishlist = async (i) => {
-    console.log(i, "r");
     let data = {
       party_id: 197,
       article_id: i.Id,
     };
-    console.log(data);
 
     try {
       await DeleteWishlist(data).then((res) => {
@@ -118,7 +73,7 @@ export default function HomeScreen(props) {
     }
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     getCategoriesname();
     getWishlist();
   }, []);
@@ -156,7 +111,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const viewAllArticles = () => {
-    navigation.navigate("AllArticle", { filteredData });
+    navigation.navigate("AllArticle", { finalData });
   };
 
   useLayoutEffect(() => {
@@ -209,22 +164,13 @@ export default function HomeScreen(props) {
     });
   }, []);
 
-  const onPressRecipe = (item) => {
-    const id = 883;
-    navigation.navigate("DetailsOfArticals", { id: id });
-  };
-
   const handlePress = (item) => {
-    // ategoryNames(item);
-    console.log(item);
     navigation.navigate("CategorisWiseArticle", { item: item });
   };
 
   const filterData = () => {
     if (searchText === "") {
-      setFilteredData(nameDatas);
     } else {
-      console.log(filterDataSearch.length);
       const filtered = filterDataSearch.filter(
         (item) =>
           item.ArticleNumber.toString().includes(searchText.toString()) ||
@@ -235,13 +181,51 @@ export default function HomeScreen(props) {
           ) ||
           item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
       );
-      setFilteredData(filtered);
-      console.log(filteredData.length);
+      setFinalData(filtered);
     }
   };
   useEffect(() => {
     filterData();
   }, [searchText]);
+  const handleFilterChange = (categories, priceRange) => {
+    setSelectedCategories(categories);
+    setSelectedPriceRange(priceRange);
+    setSearchText("");
+  };
+  useEffect(() => {
+    console.log(selectedCategories, "Sc");
+    console.log(selectedPriceRange, "Range");
+    const abc = nameDatas.filter(
+      (item) =>
+        selectedCategories.includes(item.Category) &&
+        item.ArticleRate >= selectedPriceRange[0] &&
+        item.ArticleRate <= selectedPriceRange[1]
+    );
+    console.log(abc.length);
+    setFinalData(abc);
+  }, [selectedCategories, selectedPriceRange]);
+
+  const handleCloseFilter = (isClosed) => {
+    setIsFilterVisible(isClosed);
+  };
+
+  useEffect(() => {
+    const minRate = nameDatas.reduce((min, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate < min ? articleRate : min;
+    }, Infinity);
+
+    const maxRate = nameDatas.reduce((max, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate > max ? articleRate : max;
+    }, -Infinity);
+
+    setMinArticleRate(minRate);
+    console.log(minArticleRate);
+    setMaxArticleRate(maxRate);
+    console.log(maxArticleRate);
+  }, [nameDatas]);
+
   return (
     <>
       {isLoading ? (
@@ -291,7 +275,7 @@ export default function HomeScreen(props) {
           >
             <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
               <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
-                Men's{" "}
+                Men's
               </Text>
               <Text
                 style={{
@@ -322,8 +306,8 @@ export default function HomeScreen(props) {
                 style={{ flex: 1, overflow: "hidden" }}
               >
                 {ApplyStatushBack === true
-                  ? searchText.length > 0
-                    ? filteredData.map((item) => (
+                  ? finalData.length > 0
+                    ? finalData.map((item) => (
                         <TouchableOpacity
                           onPress={() =>
                             navigation.navigate("DetailsOfArticals", {
@@ -331,36 +315,82 @@ export default function HomeScreen(props) {
                             })
                           }
                         >
-                          {/* <View
-                key={item.id}
-                style={{
-                  alignItems: "center",
-                  marginLeft: 5,
-                  marginRight: 5,
-                  borderRadius: 10,
-                  shadowOpacity: 0.8,
-                  shadowRadius: 4,
-                  elevation: 5,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  // Add elevation for Android
-                  elevation: 4,
-                }}
-              >
-                <Image
-                  source={{ uri: baseImageUrl + item.Photos }}
-                  style={{ width: 155, height: 190, elevation: 5, borderRadius: 10, paddingRight: 10, paddingLeft: 10 }}
-                />
-                <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                  {item.ArticleNumber}
-                </Text>
-                <Text>{item.Category}</Text>
-                <Text style={{ fontWeight: "bold" }}>
-                  {"₹" + item.ArticleRate}
-                </Text>
-              </View> */}
+                          <View
+                            key={item.id}
+                            style={{
+                              alignItems: "center",
+                              height: 280,
+                              width: 160,
+                              marginLeft: 5,
+                              marginRight: 5,
+                              marginBottom: 120,
+                              borderRadius: 10,
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: 155,
+                                height: 190,
+                                borderColor: "gray",
+                                shadowColor: "#000000",
+                                shadowOpacity: 0.9,
+                                shadowRadius: 4,
+                                elevation: 10, // For Android, use elevation
+                                shadowOffset: {
+                                  width: 0,
+                                  height: 0,
+                                },
+                              }}
+                            >
+                              <View id={item.id} style={styles.producticones}>
+                                {selectedprd.some((i) => i.Id === item.Id) ? (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      rmvProductWishlist(item);
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart"
+                                      style={[
+                                        styles.icon,
+                                        // isLoggedin === false ? styles.disabledIcon : null,
+                                      ]}
+                                    />
+                                  </TouchableOpacity>
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      addArticleWishlist(item);
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart-o"
+                                      style={[
+                                        styles.disabledIcon,
+                                        // isLoggedin === false ? styles.disabledIcon : null,
+                                      ]}
+                                    />
+                                  </TouchableOpacity>
+                                )}
+                              </View>
+                              <Image
+                                source={{ uri: baseImageUrl + item.Photos }}
+                                style={{
+                                  width: "94%",
+                                  height: 190,
+                                  borderRadius: 10,
+                                }}
+                              />
+                            </View>
+
+                            <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                              {item.ArticleNumber}
+                            </Text>
+                            <Text>{item.Category}</Text>
+                            <Text style={{ fontWeight: "bold" }}>
+                              {"₹" + item.ArticleRate}
+                            </Text>
+                          </View>
                         </TouchableOpacity>
                       ))
                     : nameData.map((item) => (
@@ -384,13 +414,14 @@ export default function HomeScreen(props) {
                           >
                             <View
                               style={{
-                                borderColor: "gray",
+                                marginTop: 5,
                                 width: 155,
-                                height: 170,
-                                shadowColor: "#000000",
-                                shadowOpacity: 0.4,
-                                shadowRadius: 4,
-                                elevation: 10, // This is for Android, use shadow properties for iOS
+                                height: 190,
+                                borderColor: "gray",
+                                shadowColor: "gray",
+                                shadowOpacity: 0.9,
+                                shadowRadius: 10,
+                                elevation: 10,
                                 shadowOffset: {
                                   width: 0,
                                   height: 0,
@@ -400,8 +431,8 @@ export default function HomeScreen(props) {
                               <Image
                                 source={require("../../../assets/demo.png")}
                                 style={{
-                                  width: 155,
-                                  height: 170,
+                                  width: "100%",
+                                  height: 190,
                                   borderRadius: 10,
                                 }}
                               />
@@ -461,7 +492,7 @@ export default function HomeScreen(props) {
                 }}
               >
                 <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
-                  Kid’s{" "}
+                  Kid’s
                 </Text>
                 <Text
                   style={{
@@ -640,12 +671,11 @@ export default function HomeScreen(props) {
                 }}
               >
                 <Filter
-                  categoriesData={nameData}
-                  selectedCategories={selectedCategories}
-                  setSelectedCategories={setSelectedCategories}
-                  clearFilters={() => setIsFilterVisible(false)}
-                  applyFilters={() => applyFilters(selectedCategories)}
-                  setrateRange={setrateRange}
+                  onFilterChange={handleFilterChange}
+                  onCloseFilter={handleCloseFilter}
+                  Scategories={selectedCategories}
+                  minArticleRate={minArticleRate}
+                  maxArticleRate={maxArticleRate}
                 />
               </View>
             </View>
