@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Dimensions } from "react-native";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { getCategories } from "../../api/api";
@@ -7,9 +8,14 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     maxArticleRate, }) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate,maxArticleRate]);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
     const defaultPriceRange = [0, 700];
-    
+    const [isSliding, setIsSliding] = useState(false);
+
+    const Screenwidth = Dimensions.get('window').width
+    const sliderlenghtinPercent = 70;
+    const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
+
     const getCategoriesname = async () => {
         try {
             const result1 = await getCategories();
@@ -26,12 +32,9 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     }, []);
 
     const handleCategorySelect = (category) => {
-        // Check if the category is already selected
         if (selectedCategories.includes(category)) {
-            // If selected, remove it from the array
             setSelectedCategories(selectedCategories.filter((c) => c !== category));
         } else {
-            // If not selected, add it to the array
             setSelectedCategories([...selectedCategories, category]);
         }
     };
@@ -52,7 +55,18 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
     const onValueChange = (newValues) => {
         setSelectedPriceRange(newValues);
+        setIsSliding(true);
+        console.log('Selected Price Range:', newValues);
     };
+
+    const onSlidingStart = () => {
+        setIsSliding(true);
+    };
+
+    const onSlidingComplete = () => {
+        setIsSliding(false);
+    };
+
     useEffect(() => {
         setSelectedCategories(Scategories)
     }, [Scategories])
@@ -80,7 +94,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         <Text
                             style={[
                                 styles.categoryText,
-                                selectedCategories.includes(item.Category) && {backgroundColor:'white'},
+                                selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
                             ]}
                         >
                             {item.Category}
@@ -88,7 +102,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         <View
                             style={[
                                 styles.radioButton,
-                                selectedCategories.includes(item.Category) && {backgroundColor:'white'},
+                                selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
                             ]}
                         >
                             {selectedCategories.includes(item.Category) && (
@@ -100,19 +114,24 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                 ))}
             </View>
             <View style={styles.container2}>
-                <Text style={styles.label}>Price Range: {selectedPriceRange[0]} - {selectedPriceRange[1]}</Text>
+                <Text style={styles.label}>Price Range</Text>
                 <View style={styles.sliderContainer}>
+                    <Text>{minArticleRate}</Text>
                     <MultiSlider
                         values={selectedPriceRange}
-                        sliderLength={320} // Customize the slider length as needed
+                        sliderLength={sliderLength}
                         onValuesChange={onValueChange}
+                        onValuesChangeStart={onSlidingStart}
+                        onValuesChangeFinish={onSlidingComplete}
                         min={minArticleRate}
                         max={maxArticleRate}
                         step={10}
-                        allowOverlap={false} // Prevent thumbs from overlapping
-                        snapped // Ensure values are snapped to step intervals
+                        allowOverlap={false}
+                        snapped
                         pressedMarkerStyle={{ backgroundColor: 'black' }}
-                        customMarker={CustomMarker}
+                        customMarker={
+                            isSliding ? CustomMarker : () => <View style={styles.tooltipContainer} />
+                        }
                         thumbTintColor="transparent"
                         selectedStyle={{
                             backgroundColor: 'black',
@@ -121,10 +140,11 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                             backgroundColor: 'lightgray',
                         }}
                     />
+                    <Text>{maxArticleRate}</Text>
                 </View>
             </View>
             <View style={styles.buttonsContainer}>
-            <TouchableOpacity
+                <TouchableOpacity
                     style={[
                         styles.resetButton,
                         {
@@ -149,21 +169,13 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         </View>
     );
 }
-const CustomMarker = () => (
-    <View
-        style={{
-            width: 12, // Adjust the width of the thumb as needed
-            height: 12, // Adjust the height of the thumb as needed
-            borderRadius: 12, // Make it a circle
-            backgroundColor: "black", // Set the color of the thumbs to black
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1, // Add zIndex to ensure it appears above the track
-        }}
-    >
-    </View>
-);
-
+const CustomMarker = ({ currentValue }) => {
+    return (
+        <View style={styles.tooltipContainer}>
+            <Text style={styles.tooltipText}>{currentValue}</Text>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -183,12 +195,6 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
     },
-    input: {
-        borderBottomWidth: 1,
-        borderColor: "gray",
-        marginBottom: 20,
-        marginTop: 20,
-    },
     categoriesContainer: {
         marginTop: 25,
         flexDirection: "row",
@@ -203,7 +209,7 @@ const styles = StyleSheet.create({
         width: "48%",
         height: 150,
         borderWidth: 1,
-        borderColor: "rgba(0, 0, 0, 0.25)", // Border color
+        borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: 8,
         padding: 5,
         height: "auto",
@@ -238,7 +244,7 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 10,
+        marginTop: 25,
     },
     button: {
         backgroundColor: "black",
@@ -252,10 +258,14 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     label: {
-        fontSize: 18,
+        fontSize: 24,
         marginBottom: 10,
+        fontWeight: 700,
     },
     sliderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         width: '100%',
     },
     resetButton: {
@@ -278,7 +288,20 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: "white",
-        fontSize:18,
-        fontWeight:600
-    }
+        fontSize: 18,
+        fontWeight: 600
+    },
+    tooltipContainer: {
+        backgroundColor: 'black',
+        padding: 8,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    tooltipText: {
+        position: 'absolute',
+        top: 20,
+        color: 'black',
+        fontSize: 16,
+    },
 });
