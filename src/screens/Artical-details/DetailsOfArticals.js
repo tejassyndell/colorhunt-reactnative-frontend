@@ -385,7 +385,7 @@ const DetailsOfArticals = (props) => {
                       <Text style={{ fontSize: 16, fontWeight: 600, color: "black" }}>{formatPrice(totalPrice)}</Text>
                     </View>
                     <View style={styles.addto_card_container}>
-                      {salesnopacks>0?
+                    
                       <Pressable
                         style={[
                           styles.addto_cart_btn,
@@ -401,22 +401,7 @@ const DetailsOfArticals = (props) => {
                           <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2, marginLeft: 10 }} />
                           <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add To Cart</Text>
                         </View>
-                      </Pressable>:
-                      <Pressable
-                      style={[
-                        styles.addto_cart_btn,
-                        {
-                          backgroundColor:  'black',
-                          // opacity: 1,
-                        },
-                      ]}
-                      disabled={true}
-                    >
-                      <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-                        <Text style={{ color: "#FFF", textAlign: "center", fontWeight: 600, fontSize: 18, width: '100%' }}>Out of stock</Text>
-                      </View>
-                    </Pressable>
-                      }
+                    </Pressable> 
                     </View>
 
                   </View>

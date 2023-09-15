@@ -4,7 +4,7 @@ import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { ActivityIndicator } from "react-native";
-import { cartdetails, deletecartitem } from "../../api/api";
+import { CollectInwardForCartArticals, cartdetails, deletecartitem } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -46,21 +46,32 @@ const AddToCart = (props) => {
     // const navigate = useNavigate()
     const [promoCode, setPromoCode] = useState('')
     const [orderItems, setOrderItems] = useState([])
-
+    const [cartDataIdArray, setCartDataIdArray] = useState([]);
+    const [compreInward, setcompreInward] = useState()
+    const getDetailsOfInward = async (arr1) => {
+        await CollectInwardForCartArticals({ arr1 }).then((res) => {
+            console.log(res.data.data);
+            setcompreInward(res.data.data);
+        })
+    }
     const cartDetails = async () => {
         await cartdetails().then((response) => {
-            // console.log('Api response :', response.data)
+            console.log('Api response :', response.data[0])
+            let arr1 = response.data.map(item => item.article_id);
+            getDetailsOfInward(arr1);
+
             const parsedOrderItems = response.data.map((item) => ({
                 ...item,
                 Quantity: JSON.parse(item.Quantity),
             }))
             console.log(parsedOrderItems);
-            setOrderItems(parsedOrderItems)
+            setOrderItems(parsedOrderItems);
             setIsLoading(false);
         })
             .catch((error) => {
                 console.log('Error fetching data:', error)
             })
+
     }
 
     useFocusEffect(
@@ -92,11 +103,52 @@ const AddToCart = (props) => {
         //   navigate('/orderplaced')
     }
 
+    const getSendPlaceorderdetails = () => {
+
+        handleProceedToCheckout();
+    }
     const handleProceedToCheckout = () => {
         const datatopass = [orderItems]
-        console.log(orderItems);
-        AsyncStorage.setItem('Orderlist', JSON.stringify(orderItems));
-        navigation.navigate('Orderlist');
+        let array_1 = []
+
+        orderItems.map((item) => {
+            compreInward.map((it) => {
+                const searchString = ',';
+
+                if (it.SalesNoPacks.includes(searchString)) {
+                    const stringNumbers = it.SalesNoPacks.split(',').map(num => parseInt(num.trim()));
+                    let outOfStock = false;
+                    for (let i = 0; i < stringNumbers.length; i++) {
+                        const e = stringNumbers[i];
+                        if (parseInt(e) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                            outOfStock = false;
+                            console.log(outOfStock, '-----');
+                            // console.log("0000000000");
+                            break;
+                            // Exit the loop
+                        }else{
+                            outOfStock = true;
+                        }
+                    }
+                    if (outOfStock) {
+                        console.log(outOfStock, '+++++');
+                        // array_1.push(item)
+                    }
+                } else {
+                    if (parseInt(it.SalesNoPacks) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                        // setCartDataIdArray((i)=>[...i,it.ArticalId])
+
+                    }
+                    else {
+                        console.log("11111111");
+                        // array_1.push(item)
+                    }
+                }
+            })
+        })
+        console.log("Frash data", array_1);
+        // AsyncStorage.setItem('Orderlist', JSON.stringify(orderItems));
+        // navigation.navigate('Orderlist');
     }
 
     const handleDeleteOrder = async (article_id) => {
@@ -129,7 +181,74 @@ const AddToCart = (props) => {
         //   navigate(`/Articles-details/${ArticalId}`) // Pass the ArticalId as a URL parameter to /Articles-details screen
         navigation.navigate("DetailsOfArticals", { id: ArticalId });
     }
+    const checkOutOfStock = (it, item) => {
+        const searchString = ',';
+
+        if (it.SalesNoPacks.includes(searchString)) {
+            const stringNumbers = it.SalesNoPacks.split(',').map(num => parseInt(num.trim()));
+            let outOfStock = false;
+            for (let i = 0; i < stringNumbers.length; i++) {
+                const e = stringNumbers[i];
+
+                if (parseInt(e) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                    outOfStock = true;
+                    break; // Exit the loop
+                }
+            }
+            if (outOfStock) {
+                return (
+                    <Text style={{
+                        fontSize: 14,
+                        fontWeight: 400,
+                        color: "red"
+                    }}>Out of stock</Text>
+                );
+            }
+        } else {
+
+            if (parseInt(it.SalesNoPacks) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                // setCartDataIdArray((itme)=>[...itme,it.ArticalId])
+                return (
+                    <Text style={{
+                        fontSize: 14,
+                        fontWeight: 400,
+                        color: "red"
+                    }}>Out of stock</Text>
+                );
+            }
+        }
+
+        // Return null if the item is not out of stock
+        // return null;
+    };
+    const sendOtheThanOutOfStock = (it, item) => {
+        const searchString = ',';
+
+        if (it.SalesNoPacks.includes(searchString)) {
+            const stringNumbers = it.SalesNoPacks.split(',').map(num => parseInt(num.trim()));
+
+            for (let i = 0; i < stringNumbers.length; i++) {
+                const e = stringNumbers[i];
+
+                if (parseInt(e) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                    setCartDataIdArray((i) => [...i, it.ArticleId])
+                    break; // Exit the loop
+                }
+            }
+
+        } else {
+
+            if (parseInt(it.SalesNoPacks) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                setCartDataIdArray((i) => [...i, it.ArticalId])
+
+            }
+        }
+
+        // Return null if the item is not out of stock
+        // return null;
+    };
     return (
+
         <>
             {isLoading ? (
                 <View style={{
@@ -230,10 +349,12 @@ const AddToCart = (props) => {
                                                                     fontSize: 17,
                                                                     fontWeight: 700, color: "#000"
                                                                 }}>₹{item.rate}.00</Text>
-                                                                {/* <Text style={{
-                                                                    fontSize: 14,
-                                                                    fontWeight: 400, color: "red"
-                                                                }}>Oute of stoke</Text> */}
+                                                                {compreInward ? compreInward.map((it) => (
+                                                                    checkOutOfStock(it, item)
+                                                                    // console.log(it.SalesNoPacks)
+                                                                )) : ""}
+
+
                                                             </View>
                                                         </View>
                                                         <View style={{

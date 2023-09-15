@@ -124,23 +124,23 @@ export const addto_cart = async (data) => {
   }
 };
 
-  
+
 export const findfromthecart = async (data) => {
   try {
-    return  await axios.post(`${url}/findfromthecart`, data)
+    return await axios.post(`${url}/findfromthecart`, data)
   } catch (err) {
-   
+
     console.log(err, 'err in react api')
   }
 }
 
-  
+
 export const updateCartArticale = async (data) => {
   try {
-   
-    return  await axios.post(`${url}/updateCartArticale`, data)
+
+    return await axios.post(`${url}/updateCartArticale`, data)
   } catch (err) {
-   
+
     console.log(err, 'err in react api')
   }
 }
@@ -191,9 +191,18 @@ export const UserData = async (data) => {
 
 export const addso = async (data) => {
   try {
-    return   await axios.post(`${url}/addso`, data)
+    return await axios.post(`${url}/addso`, data)
   } catch (err) {
-   
+
+    console.log(err, 'err in react api')
+  }
+}
+
+export const CollectInwardForCartArticals = async (data) => {
+  try {
+    return await axios.post(`${url}/collectinwardforcartarticals`,data)
+  } catch (err) {
+
     console.log(err, 'err in react api')
   }
 }
