@@ -6,7 +6,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import SearchBar from "../../components/SearchBar/searchbar";
-import { useRoute } from "@react-navigation/core";
 import Filter from "../../components/Filter/Filter";
 
 import { ActivityIndicator } from "react-native";
@@ -25,36 +24,23 @@ export default function AllArticle(props) {
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
-  // open filter
-
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
-  const route = useRoute();
 
-  // getCategoriesname
-  const getCategoriesname = async () => {
-    if (route.params && route.params.finalData.length > 0) {
-      setFinalData(route.params.finalData)
-      setIsLoading(false)
-    } else {
+  const getCategoriesname = async () => {    
       const res = await getProductName();
       if (res.status === 200) {
         setNameDatas(res.data);
         setFinalData(res.data)
         setIsLoading(false)
       }
-    }
-
   }
   const rmvProductWishlist = async (i) => {
-    console.log(i, 'r')
     let data = {
       party_id: 197,
       article_id: i.Id,
     }
-    console.log(data)
-
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
@@ -81,8 +67,6 @@ export default function AllArticle(props) {
       user_id: 197,
       article_id: i.Id,
     }
-
-    console.log(data)
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist()
@@ -138,7 +122,6 @@ export default function AllArticle(props) {
       console.log(filtered.length, "length")
       setFinalData(filtered)
       console.log(finalData.length, "FD")
-      console.log(finalData, "final DTAA :")
     }
   }
 
@@ -148,13 +131,9 @@ export default function AllArticle(props) {
       height: 'auto',
       width: "44.8%",
       margin: 10,
-      // marginLeft: 5,
-      // marginRight: 20,
-      // marginTop: 20,
       borderRadius: 10,
       borderColor: "gray",
       backgroundColor: "white",
-      // Add shadow properties for iOS
       shadowColor: "gray",
       shadowOpacity: 0.4,
       shadowRadius: 4,
@@ -228,7 +207,7 @@ export default function AllArticle(props) {
       item.ArticleRate >= selectedPriceRange[0] &&
       item.ArticleRate <= selectedPriceRange[1]
     );
-
+    console.log("handle Filter chnage",finalData.length)
     setFinalData(filteredData);
   };
   const handleCloseFilter = () => {
@@ -240,7 +219,7 @@ export default function AllArticle(props) {
     console.log(selectedPriceRange, "spa")
     const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category) && item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]);
     setFinalData(abc)
-    console.log(abc, "filtered Data by Range and Category :")
+    console.log("useeffect",finalData.length)
   }, [selectedCategories], [selectedPriceRange])
   useEffect(() => {
     const minRate = finalData.reduce((min, item) => {
@@ -254,9 +233,9 @@ export default function AllArticle(props) {
     }, -Infinity);
 
     setMinArticleRate(minRate);
-    console.log(minArticleRate)
+    
     setMaxArticleRate(maxRate);
-    console.log(maxArticleRate)
+    
   }, [finalData]);
   return (
     <>
@@ -296,7 +275,7 @@ export default function AllArticle(props) {
           </View>
           {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
           <View style={{ position: 'relative', backgroundColor: "#FFFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
-            {console.log(finalData.length)}
+            {console.log(finalData.length,"when render ")}
             <FlatList
               data={finalData}
               keyExtractor={(item) => item.Id}
@@ -332,11 +311,13 @@ export default function AllArticle(props) {
                   backgroundColor: "white",
                   position: "absolute",
                   bottom: 0,
-                  left: 0,
-                  right: 0, // To make it span the full width
-                  marginLeft: "auto", // Margin on the left side
-                  marginRight: "auto", // Margin on the right side
-                  padding: 10,
+                  // left: 0,
+                  // right: 0, // To make it span the full width
+                  marginLeft: "5%", // Margin on the left side
+                  marginRight: "5%", // Margin on the right side
+                  padding: 5,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
                 }}
               >
                 <Filter onFilterChange={handleFilterChange}

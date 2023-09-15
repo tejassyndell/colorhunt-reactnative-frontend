@@ -111,6 +111,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const viewAllArticles = () => {
+    console.log(finalData.length,"lenght of navigation data ")
     navigation.navigate("AllArticle", { finalData });
   };
 
@@ -171,6 +172,7 @@ export default function HomeScreen(props) {
   const filterData = () => {
     if (searchText === "") {
     } else {
+      console.log(searchText)
       const filtered = filterDataSearch.filter(
         (item) =>
           item.ArticleNumber.toString().includes(searchText.toString()) ||
@@ -181,6 +183,7 @@ export default function HomeScreen(props) {
           ) ||
           item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
       );
+      console.log(filtered.length,"search data lnegth")
       setFinalData(filtered);
     }
   };
@@ -592,14 +595,14 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               )}
                             </View>
-                            <Image
+                            {/* <Image
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
                                 width: "94%",
                                 height: 190,
                                 borderRadius: 10,
                               }}
-                            />
+                            /> */}
                           </View>
 
                           <Text style={{ fontWeight: "bold", marginTop: 10 }}>
@@ -623,14 +626,14 @@ export default function HomeScreen(props) {
                             marginRight: 5,
                           }}
                         >
-                          <Image
+                          {/* <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               width: 200,
                               height: 200,
                               borderRadius: 10,
                             }}
-                          />
+                          /> */}
                           <Text style={{ fontWeight: "bold" }}>
                             {item.ArticleNumber}
                           </Text>
