@@ -122,18 +122,26 @@ const AddToCart = (props) => {
                         const e = stringNumbers[i];
                         if (parseInt(e) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
                             outOfStock = false;
-                            console.log(outOfStock, '-----');
-                            // console.log("0000000000");
+                            console.log("888888");
+                            array_1 = array_1.filter(item => {
+                                if(item.article_id !== it.ArticleId){
+                                    return item;
+                                }
+                            });
                             break;
                             // Exit the loop
-                        }else{
-                            outOfStock = true;
+                        }
+                        else{
+                            console.log("0000000");
+                            if (!array_1.includes(item.article_id)) {
+                                array_1.push(item);
+                              }
                         }
                     }
-                    if (outOfStock) {
-                        console.log(outOfStock, '+++++');
-                        // array_1.push(item)
-                    }
+                    // if (outOfStock) {
+                    //     console.log(outOfStock, '+++++');
+                    //     // array_1.push(item)
+                    // }
                 } else {
                     if (parseInt(it.SalesNoPacks) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
                         // setCartDataIdArray((i)=>[...i,it.ArticalId])
@@ -141,7 +149,7 @@ const AddToCart = (props) => {
                     }
                     else {
                         console.log("11111111");
-                        // array_1.push(item)
+                        array_1.push(item)
                     }
                 }
             })
