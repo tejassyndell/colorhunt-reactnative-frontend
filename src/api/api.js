@@ -1,7 +1,7 @@
 /* eslint-disable */
-import axios from "axios"
-const url = 'http://10.0.2.2:4000'
-// const url = 'http://localhost:4000'
+import axios from "axios";
+// const url = "http://10.0.2.2:4000";
+const url = "http://localhost:4000";
 // const url = 'https://colorhunt-mobile-backend.sincprojects.com'
 // const url = 'https://garment-backend.sincprojects.com'
 
@@ -119,10 +119,25 @@ export const addto_cart = async (data) => {
   try {
     return  await axios.post(`${url}/addtocart`, data)
   } catch (err) {
-   
-    console.log(err, 'err in react api')
+    console.log(err, "err in react api");
   }
-}
+};
+
+export const findfromthecart = async (data) => {
+  try {
+    return await axios.post(`${url}/findfromthecart`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
+
+export const updateCartArticale = async (data) => {
+  try {
+    return await axios.post(`${url}/updateCartArticale`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
 
 export const cartdetails = async () => {
   try {
@@ -147,7 +162,40 @@ export const gettransportation = async (data) => {
   try {
     return   await axios.get(`${url}/gettransportation`, data)
   } catch (err) {
-   
-    console.log(err, 'err in react api')
+    console.log(err, "err in react api");
   }
-}
+};
+
+export const phoneNumberValidation = async (data) => {
+  try {
+    console.log(data);
+    return await axios.post(`${url}/phoneNumberValidation`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
+
+//  Submit a Create new party
+export const UserData = async (data) => {
+  try {
+    return await axios.post(`${url}/UserData`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
+
+export const addso = async (data) => {
+  try {
+    return await axios.post(`${url}/addso`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
+
+export const CollectInwardForCartArticals = async (data) => {
+  try {
+    return await axios.post(`${url}/collectinwardforcartarticals`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
