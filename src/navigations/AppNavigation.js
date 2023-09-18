@@ -22,19 +22,14 @@ import Notification from '../screens/Notification/Notification';
  const Stack = createStackNavigator();
 
 function MainNavigator() {
-  return (
-    <Stack.Navigator screenOptions={{ unmountInactiveRoutes: true }}>
-      <Stack.Screen
-        name="login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Categories" component={CategoriesScreen} />
-      <Stack.Screen name="Recipe" component={RecipeScreen} />
-      <Stack.Screen name="RecipesList" component={RecipesListScreen} />
-      <Stack.Screen name="Ingredient" component={IngredientScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='Categories' component={CategoriesScreen}/>
+      <Stack.Screen name='Recipe' component={RecipeScreen}/>
+      <Stack.Screen name='RecipesList' component={RecipesListScreen} />
+      <Stack.Screen name='Ingredient' component={IngredientScreen} />
+      <Stack.Screen name='Search' component={SearchScreen} />
       <Stack.Screen name="AllArticle" component={AllArticleScreen} />
       <Stack.Screen name='IngredientsDetails' component={IngredientsDetailsScreen} />
       <Stack.Screen name='Profile' component={Userprofile} />
@@ -60,10 +55,8 @@ function DrawerStack() {
       drawerStyle={{
         width: 250
       }}
-      screenOptions={{ headerShown: false, unmountOnBlur: false }}
-      drawerContent={({ navigation }) => (
-        <DrawerContainer navigation={navigation} />
-      )}
+      screenOptions={{headerShown: false}}
+      drawerContent={({navigation})=> <DrawerContainer navigation={navigation}/>}
     >
       <Drawer.Screen name='Main' component={MainNavigator} />
     </Drawer.Navigator>

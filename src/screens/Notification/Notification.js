@@ -32,7 +32,7 @@ export default function Notification() {
 
   const sendNotification = async () => {
     try {
-      await fetch('http://10.0.2.2:4000/getNotification', {
+      await fetch('http://10.0.2.2:8020/getNotification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
