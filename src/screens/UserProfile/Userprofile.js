@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, TouchableHighlight } from "react-native";
+import { Text, View, Image, TouchableHighlight, Dimensions } from "react-native";
 import styles from "./style2";
 import { Profiledata } from "../../api/api";
 import { useLayoutEffect } from "react";
@@ -8,6 +8,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
+  const { width, height } = Dimensions.get("window");
+  const fontSize = width > 400 ? 20 : 18; // Adjust the font size based on screen width
+  const marginTop = height > 800 ? 30 : 20; // Adjust the margin top based on screen height
   useEffect(() => {
     fetchprofiledata();
   }, []);
@@ -58,11 +61,6 @@ export default function Userprofile(props) {
     <>
       <View style={styles.TopContainer}>
         <TouchableHighlight>
-          <View style={styles.Button}>
-            {/* <Image source={require('../../../assets/Backbutton/menu_bar.jpg')} /> */}
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight>
           <View style={styles.Profile}>
             <Image
               source={require("../../../assets/Profileicon/Frame_1171274903.png")}
@@ -71,30 +69,30 @@ export default function Userprofile(props) {
         </TouchableHighlight>
       </View>
       {Profile.map((item) => (
-        <View style={styles.BottomContainer} key={item.Id}>
+        <View style={{ ...styles.BottomContainer, marginTop }} key={item.Id}>
           <View style={styles.hello}>
-            <Text style={styles.text}>{item.Name}</Text>
+            <Text style={{ ...styles.text, fontSize }}>{item.Name}</Text>
           </View>
-          <View style={styles.hello}>
-            <Text style={styles.text}>{item.Address}</Text>
+          <View style={{...styles.hello,marginTop}}>
+            <Text style={{ ...styles.text, fontSize }}>{item.Address}</Text>
           </View>
-          <View style={styles.hello}>
-            <Text style={styles.text}>{item.PhoneNumber}</Text>
+          <View style={{...styles.hello,marginTop}}>
+            <Text style={{ ...styles.text, fontSize }}>{item.PhoneNumber}</Text>
           </View>
-          <View style={styles.hello2}>
+          <View style={{...styles.hello2,marginTop}}>
             <View style={styles.abc}>
-              <Text style={styles.text}>{item.City}</Text>
+              <Text style={{ ...styles.text, fontSize }}>{item.City}</Text>
             </View>
             <View style={styles.abc}>
-              <Text style={styles.text}>{item.State}</Text>
+              <Text style={{ ...styles.text, fontSize }}>{item.State}</Text>
             </View>
           </View>
-          <View style={styles.hello2}>
+          <View style={{...styles.hello2,marginTop}}>
             <View style={styles.abc}>
-              <Text style={styles.text}>{item.Country}</Text>
+              <Text style={{ ...styles.text, fontSize }}>{item.Country}</Text>
             </View>
             <View style={styles.abc}>
-              <Text style={styles.text}>{item.PinCode}</Text>
+              <Text style={{ ...styles.text, fontSize }}>{item.PinCode}</Text>
             </View>
           </View>
         </View>
