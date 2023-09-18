@@ -20,35 +20,17 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "permissions": {
-        "notifications": {
-          "allowAlert": true,
-          "allowBadge": true,
-          "allowSound": true
-        }
-      }
+      "supportsTablet": true
     },
     "android": {
-      "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
       "package": "com.colorhuntmobileapp.app",
-      "permissions": {
-        
-        "allowAlert": true,
-        "allowBadge": true,
-        "allowSound": true
-      }
-      
+      "permissions": ["NOTIFICATIONS_PERMISSIONS"]
     },
     "web": {
       "favicon": "./assets/icon.png"
     }
-   
-
   }
 }
