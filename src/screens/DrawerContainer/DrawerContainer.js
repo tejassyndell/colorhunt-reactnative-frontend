@@ -8,47 +8,36 @@ import { useFocusEffect } from "@react-navigation/native";
 
 export default function DrawerContainer(props) {
   const { navigation, onPress } = props;
-  const [userData, setUserData] = useState();
+  const [userName, setUserName] = useState("");
 
-  const clearUserData = async () => {
+  const fetchUserName = async () => {
     try {
-      await AsyncStorage.removeItem("UserData");
-      console.log(clearUserData);
-      // Optionally, you can also clear other relevant data if needed.
+      let storedName = await AsyncStorage.getItem("UserData"); // Replace with the key you used to store the user's name
+      storedName = JSON.parse(storedName);
+      if (storedName && storedName.length > 0) {
+        setUserName(storedName[0].Name);
+      }
     } catch (error) {
-      console.error("Error clearing user data from AsyncStorage:", error);
+      console.error("Error fetching user's name from AsyncStorage:", error);
     }
   };
+
+  // Fetch the user's name from AsyncStorage when the component is focused
+
   useFocusEffect(
-    React.useCallback(async () => {
-      // Function to fetch user data from AsyncStorage
-      // const fetchUserData = async () => {
-      try {
-        const storedUserData = await AsyncStorage.getItem("UserData");
-        console.log("Stored User Data (Raw):", storedUserData);
-
-        if (storedUserData) {
-          const userData = JSON.parse(storedUserData);
-          console.log("Stored User Data (Parsed):", userData);
-
-          if (userData) {
-            setUserData(userData);
-            console.log(userData[0], "-------");
-          } else {
-            console.log("Name field is missing in user data.", userData);
-          }
-        } else {
-          console.log("No user data found in AsyncStorage.");
-        }
-      } catch (error) {
-        console.error("Error fetching user data from AsyncStorage:", error);
-      }
-      // };
-
-      // Call the function to fetch user data
+    React.useCallback(() => {
+      fetchUserName();
     }, [])
   );
 
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log("AsyncStorage cleared successfully");
+    } catch (error) {
+      console.error("Error clearing AsyncStorage:", error);
+    }
+  };
   return (
     <View style={styles.content}>
       <View style={styles.container}>
@@ -72,16 +61,23 @@ export default function DrawerContainer(props) {
               marginTop: 30,
             }}
           >
-            <Image
-              source={require("../../../assets/sidebaricons/1171274903.png")}
-              style={{ width: 50, height: 50 }}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate("")}>
+              <Image
+                source={require("../../../assets/sidebaricons/1171274903.png")}
+                style={{ width: 50, height: 50 }}
+              />
+            </TouchableOpacity>
 
             <Text
-              style={{ color: "#ffff", left: 10 }}
-              onPress={() => navigation.navigate("Profile")}
+              style={{
+                color: "#ffff",
+                left: 10,
+                fontSize: 19,
+                height: 50,
+                paddingTop: 10,
+              }}
             >
-              {userData ? userData[0].Name : ""}
+              {userName}
             </Text>
           </View>
           <View style={{ marginTop: 12 }}>
@@ -146,12 +142,11 @@ export default function DrawerContainer(props) {
         />
 
         <TouchableOpacity
-          onPress={async () => {
-            await clearUserData();
-            navigation.navigate("login");
-            navigation.closeDrawer();
-          }}
           style={{ flexDirection: "row", marginLeft: 10, marginTop: 50 }}
+          onPress={() => {
+            clearAsyncStorage();
+            navigation.navigate("login"); // Replace with your login or home screen route
+          }}
         >
           <Image
             source={require("../../../assets/sidebaricons/download-4.png")}
@@ -190,3 +185,32 @@ DrawerContainer.propTypes = {
     navigate: PropTypes.func.isRequired,
   }),
 };
+// useFocusEffect(
+//   React.useCallback(async () => {
+//     // Function to fetch user data from AsyncStorage
+//     // const fetchUserData = async () => {
+//     try {
+//       const storedUserData = await AsyncStorage.getItem("UserData");
+//       console.log("Stored User Data (Raw):", storedUserData);
+
+//       if (storedUserData) {
+//         const userData = JSON.parse(storedUserData);
+//         console.log("Stored User Data (Parsed):", userData);
+
+//         if (userData) {
+//           setUserData(userData);
+//           console.log(userData[0], "-------");
+//         } else {
+//           console.log("Name field is missing in user data.", userData);
+//         }
+//       } else {
+//         console.log("No user data found in AsyncStorage.");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching user data from AsyncStorage:", error);
+//     }
+//     // };
+
+//     // Call the function to fetch user data
+//   }, [])
+// );

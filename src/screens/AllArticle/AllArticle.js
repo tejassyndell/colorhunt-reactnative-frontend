@@ -31,6 +31,7 @@ export default function AllArticle(props) {
   const getCategoriesname = async () => {    
       const res = await getProductName();
       if (res.status === 200) {
+        // console.log(res.data);
         setNameDatas(res.data);
         setFinalData(res.data)
         setIsLoading(false)
@@ -203,12 +204,12 @@ export default function AllArticle(props) {
 
     // Filter based on selected categories and price range
     const filteredData = nameDatas.filter((item) =>
-      (selectedCategories.length === 0 || selectedCategories.includes(item.Category)) &&
-      item.ArticleRate >= selectedPriceRange[0] &&
-      item.ArticleRate <= selectedPriceRange[1]
+    selectedCategories.includes(item.Category) &&
+    item.ArticleRate >= selectedPriceRange[0] &&
+    item.ArticleRate <= selectedPriceRange[1]
     );
-    console.log("handle Filter chnage",finalData.length)
     setFinalData(filteredData);
+    console.log("handle Filter chnage",finalData.length)
   };
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev)
@@ -217,7 +218,9 @@ export default function AllArticle(props) {
   useEffect(() => {
     console.log(selectedCategories, "sca")
     console.log(selectedPriceRange, "spa")
-    const abc = nameDatas.filter((item) => selectedCategories.includes(item.Category) && item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]);
+    const abc = nameDatas.filter((item) => (!selectedCategories.length || selectedCategories.includes(item.Category)) &&
+    item.ArticleRate >= selectedPriceRange[0] &&
+    item.ArticleRate <= selectedPriceRange[1]);
     setFinalData(abc)
     console.log("useeffect",finalData.length)
   }, [selectedCategories], [selectedPriceRange])
