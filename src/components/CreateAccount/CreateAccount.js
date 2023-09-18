@@ -6,8 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import { UserData } from "../../api/api";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const CreateAccount = ({ onClose }) => {
   const [name, setName] = useState("");
@@ -275,7 +278,11 @@ const CreateAccount = ({ onClose }) => {
       <View style={styles.rowContainer}>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, stateError && styles.inputError]}
+            style={[
+              styles.input,
+              stateError && styles.inputError,
+              { marginRight: 5 },
+            ]}
             placeholder="State"
             value={state}
             onChangeText={(text) => handleInputChange("state", text)}
@@ -287,7 +294,11 @@ const CreateAccount = ({ onClose }) => {
         </View>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, cityError && styles.inputError]}
+            style={[
+              styles.input,
+              cityError && styles.inputError,
+              { marginLeft: 5 },
+            ]}
             placeholder="City"
             value={city}
             onChangeText={(text) => handleInputChange("city", text)}
@@ -299,7 +310,11 @@ const CreateAccount = ({ onClose }) => {
       <View style={styles.rowContainer}>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, countryError && styles.inputError]}
+            style={[
+              styles.input,
+              countryError && styles.inputError,
+              { marginRight: 5 },
+            ]}
             placeholder="Country"
             value={country}
             onChangeText={(text) => handleInputChange("country", text)}
@@ -311,7 +326,11 @@ const CreateAccount = ({ onClose }) => {
         </View>
         <View style={styles.flex1}>
           <TextInput
-            style={[styles.input, pinCodeError && styles.inputError]}
+            style={[
+              styles.input,
+              pinCodeError && styles.inputError,
+              { marginLeft: 5 },
+            ]}
             placeholder="Pincode"
             value={pinCode}
             onChangeText={(text) => handleInputChange("pinCode", text)}
@@ -333,9 +352,14 @@ const CreateAccount = ({ onClose }) => {
         <Text style={styles.errorText}>{contactPersonError}</Text>
       ) : null}
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleFormSubmit}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
+      <View style={{ width: "100%", alignItems: "center" }}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleFormSubmit}
+        >
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -347,22 +371,22 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
-    justifyContent: "space-between",
+    marginBottom: windowHeight * 0.05,
   },
   title: {
-    fontSize: 24,
+    fontSize: windowWidth * 0.06,
     fontWeight: "bold",
-    marginLeft: 90,
+    textAlign: "center",
+    width: "90%",
   },
   input: {
-    height: 40,
+    height: windowHeight * 0.05,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
-    paddingLeft: 10,
-    fontSize: 18,
+    paddingLeft: windowWidth * 0.02,
+    fontSize: windowWidth * 0.03,
   },
   inputError: {
     borderColor: "red",
@@ -373,19 +397,19 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   submitButton: {
-    width: 130,
+    width: windowWidth * 0.3,
     backgroundColor: "black",
-    padding: 14,
+    padding: 18,
     borderRadius: 5,
     alignItems: "center",
-    height: 50,
-    fontSize: 20,
-    marginLeft: 120,
+    height: windowHeight * 0.06,
+
+    marginTop: windowHeight * 0.04,
   },
   submitButtonText: {
     color: "white",
-    fontSize: 16,
     fontWeight: "bold",
+    fontSize: windowWidth * 0.04,
   },
   closeButton: {
     backgroundColor: "black",
@@ -406,7 +430,6 @@ const styles = StyleSheet.create({
   },
   flex1: {
     flex: 1,
-    marginRight: 10,
   },
 });
 
