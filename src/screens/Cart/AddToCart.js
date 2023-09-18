@@ -117,46 +117,55 @@ const AddToCart = (props) => {
 
                 if (it.SalesNoPacks.includes(searchString)) {
                     const stringNumbers = it.SalesNoPacks.split(',').map(num => parseInt(num.trim()));
-                    let outOfStock = false;
                     for (let i = 0; i < stringNumbers.length; i++) {
                         const e = stringNumbers[i];
                         if (parseInt(e) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
-                            outOfStock = false;
-                            console.log("888888");
                             array_1 = array_1.filter(item => {
-                                if(item.article_id !== it.ArticleId){
+                                if (item !== it.ArticleId) {
                                     return item;
                                 }
                             });
                             break;
-                            // Exit the loop
                         }
-                        else{
-                            console.log("0000000");
+                        else {
                             if (!array_1.includes(item.article_id)) {
-                                array_1.push(item);
-                              }
+                                array_1.push(item.article_id);
+                            }
                         }
                     }
-                    // if (outOfStock) {
-                    //     console.log(outOfStock, '+++++');
-                    //     // array_1.push(item)
-                    // }
                 } else {
-                    if (parseInt(it.SalesNoPacks) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                    console.log(parseInt(item.Quantity), parseInt(it.SalesNoPacks));
+                    if ( parseInt(item.Quantity) > parseInt(it.SalesNoPacks)  && it.ArticleId === item.article_id) {
                         // setCartDataIdArray((i)=>[...i,it.ArticalId])
 
                     }
                     else {
                         console.log("11111111");
-                        array_1.push(item)
+                        array_1.push(item.article_id)
                     }
                 }
             })
         })
-        console.log("Frash data", array_1);
-        // AsyncStorage.setItem('Orderlist', JSON.stringify(orderItems));
-        // navigation.navigate('Orderlist');
+        let new_arr = [];
+        orderItems.map((it) => {
+            array_1.filter((item) => {
+                if (parseInt(item) === parseInt(it.article_id)) {
+                    new_arr.push(it);
+                }
+                else {
+                    console.log(item, it.article_id);
+                }
+            })
+        }
+        )
+        console.log("Frash data_1", array_1);
+        console.log("Frash data_2", new_arr);
+
+        if (new_arr.length > 0) {
+            // AsyncStorage.setItem('Orderlist', JSON.stringify(new_arr));
+            // navigation.navigate('Orderlist');
+        }
+
     }
 
     const handleDeleteOrder = async (article_id) => {
