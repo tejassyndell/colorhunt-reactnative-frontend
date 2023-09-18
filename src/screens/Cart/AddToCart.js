@@ -3,10 +3,11 @@ import React, { useLayoutEffect } from "react";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useState } from "react";
 import axios from 'axios'
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView } from "react-native";
 import { CollectInwardForCartArticals, cartdetails, deletecartitem } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { ImageZoomProps } from "react-native-image-pan-zoom";
 
 const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 
@@ -48,12 +49,13 @@ const AddToCart = (props) => {
     const [orderItems, setOrderItems] = useState([])
     const [cartDataIdArray, setCartDataIdArray] = useState([]);
     const [compreInward, setcompreInward] = useState()
-    const [totalprice,setTotalPrice]=useState(0);
-    const getDetailsOfInward = async (arr1,parsedOrderItems) => {
+    const [totalprice, setTotalPrice] = useState(0);
+    const [array_1, setArray_1] = useState([]);
+    const getDetailsOfInward = async (arr1, parsedOrderItems) => {
         await CollectInwardForCartArticals({ arr1 }).then((res) => {
             console.log(res.data.data);
             setcompreInward(res.data.data);
-            TotalPrice(parsedOrderItems,res.data.data)
+            TotalPrice(parsedOrderItems, res.data.data)
         })
     }
     const cartDetails = async () => {
@@ -64,7 +66,7 @@ const AddToCart = (props) => {
                 ...item,
                 Quantity: JSON.parse(item.Quantity),
             }))
-            getDetailsOfInward(arr1,parsedOrderItems);
+            getDetailsOfInward(arr1, parsedOrderItems);
 
             console.log(parsedOrderItems);
             setOrderItems(parsedOrderItems);
@@ -110,49 +112,6 @@ const AddToCart = (props) => {
         handleProceedToCheckout();
     }
     const handleProceedToCheckout = () => {
-        const datatopass = [orderItems]
-        let array_1 = []
-
-        orderItems.map((item) => {
-            compreInward.map((it) => {
-                const searchString = ',';
-                if (it.SalesNoPacks.includes(searchString) && item.Quantity.includes(searchString)) {
-                    let saleNumber = it.SalesNoPacks;
-                    const stringNumbers = saleNumber.split(',').map(num => parseInt(num.trim()));
-                    const quntitynumber = item.Quantity.split(',').map(num => parseInt(num.trim()));
-                    // console.log(quntitynumber,"_______");
-                    for (let i = 0; i < stringNumbers.length; i++) {
-                        for (let j = 0; j < quntitynumber.length; j++) {
-                        const e = stringNumbers[i];
-                        const f = quntitynumber[j];
-                        console.log(e,f,"()()()()");
-                        if (parseInt(e) < parseInt(f) && it.ArticleId === item.article_id) {
-                            array_1 = array_1.filter(item => {
-                                if (item !== it.ArticleId) {
-                                    return item;
-                                }
-                            });
-                            break;
-                        }
-                        else {
-                            if (!array_1.includes(item.article_id)) {
-                                array_1.push(item.article_id);
-                            }
-                        }
-                    }
-                    }
-                } 
-                else {
-                    if ( parseInt(it.SalesNoPacks) > parseInt(item.Quantity)  && it.ArticleId === item.article_id) {
-                        array_1.push(item.article_id)
-                    }
-                    else {
-                        console.log("11111111",parseInt(it.SalesNoPacks) , parseInt(item.Quantity)  , it.ArticleId , item.article_id);
-                    }
-                }
-            })
-        })
-        
         let new_arr = [];
         orderItems.map((it) => {
             array_1.filter((item) => {
@@ -172,11 +131,10 @@ const AddToCart = (props) => {
             AsyncStorage.setItem('Orderlist', JSON.stringify(new_arr));
             navigation.navigate('Orderlist');
         }
-
     }
 
-    const TotalPrice = (orderItems,compreInward)=>{
-        let array_1 = []
+    const TotalPrice = (orderItems, compreInward) => {
+        let listOfOutOfProduct = []
 
         orderItems.map((item) => {
             compreInward.map((it) => {
@@ -185,44 +143,43 @@ const AddToCart = (props) => {
                     let saleNumber = it.SalesNoPacks;
                     const stringNumbers = saleNumber.split(',').map(num => parseInt(num.trim()));
                     const quntitynumber = item.Quantity.split(',').map(num => parseInt(num.trim()));
-                    // console.log(quntitynumber,"_______");
                     for (let i = 0; i < stringNumbers.length; i++) {
                         for (let j = 0; j < quntitynumber.length; j++) {
-                        const e = stringNumbers[i];
-                        const f = quntitynumber[j];
-                        console.log(e,f,"()()()()");
-                        if (parseInt(e) < parseInt(f) && it.ArticleId === item.article_id) {
-                            array_1 = array_1.filter(item => {
-                                if (item !== it.ArticleId) {
-                                    return item;
+                            const e = stringNumbers[i];
+                            const f = quntitynumber[j];
+                            console.log(e, f, "()()()()");
+                            if (parseInt(e) < parseInt(f) && it.ArticleId === item.article_id) {
+                                listOfOutOfProduct = listOfOutOfProduct.filter(item => {
+                                    if (item !== it.ArticleId) {
+                                        return item;
+                                    }
+                                });
+                                break;
+                            }
+                            else {
+                                if (!listOfOutOfProduct.includes(item.article_id)) {
+                                    listOfOutOfProduct.push(item.article_id);
                                 }
-                            });
-                            break;
-                        }
-                        else {
-                            if (!array_1.includes(item.article_id)) {
-                                array_1.push(item.article_id);
                             }
                         }
                     }
-                    }
-                } 
+                }
                 else {
-                    if ( parseInt(it.SalesNoPacks) > parseInt(item.Quantity)  && it.ArticleId === item.article_id) {
-                        array_1.push(item.article_id)
+                    if (parseInt(it.SalesNoPacks) > parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                        listOfOutOfProduct.push(item.article_id)
                     }
                     else {
-                        console.log("11111111",parseInt(it.SalesNoPacks) , parseInt(item.Quantity)  , it.ArticleId , item.article_id);
+                        console.log("11111111", parseInt(it.SalesNoPacks), parseInt(item.Quantity), it.ArticleId, item.article_id);
                     }
                 }
             })
         })
-        
+        setArray_1(listOfOutOfProduct);
         let total = 0;
         orderItems.map((it) => {
-            array_1.filter((item) => {
+            listOfOutOfProduct.filter((item) => {
                 if (parseInt(item) === parseInt(it.article_id)) {
-                    total+=it.rate;
+                    total += it.rate;
                 }
                 else {
                     console.log(item, it.article_id);
@@ -278,11 +235,14 @@ const AddToCart = (props) => {
             }
             if (outOfStock) {
                 return (
+                    // <View style={{width:"100%"}}>
                     <Text style={{
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: 400,
-                        color: "red"
+                        color: "red",
+                        textAlign: "right"
                     }}>Out of stock</Text>
+                    // </View>
                 );
             }
         } else {
@@ -345,6 +305,7 @@ const AddToCart = (props) => {
             ) : (
                 orderItems.length === 0 ?
                     <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
+
                         <Text style={{ fontSize: 40, fontWeight: "bolder", top: 200, textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your Cart is {"\n"} Empty</Text>
                         <TouchableOpacity
                             style={{
@@ -373,97 +334,215 @@ const AddToCart = (props) => {
                                         <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                             <View style={{ paddingBottom: 20 }}>
                                                 {orderItems.map((item) =>
-                                                    <View key={item.id} style={{
-                                                        display: "flex",
-                                                        flexDirection: "row",
-                                                        width: "95%",
-                                                        backgroundColor: "#FFF",
-                                                        elevation: 10,
-                                                        shadowColor: "gray",
-                                                        marginHorizontal: 9.5,
-                                                        marginTop: 15,
-                                                        borderRadius: 10,
-                                                        height: 150,
-                                                        paddingVertical: 5,
-
-                                                        // maxHeight: "45%"
-                                                    }}>
-                                                        <View style={{
-                                                            width: "35%",
-                                                            // width: 120,
-                                                            // height: 102.746,
-                                                            display: "flex",
-                                                            justifyContent: "center",
-                                                            alignItems: "center",
-                                                            marginLeft: 2,
-                                                            marginVertical: 10,
-                                                            borderRadius: 10,
-                                                        }}>
-                                                            <Image style={{
-                                                                height: "100%",
-                                                                width: "68%",
+                                                    array_1.map((id) =>
+                                                        id === item.article_id ?
+                                                            <View key={item.id} style={{
+                                                                display: "flex",
+                                                                flexDirection: "row",
+                                                                width: "95%",
+                                                                backgroundColor: "#FFF",
+                                                                elevation: 10,
+                                                                shadowColor: "gray",
+                                                                marginHorizontal: 9.5,
+                                                                marginTop: 15,
                                                                 borderRadius: 10,
-                                                            }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                                        </View>
-                                                        <View style={{
-                                                            width: "35%",
-                                                            marginHorizontal: 4,
-                                                            marginVertical: 10,
-                                                            borderRadius: 10
-                                                        }}>
-                                                            <View style={{ height: "50%" }}>
-                                                                <Text style={{
-                                                                    fontSize: 18,
-                                                                    fontWeight: 700, color: "#000"
-                                                                }}>{item.ArticleNumber}</Text>
-                                                                <Text style={{
-                                                                    fontSize: 14,
-                                                                    fontWeight: 400, color: "#000"
-                                                                }}>{item.StyleDescription}</Text>
+                                                                height: 150,
+                                                                paddingVertical: 5,
+                                                                // maxHeight: "45%"
+                                                            }}>
+                                                                <View style={{
+                                                                    width: "35%",
+                                                                    // width: 120,
+                                                                    // height: 102.746,
+                                                                    display: "flex",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center",
+                                                                    marginLeft: 2,
+                                                                    marginVertical: 10,
+                                                                    borderRadius: 10,
+                                                                }}>
+                                                                    <Image style={{
+                                                                        height: "100%",
+                                                                        width: "68%",
+                                                                        borderRadius: 10,
+                                                                    }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                                </View>
+                                                                <View style={{
+                                                                    width: "35%",
+                                                                    marginHorizontal: 4,
+                                                                    marginVertical: 10,
+                                                                    borderRadius: 10
+                                                                }}>
+                                                                    <View style={{ height: "50%" }}>
+                                                                        <Text style={{
+                                                                            fontSize: 18,
+                                                                            fontWeight: 700, color: "#000"
+                                                                        }}>{item.ArticleNumber}</Text>
+                                                                        <Text style={{
+                                                                            fontSize: 14,
+                                                                            fontWeight: 400, color: "#000"
+                                                                        }}>{item.StyleDescription}</Text>
+                                                                    </View>
+                                                                    <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
+                                                                        <Text style={{
+                                                                            fontSize: 14,
+                                                                            fontWeight: 400, color: "#000"
+                                                                        }}>Rate</Text>
+                                                                        <Text style={{
+                                                                            fontSize: 17,
+                                                                            fontWeight: 700, color: "#000"
+                                                                        }}>₹{item.rate}.00</Text>
+                                                                        {/* {compreInward ? compreInward.map((it) => (
+                                                                        checkOutOfStock(it, item)
+                                                                        // console.log(it.SalesNoPacks)
+                                                                    )) : ""} */}
+
+                                                                    </View>
+                                                                </View>
+                                                                <View style={{
+                                                                    width: "25%",
+                                                                    display: "flex",
+                                                                    flexDirection: "column",
+                                                                    height: "90%"
+                                                                }}>
+                                                                    <View style={{
+                                                                        width: "100%",
+                                                                        display: "flex",
+                                                                        flexDirection: "row",
+                                                                        justifyContent: "flex-end",
+                                                                        gap: 8,
+                                                                        paddingRight: 5,
+                                                                        marginVertical: 10,
+                                                                        borderRadius: 10
+                                                                    }}>
+                                                                        <TouchableOpacity
+                                                                            onPress={() => handleEditOrder(item.article_id)}
+                                                                        >
+
+                                                                            <Image alt="edite"
+                                                                                style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                                        </TouchableOpacity>
+                                                                        <TouchableOpacity
+                                                                            onPress={() => handleDeleteOrder(item.article_id)}
+                                                                        >
+                                                                            <Image alt="Delete"
+                                                                                style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                                        </TouchableOpacity>
+                                                                    </View>
+
+                                                                </View>
+
                                                             </View>
-                                                            <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
-                                                                <Text style={{
-                                                                    fontSize: 14,
-                                                                    fontWeight: 400, color: "#000"
-                                                                }}>Rate</Text>
-                                                                <Text style={{
-                                                                    fontSize: 17,
-                                                                    fontWeight: 700, color: "#000"
-                                                                }}>₹{item.rate}.00</Text>
-                                                                {compreInward ? compreInward.map((it) => (
-                                                                    checkOutOfStock(it, item)
-                                                                    // console.log(it.SalesNoPacks)
-                                                                )) : ""}
+                                                            :
+                                                            <View key={item.id} style={{
+                                                                display: "flex",
+                                                                flexDirection: "row",
+                                                                width: "95%",
+                                                                backgroundColor: "#FFF",
+                                                                elevation: 10,
+                                                                shadowColor: "gray",
+                                                                marginHorizontal: 9.5,
+                                                                marginTop: 15,
+                                                                borderRadius: 10,
+                                                                height: 150,
+                                                                paddingVertical: 5,
+                                                                // maxHeight: "45%"
+                                                            }}>
+                                                                <View style={{
+                                                                    width: "35%",
+                                                                    // width: 120,
+                                                                    // height: 102.746,
+                                                                    display: "flex",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center",
+                                                                    marginLeft: 2,
+                                                                    marginVertical: 10,
+                                                                    borderRadius: 10,
+                                                                }}>
+                                                                    <Image style={{
+                                                                        height: "100%",
+                                                                        width: "68%",
+                                                                        borderRadius: 10,
+                                                                    }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                                </View>
+                                                                <View style={{
+                                                                    width: "35%",
+                                                                    marginHorizontal: 4,
+                                                                    marginVertical: 10,
+                                                                    borderRadius: 10
+                                                                }}>
+                                                                    <View style={{ height: "50%" }}>
+                                                                        <Text style={{
+                                                                            fontSize: 18,
+                                                                            fontWeight: 700, color: "#00000040"
+                                                                        }}>{item.ArticleNumber}</Text>
+                                                                        <Text style={{
+                                                                            fontSize: 14,
+                                                                            fontWeight: 400, color: "#00000040"
+                                                                        }}>{item.StyleDescription}</Text>
+                                                                    </View>
+                                                                    <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
+                                                                        <Text style={{
+                                                                            fontSize: 14,
+                                                                            fontWeight: 400, color: "#00000040"
+                                                                        }}>Rate</Text>
+                                                                        <Text style={{
+                                                                            fontSize: 17,
+                                                                            fontWeight: 700, color: "#00000040"
+                                                                        }}>₹{item.rate}.00</Text>
+                                                                        {/* {compreInward ? compreInward.map((it) => (
+                                                                            checkOutOfStock(it, item)
+                                                                            // console.log(it.SalesNoPacks)
+                                                                        )) : ""} */}
 
+                                                                    </View>
+                                                                </View>
+                                                                <View style={{
+                                                                    width: "25%",
+                                                                    display: "flex",
+                                                                    flexDirection: "column",
+                                                                    height: "90%"
+                                                                }}>
+                                                                    <View style={{
+                                                                        width: "100%",
+                                                                        display: "flex",
+                                                                        flexDirection: "row",
+                                                                        justifyContent: "flex-end",
+                                                                        gap: 8,
+                                                                        paddingRight: 5,
+                                                                        marginVertical: 10,
+                                                                        borderRadius: 10
+                                                                    }}>
+                                                                        <TouchableOpacity
+                                                                            onPress={() => handleEditOrder(item.article_id)}
+                                                                        >
+
+                                                                            <Image alt="edite"
+                                                                                style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                                        </TouchableOpacity>
+                                                                        <TouchableOpacity
+                                                                            onPress={() => handleDeleteOrder(item.article_id)}
+                                                                        >
+                                                                            <Image alt="Delete"
+                                                                                style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                                        </TouchableOpacity>
+                                                                    </View>
+                                                                    <View style={{
+                                                                        width: "100%",
+                                                                        position: "absolute",
+                                                                        bottom: 0,
+                                                                        paddingRight: 5
+                                                                    }}>
+                                                                        {compreInward ? compreInward.map((it) => (
+                                                                            checkOutOfStock(it, item)
+                                                                            // console.log(it.SalesNoPacks)
+                                                                        )) : ""}
+                                                                    </View>
+                                                                </View>
 
                                                             </View>
-                                                        </View>
-                                                        <View style={{
-                                                            width: "18%",
-                                                            display: "flex",
-                                                            flexDirection: "row",
-                                                            justifyContent: "flex-end",
-                                                            gap: 8,
-                                                            marginLeft: 15,
-                                                            marginVertical: 10,
-                                                            borderRadius: 10,
+                                                    )
 
-                                                        }}>
-                                                            <TouchableOpacity
-                                                                onPress={() => handleEditOrder(item.article_id)}
-                                                            >
-
-                                                                <Image alt="edite"
-                                                                    style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
-                                                            </TouchableOpacity>
-                                                            <TouchableOpacity
-                                                                onPress={() => handleDeleteOrder(item.article_id)}
-                                                            >
-                                                                <Image alt="Delete"
-                                                                    style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </View>
                                                 )}
                                             </View>
                                         </View>
