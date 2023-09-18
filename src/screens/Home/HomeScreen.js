@@ -208,9 +208,9 @@ export default function HomeScreen(props) {
     console.log(selectedPriceRange, "Range");
     const abc = nameDatas.filter(
       (item) =>
-        selectedCategories.includes(item.Category) &&
-        item.ArticleRate >= selectedPriceRange[0] &&
-        item.ArticleRate <= selectedPriceRange[1]
+      (!selectedCategories.length || selectedCategories.includes(item.Category)) &&
+      item.ArticleRate >= selectedPriceRange[0] &&
+      item.ArticleRate <= selectedPriceRange[1]
     );
     console.log(abc.length);
     setFinalData(abc);
@@ -595,14 +595,14 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               )}
                             </View>
-                            {/* <Image
+                            <Image
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
                                 width: "94%",
                                 height: 190,
                                 borderRadius: 10,
                               }}
-                            /> */}
+                            />
                           </View>
 
                           <Text style={{ fontWeight: "bold", marginTop: 10 }}>
@@ -626,14 +626,14 @@ export default function HomeScreen(props) {
                             marginRight: 5,
                           }}
                         >
-                          {/* <Image
+                          <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               width: 200,
                               height: 200,
                               borderRadius: 10,
                             }}
-                          /> */}
+                          />
                           <Text style={{ fontWeight: "bold" }}>
                             {item.ArticleNumber}
                           </Text>
