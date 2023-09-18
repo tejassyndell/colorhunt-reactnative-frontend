@@ -8,20 +8,21 @@ const styles = StyleSheet.create({
     flex: 1
   },
   carouselContainer: {
-    minHeight: 250
+    minHeight: 120
   },
   carousel: {},
 
   image: {
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
     width: '100%',
-    height: 250
+    height: 380
   },
   imageContainer: {
     flex: 1,
     justifyContent: 'center',
-    width: viewportWidth,
-    height: 250
+    // width: viewportWidth,
+    height: "100%",
+    width:"100%"
   },
   paginationContainer: {
     flex: 1,
