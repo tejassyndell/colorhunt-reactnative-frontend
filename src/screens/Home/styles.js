@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height:30
+    height:30,
     
   },
   btnIcon: {

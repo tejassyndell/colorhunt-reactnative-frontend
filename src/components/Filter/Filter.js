@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Dimensions } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image, Animated, Easing } from "react-native";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { getCategories } from "../../api/api";
+import { useRef } from "react"
+
 export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     minArticleRate,
     maxArticleRate, }) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate,maxArticleRate]);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
     const defaultPriceRange = [0, 700];
-    
+    const [isSliding, setIsSliding] = useState(false);
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    const [positionY, setPositionY] = useState(Dimensions.get("window").height);
+
+
+    const Screenwidth = Dimensions.get('window').width
+    const sliderlenghtinPercent = 60;
+    const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
+
     const getCategoriesname = async () => {
         try {
             const result1 = await getCategories();
@@ -26,12 +37,9 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     }, []);
 
     const handleCategorySelect = (category) => {
-        // Check if the category is already selected
         if (selectedCategories.includes(category)) {
-            // If selected, remove it from the array
             setSelectedCategories(selectedCategories.filter((c) => c !== category));
         } else {
-            // If not selected, add it to the array
             setSelectedCategories([...selectedCategories, category]);
         }
     };
@@ -52,118 +60,156 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
     const onValueChange = (newValues) => {
         setSelectedPriceRange(newValues);
+        setIsSliding(true);
+        console.log('Selected Price Range:', newValues);
     };
+
+    const onSlidingStart = () => {
+        setIsSliding(true);
+    };
+
+    const onSlidingComplete = () => {
+        setIsSliding(false);
+    };
+
     useEffect(() => {
         setSelectedCategories(Scategories)
     }, [Scategories])
+
+    useEffect(() => {
+        const slideUpAnimation = () => {
+            Animated.timing(fadeAnim, {
+                toValue: 2,
+                duration: 1000,
+                easing: Easing.ease,
+                useNativeDriver: false,
+            }).start(() => {
+                setPositionY(0); // Set positionY to 0 after animation completes
+            });
+        };
+
+        slideUpAnimation();
+    }, []);
+
+
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Categories</Text>
-                <TouchableOpacity onPress={closeFilter}>
-                    <Image
-                        source={require("../../../assets/FilterIcon/Close.png")}
-                        style={styles.closeIcon}
-                    />
-                </TouchableOpacity>
-            </View>
-            <View style={styles.categoriesContainer}>
-                {data.map((item) => (
+        <View style={[styles.container,
+        {
+            transform: [{ translateY: positionY }],
+        }]}>
+            <Animated.View
+                style={{
+                    opacity: fadeAnim,
+                    width: '100%',
+                    height: 'auto',
+                    //   backgroundColor: 'blue',
+                }}
+            >
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>Categories</Text>
+                    <TouchableOpacity onPress={closeFilter}>
+                        <Image
+                            source={require("../../../assets/FilterIcon/Close.png")}
+                            style={styles.closeIcon}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.categoriesContainer}>
+                    {data.map((item) => (
+                        <TouchableOpacity
+                            key={item.Id}
+                            style={[
+                                styles.categoryItem,
+                                selectedCategories.includes(item.Category) && {},
+                            ]}
+                            onPress={() => handleCategorySelect(item.Category)}
+                        >
+                            <Text
+                                style={[
+                                    styles.categoryText,
+                                    selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
+                                ]}
+                            >
+                                {item.Category}
+                            </Text>
+                            <View
+                                style={[
+                                    styles.radioButton,
+                                    selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
+                                ]}
+                            >
+                                {selectedCategories.includes(item.Category) && (
+                                    <View style={styles.radioInnerCircle} />
+                                )}
+                            </View>
+
+                        </TouchableOpacity>
+                    ))}
+                </View>
+                <View style={styles.container2}>
+                    <Text style={styles.label}>Price Range</Text>
+                    <View style={styles.sliderContainer}>
+                        <Text>{minArticleRate}</Text>
+                        <MultiSlider
+                            values={selectedPriceRange}
+                            sliderLength={sliderLength}
+                            onValuesChange={onValueChange}
+                            onValuesChangeStart={onSlidingStart}
+                            onValuesChangeFinish={onSlidingComplete}
+                            min={minArticleRate}
+                            max={maxArticleRate}
+                            step={10}
+                            allowOverlap={false}
+                            snapped
+                            pressedMarkerStyle={{ backgroundColor: 'black' }}
+                            customMarker={
+                                isSliding ? CustomMarker : () => <View style={styles.tooltipContainer} />
+                            }
+                            thumbTintColor="transparent"
+                            selectedStyle={{
+                                backgroundColor: 'black',
+                            }}
+                            unselectedStyle={{
+                                backgroundColor: 'lightgray',
+                            }}
+                        />
+                        <Text>{maxArticleRate}</Text>
+                    </View>
+                </View>
+                <View style={styles.buttonsContainer}>
                     <TouchableOpacity
-                        key={item.Id}
                         style={[
-                            styles.categoryItem,
-                            selectedCategories.includes(item.Category) && {},
+                            styles.resetButton,
+                            {
+                                backgroundColor: selectedCategories.length > 0 ? "black" : "white",
+                                color: selectedCategories.length > 0 ? "white" : "black",
+                            },
                         ]}
-                        onPress={() => handleCategorySelect(item.Category)}
+                        onPress={resetFilters}
                     >
                         <Text
-                            style={[
-                                styles.categoryText,
-                                selectedCategories.includes(item.Category) && {backgroundColor:'white'},
-                            ]}
+                            style={{
+                                color: selectedCategories.length > 0 ? "white" : "black",
+                            }}
                         >
-                            {item.Category}
+                            Reset
                         </Text>
-                        <View
-                            style={[
-                                styles.radioButton,
-                                selectedCategories.includes(item.Category) && {backgroundColor:'white'},
-                            ]}
-                        >
-                            {selectedCategories.includes(item.Category) && (
-                                <View style={styles.radioInnerCircle} />
-                            )}
-                        </View>
-
                     </TouchableOpacity>
-                ))}
-            </View>
-            <View style={styles.container2}>
-                <Text style={styles.label}>Price Range: {selectedPriceRange[0]} - {selectedPriceRange[1]}</Text>
-                <View style={styles.sliderContainer}>
-                    <MultiSlider
-                        values={selectedPriceRange}
-                        sliderLength={320} // Customize the slider length as needed
-                        onValuesChange={onValueChange}
-                        min={minArticleRate}
-                        max={maxArticleRate}
-                        step={10}
-                        allowOverlap={false} // Prevent thumbs from overlapping
-                        snapped // Ensure values are snapped to step intervals
-                        pressedMarkerStyle={{ backgroundColor: 'black' }}
-                        customMarker={CustomMarker}
-                        thumbTintColor="transparent"
-                        selectedStyle={{
-                            backgroundColor: 'black',
-                        }}
-                        unselectedStyle={{
-                            backgroundColor: 'lightgray',
-                        }}
-                    />
+                    <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+                        <Text style={styles.buttonText}>Apply</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
-            <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-                    style={[
-                        styles.resetButton,
-                        {
-                            backgroundColor: selectedCategories.length > 0 ? "black" : "white",
-                            color: selectedCategories.length > 0 ? "white" : "black",
-                        },
-                    ]}
-                    onPress={resetFilters}
-                >
-                    <Text
-                        style={{
-                            color: selectedCategories.length > 0 ? "white" : "black",
-                        }}
-                    >
-                        Reset
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-                    <Text style={styles.buttonText}>Apply</Text>
-                </TouchableOpacity>
-            </View>
+            </Animated.View>
         </View>
     );
 }
-const CustomMarker = () => (
-    <View
-        style={{
-            width: 12, // Adjust the width of the thumb as needed
-            height: 12, // Adjust the height of the thumb as needed
-            borderRadius: 12, // Make it a circle
-            backgroundColor: "black", // Set the color of the thumbs to black
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1, // Add zIndex to ensure it appears above the track
-        }}
-    >
-    </View>
-);
-
+const CustomMarker = ({ currentValue }) => {
+    return (
+        <View style={styles.tooltipContainer}>
+            <Text style={styles.tooltipText}>{currentValue}</Text>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -183,12 +229,6 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
     },
-    input: {
-        borderBottomWidth: 1,
-        borderColor: "gray",
-        marginBottom: 20,
-        marginTop: 20,
-    },
     categoriesContainer: {
         marginTop: 25,
         flexDirection: "row",
@@ -203,7 +243,7 @@ const styles = StyleSheet.create({
         width: "48%",
         height: 150,
         borderWidth: 1,
-        borderColor: "rgba(0, 0, 0, 0.25)", // Border color
+        borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: 8,
         padding: 5,
         height: "auto",
@@ -238,7 +278,7 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 10,
+        marginTop: 25,
     },
     button: {
         backgroundColor: "black",
@@ -252,10 +292,14 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     label: {
-        fontSize: 18,
+        fontSize: 24,
         marginBottom: 10,
+        fontWeight: 700,
     },
     sliderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         width: '100%',
     },
     resetButton: {
@@ -278,7 +322,20 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: "white",
-        fontSize:18,
-        fontWeight:600
-    }
+        fontSize: 18,
+        fontWeight: 600
+    },
+    tooltipContainer: {
+        backgroundColor: 'black',
+        padding: 8,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    tooltipText: {
+        position: 'absolute',
+        top: 20,
+        color: 'black',
+        fontSize: 16,
+    },
 });
