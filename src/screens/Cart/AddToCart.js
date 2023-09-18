@@ -48,22 +48,24 @@ const AddToCart = (props) => {
     const [orderItems, setOrderItems] = useState([])
     const [cartDataIdArray, setCartDataIdArray] = useState([]);
     const [compreInward, setcompreInward] = useState()
-    const getDetailsOfInward = async (arr1) => {
+    const [totalprice,setTotalPrice]=useState(0);
+    const getDetailsOfInward = async (arr1,parsedOrderItems) => {
         await CollectInwardForCartArticals({ arr1 }).then((res) => {
             console.log(res.data.data);
             setcompreInward(res.data.data);
+            TotalPrice(parsedOrderItems,res.data.data)
         })
     }
     const cartDetails = async () => {
         await cartdetails().then((response) => {
             console.log('Api response :', response.data[0])
             let arr1 = response.data.map(item => item.article_id);
-            getDetailsOfInward(arr1);
-
             const parsedOrderItems = response.data.map((item) => ({
                 ...item,
                 Quantity: JSON.parse(item.Quantity),
             }))
+            getDetailsOfInward(arr1,parsedOrderItems);
+
             console.log(parsedOrderItems);
             setOrderItems(parsedOrderItems);
             setIsLoading(false);
@@ -114,12 +116,17 @@ const AddToCart = (props) => {
         orderItems.map((item) => {
             compreInward.map((it) => {
                 const searchString = ',';
-
-                if (it.SalesNoPacks.includes(searchString)) {
-                    const stringNumbers = it.SalesNoPacks.split(',').map(num => parseInt(num.trim()));
+                if (it.SalesNoPacks.includes(searchString) && item.Quantity.includes(searchString)) {
+                    let saleNumber = it.SalesNoPacks;
+                    const stringNumbers = saleNumber.split(',').map(num => parseInt(num.trim()));
+                    const quntitynumber = item.Quantity.split(',').map(num => parseInt(num.trim()));
+                    // console.log(quntitynumber,"_______");
                     for (let i = 0; i < stringNumbers.length; i++) {
+                        for (let j = 0; j < quntitynumber.length; j++) {
                         const e = stringNumbers[i];
-                        if (parseInt(e) < parseInt(item.Quantity) && it.ArticleId === item.article_id) {
+                        const f = quntitynumber[j];
+                        console.log(e,f,"()()()()");
+                        if (parseInt(e) < parseInt(f) && it.ArticleId === item.article_id) {
                             array_1 = array_1.filter(item => {
                                 if (item !== it.ArticleId) {
                                     return item;
@@ -133,19 +140,19 @@ const AddToCart = (props) => {
                             }
                         }
                     }
-                } else {
-                    console.log(parseInt(item.Quantity), parseInt(it.SalesNoPacks));
-                    if ( parseInt(item.Quantity) > parseInt(it.SalesNoPacks)  && it.ArticleId === item.article_id) {
-                        // setCartDataIdArray((i)=>[...i,it.ArticalId])
-
+                    }
+                } 
+                else {
+                    if ( parseInt(it.SalesNoPacks) > parseInt(item.Quantity)  && it.ArticleId === item.article_id) {
+                        array_1.push(item.article_id)
                     }
                     else {
-                        console.log("11111111");
-                        array_1.push(item.article_id)
+                        console.log("11111111",parseInt(it.SalesNoPacks) , parseInt(item.Quantity)  , it.ArticleId , item.article_id);
                     }
                 }
             })
         })
+        
         let new_arr = [];
         orderItems.map((it) => {
             array_1.filter((item) => {
@@ -162,12 +169,69 @@ const AddToCart = (props) => {
         console.log("Frash data_2", new_arr);
 
         if (new_arr.length > 0) {
-            // AsyncStorage.setItem('Orderlist', JSON.stringify(new_arr));
-            // navigation.navigate('Orderlist');
+            AsyncStorage.setItem('Orderlist', JSON.stringify(new_arr));
+            navigation.navigate('Orderlist');
         }
 
     }
 
+    const TotalPrice = (orderItems,compreInward)=>{
+        let array_1 = []
+
+        orderItems.map((item) => {
+            compreInward.map((it) => {
+                const searchString = ',';
+                if (it.SalesNoPacks.includes(searchString) && item.Quantity.includes(searchString)) {
+                    let saleNumber = it.SalesNoPacks;
+                    const stringNumbers = saleNumber.split(',').map(num => parseInt(num.trim()));
+                    const quntitynumber = item.Quantity.split(',').map(num => parseInt(num.trim()));
+                    // console.log(quntitynumber,"_______");
+                    for (let i = 0; i < stringNumbers.length; i++) {
+                        for (let j = 0; j < quntitynumber.length; j++) {
+                        const e = stringNumbers[i];
+                        const f = quntitynumber[j];
+                        console.log(e,f,"()()()()");
+                        if (parseInt(e) < parseInt(f) && it.ArticleId === item.article_id) {
+                            array_1 = array_1.filter(item => {
+                                if (item !== it.ArticleId) {
+                                    return item;
+                                }
+                            });
+                            break;
+                        }
+                        else {
+                            if (!array_1.includes(item.article_id)) {
+                                array_1.push(item.article_id);
+                            }
+                        }
+                    }
+                    }
+                } 
+                else {
+                    if ( parseInt(it.SalesNoPacks) > parseInt(item.Quantity)  && it.ArticleId === item.article_id) {
+                        array_1.push(item.article_id)
+                    }
+                    else {
+                        console.log("11111111",parseInt(it.SalesNoPacks) , parseInt(item.Quantity)  , it.ArticleId , item.article_id);
+                    }
+                }
+            })
+        })
+        
+        let total = 0;
+        orderItems.map((it) => {
+            array_1.filter((item) => {
+                if (parseInt(item) === parseInt(it.article_id)) {
+                    total+=it.rate;
+                }
+                else {
+                    console.log(item, it.article_id);
+                }
+            })
+        }
+        )
+        setTotalPrice(total)
+    }
     const handleDeleteOrder = async (article_id) => {
         // console.log(article_id);
         const data = {
@@ -505,7 +569,7 @@ const AddToCart = (props) => {
                                     paddingRight: 12,
                                     // paddingLeft: "14%"
                                 }}>
-                                    <Text style={{ fontSize: 18, fontWeight: 700 }}>₹{totalPrice}.00</Text>
+                                    <Text style={{ fontSize: 18, fontWeight: 700 }}>₹{totalprice}.00</Text>
                                 </View>
                             </View>
                             <View style={{ padding: 10 }}>
