@@ -595,14 +595,14 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               )}
                             </View>
-                            {/* <Image
+                            <Image
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
                                 width: "94%",
                                 height: 190,
                                 borderRadius: 10,
                               }}
-                            /> */}
+                            />
                           </View>
 
                           <Text style={{ fontWeight: "bold", marginTop: 10 }}>
@@ -626,14 +626,14 @@ export default function HomeScreen(props) {
                             marginRight: 5,
                           }}
                         >
-                          {/* <Image
+                          <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               width: 200,
                               height: 200,
                               borderRadius: 10,
                             }}
-                          /> */}
+                          />
                           <Text style={{ fontWeight: "bold" }}>
                             {item.ArticleNumber}
                           </Text>
