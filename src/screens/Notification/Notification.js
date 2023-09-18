@@ -1,15 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button,TextInput,SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import * as Notifications from 'expo-notifications';
 
 export default function Notification() {
   const [token, setToken] = useState('');
   const [title, setTitle] = useState('');
-  const [bodydec, setbodydec] = useState('');
+  const [bodydec, setBodydec] = useState('');
+  const [notificationData, setNotificationData] = useState(null);
 
-  console.log('title',title);
-  console.log('dec..',bodydec);
+  const data = [{}]
+
   useEffect(() => {
     const getToken = async () => {
       try {
@@ -49,18 +50,21 @@ export default function Notification() {
   };
 
   useEffect(() => {
-    const subscription = Notifications.addNotificationReceivedListener(
-      (notification) => {
-        const { title, body } = notification.request.content;
-        console.log('Notification Title:', title);
-        console.log('Notification Body:', body);
-        // Display the notification in the Expo app using Expo's built-in notification UI
-        Notifications.presentNotificationAsync({
-          title: title,
-          body: body,
-        });
-      }
-    );
+    const subscription = Notifications.addNotificationReceivedListener((notification) => {
+      const { title, body } = notification.request.content;
+      // setNotifucationData([title,body])
+console.log(title,body);
+      // Update state with notification data
+      setNotificationData({title, body });
+
+      data.push(notificationData)
+      console.log(data);
+      // Display the notification in the Expo app using Expo's built-in notification UI
+      Notifications.presentNotificationAsync({
+        title: title,
+        body: body,
+      });
+    });
 
     return () => {
       subscription.remove();
@@ -69,21 +73,38 @@ export default function Notification() {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView>
-      <TextInput
-        style={styles.input}
-        onChangeText={setTitle}
-        placeholder="useless placeholder"
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={setbodydec}
-        placeholder="useless placeholder"
-        keyboardType="numeric"
-      />
-    </SafeAreaView>
-      <Button title="Send Notification" onPress={sendNotification} />
+       {notificationData && (
+         <View style={styles.notificationContainer}>
+           <Text style={styles.notificationTitle}>Received Notification:</Text>
+          <Text style={{width:'100%'}}>{notificationData.title}</Text>
+          <Text>{notificationData.body}</Text>
+        </View>
+      )}
+      <SafeAreaView style={{ width: '90%' }}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setTitle}
+          placeholder="Title"
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={setBodydec}
+          placeholder="Body"
+          keyboardType="numeric"
+        />
+      </SafeAreaView>
+     
+      <TouchableOpacity
+        style={{ backgroundColor: 'gray', padding: 10, borderRadius: 5 }}
+        onPress={sendNotification}
+      >
+        <Text style={{ color: 'white' }}>Send Notification</Text>
+      </TouchableOpacity>
+
+      {/* Render notification data */}
+     
+
       <StatusBar style="auto" />
     </View>
   );
@@ -98,9 +119,24 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
+    marginTop: 12,
+    marginBottom: 12,
+    width: '100%',
+    fontSize: 15,
     borderWidth: 1,
+    borderRadius: 10,
     padding: 10,
   },
+  notificationContainer: {
+    marginTop: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    width:'96%',
+    marginLeft:'1%',
+    borderColor: 'gray',
+  },
+  notificationTitle: {
+    fontWeight: 'bold',
+  },
 });
-
