@@ -5,11 +5,12 @@ import { Profiledata } from "../../api/api";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
   const { width, height } = Dimensions.get("window");
-  const fontSize = width > 400 ? 20 : 18; // Adjust the font size based on screen width
+  const fontSize = width > 400 ? 18 : 16; // Adjust the font size based on screen width
   const marginTop = height > 800 ? 30 : 20; // Adjust the margin top based on screen height
   useEffect(() => {
     fetchprofiledata();
@@ -58,7 +59,7 @@ export default function Userprofile(props) {
     });
   }, []);
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <View style={styles.TopContainer}>
         <TouchableHighlight>
           <View style={styles.Profile}>
@@ -73,13 +74,13 @@ export default function Userprofile(props) {
           <View style={styles.hello}>
             <Text style={{ ...styles.text, fontSize }}>{item.Name}</Text>
           </View>
-          <View style={{...styles.hello,marginTop}}>
+          <View style={{ ...styles.hello, marginTop }}>
             <Text style={{ ...styles.text, fontSize }}>{item.Address}</Text>
           </View>
-          <View style={{...styles.hello,marginTop}}>
+          <View style={{ ...styles.hello, marginTop }}>
             <Text style={{ ...styles.text, fontSize }}>{item.PhoneNumber}</Text>
           </View>
-          <View style={{...styles.hello2,marginTop}}>
+          <View style={{ ...styles.hello2, marginTop }}>
             <View style={styles.abc}>
               <Text style={{ ...styles.text, fontSize }}>{item.City}</Text>
             </View>
@@ -87,7 +88,7 @@ export default function Userprofile(props) {
               <Text style={{ ...styles.text, fontSize }}>{item.State}</Text>
             </View>
           </View>
-          <View style={{...styles.hello2,marginTop}}>
+          <View style={{ ...styles.hello2, marginTop }}>
             <View style={styles.abc}>
               <Text style={{ ...styles.text, fontSize }}>{item.Country}</Text>
             </View>
@@ -97,6 +98,11 @@ export default function Userprofile(props) {
           </View>
         </View>
       ))}
-    </>
+      <View
+        style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+      >
+        <ButtomNavigation navigation={navigation} />
+      </View>
+    </View>
   );
 }
