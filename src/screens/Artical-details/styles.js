@@ -5,7 +5,7 @@ const { width: viewportWidth } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    // zIndex:0
+    // zIndex: 0,
     overflow: "scroll",
     height: "100%",
   },
@@ -581,6 +581,35 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)", // Transparent background with some opacity
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalImage: {
+    width: Dimensions.get("window").width - 30, // Adjust the width with margins
+    height: Dimensions.get("window").height - 10, // Adjust the height with margin
+    marginLeft: 15,
+    marginRight: 15,
+  },
+
+  closeButton: {
+    position: "absolute",
+    top: 30,
+    right: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  closeButtonText: {
+    color: "white",
+    fontSize: 24,
+    fontWeight: "bold",
   },
 });
 

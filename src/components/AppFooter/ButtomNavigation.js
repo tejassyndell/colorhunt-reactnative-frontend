@@ -1,37 +1,33 @@
-import { View, Text, TouchableOpacity,Image } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ButtomNavigation = (props) => {
   const route = useRoute();
-  const {navigation} = props; 
-//   const navigation = useNavigation();
+  const { isLoggedIn } = route.params;
 
+  const { navigation } = props;
+  //   const navigation = useNavigation();
 
-
-
-  const HomePage = () =>{
-    navigation.navigate('Home');
-   
-  }
+  const HomePage = () => {
+    isLoggedIn ? navigation.navigate("Home") : "";
+  };
 
   const OrderList = () => {
-    navigation.navigate('');
-  }
- 
+    isLoggedIn ? navigation.navigate("") : "";
+  };
 
-  const CartPage = () =>{
-    navigation.navigate("cart_list")
-  }
+  const CartPage = () => {
+    isLoggedIn ? navigation.navigate("cart_list") : "";
+  };
 
-  const NotificationPage = () =>{
-    navigation.navigate('')
-  }
+  const NotificationPage = () => {
+    isLoggedIn ? navigation.navigate("") : "";
+  };
 
-  const ProfilePage = () =>[
-    navigation.navigate("Profile")
-  ]
- 
+  const ProfilePage = () => {
+    isLoggedIn ? navigation.navigate("Profile") : "";
+  };
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -41,10 +37,10 @@ const ButtomNavigation = (props) => {
           height: 70,
           backgroundColor: "#212121",
           flexDirection: "row",
-          marginLeft:"2%",
-          marginRight:"2%",
-          marginBottom:"4%",
-          borderRadius:20,
+          marginLeft: "2%",
+          marginRight: "2%",
+          marginBottom: "4%",
+          borderRadius: 20,
           justifyContent: "space-evenly",
         }}
       >
@@ -56,12 +52,10 @@ const ButtomNavigation = (props) => {
             alignItems: "center",
           }}
           onPress={HomePage}
-
         >
           <Image
             source={require("../../../assets/AppFooterIcons/Home_down_nav_icone.png")}
             style={{ width: 45, height: 45 }}
-            
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -72,12 +66,10 @@ const ButtomNavigation = (props) => {
             alignItems: "center",
           }}
           onPress={OrderList}
-          
         >
           <Image
             source={require("../../../assets/AppFooterIcons/order_down_nav_icone.png")}
             style={{ width: 45, height: 45 }}
-            
           />
         </TouchableOpacity>
         <TouchableOpacity

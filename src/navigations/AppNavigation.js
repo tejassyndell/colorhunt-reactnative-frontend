@@ -6,7 +6,7 @@ import HomeScreen from "../screens/Home/HomeScreen";
 import CategoriesScreen from "../screens/Categories/CategoriesScreen";
 import RecipeScreen from "../screens/Recipe/RecipeScreen";
 import RecipesListScreen from "../screens/RecipesList/RecipesListScreen";
-import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
+// import DrawerContainer from "../../src/screens/DrawerContainer/DrawerContainer";
 import IngredientScreen from "../screens/Ingredient/IngredientScreen";
 import SearchScreen from "../screens/Search/SearchScreen";
 import AllArticleScreen from "../screens/AllArticle/AllArticle";
@@ -21,7 +21,10 @@ import Orderlist from "../screens/OrderList/Orderlist";
 import Notification from "../screens/Notification/Notification";
 import Login from "../screens/Login/Login";
 import SkipHomeScreen from "../screens/SkipHomePage/SkipHomePage";
-import OrderHistory from '../screens/OrderHistory/OrderHistory';
+import OrderHistory from "../screens/OrderHistory/OrderHistory";
+import SliderScreen from "../screens/SliderScreen/SliderScreen";
+import SkipSliderScreen from "../screens/SkipHomePage/SkipSlider";
+import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 const Stack = createStackNavigator();
 
 function MainNavigator() {
@@ -30,6 +33,11 @@ function MainNavigator() {
       <Stack.Screen
         name="login"
         component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Slider"
+        component={SliderScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Home" component={HomeScreen} />
@@ -53,9 +61,15 @@ function MainNavigator() {
       />
       <Stack.Screen name="cart_list" component={AddToCart} />
       <Stack.Screen name="Orderlist" component={Orderlist} />
-      <Stack.Screen name="Skip" component={SkipHomeScreen} />
+      <Stack.Screen name="SkipHome" component={SkipHomeScreen} />
+      <Stack.Screen
+        name="SkipSlider"
+        component={SkipSliderScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="Notification" component={Notification} />
-      <Stack.Screen name='ordershistroy' component={OrderHistory}/>
+      <Stack.Screen name="ordershistroy" component={OrderHistory} />
+      <Stack.Screen name="DrawerContainer" component={DrawerContainer} />
     </Stack.Navigator>
   );
 }
