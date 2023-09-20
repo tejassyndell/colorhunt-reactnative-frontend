@@ -4,9 +4,10 @@ const styles = StyleSheet.create({
     TopContainer: {
         backgroundColor: 'black',
         color: 'white',
-        height: '40%',
+        height: '30%',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        paddingBottom:60
     },
     Button: {
         height: 35,
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
         fontWeight: 600,
     },
     text: {
+        color:"rgba(0, 0, 0, 0.5)",
         fontSize: 18,
         fontWeight:600,
     },

@@ -3,6 +3,7 @@ import { Dimensions, Text, View, TouchableOpacity, TextInput, Image, Alert, Styl
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { SendMail } from '../../api/api';
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
+import ResponsiveImage from 'react-native-responsive-image'; // Import the responsive image component
 
 export default function Contact(props) {
     const { navigation } = props;
@@ -13,8 +14,6 @@ export default function Contact(props) {
     const [showValidationErrors, setShowValidationErrors] = useState(false);
     const [inputWidth, setInputWidth] = useState();
     const [inputHeight, setInputHeight] = useState();
-    const [imageWidth, setImageWidth] = useState(200); // Set the initial image width
-    const [imageHeight, setImageHeight] = useState(200); // Set the initial image height
     const [buttonWidth, setButtonWidth] = useState(153); // Set the initial button width
     const [buttonFontSize, setButtonFontSize] = useState(18); // Set the initial button font size
 
@@ -45,25 +44,25 @@ export default function Contact(props) {
         setButtonWidth(buttonWidth);
         setButtonFontSize(buttonFontSize);
 
-        // Calculate image dimensions based on screen size
-        const screenHeight = Dimensions.get('window').height;
-        const aspectRatio = 239 / 234; // Image aspect ratio (width / height)
-        const maxWidth = 0.8 * screenWidth; // Max width as a percentage of screen width
-        const maxHeight = 0.8 * screenHeight; // Max height as a percentage of screen height
-
-        // Calculate image dimensions while maintaining aspect ratio
-        if (imageWidth / aspectRatio > maxWidth) {
-            setImageWidth(maxWidth);
-            setImageHeight(maxWidth / aspectRatio);
-        } else if (imageHeight * aspectRatio > maxHeight) {
-            setImageHeight(maxHeight);
-            setImageWidth(maxHeight * aspectRatio);
-        } else {
-            // Image fits within both width and height constraints
-            setImageWidth(imageWidth);
-            setImageHeight(imageHeight);
-        }
+        
     }, []);
+
+    // Calculate the image dimensions based on screen size
+    const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
+    const aspectRatio = 239 / 234; // Image aspect ratio (width / height)
+    const maxWidth = 0.6 * screenWidth; // Max width as a percentage of screen width
+    const maxHeight = 0.6 * screenHeight; // Max height as a percentage of screen height
+
+    let imageWidth = maxWidth; // Initialize image width to max width
+    let imageHeight = maxWidth / aspectRatio; // Calculate initial height based on aspect ratio
+
+    if (imageHeight > maxHeight) {
+        // If the calculated height exceeds max height, adjust width and height
+        imageHeight = maxHeight;
+        imageWidth = maxHeight * aspectRatio;
+    }
+
 
     const handleSubmit = async () => {
         console.log("Hello", username, email, subject, message)
@@ -146,10 +145,7 @@ export default function Contact(props) {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ alignItems: 'center', borderTopColor: "#828282", borderTopWidth: 1 }}>
-                <Image
-                    source={require('../../../assets/ContactPagePNG/contact.png')}
-                    style={{ width: imageWidth, height: imageHeight, resizeMode: 'contain', marginTop: 15 }}
-                />
+            <ResponsiveImage source={require('../../../assets/ContactPagePNG/contact.png')} initWidth={imageWidth.toString()} initHeight={imageHeight.toString()} style={{ marginTop: 15 }} />
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <View >

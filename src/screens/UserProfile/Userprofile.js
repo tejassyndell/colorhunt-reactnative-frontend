@@ -29,35 +29,23 @@ export default function Userprofile(props) {
   };
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerStyle: {
+        backgroundColor: 'black', // Change the background color to black
+      },
       headerLeft: () => (
-        <MenuBackArrow
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      ),
-      headerTitle: () => (
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-          }}
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 25,
-              fontWeight: 700,
-              width: "100%",
-            }}
-          >
-            Profile
-          </Text>
+        // <MenuBackArrow
+        //   onPress={() => {
+        //     navigation.goBack();
+        //   }}
+        // />
+        <View onPress={()=>{navigation.goBack()}} style={{marginLeft:10}}>
+          <Image source={require("../../../assets/menubar.png")} />
         </View>
       ),
+      headerTitle: () => null, // Remove the header title
     });
   }, []);
+  
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.TopContainer}>
