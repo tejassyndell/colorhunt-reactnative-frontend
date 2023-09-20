@@ -1,9 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
+import { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,navigation } from 'react';
+import MenuBackArrow from '../../components/menubackarrow/menubackarrow'
 import * as Notifications from 'expo-notifications';
 
-export default function Notification() {
+export default function Notification(props) {
+  const { navigation } = props;
   const [token, setToken] = useState('');
   const [title, setTitle] = useState('');
   const [bodydec, setBodydec] = useState('');
@@ -29,6 +32,30 @@ export default function Notification() {
 
     getToken();
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+        headerLeft: () => (
+            <MenuBackArrow
+                onPress={() => {
+                    navigation.goBack();
+                }}
+            />
+        ),
+        headerTitle: () => (
+            <View style={{
+                display: "flex",
+                flexDirection: "row",
+                width: "100%"
+            }}>
+                <Text style={{
+                    textAlign: "center",
+                    fontSize: 25, fontWeight: 700, width: "100%"
+                }}>Notification</Text>
+            </View>
+        ),
+    });
+}, []);
 
   const sendNotification = async () => {
     try {

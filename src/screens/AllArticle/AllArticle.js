@@ -76,7 +76,13 @@ export default function AllArticle(props) {
       console.log(error)
     }
   }
-
+  const convertToTitleCase=(str) =>{
+    return str
+      .toLowerCase()
+      .split('-') // Split the string at hyphens
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('-'); // Join the words with hyphens
+  }
   useEffect(() => {
     getCategoriesname();
     getWishlist()
@@ -134,7 +140,7 @@ export default function AllArticle(props) {
       margin: 10,
       borderRadius: 10,
       borderColor: "gray",
-      backgroundColor: "white",
+      backgroundColor: "#FFF",
       shadowColor: "gray",
       shadowOpacity: 0.4,
       shadowRadius: 4,
@@ -178,18 +184,17 @@ export default function AllArticle(props) {
       <View style={{
         width: "100%", justifyContent: "center", alignItems: "center",
         elevation: 20,
-        backgroundColor:"#FFF",
         borderColor: "gray",
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, borderRadius: 10,zIndex:1 }} />
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, borderRadius: 10,zIndex:1,marginTop:10 }} />
       </View>
       <View style={{ width: "100%",marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center",marginTop: 0  }}>
-            <View style={{width:178,backgroundColor: "#FFFFFF",alignItems:'center',paddingTop: 10}}>
+            <View style={{width:178,alignItems:'center',paddingTop: 10}}>
             <Text style={{ fontWeight: 'bold', }}>{item.ArticleNumber}</Text>
-          <Text>{item.Category}</Text>
+          <Text>{convertToTitleCase(item.Category)}</Text>
           <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate}</Text>
 
             </View>
@@ -275,7 +280,7 @@ export default function AllArticle(props) {
                 alignItems: "center",
               }}
             >
-              All Articles
+              ALL Articles
             </Text>
           </View>
           <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>

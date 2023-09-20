@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Text, View, Image, ScrollView, TouchableOpacity,AsyncStorage } from "react-native";
+import ResponsiveImage from 'react-native-responsive-image';
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -43,7 +44,13 @@ export default function HomeScreen(props) {
       setSelectprd(res.data)
     })
   }
-
+  const convertToTitleCase=(str) =>{
+    return str
+      .toLowerCase()
+      .split('-') // Split the string at hyphens
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('-'); // Join the words with hyphens
+  }
   const addArticleWishlist = async (i) => {
     let data = {
       user_id: 197,
@@ -138,10 +145,10 @@ export default function HomeScreen(props) {
               navigation.openDrawer();
             }}
           >
-            <Image
+            <ResponsiveImage
               source={require("../../../assets/sidbarOpenIcone.png")}
               style={{ width: 38, height: 38, borderRadius: 5 }}
-            ></Image>
+            ></ResponsiveImage>
           </TouchableOpacity>
         </View>
       ),
@@ -259,7 +266,7 @@ export default function HomeScreen(props) {
                 style={{
                   fontSize: 22,
                   fontWeight: 700,
-                  paddingLeft: 20,
+                  paddingLeft: 13,
                   height: 30,
                   alignItems: "center",
                   fontFamily: "Glory-Regular",
@@ -272,7 +279,7 @@ export default function HomeScreen(props) {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                width: "87%",
+                width: "89%",
               }}
             >
               <SearchBar
@@ -280,7 +287,7 @@ export default function HomeScreen(props) {
                 setSearchPhrase={setSearchText}
               />
               <TouchableOpacity onPress={openFilter}>
-                <Image
+                <ResponsiveImage
                   source={require("../../../assets/filetr_icone.png")}
                   style={{ width: 40, height: 40, borderRadius: 10 }}
                 />
@@ -391,7 +398,7 @@ export default function HomeScreen(props) {
                                   </TouchableOpacity>
                                 )}
                               </View>
-                              <Image
+                              <ResponsiveImage
                                 source={{ uri: baseImageUrl + item.Photos }}
                                 style={{
                                   width: "100%",
@@ -404,9 +411,9 @@ export default function HomeScreen(props) {
                             <Text style={{ fontWeight: "bold", marginTop: 10 }}>
                               {item.ArticleNumber}
                             </Text>
-                            <Text>{item.Category}</Text>
+                            <Text>{convertToTitleCase(item.Category)}</Text>
                             <Text style={{ fontWeight: "bold" }}>
-                              {"₹" + item.ArticleRate}
+                              {"₹" + item.ArticleRate +".00"}
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -445,7 +452,7 @@ export default function HomeScreen(props) {
                                 },
                               }}
                             >
-                              <Image
+                              <ResponsiveImage
                                 source={require("../../../assets/demo.png")}
                                 style={{
                                   width: "100%",
@@ -462,7 +469,7 @@ export default function HomeScreen(props) {
                               marginBottom: 10,
                             }}
                           >
-                            {item.Category}
+                            {convertToTitleCase(item.Category)}
                           </Text>
                         </View>
                       ))
@@ -482,7 +489,7 @@ export default function HomeScreen(props) {
                             handlePress(item);
                           }}
                         >
-                          <Image
+                          <ResponsiveImage
                             source={require("../../../assets/demo.png")}
                             style={{
                               width: 200,
@@ -492,7 +499,7 @@ export default function HomeScreen(props) {
                           />
                         </TouchableOpacity>
                         <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                          {item.Category}
+                        {convertToTitleCase(item.Category)}
                         </Text>
                       </View>
                     ))}
@@ -603,7 +610,7 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               )}
                             </View>
-                            <Image
+                            <ResponsiveImage
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
                                 width: "94%",
@@ -616,9 +623,9 @@ export default function HomeScreen(props) {
                           <Text style={{ fontWeight: "bold", marginTop: 10 }}>
                             {item.ArticleNumber}
                           </Text>
-                          <Text>{item.Category}</Text>
+                          <Text>{convertToTitleCase(item.Category)}</Text>
                           <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate}
+                            {"₹" + item.ArticleRate +'.00'}
                           </Text>
                         </View>
                       ))
@@ -634,7 +641,7 @@ export default function HomeScreen(props) {
                             marginRight: 5,
                           }}
                         >
-                          <Image
+                          <ResponsiveImage
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               width: 200,
@@ -645,9 +652,9 @@ export default function HomeScreen(props) {
                           <Text style={{ fontWeight: "bold" }}>
                             {item.ArticleNumber}
                           </Text>
-                          <Text>{item.Category}</Text>
+                          <Text>{convertToTitleCase(item.Category)}</Text>
                           <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate}
+                            {"₹" + item.ArticleRate + '.00'}
                           </Text>
                         </View>
                       ))}

@@ -29,7 +29,18 @@ export default function AllArticle(props) {
   const { item } = route.params;
 
   //   console.log('.............',item.Category);
-  const category = item.Category;
+  const convertToTitleCase=(str) =>{
+    return str
+      .toLowerCase()
+      .split('-') // Split the string at hyphens
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('-'); // Join the words with hyphens
+  }
+  const category = (item.Category);
+
+  const titlename = convertToTitleCase(item.Category);
+
+
   useEffect(() => {
     setSelectedCategories([category]);
   }, []);
@@ -134,12 +145,12 @@ const rmvProductWishlist = async (i) => {
       margin: 10,
       borderRadius: 10,
       borderColor: "gray",
-      backgroundColor: "white",
+      backgroundColor: "#FFFFFF",
       // Add shadow properties for iOS
       shadowColor: "gray",
       shadowOpacity: 0.4,
       shadowRadius: 4,
-      elevation: 10,
+      elevation: 2,
       shadowOffset: {
         width: 0,
         height: 0,
@@ -181,19 +192,19 @@ const rmvProductWishlist = async (i) => {
         width: "100%", display: "flex", justifyContent: "center", alignItems: "center",
         paddingTop: 8,
         elevation: 20,
-        backgroundColor:"#FFF",
         borderColor: "gray",
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
         <Image source={{ uri: baseImageUrl + item.Photos }} style={{  width: "90%",
          height: 180,
-          borderRadius: 10,
+          
           zIndex:1,
           shadowColor: "gray",
           shadowOpacity: 0.4,
-          shadowRadius: 4,
-          elevation: 10,
+          // shadowRadius: 4,
+          elevation: 2,
+          borderRadius:10,
           shadowOffset: {
             width: 0,
             height: 0,
@@ -204,10 +215,10 @@ const rmvProductWishlist = async (i) => {
       <View style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-        <View style={{width:178,backgroundColor: "#FFFFFF",alignItems:'center',paddingTop: 10,paddingBottom:10}}>
+        <View style={{width:180,alignItems:'center',paddingTop: 10,paddingBottom:10,borderRadius:10}}>
             <Text style={{ fontWeight: 'bold', }}>{item.ArticleNumber}</Text>
-          <Text>{item.Category}</Text>
-          <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate}</Text>
+          <Text>{convertToTitleCase(item.Category)}</Text>
+          <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate + ".00"}</Text>
 
             </View>
         </TouchableOpacity>
@@ -279,7 +290,7 @@ const rmvProductWishlist = async (i) => {
 
   return (
 
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+    <View style={{ width: '100%', height: '100%', backgroundColor: '#FFF' }}>
       <View
         style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
       >
@@ -288,12 +299,25 @@ const rmvProductWishlist = async (i) => {
         <TouchableOpacity onPress={openFilter}>
           <Image
             source={require("../../../assets/filetr_icone.png")}
-            style={{ width: 50, height: 50, borderRadius: 10 }}
+            style={{ width: 40, height: 40, borderRadius: 10 }}
           />
         </TouchableOpacity>
       </View>
+      <View>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                paddingLeft: 15,
+                height: 20,
+                alignItems: "center",
+              }}
+            >
+              Men's {titlename}
+            </Text>
+          </View>
       {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
-      <View style={{ position: 'relative', width: '100%', backgroundColor: "#FFFF", height: 'auto', top: 20 }}>
+      <View style={{ position: 'relative', width: '100%', backgroundColor: "#FFF", height: 'auto', top: 20 }}>
         <FlatList
           data={finalData}
           initialNumToRender={10}
@@ -327,7 +351,7 @@ const rmvProductWishlist = async (i) => {
           <View
             style={{
               width: "90%",
-              backgroundColor: "white",
+              backgroundColor: "#FFF",
               position: "absolute",
               bottom: 0,
               left: 0,
