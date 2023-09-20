@@ -1,13 +1,14 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Text, View, Image, ScrollView, FlatList, Pressable, TouchableOpacity } from "react-native";
-import { getProductName } from "../../api/api";
+import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles";
 import SearchBar from "../../components/SearchBar/searchbar";
 import { useRoute } from "@react-navigation/native";
-import { TextInput } from "react-native-gesture-handler";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import Filter from "../../components/Filter/Filter";
+import { FontAwesome } from '@expo/vector-icons';
+
 export default function AllArticle(props) {
   const { navigation } = props;
 
@@ -19,6 +20,7 @@ export default function AllArticle(props) {
   const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
   const [filterDataSearch, setFilterDataSearch] = useState([])
   const [minArticleRate, setMinArticleRate] = useState(null);
+  const [selectedprd, setSelectprd] = useState([])
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -27,7 +29,18 @@ export default function AllArticle(props) {
   const { item } = route.params;
 
   //   console.log('.............',item.Category);
-  const category = item.Category;
+  const convertToTitleCase=(str) =>{
+    return str
+      .toLowerCase()
+      .split('-') // Split the string at hyphens
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join('-'); // Join the words with hyphens
+  }
+  const category = (item.Category);
+
+  const titlename = convertToTitleCase(item.Category);
+
+
   useEffect(() => {
     setSelectedCategories([category]);
   }, []);
@@ -42,6 +55,7 @@ export default function AllArticle(props) {
         const sdPrds = res.data.slice()
         const fildata = sdPrds.filter((item) => item.Category === category)
         setNameDatas(fildata)
+        setSelectprd(fildata)
         setFilterDataSearch(fildata)
         setFinalData(fildata)
       }
@@ -49,6 +63,50 @@ export default function AllArticle(props) {
       console.log(error)
     }
   }
+
+  
+
+ const addArticleWishlist = async (i) => {
+  let data = {
+    user_id: 197,
+    article_id: i.Id,
+  };
+  try {
+    await getAddWishlist(data).then((res) => {
+      console.log("Item added to wishlist:", i.Id);
+      console.log("Wishlist data after adding:", res.data);
+      // Assuming getAddWishlist returns the updated wishlist data
+      const updatedWishlistData = res.data; // Update this based on your API response
+      setSelectprd(updatedWishlistData); // Update the selectedprd state
+      setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
+    });
+  } catch (error) {
+    console.log("Error adding item to wishlist:", error);
+  }
+};
+
+const rmvProductWishlist = async (i) => {
+  let data = {
+    party_id: 197,
+    article_id: i.Id,
+  };
+  console.log("Removing item from wishlist:", i.Id);
+  try {
+    await DeleteWishlist(data).then((res) => {
+      if (res.status === 200) {
+        console.log("Item removed from wishlist:", i.Id);
+        console.log("Wishlist data after removal:", res.data);
+        // Assuming DeleteWishlist returns the updated wishlist data
+        const updatedWishlistData = res.data; // Update this based on your API response
+        setSelectprd(updatedWishlistData); // Update the selectedprd state
+        setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
+      }
+    });
+  } catch (error) {
+    console.log("Error removing item from wishlist:", error);
+  }
+};
+
 
   useEffect(() => {
     getproductname();
@@ -85,22 +143,50 @@ export default function AllArticle(props) {
       height: 'auto',
       width: "44.8%",
       margin: 10,
-      // marginLeft: 5,
-      // marginRight: 20,
-      // marginTop: 20,
       borderRadius: 10,
       borderColor: "gray",
-      backgroundColor: "white",
+      backgroundColor: "#FFFFFF",
       // Add shadow properties for iOS
       shadowColor: "gray",
       shadowOpacity: 0.4,
       shadowRadius: 4,
-      elevation: 10,
+      elevation: 2,
       shadowOffset: {
         width: 0,
         height: 0,
       },
     }}>
+       <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart-o"
+              style={[
+                styles.disabledIcon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
 
       <View style={{
         width: "100%", display: "flex", justifyContent: "center", alignItems: "center",
@@ -110,14 +196,31 @@ export default function AllArticle(props) {
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "78%", height: 180, borderRadius: 10 }} />
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{  width: "90%",
+         height: 180,
+          
+          zIndex:1,
+          shadowColor: "gray",
+          shadowOpacity: 0.4,
+          // shadowRadius: 4,
+          elevation: 2,
+          borderRadius:10,
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+          
+          }} />
       </View>
       <View style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-          <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
-          <Text>{item.Category}</Text>
-          <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>{"₹" + item.ArticleRate}</Text>
+        <View style={{width:180,alignItems:'center',paddingTop: 10,paddingBottom:10,borderRadius:10}}>
+            <Text style={{ fontWeight: 'bold', }}>{item.ArticleNumber}</Text>
+          <Text>{convertToTitleCase(item.Category)}</Text>
+          <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate + ".00"}</Text>
+
+            </View>
         </TouchableOpacity>
       </View>
 
@@ -187,7 +290,7 @@ export default function AllArticle(props) {
 
   return (
 
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+    <View style={{ width: '100%', height: '100%', backgroundColor: '#FFF' }}>
       <View
         style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
       >
@@ -196,12 +299,25 @@ export default function AllArticle(props) {
         <TouchableOpacity onPress={openFilter}>
           <Image
             source={require("../../../assets/filetr_icone.png")}
-            style={{ width: 50, height: 50, borderRadius: 10 }}
+            style={{ width: 40, height: 40, borderRadius: 10 }}
           />
         </TouchableOpacity>
       </View>
+      <View>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                paddingLeft: 15,
+                height: 20,
+                alignItems: "center",
+              }}
+            >
+              Men's {titlename}
+            </Text>
+          </View>
       {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
-      <View style={{ position: 'relative', width: '100%', backgroundColor: "#FFFF", height: 'auto', top: 20 }}>
+      <View style={{ position: 'relative', width: '100%', backgroundColor: "#FFF", height: 'auto', top: 20 }}>
         <FlatList
           data={finalData}
           initialNumToRender={10}
@@ -235,7 +351,7 @@ export default function AllArticle(props) {
           <View
             style={{
               width: "90%",
-              backgroundColor: "white",
+              backgroundColor: "#FFF",
               position: "absolute",
               bottom: 0,
               left: 0,

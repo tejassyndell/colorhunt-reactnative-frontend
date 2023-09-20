@@ -8,6 +8,10 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#007AFF"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
@@ -20,16 +24,43 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "permissions": {
+        "notifications": {
+          "allowAlert": true,
+          "allowBadge": true,
+          "allowSound": true
+        }
+      }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+      "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json",
+      "package": "com.colorhuntmobileapp.app",
+      "permissions": {
+        
+        "allowAlert": true,
+        "allowBadge": true,
+        "allowSound": true
       }
+      
     },
     "web": {
       "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "firebase": {
+        "apiKey": "<AIzaSyDHTqaMksl9gomAIvAbKYWcar6X6OGHS6k>",
+        "authDomain": "<colorhunt-c7e5d.firebaseapp.com>",
+        "projectId": "<colorhunt-c7e5d>",
+        "storageBucket": "<colorhunt-c7e5d.appspot.com>",
+        "messagingSenderId": "<226470800534>",
+        "appId": "<1:226470800534:web:3c1f7a30bf667e6c57e6b7>"
+      },
+      "eas": {
+        "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
+      }
     }
+
   }
 }

@@ -6,6 +6,7 @@ import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
+import { TouchableOpacity } from "react-native-gesture-handler";
 export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
@@ -38,14 +39,17 @@ export default function Userprofile(props) {
         //     navigation.goBack();
         //   }}
         // />
-        <View onPress={()=>{navigation.goBack()}} style={{marginLeft:10}}>
-          <Image source={require("../../../assets/menubar.png")} />
-        </View>
+        <TouchableOpacity onPress={() => { navigation.goBack() }}>
+          <View  style={{ marginLeft: 10 }}>
+            <Image source={require("../../../assets/menubar.png")} />
+          </View>
+        </TouchableOpacity>
+
       ),
       headerTitle: () => null, // Remove the header title
     });
   }, []);
-  
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.TopContainer}>
