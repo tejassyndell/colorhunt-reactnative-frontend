@@ -85,7 +85,7 @@ export default function WishList(props) {
       headerRight: () => (
         <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
           <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
-            <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
+            {/* <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} /> */}
           </TouchableOpacity>
         </View>
       )
@@ -123,7 +123,8 @@ export default function WishList(props) {
           shadowColor: "#000000",
           shadowOpacity: 0.9,
           shadowRadius: 4,
-          elevation: 10, // For Android, use elevation
+          borderRadius:10,
+          elevation: 5, // For Android, use elevation
           shadowOffset: {
             width: 0,
             height: 0,
@@ -149,7 +150,7 @@ export default function WishList(props) {
             )}
           </View>
 
-          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: "92%", height: 190, borderRadius: 10 }} />
+          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: "100%", height: 190, borderRadius: 10 }} />
 
         </View>
         <Text style={{ fontWeight: 'bold', marginTop: 12 }}>{item.ArticleNumber}</Text>
