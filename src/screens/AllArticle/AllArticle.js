@@ -176,21 +176,23 @@ export default function AllArticle(props) {
         )}
       </View>
       <View style={{
-        width: "100%", display: "flex", justifyContent: "center", alignItems: "center",
-        paddingTop: 8,
+        width: "100%", justifyContent: "center", alignItems: "center",
         elevation: 20,
+        backgroundColor:"#FFF",
         borderColor: "gray",
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "80%", height: 180, borderRadius: 10 }} />
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, borderRadius: 10,zIndex:1 }} />
       </View>
-      <View style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 10 }}>
-
-          <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
+      <View style={{ width: "100%",marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
+        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center",marginTop: 0  }}>
+            <View style={{width:178,backgroundColor: "#FFFFFF",alignItems:'center',paddingTop: 10}}>
+            <Text style={{ fontWeight: 'bold', }}>{item.ArticleNumber}</Text>
           <Text>{item.Category}</Text>
-          <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>{"₹" + item.ArticleRate}</Text>
+          <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate}</Text>
+
+            </View>
         </TouchableOpacity>
       </View>
 
@@ -250,16 +252,16 @@ export default function AllArticle(props) {
           />
         </View>
       ) : (
-        <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+        <View style={{ width: '100%', height: '100%', backgroundColor: "#FFF" }}>
           <View
-            style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
+            style={{ flexDirection: "row", backgroundColor: "#FFF", alignItems: "center", width: "87%" }}
           >
             <SearchBar searchPhrase={searchText}
               setSearchPhrase={setSearchText} />
             <TouchableOpacity onPress={openFilter}>
               <Image
                 source={require("../../../assets/filetr_icone.png")}
-                style={{ width: 50, height: 50, borderRadius: 10 }}
+                style={{ width: 40, height: 40, borderRadius: 10 }}
               />
             </TouchableOpacity>
           </View>
@@ -276,16 +278,16 @@ export default function AllArticle(props) {
               All Articles
             </Text>
           </View>
-          {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
-          <View style={{ position: 'relative', backgroundColor: "#FFFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
+          <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
             {console.log(finalData.length,"when render ")}
             <FlatList
+              style={{backgroundColor: "#FFF"}}
               data={finalData}
               keyExtractor={(item) => item.Id}
               renderItem={renderItem}
               numColumns={2}
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingVertical: 10 }}
+              contentContainerStyle={{ paddingVertical: 0 }}
             />
           </View>
           {/* </ScrollView> */}
@@ -298,11 +300,12 @@ export default function AllArticle(props) {
           {isFilterVisible && (
             <View
               style={{
-                flex: 1,
+                
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                 width: "100%",
                 height: "100%",
                 position: "absolute",
+                backgroundColor: "#FFF",
                 top: 0,
                 left: 0,
                 justifyContent: "flex-end",
@@ -311,7 +314,7 @@ export default function AllArticle(props) {
               <View
                 style={{
                   width: "90%",
-                  backgroundColor: "white",
+                  backgroundColor: "#FFF",
                   position: "absolute",
                   bottom: 0,
                   // left: 0,

@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, Image, ScrollView, TouchableOpacity,AsyncStorage } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -13,6 +13,7 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
+
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
@@ -35,18 +36,20 @@ export default function HomeScreen(props) {
   };
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
-    let partyData = await AsyncStorage.getItem("UserData");
-    partyData = JSON.parse(partyData);
+    const data = {
+      party_id: 197,
+    }
     const result = await getWishlistData(data).then((res) => {
-      setSelectprd(res.data);
-    });
-  };
+      setSelectprd(res.data)
+    })
+  }
 
   const addArticleWishlist = async (i) => {
     let data = {
       user_id: 197,
       article_id: i.Id,
     };
+    console.log('............111',data);
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist();
@@ -57,21 +60,23 @@ export default function HomeScreen(props) {
   };
 
   const rmvProductWishlist = async (i) => {
+    console.log(i, 'r')
     let data = {
       party_id: 197,
       article_id: i.Id,
-    };
+    }
+    console.log(data)
 
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist();
+          getWishlist()
         }
-      });
+      })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
     getCategoriesname();
@@ -246,13 +251,13 @@ export default function HomeScreen(props) {
         </View>
       ) : (
         <View
-          style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
+          style={{ width: "100%", height: "100%", backgroundColor: "#FFF",paddingStart:5}}
         >
           <View style={{ marginTop: 10 }}>
             <View>
               <Text
                 style={{
-                  fontSize: 25,
+                  fontSize: 22,
                   fontWeight: 700,
                   paddingLeft: 20,
                   height: 30,
@@ -331,28 +336,28 @@ export default function HomeScreen(props) {
                           <View
                             key={item.id}
                             style={{
-                              alignItems: "center",
-                              height: 280,
-                              width: 160,
-                              marginLeft: 5,
-                              marginRight: 5,
-                              marginBottom: 120,
-                              borderRadius: 10,
+                             alignItems: "center",
+                            height: 280,
+                            width: 155,
+                            marginLeft: 10,
+                            marginRight: 5,
+                            borderRadius: 10,
                             }}
                           >
                             <View
                               style={{
                                 width: 155,
-                                height: 190,
-                                borderColor: "gray",
-                                shadowColor: "#000000",
-                                shadowOpacity: 0.9,
-                                shadowRadius: 4,
-                                elevation: 10, // For Android, use elevation
-                                shadowOffset: {
-                                  width: 0,
-                                  height: 0,
-                                },
+                              height: 190,
+                              borderColor: "gray",
+                              shadowColor: "rgba(0, 0, 0, 0.5)",
+                              shadowOpacity: 0.9,
+                              shadowRadius: 3,
+                              borderRadius:10,
+                              elevation:4, // For Android, use elevation
+                              shadowOffset: {
+                                width: 0,
+                                height: 0,
+                              },
                               }}
                             >
                               <View id={item.id} style={styles.producticones}>
@@ -389,7 +394,7 @@ export default function HomeScreen(props) {
                               <Image
                                 source={{ uri: baseImageUrl + item.Photos }}
                                 style={{
-                                  width: "94%",
+                                  width: "100%",
                                   height: 190,
                                   borderRadius: 10,
                                 }}
@@ -427,7 +432,6 @@ export default function HomeScreen(props) {
                           >
                             <View
                               style={{
-                                marginTop: 5,
                                 width: 155,
                                 height: 190,
                                 borderColor: "gray",
@@ -542,11 +546,13 @@ export default function HomeScreen(props) {
                           style={{
                             alignItems: "center",
                             height: 280,
-                            width: 160,
-                            marginLeft: 5,
+                            width: 155,
+                            marginLeft: 10,
                             marginRight: 5,
                             marginBottom: 120,
                             borderRadius: 10,
+                            
+                            
                           }}
                         >
                           <View
@@ -554,10 +560,11 @@ export default function HomeScreen(props) {
                               width: 155,
                               height: 190,
                               borderColor: "gray",
-                              shadowColor: "#000000",
+                              shadowColor: "rgba(0, 0, 0, 0.5)",
                               shadowOpacity: 0.9,
-                              shadowRadius: 4,
-                              elevation: 10, // For Android, use elevation
+                              shadowRadius: 3,
+                              borderRadius:10,
+                              elevation:4, // For Android, use elevation
                               shadowOffset: {
                                 width: 0,
                                 height: 0,
@@ -566,6 +573,7 @@ export default function HomeScreen(props) {
                           >
                             <View id={item.id} style={styles.producticones}>
                               {selectedprd.some((i) => i.Id === item.Id) ? (
+                                
                                 <TouchableOpacity
                                   onPress={() => {
                                     rmvProductWishlist(item);

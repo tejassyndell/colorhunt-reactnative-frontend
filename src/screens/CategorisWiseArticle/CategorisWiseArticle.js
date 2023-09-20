@@ -1,13 +1,14 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Text, View, Image, ScrollView, FlatList, Pressable, TouchableOpacity } from "react-native";
-import { getProductName } from "../../api/api";
+import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles";
 import SearchBar from "../../components/SearchBar/searchbar";
 import { useRoute } from "@react-navigation/native";
-import { TextInput } from "react-native-gesture-handler";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import Filter from "../../components/Filter/Filter";
+import { FontAwesome } from '@expo/vector-icons';
+
 export default function AllArticle(props) {
   const { navigation } = props;
 
@@ -19,6 +20,7 @@ export default function AllArticle(props) {
   const [filteredData, setFilteredData] = useState([...nameDatas]); // Initialize with your data
   const [filterDataSearch, setFilterDataSearch] = useState([])
   const [minArticleRate, setMinArticleRate] = useState(null);
+  const [selectedprd, setSelectprd] = useState([])
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [selectedPriceRange, setSelectedPriceRange] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -42,6 +44,7 @@ export default function AllArticle(props) {
         const sdPrds = res.data.slice()
         const fildata = sdPrds.filter((item) => item.Category === category)
         setNameDatas(fildata)
+        setSelectprd(fildata)
         setFilterDataSearch(fildata)
         setFinalData(fildata)
       }
@@ -49,6 +52,50 @@ export default function AllArticle(props) {
       console.log(error)
     }
   }
+
+  
+
+ const addArticleWishlist = async (i) => {
+  let data = {
+    user_id: 197,
+    article_id: i.Id,
+  };
+  try {
+    await getAddWishlist(data).then((res) => {
+      console.log("Item added to wishlist:", i.Id);
+      console.log("Wishlist data after adding:", res.data);
+      // Assuming getAddWishlist returns the updated wishlist data
+      const updatedWishlistData = res.data; // Update this based on your API response
+      setSelectprd(updatedWishlistData); // Update the selectedprd state
+      setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
+    });
+  } catch (error) {
+    console.log("Error adding item to wishlist:", error);
+  }
+};
+
+const rmvProductWishlist = async (i) => {
+  let data = {
+    party_id: 197,
+    article_id: i.Id,
+  };
+  console.log("Removing item from wishlist:", i.Id);
+  try {
+    await DeleteWishlist(data).then((res) => {
+      if (res.status === 200) {
+        console.log("Item removed from wishlist:", i.Id);
+        console.log("Wishlist data after removal:", res.data);
+        // Assuming DeleteWishlist returns the updated wishlist data
+        const updatedWishlistData = res.data; // Update this based on your API response
+        setSelectprd(updatedWishlistData); // Update the selectedprd state
+        setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
+      }
+    });
+  } catch (error) {
+    console.log("Error removing item from wishlist:", error);
+  }
+};
+
 
   useEffect(() => {
     getproductname();
@@ -85,9 +132,6 @@ export default function AllArticle(props) {
       height: 'auto',
       width: "44.8%",
       margin: 10,
-      // marginLeft: 5,
-      // marginRight: 20,
-      // marginTop: 20,
       borderRadius: 10,
       borderColor: "gray",
       backgroundColor: "white",
@@ -101,23 +145,71 @@ export default function AllArticle(props) {
         height: 0,
       },
     }}>
+       <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart-o"
+              style={[
+                styles.disabledIcon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
 
       <View style={{
         width: "100%", display: "flex", justifyContent: "center", alignItems: "center",
         paddingTop: 8,
         elevation: 20,
+        backgroundColor:"#FFF",
         borderColor: "gray",
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "78%", height: 180, borderRadius: 10 }} />
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{  width: "90%",
+         height: 180,
+          borderRadius: 10,
+          zIndex:1,
+          shadowColor: "gray",
+          shadowOpacity: 0.4,
+          shadowRadius: 4,
+          elevation: 10,
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+          
+          }} />
       </View>
       <View style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-          <Text style={{ fontWeight: 'bold' }}>{item.ArticleNumber}</Text>
+        <View style={{width:178,backgroundColor: "#FFFFFF",alignItems:'center',paddingTop: 10,paddingBottom:10}}>
+            <Text style={{ fontWeight: 'bold', }}>{item.ArticleNumber}</Text>
           <Text>{item.Category}</Text>
-          <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>{"₹" + item.ArticleRate}</Text>
+          <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate}</Text>
+
+            </View>
         </TouchableOpacity>
       </View>
 
