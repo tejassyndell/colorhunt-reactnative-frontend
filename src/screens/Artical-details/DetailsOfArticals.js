@@ -239,7 +239,7 @@ const DetailsOfArticals = (props) => {
           />
         </View>
       ) : (
-        <View style={{backgroundColor:"#FFF"}}>
+        <View style={{ backgroundColor: "#FFF" }}>
           <ScrollView nestedScrollEnabled={true}>
             <View style={{ zIndex: 1 }}>
               <View style={{ backgroundColor: "#FFF", width: '100%', height: 400 }}>
@@ -256,7 +256,7 @@ const DetailsOfArticals = (props) => {
               </View>
             </View>
 
-            <View style={{ zIndex: 2, position: 'absolute', top: "41.5%", left: 0, right: 0, bottom: 0 }}>
+            <View style={{ zIndex: 2, position: 'absolute', top: 340, left: 0, right: 0, bottom: 0 }}>
               <Image
                 style={{ width: "100%", height: 74 }}
                 source={require("../../../assets/Rectangle_18898.png")}
@@ -276,9 +276,8 @@ const DetailsOfArticals = (props) => {
             </View>
 
             <View style={{ zIndex: 2 }}>
-              <View style={{ backgroundColor: "#FFF", elevation: 12, shadowColor: "black", width: '100%', height: "100%", borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
+              <View style={{ backgroundColor: "#FFF", elevation: 12, shadowColor: "black", width: '100%', height: "100%", borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 10 }}>
                 <View>
-
                   <View style={styles.product_detail} >
                     <View style={styles.product_detail_sec}>
                       <Text style={styles.size_label}>Size</Text>
@@ -308,75 +307,76 @@ const DetailsOfArticals = (props) => {
                       </View>
                     </View>
                   </View>
-                  <View style={styles.product_detail}>
-                    <View style={styles.container_grid}>
-                      <View style={styles.head_grid}>
-                        <View style={styles.color_Text}>
-                          <Text style={styles.color_title}>Color</Text>
-                        </View>
-                        <View style={styles.available_Text}>
-                          <Text style={styles.available_title}>Available in Stock</Text>
-                        </View>
-                        <View style={styles.qty_Text}>
-                          <Text style={styles.qty_title}>Add Qty.</Text>
-                        </View>
+                  <View style={{ flex: 1, marginVertical: 15, marginTop: 18, marginLeft: 3, marginRight: 8 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', gap: 12 }}>
+                      <View style={{ flex: 1.18 }}>
+                        <Text style={{ fontSize: 15, fontWeight: 600 }}>Color</Text>
                       </View>
-                      <View style={styles.body_main_con}>
-                        {combinedArray.map((item) => (
-                          <View key={item.Id}>
-                            <View style={styles.row} >
-                              <View style={styles.color_box_Text}>
-                                <Text style={styles.color_box}>{item.Name}</Text>
-                              </View>
-                              <View style={styles.available_box_Text}>
-                                <Text style={styles.available_box}>{item.available}</Text>
-                              </View>
-
-                              <View style={styles.qty_box_Text}>
-                                <View style={styles.qty_box}>
-                                  <View style={styles.top_row}>
-                                    <View style={styles.box1}>
-                                      <Pressable
-                                        style={styles.box1_btn}
-                                        onPress={() => handleDecrease(item.index)}
-                                        disabled={quantities[item.index] <= 0}
-                                      >
-                                        <Text style={styles.box1_btn_text}>-</Text>
-                                      </Pressable>
-
-
-                                    </View>
-                                    <View style={styles.box2}>
-                                      <Text style={{ textAlign: "center", fontWeight: 'bold' }}>{quantities[item.index]}</Text>
-                                    </View>
-                                    <View style={styles.box3}>
-                                      <Pressable
-                                        style={styles.box3_btn}
-                                        onPress={() => handleIncrease(item.index)}
-                                        disabled={quantities[item.index] >= item.available}
-                                      >
-                                        <Text style={styles.box1_btn_text}>+</Text>
-                                      </Pressable>
-                                    </View>
-                                  </View>
-                                </View>
-                              </View>
-
-                            </View>
-                          </View>
-                        ))}
+                      <View style={{ flex: 1.21 }}>
+                        <Text style={{ fontSize: 15, fontWeight: 600 }}>Available in Stock</Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ fontSize: 15, fontWeight: 600 }}>Add Qty.</Text>
                       </View>
                     </View>
+                    {combinedArray.map((item) => (
+                      <View style={{ flex: 1, flexDirection: 'row', gap: 12 }}>
+
+                        <View style={{ flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 10, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
+                          <Text style={{ textAlign: 'center' }}>{item.Name}</Text>
+                        </View>
+                        <View style={{ flex: 1.1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 10, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
+                          <Text style={{ textAlign: 'center' }}>{item.available}</Text>
+                        </View>
+                        <View style={{ flex: 1, flexDirection: "row", borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", height: 42.953, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
+                          <Pressable onPress={() => handleDecrease(item.index)}
+                            disabled={quantities[item.index] <= 0}
+                            style={{
+                              flex: 1.2, borderWidth: 1,
+                              width: "100%", height: '100%',
+                              borderColor: "#0000001d", borderRadius: 10,
+                              justifyContent: "center", alignContent: "center",
+                              alignItems: "center"
+                            }}
+                          >
+
+                            <Text style={{ fontSize: 31 }}>-</Text>
+
+                          </Pressable>
+                          <View style={{ flex: 1 }}>
+                            <Text style={{ fontSize: 16, textAlign: "center" }}>{quantities[item.index]}</Text>
+                          </View>
+                          <Pressable
+                            onPress={() => handleIncrease(item.index)}
+                            disabled={quantities[item.index] >= item.available}
+                            style={{
+                              flex: 1.2,
+                              justifyContent: "center", alignContent: "center", alignItems: "center",
+                              borderWidth: 1, width: "100%",
+                              height: '100%', borderColor: "#0000001d",
+                              borderRadius: 10
+                            }}
+                          >
+                            <Text style={{ fontSize: 21, textAlign: "center", paddingBottom: 0 }}>+</Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    ))}
+
                   </View>
                   <View style={styles.article_ratio_Section}>
                     <View style={styles.article_ratio_container}>
                       <Text style={styles.articallabel}>Article Ratio</Text>
-                      <Text style={[styles.article_ratio_content, styles.article_content_r]}>{articleRatio}</Text>
+                      <View style={styles.article_content_r}>
+                        <Text style={[styles.article_ratio_content]}>{articleRatio}</Text>
+                      </View>
                     </View>
 
                     <View style={styles.article_rate_container}>
                       <Text style={styles.articallabel1}>Article Rate</Text>
-                      <Text style={[styles.article_rate_content, styles.article_content_r]}>{articleRate / 10}</Text>
+                      <View style={styles.article_content_r}>
+                        <Text style={[styles.article_rate_content]}>{articleRate / 10}</Text>
+                      </View>
                     </View>
                   </View>
                   <View style={styles.total_price_container}>
@@ -385,7 +385,7 @@ const DetailsOfArticals = (props) => {
                       <Text style={{ fontSize: 16, fontWeight: 600, color: "black" }}>{formatPrice(totalPrice)}</Text>
                     </View>
                     <View style={styles.addto_card_container}>
-                    
+
                       <Pressable
                         style={[
                           styles.addto_cart_btn,
@@ -401,7 +401,7 @@ const DetailsOfArticals = (props) => {
                           <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2, marginLeft: 10 }} />
                           <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add To Cart</Text>
                         </View>
-                    </Pressable> 
+                      </Pressable>
                     </View>
 
                   </View>
@@ -410,104 +410,104 @@ const DetailsOfArticals = (props) => {
               </View>
             </View>
             <Modal
-                visible={isModalVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={() => setIsModalVisible(false)}
-              >
-                <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+              visible={isModalVisible}
+              transparent={true}
+              animationType="slide"
+              onRequestClose={() => setIsModalVisible(false)}
+            >
+              <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
                   <View
                     style={{
-                      flex: 1,
-                      justifyContent: "center",
+                      width: 360,
+                      height: 320,
+                      backgroundColor: "white",
+                      borderRadius: 25,
                       alignItems: "center",
-                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                      // padding: 5
                     }}
                   >
-                    <View
-                      style={{
-                        width: 360,
-                        height: 320,
-                        backgroundColor: "white",
-                        borderRadius: 25,
-                        alignItems: "center",
-                        // padding: 5
-                      }}
-                    >
-                      <Image
-                        source={require("../../../assets/update_cart.png")}
-                        style={{ width: 100, height: 100, marginBottom: 20, marginTop: 30 }}
-                      />
+                    <Image
+                      source={require("../../../assets/update_cart.png")}
+                      style={{ width: 100, height: 100, marginBottom: 20, marginTop: 30 }}
+                    />
 
-                      <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 30, fontWeight: 500, color: "rgba(0, 0, 0, 0.70)" }}>
-                        Are you sure {"\n"} you want to update this {"\n"} artical in cart.
-                      </Text>
-                      <View style={{
+                    <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 30, fontWeight: 500, color: "rgba(0, 0, 0, 0.70)" }}>
+                      Are you sure {"\n"} you want to update this {"\n"} artical in cart.
+                    </Text>
+                    <View style={{
 
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "row",
-                        position: "absolute",
-                        bottom: 0
-                      }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            setIsModalVisible(false);
-                          }}
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      position: "absolute",
+                      bottom: 0
+                    }}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setIsModalVisible(false);
+                        }}
+                        style={{
+                          backgroundColor: "black",
+                          width: "50%",
+                          height: 50,
+                          borderBottomLeftRadius: 25,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderWidth: 1,
+                          borderColor: "white"
+                        }}
+                      >
+                        <Text
                           style={{
-                            backgroundColor: "black",
-                            width: "50%",
-                            height: 50,
-                            borderBottomLeftRadius: 25,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderWidth: 1,
-                            borderColor: "white"
+                            fontSize: 18,
+                            fontWeight: 700,
+                            color: "white",
+                            paddingHorizontal: 15
                           }}
                         >
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              fontWeight: 700,
-                              color: "white",
-                              paddingHorizontal: 15
-                            }}
-                          >
-                            No
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => {
-                            setIsModalVisible(false);
-                            updateArticalInCart();
-                          }}
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setIsModalVisible(false);
+                          updateArticalInCart();
+                        }}
+                        style={{
+                          backgroundColor: "black",
+                          width: "50%",
+                          height: 50,
+                          borderBottomRightRadius: 25,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderWidth: 1,
+                          borderColor: "white"
+                        }}
+                      >
+                        <Text
                           style={{
-                            backgroundColor: "black",
-                            width: "50%",
-                            height: 50,
-                            borderBottomRightRadius: 25,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderWidth: 1,
-                            borderColor: "white"
+                            fontSize: 18,
+                            fontWeight: 700,
+                            color: "white",
+                            paddingHorizontal: 15
                           }}
                         >
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              fontWeight: 700,
-                              color: "white",
-                              paddingHorizontal: 15
-                            }}
-                          >
-                            Yes
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
-              </Modal>
+                </View>
+              </TouchableWithoutFeedback>
+            </Modal>
           </ScrollView>
         </View>
       )}
