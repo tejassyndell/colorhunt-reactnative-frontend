@@ -164,7 +164,7 @@ const Orderlist = (props) => {
                                     }}
                                     // value={formattedDate}
                                     // disableFullscreenUI
-                                    ><Text>{formattedDate}</Text></View>
+                                    ><Text style={{color:"#626262",fontSize:18,fontWeight:500}}>{formattedDate}</Text></View>
 
                                 </View>
                                 <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
@@ -174,7 +174,8 @@ const Orderlist = (props) => {
                                         borderWidth: 1, paddingVertical: 5,
                                         paddingLeft: 15, borderRadius: 6,
                                         borderColor: "#E4E7EA",
-                                        fontSize: 16, backgroundColor: "#EEE"
+                                        color:"#626262",
+                                        fontSize: 18, backgroundColor: "#EEE"
                                     }} onChangeText={(e) => setDestinationVal(e)}></TextInput>
 
                                 </View>
@@ -198,7 +199,7 @@ const Orderlist = (props) => {
                                         display: "flex",
                                         flexDirection: "row"
                                     }}>
-                                        <Text>{transportationVal}</Text>
+                                        <Text style={{color:"#626262",fontSize:18,fontWeight:500}}>{transportationVal}</Text>
                                         <TouchableOpacity style={{
                                             position: "absolute",
                                             top: "64%",
@@ -255,11 +256,9 @@ const Orderlist = (props) => {
                                                 flexDirection: "row",
                                                 width: "90%",
                                                 backgroundColor: "#FFF",
-                                                elevation: 10,
+                                                elevation: 5,
                                                 shadowColor: 'gray',
-                                                shadowOffset: { width: 0, height: 0 },
-                                                shadowOpacity: 0.4,
-                                                shadowRadius: 4,
+                                                shadowOpacity: 0.5,
                                                 marginHorizontal: 20,
                                                 marginTop: 15,
                                                 borderRadius: 10,
@@ -269,19 +268,17 @@ const Orderlist = (props) => {
                                             }}>
                                                 <View style={{
                                                     width: "35%",
-                                                    // width: 120,
                                                     // height: 102.746,
                                                     display: "flex",
                                                     justifyContent: "center",
                                                     alignItems: "center",
                                                     marginVertical: 10,
                                                     borderRadius: 10,
-
                                                 }}>
 
                                                     <Image source={{ uri: baseImageUrl + item.Photos }} style={{
                                                         height: "100%",
-                                                        width: "70%", borderRadius: 10
+                                                        width: "70%", borderRadius: 10,
                                                     }} ></Image>
 
                                                 </View>

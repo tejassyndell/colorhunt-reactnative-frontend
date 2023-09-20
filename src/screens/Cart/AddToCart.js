@@ -347,7 +347,7 @@ const AddToCart = (props) => {
                                                                         shadowColor: "gray",
                                                                         marginHorizontal: 9.5,
                                                                         marginTop: 15,
-                                                                        borderRadius: 10,
+                                                                        borderRadius: 12,
                                                                         height: 150,
                                                                         paddingVertical: 5,
                                                                         // maxHeight: "45%"
@@ -445,7 +445,7 @@ const AddToCart = (props) => {
                                                                         shadowColor: "gray",
                                                                         marginHorizontal: 9.5,
                                                                         marginTop: 15,
-                                                                        borderRadius: 10,
+                                                                        borderRadius: 12,
                                                                         height: 150,
                                                                         paddingVertical: 5,
                                                                         // maxHeight: "45%"
@@ -555,7 +555,7 @@ const AddToCart = (props) => {
                                                                     shadowColor: "gray",
                                                                     marginHorizontal: 9.5,
                                                                     marginTop: 15,
-                                                                    borderRadius: 10,
+                                                                    borderRadius: 12,
                                                                     height: 150,
                                                                     paddingVertical: 5,
                                                                     // maxHeight: "45%"
@@ -735,7 +735,7 @@ const AddToCart = (props) => {
                                         paddingRight: 12,
                                         marginTop: 6
                                     }}>
-                                        <Text style={{ fontSize: 12, fontWeight: 700 }}>Total price</Text>
+                                        <Text style={{ fontSize: 12, fontWeight: 700 ,color:"#AAAAAA"}}>Total price</Text>
                                     </View>
                                     <View style={{
                                         display: "flex",
@@ -743,7 +743,7 @@ const AddToCart = (props) => {
                                         backgroundColor: "#FFF"
                                     }}>
                                         <View style={{ width: "50%", paddingLeft: "2.8%", marginBottom: 4 }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 600 }}>Total ({totalItems} item) :</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 600 , color:"#585656" }}>Total ({totalItems} item) :</Text>
                                         </View>
                                         <View style={{
                                             display: "flex",
@@ -754,7 +754,7 @@ const AddToCart = (props) => {
                                             paddingRight: 12,
                                             // paddingLeft: "14%"
                                         }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 700 }}>₹{totalprice}.00</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 800 ,color:"#000"}}>₹{totalprice}.00</Text>
                                         </View>
                                     </View>
                                     <View style={{ padding: 10 }}>
