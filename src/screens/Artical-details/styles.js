@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     color: "black",
     marginLeft: "2%",
-    marginBottom: 10,
+    marginBottom: 6,
   },
   size_container1: {
     display: "flex",
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     shadowColor: "gray",
     shadowOpacity: 0.5,
     marginLeft: "1%",
-    overflow: "scroll",
   },
   size: {
     width: 40,
@@ -113,12 +112,13 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     color: "black",
     marginLeft: "18%",
-    marginBottom: 10,
+    marginBottom: 6,
   },
  
   size_options: {
     paddingLeft: 8,
     display: "flex",
+    flexDirection:"row",
     fontSize: 18,
     fontWeight: 500,
   },
@@ -207,13 +207,6 @@ const styles = StyleSheet.create({
     marginRight: "5%",
     width: "50%",
   },
-  size_label: {
-    fontSize: 15,
-    fontWeight: 600,
-    color: "black",
-    marginLeft: "2%",
-    marginBottom: 10,
-  },
  
   size: {
     width: 40,
@@ -236,35 +229,25 @@ const styles = StyleSheet.create({
   product_detail_sec2: {
     width: "50%",
   },
-  size_label1: {
-    fontSize: 15,
-    fontWeight: 600,
-    color: "black",
-    marginLeft: "18%",
-    marginBottom: 10,
-  },
   size_container2: {
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "#ded6d6",
     borderRadius: 12,
     backgroundColor: "#f4f4f4",
-    padding: 12,
+    // padding: 12,
     display: "flex",
     height: 52,
     justifyContent: "center",
+    alignContent:"center",
+    alignItems:"center",
     width: "80%",
     elevation: 2,
     marginStart: 32,
     shadowColor: "gray",
     shadowOpacity: 0.5
   },
-  size_options: {
-    paddingLeft: 8,
-    display: "flex",
-    fontSize: 18,
-    fontWeight: 500,
-  },
+
   size_p: {
     marginTop: 0,
     marginBottom: "1%",
@@ -459,7 +442,8 @@ const styles = StyleSheet.create({
   article_ratio_Section: {
     display: "flex",
     flexDirection: "row",
-    width: "100%",
+    width: "98%",
+    marginHorizontal:4
   },
   article_ratio_container: {
     width: "45%",
@@ -468,7 +452,7 @@ const styles = StyleSheet.create({
   },
   articallabel: {
     fontWeight: 600,
-    marginLeft: "3%",
+    marginLeft: 0.5,
     textAlign: "left",
   },
   article_content_r: {
@@ -505,7 +489,7 @@ const styles = StyleSheet.create({
   },
   articallabel1: {
     fontWeight: 500,
-    marginLeft: "5%",
+    marginLeft: 0.5,
   },
   total_price_container: {
     width: "95%",
@@ -514,6 +498,7 @@ const styles = StyleSheet.create({
     marginTop: "11%",
     position: "relative",
     top: 0,
+    marginLeft:6,
     marginBottom: 5,
   },
   main_total_div: {

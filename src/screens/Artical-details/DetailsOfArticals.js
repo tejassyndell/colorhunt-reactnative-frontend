@@ -301,13 +301,12 @@ const DetailsOfArticals = (props) => {
                       <Text style={styles.size_label1}>Category</Text>
                       <View style={styles.size_container2}>
                         <View style={styles.size_options}>
-
                           <Text style={styles.size_p}>{subcategory}</Text>
                         </View>
                       </View>
                     </View>
                   </View>
-                  <View style={{ flex: 1, marginVertical: 15, marginTop: 18, marginLeft: 3, marginRight: 8 }}>
+                  <View style={{ flex: 1, marginVertical: 15, marginTop: 18, marginLeft: 2.5, marginRight: 7 }}>
                     <View style={{ flex: 1, flexDirection: 'row', gap: 12 }}>
                       <View style={{ flex: 1.18 }}>
                         <Text style={{ fontSize: 15, fontWeight: 600 }}>Color</Text>
@@ -315,7 +314,7 @@ const DetailsOfArticals = (props) => {
                       <View style={{ flex: 1.21 }}>
                         <Text style={{ fontSize: 15, fontWeight: 600 }}>Available in Stock</Text>
                       </View>
-                      <View style={{ flex: 1 }}>
+                      <View style={{ flex: 1,paddingLeft:2 }}>
                         <Text style={{ fontSize: 15, fontWeight: 600 }}>Add Qty.</Text>
                       </View>
                     </View>
