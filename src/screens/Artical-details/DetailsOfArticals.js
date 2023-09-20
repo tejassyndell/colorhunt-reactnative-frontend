@@ -339,7 +339,7 @@ const DetailsOfArticals = (props) => {
                             }}
                           >
 
-                            <Text style={{ fontSize: 31 }}>-</Text>
+                            <Text style={{ fontSize: 24,fontWeight:800 }}>-</Text>
 
                           </Pressable>
                           <View style={{ flex: 1 }}>
@@ -398,7 +398,7 @@ const DetailsOfArticals = (props) => {
                       >
                         <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
                           <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2, marginLeft: 10 }} />
-                          <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add To Cart</Text>
+                          <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add to cart</Text>
                         </View>
                       </Pressable>
                     </View>
