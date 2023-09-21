@@ -93,7 +93,7 @@ export default function Userprofile(props) {
       <View
         style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
       >
-        <ButtomNavigation navigation={navigation} page="profile"/>
+        <ButtomNavigation isLoggedIn={true} navigation={navigation} page="profile"/>
       </View>
     </View>
   );

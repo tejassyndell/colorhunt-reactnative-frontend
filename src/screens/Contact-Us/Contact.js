@@ -201,7 +201,7 @@ export default function Contact(props) {
             <View
                 style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
             >
-                <ButtomNavigation navigation={navigation} page="contactus" />
+                <ButtomNavigation isLoggedIn={true}  navigation={navigation} page="contactus" />
             </View>
         </View>
     )

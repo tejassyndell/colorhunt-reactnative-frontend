@@ -28,14 +28,14 @@ export default function AllArticle(props) {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
 
-  const getCategoriesname = async () => {
-    const res = await getProductName();
-    if (res.status === 200) {
-      // console.log(res.data);
-      setNameDatas(res.data);
-      setFinalData(res.data)
-      setIsLoading(false)
-    }
+  const getCategoriesname = async () => {    
+      const res = await getProductName();
+      if (res.status === 200) {
+        // console.log(res.data);
+        setNameDatas(res.data);
+        setFinalData(res.data)
+        setIsLoading(false)
+      }
   }
   const rmvProductWishlist = async (i) => {
     let data = {
@@ -76,7 +76,7 @@ export default function AllArticle(props) {
       console.log(error)
     }
   }
-  const convertToTitleCase = (str) => {
+  const convertToTitleCase=(str) =>{
     return str
       .toLowerCase()
       .split('-') // Split the string at hyphens
@@ -188,16 +188,16 @@ export default function AllArticle(props) {
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, borderRadius: 10, zIndex: 1, marginTop: 10 }} />
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, borderRadius: 10,zIndex:1,marginTop:10 }} />
       </View>
-      <View style={{ width: "100%", marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
-        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 0 }}>
-          <View style={{ width: 178, alignItems: 'center', paddingTop: 10 }}>
+      <View style={{ width: "100%",marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
+        <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center",marginTop: 0  }}>
+            <View style={{width:178,alignItems:'center',paddingTop: 10}}>
             <Text style={{ fontWeight: 'bold', }}>{item.ArticleNumber}</Text>
-            <Text>{convertToTitleCase(item.Category)}</Text>
-            <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate + '.00'}</Text>
+          <Text>{convertToTitleCase(item.Category)}</Text>
+          <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate}</Text>
 
-          </View>
+            </View>
         </TouchableOpacity>
       </View>
 
@@ -211,12 +211,12 @@ export default function AllArticle(props) {
 
     // Filter based on selected categories and price range
     const filteredData = nameDatas.filter((item) =>
-      selectedCategories.includes(item.Category) &&
-      item.ArticleRate >= selectedPriceRange[0] &&
-      item.ArticleRate <= selectedPriceRange[1]
+    selectedCategories.includes(item.Category) &&
+    item.ArticleRate >= selectedPriceRange[0] &&
+    item.ArticleRate <= selectedPriceRange[1]
     );
     setFinalData(filteredData);
-    console.log("handle Filter chnage", finalData.length)
+    console.log("handle Filter chnage",finalData.length)
   };
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev)
@@ -226,10 +226,10 @@ export default function AllArticle(props) {
     console.log(selectedCategories, "sca")
     console.log(selectedPriceRange, "spa")
     const abc = nameDatas.filter((item) => (!selectedCategories.length || selectedCategories.includes(item.Category)) &&
-      item.ArticleRate >= selectedPriceRange[0] &&
-      item.ArticleRate <= selectedPriceRange[1]);
+    item.ArticleRate >= selectedPriceRange[0] &&
+    item.ArticleRate <= selectedPriceRange[1]);
     setFinalData(abc)
-    console.log("useeffect", finalData.length)
+    console.log("useeffect",finalData.length)
   }, [selectedCategories], [selectedPriceRange])
   useEffect(() => {
     const minRate = finalData.reduce((min, item) => {
@@ -243,9 +243,9 @@ export default function AllArticle(props) {
     }, -Infinity);
 
     setMinArticleRate(minRate);
-
+    
     setMaxArticleRate(maxRate);
-
+    
   }, [finalData]);
   return (
     <>
@@ -259,7 +259,7 @@ export default function AllArticle(props) {
       ) : (
         <View style={{ width: '100%', height: '100%', backgroundColor: "#FFF" }}>
           <View
-            style={{ flexDirection: "row", backgroundColor: "#FFF", alignItems: "center", width: "89%", paddingStart: 3, paddingTop: 10 }}
+            style={{ flexDirection: "row", backgroundColor: "#FFF", alignItems: "center", width: "87%" }}
           >
             <SearchBar searchPhrase={searchText}
               setSearchPhrase={setSearchText} />
@@ -278,16 +278,15 @@ export default function AllArticle(props) {
                 paddingLeft: 15,
                 height: 20,
                 alignItems: "center",
-                marginTop: 10
               }}
             >
               ALL Articles
             </Text>
           </View>
           <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
-            {console.log(finalData.length, "when render ")}
+            {console.log(finalData.length,"when render ")}
             <FlatList
-              style={{ backgroundColor: "#FFF" }}
+              style={{backgroundColor: "#FFF"}}
               data={finalData}
               keyExtractor={(item) => item.Id}
               renderItem={renderItem}
@@ -299,18 +298,19 @@ export default function AllArticle(props) {
           {/* </ScrollView> */}
           {isFilterVisible ? null : (
             <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-              <ButtomNavigation navigation={navigation} page="home"/>
+              <ButtomNavigation isLoggedIn={true} navigation={navigation} page="home"/>
             </View>
           )}
 
           {isFilterVisible && (
             <View
               style={{
-                flex: 1,
+                
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                 width: "100%",
                 height: "100%",
                 position: "absolute",
+                backgroundColor: "#FFF",
                 top: 0,
                 left: 0,
                 justifyContent: "flex-end",
@@ -318,19 +318,20 @@ export default function AllArticle(props) {
             >
               <View
                 style={{
-                  width: "92%",
+                  width: "90%",
                   backgroundColor: "#FFF",
                   position: "absolute",
                   bottom: 0,
-                  left: 1,
-                  right: 0, // To make it span the full width
-                  marginLeft: "4%", // Margin on the left side
-                  padding: 10,
-                  borderTopLeftRadius: 10, // Adjust the radius as needed
-                  borderTopRightRadius: 10,
+                  // left: 0,
+                  // right: 0, // To make it span the full width
+                  marginLeft: "5%", // Margin on the left side
+                  marginRight: "5%", // Margin on the right side
+                  padding: 5,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
                 }}
               >
-                <Filter status={false} onFilterChange={handleFilterChange}
+                <Filter onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate} />
               </View>
