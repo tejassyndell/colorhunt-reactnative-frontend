@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Text, View, Image, ScrollView, TouchableOpacity,AsyncStorage } from "react-native";
-import ResponsiveImage from 'react-native-responsive-image';
+// import Image from 'react-native-responsive-image';
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -44,12 +44,12 @@ export default function HomeScreen(props) {
       setSelectprd(res.data)
     })
   }
-  const convertToTitleCase=(str) =>{
+  function convertToTitleCase(str) {
     return str
       .toLowerCase()
-      .split('-') // Split the string at hyphens
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join('-'); // Join the words with hyphens
+      .split('-') // Split the string at hyphens or spaces
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('-'); // Join the words with spaces
   }
   const addArticleWishlist = async (i) => {
     let data = {
@@ -145,10 +145,10 @@ export default function HomeScreen(props) {
               navigation.openDrawer();
             }}
           >
-            <ResponsiveImage
+            <Image
               source={require("../../../assets/sidbarOpenIcone.png")}
               style={{ width: 38, height: 38, borderRadius: 5 }}
-            ></ResponsiveImage>
+            ></Image>
           </TouchableOpacity>
         </View>
       ),
@@ -266,7 +266,7 @@ export default function HomeScreen(props) {
                 style={{
                   fontSize: 22,
                   fontWeight: 700,
-                  paddingLeft: 13,
+                  paddingLeft: 8,
                   height: 30,
                   alignItems: "center",
                   fontFamily: "Glory-Regular",
@@ -287,7 +287,7 @@ export default function HomeScreen(props) {
                 setSearchPhrase={setSearchText}
               />
               <TouchableOpacity onPress={openFilter}>
-                <ResponsiveImage
+                <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{ width: 40, height: 40, borderRadius: 10 }}
                 />
@@ -398,7 +398,7 @@ export default function HomeScreen(props) {
                                   </TouchableOpacity>
                                 )}
                               </View>
-                              <ResponsiveImage
+                              <Image
                                 source={{ uri: baseImageUrl + item.Photos }}
                                 style={{
                                   width: "100%",
@@ -452,7 +452,7 @@ export default function HomeScreen(props) {
                                 },
                               }}
                             >
-                              <ResponsiveImage
+                              <Image
                                 source={require("../../../assets/demo.png")}
                                 style={{
                                   width: "100%",
@@ -489,7 +489,7 @@ export default function HomeScreen(props) {
                             handlePress(item);
                           }}
                         >
-                          <ResponsiveImage
+                          <Image
                             source={require("../../../assets/demo.png")}
                             style={{
                               width: 200,
@@ -610,7 +610,7 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               )}
                             </View>
-                            <ResponsiveImage
+                            <Image
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
                                 width: "94%",
@@ -641,7 +641,7 @@ export default function HomeScreen(props) {
                             marginRight: 5,
                           }}
                         >
-                          <ResponsiveImage
+                          <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               width: 200,
@@ -662,52 +662,49 @@ export default function HomeScreen(props) {
               </View>
             </View>
           </ScrollView>
-          {isFilterVisible ? null : (
-            <View
-              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-            >
-              <ButtomNavigation navigation={navigation} />
-            </View>
-          )}
+        </View>
+      )}
+      {isFilterVisible ? null : (
+        <View
+          style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+        >
+          <ButtomNavigation navigation={navigation} />
+        </View>
+      )}
 
-          {isFilterVisible && (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                justifyContent: "flex-end",
-              }}
-            >
-              <View
-                style={{
-                  width: "90%",
-                  backgroundColor: "white",
-                  position: "absolute",
-                  bottom: 0,
-                  // left: 0,
-                  // right: 0, // To make it span the full width
-                  marginLeft: "5%", // Margin on the left side
-                  marginRight: "5%", // Margin on the right side
-                  padding: 5,
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                }}
-              >
-                <Filter
-                  onFilterChange={handleFilterChange}
-                  onCloseFilter={handleCloseFilter}
-                  Scategories={selectedCategories}
-                  minArticleRate={minArticleRate}
-                  maxArticleRate={maxArticleRate}
-                />
-              </View>
-            </View>
-          )}
+      {isFilterVisible && (
+        <View
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          top: 0,
+          right: 0, // Updated to 0
+          left: 0,
+          zIndex:2,
+        }}
+        >
+          <View
+             style={{
+              width: "92%",
+              backgroundColor: "white",
+              position: "absolute",
+              bottom: 0,
+              marginLeft: "4%",
+              padding: 5,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          >
+            <Filter
+              onFilterChange={handleFilterChange}
+              onCloseFilter={handleCloseFilter}
+              Scategories={selectedCategories}
+              minArticleRate={minArticleRate}
+              maxArticleRate={maxArticleRate}
+            />
+          </View>
         </View>
       )}
     </>

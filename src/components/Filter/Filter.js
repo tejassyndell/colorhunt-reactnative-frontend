@@ -308,6 +308,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 7.6,
         height: 38,
+        fontSize: 24,
+        fontWeight:700,
         width: 76,
         alignItems: 'center',
         justifyContent: 'center',

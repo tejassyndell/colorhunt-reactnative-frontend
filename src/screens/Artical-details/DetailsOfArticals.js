@@ -11,7 +11,7 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { ActivityIndicator } from "react-native";
 import bagicon from '../../../assets/icons/icon.png'
 import { TouchableWithoutFeedback } from "react-native";
-// import ImageZoom from "react-native-image-pan-zoom";
+import ImageZoom from "react-native-image-pan-zoom";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
