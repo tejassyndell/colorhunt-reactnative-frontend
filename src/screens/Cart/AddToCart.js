@@ -238,7 +238,7 @@ const AddToCart = (props) => {
                     // <View style={{width:"100%"}}>
                     <Text style={{
                         fontSize: 16,
-                        fontWeight: 400,
+                        fontWeight: 500,
                         color: "red",
                         textAlign: "right"
                     }}>Out of stock</Text>
@@ -448,10 +448,12 @@ const AddToCart = (props) => {
                                                                         borderRadius: 12,
                                                                         height: 150,
                                                                         paddingVertical: 5,
+                                                                       
                                                                         // maxHeight: "45%"
                                                                     }}>
                                                                         <View style={{
                                                                             width: "35%",
+                                                                            opacity:0.4,
                                                                             // width: 120,
                                                                             // height: 102.746,
                                                                             display: "flex",
@@ -462,7 +464,7 @@ const AddToCart = (props) => {
                                                                             borderRadius: 10,
                                                                         }}>
 
-                                                                            <Image blurRadius={6} style={{
+                                                                            <Image style={{
                                                                                 height: "100%",
                                                                                 width: "68%",
                                                                                 borderRadius: 10,

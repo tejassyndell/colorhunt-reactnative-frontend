@@ -113,7 +113,8 @@ const Orderlist = (props) => {
                 //     <TouchableOpacity  onPress={handleGoToOrderList}>
                 //     <Image  source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
                 //     </TouchableOpacity>
-                <View />
+                <View />,
+               
         });
     }, []);
 

@@ -4,11 +4,11 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ButtomNavigation = (props) => {
   const route = useRoute();
-  const {navigation} = props; 
+  const {navigation , page} = props; 
 //   const navigation = useNavigation();
 
 
-
+console.log(page);
 
   const HomePage = () =>{
     navigation.navigate('Home');
@@ -59,7 +59,7 @@ const ButtomNavigation = (props) => {
 
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/Home_down_nav_icone.png")}
+            source={page==="home"?require("../../../assets/AppFooterIcons/Home_down_nav_icone.png"):require("../../../assets/deselect_home.png")}
             style={{ width: 45, height: 45 }}
             
           />
@@ -118,7 +118,7 @@ const ButtomNavigation = (props) => {
           onPress={ProfilePage}
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")}
+            source={page==="profile"?require("../../../assets/select_profile.png"):require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")}
             style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>

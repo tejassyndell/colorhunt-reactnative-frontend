@@ -105,7 +105,7 @@ export default function AllArticle(props) {
           <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
             <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
-        </View>),
+        </View>)
     });
   }, []);
 
@@ -298,7 +298,7 @@ export default function AllArticle(props) {
           {/* </ScrollView> */}
           {isFilterVisible ? null : (
             <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-              <ButtomNavigation navigation={navigation} />
+              <ButtomNavigation navigation={navigation} page="home"/>
             </View>
           )}
 

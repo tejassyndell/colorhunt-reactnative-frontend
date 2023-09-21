@@ -88,18 +88,10 @@ export default function WishList(props) {
             {/* <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} /> */}
           </TouchableOpacity>
         </View>
-      )
+      ),
     });
   }, []);
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     // headerright: () => (
-
-  //     // ),
-  //     headerRight: () => <View />,
-  //   });
-  // }, []);
 
 
   const renderItem = ({ item }) => (

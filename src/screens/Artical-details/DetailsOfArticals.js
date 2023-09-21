@@ -1,17 +1,17 @@
-import { View, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Pressable, Modal } from "react-native"
+import { View, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Pressable,ScrollView, Modal } from "react-native"
 import { ArticleDetails, addto_cart, findfromthecart, updateCartArticale } from '../../api/api'
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react"
 import { useRoute } from "@react-navigation/native"
 import styles from "./styles";
 import stylesRecipe from "../Recipe/styles"
-import { ScrollView } from "react-native-gesture-handler";
+// import { ScrollView } from "react-native-gesture-handler";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { ActivityIndicator } from "react-native";
 import bagicon from '../../../assets/icons/icon.png'
 import { TouchableWithoutFeedback } from "react-native";
-// import ImageZoom from "react-native-image-pan-zoom";
+import ImageZoom from "react-native-image-pan-zoom";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
@@ -200,7 +200,7 @@ const DetailsOfArticals = (props) => {
         />
       ), headerTitle: () => (
         <View />
-      ),
+      )
     });
   }, []);
 
@@ -282,6 +282,7 @@ const DetailsOfArticals = (props) => {
                     <View style={styles.product_detail_sec}>
                       <Text style={styles.size_label}>Size</Text>
                       <View style={styles.size_container1}>
+                        <ScrollView horizontal={true} nestedScrollEnabled={true} style={{width:"100%",display:"flex",flexDirection:"row"}}>
                         {articleSizeData &&
                           articleSizeData.map((item, index) => (
                             <View style={styles.size_options} key={index}>
@@ -292,6 +293,7 @@ const DetailsOfArticals = (props) => {
                               </View>
                             </View>
                           ))}
+                          </ScrollView>
                       </View>
                     </View>
                     <View>
@@ -300,7 +302,7 @@ const DetailsOfArticals = (props) => {
                     <View style={styles.product_detail_sec2}>
                       <Text style={styles.size_label1}>Category</Text>
                       <View style={styles.size_container2}>
-                        <View style={styles.size_options}>
+                        <View style={styles.size_options2}>
                           <Text style={styles.size_p}>{subcategory}</Text>
                         </View>
                       </View>
@@ -321,11 +323,11 @@ const DetailsOfArticals = (props) => {
                     {combinedArray.map((item) => (
                       <View style={{ flex: 1, flexDirection: 'row', gap: 12 }}>
 
-                        <View style={{ flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 10, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
-                          <Text style={{ textAlign: 'center' }}>{item.Name}</Text>
+                        <View style={{ flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 8, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
+                          <Text style={{ textAlign: 'center' ,fontSize:18,fontWeight:500,color:"#626262"}}>{item.Name}</Text>
                         </View>
-                        <View style={{ flex: 1.1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 10, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
-                          <Text style={{ textAlign: 'center' }}>{item.available}</Text>
+                        <View style={{ flex: 1.1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 8, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
+                          <Text style={{ textAlign: 'center' ,fontSize:18,fontWeight:500,color:"#626262"}}>{item.available}</Text>
                         </View>
                         <View style={{ flex: 1, flexDirection: "row", borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", height: 42.953, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
                           <Pressable onPress={() => handleDecrease(item.index)}
@@ -343,7 +345,7 @@ const DetailsOfArticals = (props) => {
 
                           </Pressable>
                           <View style={{ flex: 1 }}>
-                            <Text style={{ fontSize: 16, textAlign: "center" }}>{quantities[item.index]}</Text>
+                            <Text style={{ fontSize: 16, textAlign: "center",fontWeight:600,color:'#000' }}>{quantities[item.index]}</Text>
                           </View>
                           <Pressable
                             onPress={() => handleIncrease(item.index)}
@@ -396,9 +398,9 @@ const DetailsOfArticals = (props) => {
                         onPress={() => addtocart(197, id)}
                         disabled={totalQuantity === 0}
                       >
-                        <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-                          <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 2, marginLeft: 10 }} />
-                          <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '80%' }}>Add to cart</Text>
+                        <View style={{ flexDirection: 'row',justifyContent:"center",alignContent:"center", alignItems: 'center', width: '100%',paddingVertical:3 }}>
+                          <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 0, marginLeft: 10 }} />
+                          <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '70%' }}>Add to cart</Text>
                         </View>
                       </Pressable>
                     </View>

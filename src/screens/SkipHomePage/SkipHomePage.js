@@ -206,6 +206,7 @@ export default function SkipHomeScreen(props) {
           </TouchableOpacity>
         </View>
       ),
+     
     });
   }, []);
 
@@ -564,7 +565,7 @@ export default function SkipHomeScreen(props) {
             <View
               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
             >
-              <ButtomNavigation navigation={navigation} />
+              <ButtomNavigation navigation={navigation} page="home"/>
             </View>
           )}
 
