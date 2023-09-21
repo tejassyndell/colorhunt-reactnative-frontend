@@ -7,6 +7,7 @@ import {
   ImageBackground,
   StyleSheet,
   Dimensions,
+  Image
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -218,15 +219,15 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   input: {
-    width: "100%",
-    height: windowHeight * 0.06,
+    width: 300,
+    height: 50,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",
     fontSize: windowWidth * 0.05,
-    borderRadius: windowWidth * 0.03,
-    paddingLeft: windowWidth * 0.04,
+    paddingLeft: 10,
     alignContent: "space-between",
+    borderRadius:7,
     marginBottom: 30,
   },
   otpContainer: {
@@ -282,19 +283,6 @@ const styles = StyleSheet.create({
     bottom: 80,
     width: "80%",
     height: 50,
-  },
-
-input: {
-    width: 300,
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "white",
-    fontSize: windowWidth * 0.05,
-    paddingLeft: 10,
-    alignContent: "space-between",
-    borderRadius:7,
-    marginBottom: 30,
   },
 });
 
