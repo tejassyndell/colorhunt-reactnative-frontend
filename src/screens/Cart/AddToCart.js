@@ -174,6 +174,7 @@ const AddToCart = (props) => {
                 }
             })
         })
+        console.log(listOfOutOfProduct);
         setArray_1(listOfOutOfProduct);
         let total = 0;
         orderItems.map((it) => {
@@ -336,8 +337,8 @@ const AddToCart = (props) => {
                                                 <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                                     <View style={{ paddingBottom: 20 }}>
                                                         {orderItems.map((item) =>
-                                                            array_1.length > 0 ? array_1.map((id) =>
-                                                                id === item.article_id ?
+                                                            array_1.length > 0 ? array_1.includes(item.article_id)? 
+                                                                // id === item.article_id ?
                                                                     <View key={item.id} style={{
                                                                         display: "flex",
                                                                         flexDirection: "row",
@@ -547,7 +548,7 @@ const AddToCart = (props) => {
                                                                         </View>
 
                                                                     </View>
-                                                            ) :
+                                                             :
                                                                 <View key={item.id} style={{
                                                                     display: "flex",
                                                                     flexDirection: "row",

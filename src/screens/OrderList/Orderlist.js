@@ -13,6 +13,7 @@ const Orderlist = (props) => {
     const [destinationVal, setDestinationVal] = useState("");
     const [showTransporatation, setshowTransporatation] = useState(false);
     const [transportationVal, setTransportationVal] = useState();
+    const [fillvalue,setValue]=useState(false);
     const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 
     // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
@@ -46,8 +47,11 @@ const Orderlist = (props) => {
         })
     }
     const showSuccessModal = () => {
-
-        AddSo();
+        if(destinationVal){
+            AddSo();
+        }else{
+            setValue(true)
+        }
     };
     // let ParsedData = [];
     const formattedDate = `${currentDate.getMonth() + 1
@@ -177,8 +181,10 @@ const Orderlist = (props) => {
                                         borderColor: "#E4E7EA",
                                         color:"#626262",
                                         fontSize: 18, backgroundColor: "#EEE"
-                                    }} onChangeText={(e) => setDestinationVal(e)}></TextInput>
-
+                                    }} onChangeText={(e) => { setDestinationVal(e); e?setValue(false):setValue(true)}}></TextInput>
+                                    <View>
+                                        <Text style={{color:"red",fontWeight:500}}>{fillvalue?"Filed cannot be empty":""}</Text>
+                                    </View>
                                 </View>
                                 <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Transportation</Text>
@@ -247,7 +253,7 @@ const Orderlist = (props) => {
                                     </ScrollView>
                                 }
                             </View>
-                            <View style={{ display: "flex", flexDirection: "column", height: "auto", maxHeight: 380, width: "100%", backgroundColor: "#FFFFFF" }}>
+                            <View style={{ display: "flex", flexDirection: "column", height: 380, width: "100%", backgroundColor: "#FFFFFF" }}>
                                 <ScrollView nestedScrollEnabled={true} >
                                     {ParsedData && ParsedData.map((item, index) => (
                                         <View key={item.id} style={{ paddingBottom: 20 }}>
@@ -329,8 +335,9 @@ const Orderlist = (props) => {
                             </View>
                             <View style={{
                                 height: 250,
-                                // height:"100%",
-                                backgroundColor: "white"
+                                // height:"auto",
+                                backgroundColor: "#FFF",
+                                paddingHorizontal:10
                             }}>
                                 <View style={{
                                     width: "100%",
