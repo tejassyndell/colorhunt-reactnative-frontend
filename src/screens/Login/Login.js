@@ -11,14 +11,15 @@ import {
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Login = (props) => {
   const { navigation } = props;
-
+  const route = useRoute();
+  const { getstatus } = route.params;
   // State variables
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
@@ -56,9 +57,10 @@ const Login = (props) => {
         try {
           if (!phoneNumber) {
             console.log("{}{}{}{}{}{}{}{}{}");
+            getstatus(false);
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
-            navigation.navigate("Home");
+            navigation.navigate("Slider", { isLoggedIn: false });
             return;
           } else {
           }
@@ -70,6 +72,8 @@ const Login = (props) => {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res.status === 200) {
               // Store data in local storage
+              console.log(res.data[0].Name);
+              getstatus(true, res.data[0].Name);
               const userData = res.data; // Assuming res.data contains user data
               AsyncStorage.setItem("UserData", JSON.stringify(userData))
                 .then(() => {
@@ -97,7 +101,7 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         // Navigate to the Home screen or your desired destination.
-        navigation.navigate("Home");
+        navigation.navigate("Slider");
       } else {
         // Handle invalid OTP (display an error message, etc.).
         alert("Invalid OTP. Please try again.");
@@ -124,7 +128,7 @@ const Login = (props) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../../assets/Login/mainlogo.png")}
+        source={require("../../../assets/Login/FrameLoginImage.png")}
         style={styles.backgroundImage}
       >
         <View style={styles.contentContainer}>
@@ -228,7 +232,8 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.05,
     paddingLeft: 10,
     alignContent: "space-between",
-    borderRadius:7
+    borderRadius:7,
+    marginBottom: 30,
   },
   otpContainer: {
     flexDirection: "row",
