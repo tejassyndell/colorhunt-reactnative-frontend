@@ -80,11 +80,12 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     justifyContent: "center",
     alignItems: "center",
-    width: "98%",
+    width:"100%",
     elevation: 2,
     shadowColor: "gray",
     shadowOpacity: 0.5,
     marginLeft: "1%",
+    overflow:"scroll"
   },
   size: {
     width: 40,
@@ -116,6 +117,15 @@ const styles = StyleSheet.create({
   },
  
   size_options: {
+    paddingLeft: 8,
+    display: "flex",
+    flexDirection:"row",
+    fontSize: 18,
+    fontWeight: 500,
+    // width:"100%",
+    // backgroundColor:'red'
+  },
+  size_options2:{
     paddingLeft: 8,
     display: "flex",
     flexDirection:"row",
@@ -251,10 +261,10 @@ const styles = StyleSheet.create({
   size_p: {
     marginTop: 0,
     marginBottom: "1%",
-    fontSize: 13,
-    color: "rgba(0, 0, 0, 0.60)",
+    fontSize: 18,
+    color: "#00000099",
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: 500,
   },
   product_detail_sec3: {
     display: "flex",
@@ -477,6 +487,9 @@ const styles = StyleSheet.create({
   },
   article_ratio_content: {
     textAlign: "center",
+    fontSize:18,
+    fontWeight:500,
+    color:"#626262"
   },
   article_rate_container: {
     width: "40%",
@@ -486,6 +499,9 @@ const styles = StyleSheet.create({
   },
   article_rate_content: {
     textAlign: "center",
+    fontSize:18,
+    fontWeight:500,
+    color:"#626262"
   },
   articallabel1: {
     fontWeight: 500,
@@ -500,9 +516,13 @@ const styles = StyleSheet.create({
     top: 0,
     marginLeft:6,
     marginBottom: 5,
+  
   },
   main_total_div: {
     width: "30%",
+    display:"flex",
+    justifyContent:"flex-end",
+    alignContent:"flex-end"
   },
   addto_card_container: {
     width: 208,

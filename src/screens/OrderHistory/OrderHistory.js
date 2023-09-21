@@ -34,7 +34,8 @@ const OrderHistory = (props) => {
                     }}>Orders History</Text>
                 </View>
             ),
-            headerRight: () => <View />
+            headerRight: () => <View />,
+           
         });
     }, []);
     return (

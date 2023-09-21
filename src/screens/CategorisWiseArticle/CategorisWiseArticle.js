@@ -130,6 +130,7 @@ const rmvProductWishlist = async (i) => {
             <Image  style={{ width: 38, height: 38, borderRadius: 5 }} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
         </View>),
+        
     });
   }, []);
 
@@ -331,7 +332,7 @@ const rmvProductWishlist = async (i) => {
       {/* </ScrollView> */}
       {isFilterVisible ? null : (
         <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-          <ButtomNavigation navigation={navigation} />
+          <ButtomNavigation navigation={navigation} page="home"/>
         </View>
       )}
 

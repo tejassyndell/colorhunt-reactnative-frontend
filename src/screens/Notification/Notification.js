@@ -54,6 +54,7 @@ export default function Notification(props) {
                 }}>Notification</Text>
             </View>
         ),
+        
     });
 }, []);
 

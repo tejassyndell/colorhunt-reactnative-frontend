@@ -41,6 +41,7 @@ export default function RecipeScreen(props) {
         />
       ),
       headerRight: () => <View />,
+    
     });
   }, []);
 

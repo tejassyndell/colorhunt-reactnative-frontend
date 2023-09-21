@@ -10,7 +10,7 @@ export default function Contact(props) {
     const [username, setusername] = useState('');
     const [email, setEmail] = useState('');
     const [subject, setSubject] = useState('');
-    const [message, setMessage] = useState('Message');
+    const [message, setMessage] = useState('');
     const [showValidationErrors, setShowValidationErrors] = useState(false);
     const [inputWidth, setInputWidth] = useState();
     const [inputHeight, setInputHeight] = useState();
@@ -44,7 +44,7 @@ export default function Contact(props) {
         setButtonWidth(buttonWidth);
         setButtonFontSize(buttonFontSize);
 
-        
+
     }, []);
 
     // Calculate the image dimensions based on screen size
@@ -130,7 +130,7 @@ export default function Contact(props) {
     const styles = StyleSheet.create({
         submitButton: {
             backgroundColor: 'black',
-            borderRadius: 5,
+            borderRadius: 6.711,
             width: buttonWidth,
             height: 47,
             justifyContent: 'center',
@@ -145,7 +145,7 @@ export default function Contact(props) {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ alignItems: 'center', borderTopColor: "#828282", borderTopWidth: 1 }}>
-            <ResponsiveImage source={require('../../../assets/ContactPagePNG/contact.png')} initWidth={imageWidth.toString()} initHeight={imageHeight.toString()} style={{ marginTop: 15 }} />
+                <ResponsiveImage source={require('../../../assets/ContactPagePNG/contact.png')} initWidth={imageWidth.toString()} initHeight={imageHeight.toString()} style={{ marginTop: 15 }} />
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <View >
@@ -179,6 +179,7 @@ export default function Contact(props) {
                         </View>
                         <View style={{ marginBottom: 5, height: multilineHeight }}>
                             <TextInput
+                                placeholder='Message'
                                 editable // Make the input editable
                                 multiline // Allow multiple lines
                                 numberOfLines={numberOfLines} // Set the number of lines to 4
@@ -200,7 +201,7 @@ export default function Contact(props) {
             <View
                 style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
             >
-                <ButtomNavigation navigation={navigation} />
+                <ButtomNavigation navigation={navigation} page="contactus" />
             </View>
         </View>
     )
