@@ -7,7 +7,6 @@ import {
   ImageBackground,
   StyleSheet,
   Dimensions,
-  Image,
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -131,6 +130,7 @@ const Login = (props) => {
         source={require("../../../assets/Login/FrameLoginImage.png")}
         style={styles.backgroundImage}
       >
+        {/* Content inside the ImageBackground */}
         <View style={styles.contentContainer}>
           <Text style={styles.title}>Welcome!</Text>
           <Text style={styles.subtitle}>
@@ -140,25 +140,25 @@ const Login = (props) => {
           </Text>
           {showLogin ? (
             <View style={styles.phonecon}>
-              <View style={styles.phoneIcon}>
-                <Image
-                  source={require("../../../assets/Login/phone.png")}
-                  style={styles.icon}
-                />
-              </View>
-              <TextInput
-                style={styles.input}
-                placeholder="Phone Number"
-                keyboardType="numeric"
-                maxLength={10}
-                value={phoneNumber}
-                onChangeText={(text) => {
-                  // Input validation: allow only numeric characters
-                  const numericText = text.replace(/[^0-9]/g, "");
-                  setPhoneNumber(numericText);
-                }}
+            <View style={styles.phoneIcon}>
+              <Image
+                source={require("../../../assets/Login/phone.png")}
+                style={styles.icon}
               />
             </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              keyboardType="numeric"
+              maxLength={10}
+              value={phoneNumber}
+              onChangeText={(text) => {
+                // Input validation: allow only numeric characters
+                const numericText = text.replace(/[^0-9]/g, "");
+                setPhoneNumber(numericText);
+              }}
+            />
+          </View>
           ) : (
             <View style={styles.otpContainer}>
               {otp.map((digit, index) => (
@@ -206,33 +206,27 @@ const styles = StyleSheet.create({
     marginRight: "5%",
   },
   title: {
-    color: '#FFF',
-    fontFamily: 'Glory',
-    fontSize: 30,
-    fontStyle: 'normal',
-    fontWeight: '700',
+    color: "white",
+    fontSize: windowWidth * 0.08,
+    fontWeight: "bold",
     marginBottom: 10,
   },
-  
   subtitle: {
-    color: 'rgba(255, 255, 255, 0.70)',
-    fontFamily: 'Glory',
-    fontSize: 20,
-    fontStyle: 'normal',
-    fontWeight: '700',
-    marginBottom: 120,
+    color: "#FFFFFFB2",
+    fontSize: windowWidth * 0.035,
+    fontWeight: "bold",
+    marginBottom: 60,
   },
-  
   input: {
-    width: 300,
-    height: 50,
+    width: "100%",
+    height: windowHeight * 0.06,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",
     fontSize: windowWidth * 0.05,
-    paddingLeft: 10,
+    borderRadius: windowWidth * 0.03,
+    paddingLeft: windowWidth * 0.04,
     alignContent: "space-between",
-    borderRadius:7,
     marginBottom: 30,
   },
   otpContainer: {
@@ -253,28 +247,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: 'black',
-    width: '40%',
+    backgroundColor: "black",
+    width: "40%",
     height: windowHeight * 0.05,
-    borderRadius: 10,
+    borderRadius: windowWidth * 0.02,
     marginTop: 30,
-    justifyContent: 'center',
-    alignItems: 'center', // Align text to the right
-    marginLeft: '65%',
+    justifyContent: "center",
+    marginLeft: "71%",
     bottom: 0,
   },
-  
   buttonText: {
-    color: 'white',
+    color: "white",
+
     fontSize: windowWidth * 0.05,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    borderRadius: 10,
-    backgroundColor: '#212121',
-    width: 148,
-    height: 50,
+    fontWeight: "bold",
+    textAlign: "center",
   },
-  
   phoneIcon: {
     height: 50,
     width: 50,
@@ -294,6 +282,19 @@ const styles = StyleSheet.create({
     bottom: 80,
     width: "80%",
     height: 50,
+  },
+
+input: {
+    width: 300,
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 1,
+    backgroundColor: "white",
+    fontSize: windowWidth * 0.05,
+    paddingLeft: 10,
+    alignContent: "space-between",
+    borderRadius:7,
+    marginBottom: 30,
   },
 });
 

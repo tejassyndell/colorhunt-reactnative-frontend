@@ -40,4 +40,3 @@ yarn-error.*
 *.tsbuildinfo
 
 # @end expo-cli
-node_modules

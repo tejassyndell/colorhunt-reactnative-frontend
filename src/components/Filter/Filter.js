@@ -93,7 +93,10 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
 
     return (
-        <View style={[styles.container]}>
+        <View style={[styles.container,
+        {
+            transform: [{ translateY: positionY }],
+        }]}>
             <Animated.View
                 style={{
                     opacity: fadeAnim,
