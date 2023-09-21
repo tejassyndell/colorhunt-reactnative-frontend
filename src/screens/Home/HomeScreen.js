@@ -710,7 +710,7 @@ export default function HomeScreen(props) {
             <View
               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
             >
-              <ButtomNavigation navigation={navigation} page="home"/>
+              <ButtomNavigation  isLoggedIn={isLoggedIn} navigation={navigation} page="home"/>
             </View>
           )}
 

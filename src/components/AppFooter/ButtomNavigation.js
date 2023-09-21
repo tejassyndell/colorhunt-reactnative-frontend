@@ -4,13 +4,11 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ButtomNavigation = (props) => {
   const route = useRoute();
-  const { isLoggedIn } = route.params?.isLoggedIn||true;
-
-const {navigation , page} = props; 
+  const { navigation, page,isLoggedIn } = props;
   //   const navigation = useNavigation();
 
   const HomePage = () => {
-    isLoggedIn ? navigation.navigate("Home") : "";
+    isLoggedIn ? navigation.navigate("Home",{isLoggedIn:true}) : "";
   };
 
   const OrderList = () => {
@@ -54,7 +52,7 @@ const {navigation , page} = props;
           onPress={HomePage}
         >
           <Image
-            source={page==="home"?require("../../../assets/AppFooterIcons/Home_down_nav_icone.png"):require("../../../assets/deselect_home.png")}
+            source={page === "home" ? require("../../../assets/AppFooterIcons/Home_down_nav_icone.png") : require("../../../assets/deselect_home.png")}
             style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>
@@ -110,7 +108,7 @@ const {navigation , page} = props;
           onPress={ProfilePage}
         >
           <Image
-            source={page==="profile"?require("../../../assets/select_profile.png"):require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")}
+            source={page === "profile" ? require("../../../assets/select_profile.png") : require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")}
             style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>
