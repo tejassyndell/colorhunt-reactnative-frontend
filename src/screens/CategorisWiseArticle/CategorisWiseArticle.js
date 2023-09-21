@@ -55,6 +55,7 @@ export default function AllArticle(props) {
         const sdPrds = res.data.slice()
         const fildata = sdPrds.filter((item) => item.Category === category)
         setNameDatas(fildata)
+        console.log(fildata);
         setSelectprd(fildata)
         setFilterDataSearch(fildata)
         setFinalData(fildata)
@@ -71,6 +72,7 @@ export default function AllArticle(props) {
       user_id: 197,
       article_id: i.Id,
     };
+    console.log(data);
     try {
       await getAddWishlist(data).then((res) => {
         console.log("Item added to wishlist:", i.Id);
@@ -97,7 +99,8 @@ export default function AllArticle(props) {
           console.log("Item removed from wishlist:", i.Id);
           console.log("Wishlist data after removal:", res.data);
           // Assuming DeleteWishlist returns the updated wishlist data
-          const updatedWishlistData = res.data; // Update this based on your API response
+          const updatedWishlistData = res.data;
+           // Update this based on your API response
           setSelectprd(updatedWishlistData); // Update the selectedprd state
           setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
         }
@@ -158,7 +161,7 @@ export default function AllArticle(props) {
       },
     }}>
       <View id={item.id} style={styles.producticones}>
-        {selectedprd.some((i) => i.Id === item.Id) ? (
+        {selectedprd.includes(item.Id) ? (
           <TouchableOpacity
             onPress={() => {
               rmvProductWishlist(item);

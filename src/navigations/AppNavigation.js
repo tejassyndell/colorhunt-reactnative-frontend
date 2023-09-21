@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -25,15 +25,25 @@ import OrderHistory from "../screens/OrderHistory/OrderHistory";
 import SliderScreen from "../screens/SliderScreen/SliderScreen";
 import SkipSliderScreen from "../screens/SkipHomePage/SkipSlider";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
+import { useEffect } from "react";
 const Stack = createStackNavigator();
-
+let value = false;
+let name = "";
 function MainNavigator() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const getstatus = (status, val) => {
+    setIsLoggedIn(status);
+    value = status;
+    name = val;
+  };
+  console.log(isLoggedIn, "-=-=-=-=-=-");
   return (
     <Stack.Navigator screenOptions={{ unmountInactiveRoutes: true }}>
       <Stack.Screen
         name="login"
         component={Login}
         options={{ headerShown: false }}
+        initialParams={{ getstatus }}
       />
       <Stack.Screen
         name="Slider"
@@ -77,6 +87,26 @@ function MainNavigator() {
 const Drawer = createDrawerNavigator();
 
 function DrawerStack() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    // Fetch user data and update state variables accordingly
+    async function fetchData() {
+      try {
+        const userData = await AsyncStorage.getItem("UserData");
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          if (parsedUserData.length > 0) {
+            setIsLoggedIn(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+  console.log(value, "-=-=--=-==+++++++");
   return (
     <Drawer.Navigator
       drawerPosition="left"
@@ -85,7 +115,11 @@ function DrawerStack() {
       }}
       screenOptions={{ headerShown: false, unmountOnBlur: false }}
       drawerContent={({ navigation }) => (
-        <DrawerContainer navigation={navigation} />
+        <DrawerContainer
+          navigation={navigation}
+          isLoggedIn={value}
+          name={name}
+        />
       )}
     >
       <Drawer.Screen name="Main" component={MainNavigator} />
