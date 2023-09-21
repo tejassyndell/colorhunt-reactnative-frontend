@@ -13,6 +13,7 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const CreateAccount = ({ onClose }) => {
+  console.log("++++++++++");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -399,8 +400,9 @@ const styles = StyleSheet.create({
   submitButton: {
     width: windowWidth * 0.3,
     backgroundColor: "black",
-    padding: 18,
+    // padding: 18,
     borderRadius: 5,
+    justifyContent:"center",
     alignItems: "center",
     height: windowHeight * 0.06,
 
