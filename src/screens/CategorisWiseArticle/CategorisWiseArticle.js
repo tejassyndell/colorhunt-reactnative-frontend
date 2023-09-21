@@ -29,7 +29,7 @@ export default function AllArticle(props) {
   const { item } = route.params;
 
   //   console.log('.............',item.Category);
-  const convertToTitleCase = (str) => {
+  const convertToTitleCase=(str) =>{
     return str
       .toLowerCase()
       .split('-') // Split the string at hyphens
@@ -64,48 +64,48 @@ export default function AllArticle(props) {
     }
   }
 
+  
 
+ const addArticleWishlist = async (i) => {
+  let data = {
+    user_id: 197,
+    article_id: i.Id,
+  };
+  try {
+    await getAddWishlist(data).then((res) => {
+      console.log("Item added to wishlist:", i.Id);
+      console.log("Wishlist data after adding:", res.data);
+      // Assuming getAddWishlist returns the updated wishlist data
+      const updatedWishlistData = res.data; // Update this based on your API response
+      setSelectprd(updatedWishlistData); // Update the selectedprd state
+      setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
+    });
+  } catch (error) {
+    console.log("Error adding item to wishlist:", error);
+  }
+};
 
-  const addArticleWishlist = async (i) => {
-    let data = {
-      user_id: 197,
-      article_id: i.Id,
-    };
-    try {
-      await getAddWishlist(data).then((res) => {
-        console.log("Item added to wishlist:", i.Id);
-        console.log("Wishlist data after adding:", res.data);
-        // Assuming getAddWishlist returns the updated wishlist data
+const rmvProductWishlist = async (i) => {
+  let data = {
+    party_id: 197,
+    article_id: i.Id,
+  };
+  console.log("Removing item from wishlist:", i.Id);
+  try {
+    await DeleteWishlist(data).then((res) => {
+      if (res.status === 200) {
+        console.log("Item removed from wishlist:", i.Id);
+        console.log("Wishlist data after removal:", res.data);
+        // Assuming DeleteWishlist returns the updated wishlist data
         const updatedWishlistData = res.data; // Update this based on your API response
         setSelectprd(updatedWishlistData); // Update the selectedprd state
         setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
-      });
-    } catch (error) {
-      console.log("Error adding item to wishlist:", error);
-    }
-  };
-
-  const rmvProductWishlist = async (i) => {
-    let data = {
-      party_id: 197,
-      article_id: i.Id,
-    };
-    console.log("Removing item from wishlist:", i.Id);
-    try {
-      await DeleteWishlist(data).then((res) => {
-        if (res.status === 200) {
-          console.log("Item removed from wishlist:", i.Id);
-          console.log("Wishlist data after removal:", res.data);
-          // Assuming DeleteWishlist returns the updated wishlist data
-          const updatedWishlistData = res.data; // Update this based on your API response
-          setSelectprd(updatedWishlistData); // Update the selectedprd state
-          setFinalData(updatedWishlistData); // Update the finalData state (if necessary)
-        }
-      });
-    } catch (error) {
-      console.log("Error removing item from wishlist:", error);
-    }
-  };
+      }
+    });
+  } catch (error) {
+    console.log("Error removing item from wishlist:", error);
+  }
+};
 
 
   useEffect(() => {
@@ -125,9 +125,9 @@ export default function AllArticle(props) {
         <View />
       ),
       headerRight: () => (
-        <View style={{ marginRight: 5, width: 50, height: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <View style={{ marginRight:5, width: 50, height: 50, display: "flex", justifyContent: "center", alignItems: "center" }}>
           <TouchableOpacity onPress={() => { navigation.navigate("Profile") }} >
-            <Image style={{ width: 38, height: 38, borderRadius: 5 }} source={require("../../../assets/Nevbar/Profile.png")} />
+            <Image  style={{ width: 38, height: 38, borderRadius: 5 }} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
         </View>),
         
@@ -157,7 +157,7 @@ export default function AllArticle(props) {
         height: 0,
       },
     }}>
-      <View id={item.id} style={styles.producticones}>
+       <View id={item.id} style={styles.producticones}>
         {selectedprd.some((i) => i.Id === item.Id) ? (
           <TouchableOpacity
             onPress={() => {
@@ -197,32 +197,31 @@ export default function AllArticle(props) {
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{
-          width: "90%",
-          height: 180,
-
-          zIndex: 1,
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{  width: "90%",
+         height: 180,
+          
+          zIndex:1,
           shadowColor: "gray",
           shadowOpacity: 0.4,
           // shadowRadius: 4,
           elevation: 2,
-          borderRadius: 10,
+          borderRadius:10,
           shadowOffset: {
             width: 0,
             height: 0,
           },
-
-        }} />
+          
+          }} />
       </View>
       <View style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-          <View style={{ width: 180, alignItems: 'center', paddingTop: 10, paddingBottom: 10, borderRadius: 10 }}>
+        <View style={{width:180,alignItems:'center',paddingTop: 10,paddingBottom:10,borderRadius:10}}>
             <Text style={{ fontWeight: 'bold', }}>{item.ArticleNumber}</Text>
-            <Text>{convertToTitleCase(item.Category)}</Text>
-            <Text style={{ fontWeight: 'bold' }}>{"₹" + item.ArticleRate + ".00"}</Text>
+          <Text>{convertToTitleCase(item.Category)}</Text>
+          <Text style={{ fontWeight: 'bold'}}>{"₹" + item.ArticleRate + ".00"}</Text>
 
-          </View>
+            </View>
         </TouchableOpacity>
       </View>
 
@@ -294,7 +293,7 @@ export default function AllArticle(props) {
 
     <View style={{ width: '100%', height: '100%', backgroundColor: '#FFF' }}>
       <View
-        style={{ flexDirection: "row", alignItems: "center", width: "89%", paddingStart: 3, paddingTop: 10 }}
+        style={{ flexDirection: "row", alignItems: "center", width: "87%" }}
       >
         <SearchBar searchPhrase={searchText}
           setSearchPhrase={setSearchText} />
@@ -306,19 +305,18 @@ export default function AllArticle(props) {
         </TouchableOpacity>
       </View>
       <View>
-        <Text
-          style={{
-            fontSize: 15,
-            fontWeight: 700,
-            paddingLeft: 15,
-            height: 20,
-            alignItems: "center",
-            marginTop: 15
-          }}
-        >
-          Men's {titlename}
-        </Text>
-      </View>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                paddingLeft: 15,
+                height: 20,
+                alignItems: "center",
+              }}
+            >
+              Men's {titlename}
+            </Text>
+          </View>
       {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
       <View style={{ position: 'relative', width: '100%', backgroundColor: "#FFF", height: 'auto', top: 20 }}>
         <FlatList
@@ -353,19 +351,18 @@ export default function AllArticle(props) {
         >
           <View
             style={{
-              width: "92%",
+              width: "90%",
               backgroundColor: "#FFF",
               position: "absolute",
               bottom: 0,
-              left: 1,
+              left: 0,
               right: 0, // To make it span the full width
-              marginLeft: "4%", // Margin on the left side
+              marginLeft: "auto", // Margin on the left side
+              marginRight: "auto", // Margin on the right side
               padding: 10,
-              borderTopLeftRadius: 10, // Adjust the radius as needed
-              borderTopRightRadius: 10,
             }}
           >
-            <Filter status={true} onFilterChange={handleFilterChange}
+            <Filter onFilterChange={handleFilterChange}
               onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate} />
           </View>
