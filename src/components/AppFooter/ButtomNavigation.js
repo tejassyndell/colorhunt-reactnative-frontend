@@ -4,29 +4,35 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ButtomNavigation = (props) => {
   const route = useRoute();
-  const { isLoggedIn } = route.params?.isLoggedIn||true;
 
-const {navigation , page} = props; 
+// const {navigation , page , isLoggedIn} = props; 
+const {navigation , page } = props; 
+
   //   const navigation = useNavigation();
 
   const HomePage = () => {
-    isLoggedIn ? navigation.navigate("Home") : "";
+    // isLoggedIn? navigation.navigate("Home") : "";
+    navigation.navigate("Home")
   };
 
   const OrderList = () => {
-    isLoggedIn ? navigation.navigate("") : "";
+    // isLoggedIn ? navigation.navigate("") : "";
+    navigation.navigate("")
   };
 
   const CartPage = () => {
-    isLoggedIn ? navigation.navigate("cart_list") : "";
+    // isLoggedIn ? navigation.navigate("cart_list") : "";
+    navigation.navigate("cart_list")
   };
 
   const NotificationPage = () => {
-    isLoggedIn ? navigation.navigate("") : "";
+    // isLoggedIn ? navigation.navigate("") : "";
+    navigation.navigate("")
   };
 
   const ProfilePage = () => {
-    isLoggedIn ? navigation.navigate("Profile") : "";
+    // isLoggedIn ? navigation.navigate("Profile") : "";
+    navigation.navigate("Profile")
   };
 
   return (
