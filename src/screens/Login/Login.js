@@ -58,7 +58,7 @@ const Login = (props) => {
             console.log("{}{}{}{}{}{}{}{}{}");
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
-            navigation.navigate("Slider", { isLoggedIn: false });
+            navigation.navigate("Home");
             return;
           } else {
           }
@@ -97,7 +97,7 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         // Navigate to the Home screen or your desired destination.
-        navigation.navigate("Slider");
+        navigation.navigate("Home");
       } else {
         // Handle invalid OTP (display an error message, etc.).
         alert("Invalid OTP. Please try again.");
