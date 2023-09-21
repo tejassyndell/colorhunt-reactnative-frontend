@@ -7,6 +7,7 @@ import {
   ImageBackground,
   StyleSheet,
   Dimensions,
+  Image,
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -57,7 +58,7 @@ const Login = (props) => {
             console.log("{}{}{}{}{}{}{}{}{}");
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
-            navigation.navigate("Home", { isLoggedIn: false });
+            navigation.navigate("Home");
             return;
           } else {
           }
@@ -96,7 +97,7 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         // Navigate to the Home screen or your desired destination.
-        navigation.navigate("Home", { isLoggedIn: true });
+        navigation.navigate("Home");
       } else {
         // Handle invalid OTP (display an error message, etc.).
         alert("Invalid OTP. Please try again.");
@@ -126,27 +127,34 @@ const Login = (props) => {
         source={require("../../../assets/Login/mainlogo.png")}
         style={styles.backgroundImage}
       >
-        {/* Content inside the ImageBackground */}
         <View style={styles.contentContainer}>
           <Text style={styles.title}>Welcome!</Text>
           <Text style={styles.subtitle}>
             {showLogin
               ? "Please Login To Continue"
-              : "Enter the 4-digit OTP sent to your phone"}
+              : "Please Login To Continue"}
           </Text>
           {showLogin ? (
-            <TextInput
-              style={styles.input}
-              placeholder="Phone Number"
-              keyboardType="numeric"
-              maxLength={10}
-              value={phoneNumber}
-              onChangeText={(text) => {
-                // Input validation: allow only numeric characters
-                const numericText = text.replace(/[^0-9]/g, "");
-                setPhoneNumber(numericText);
-              }}
-            />
+            <View style={styles.phonecon}>
+              <View style={styles.phoneIcon}>
+                <Image
+                  source={require("../../../assets/Login/phone.png")}
+                  style={styles.icon}
+                />
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Phone Number"
+                keyboardType="numeric"
+                maxLength={10}
+                value={phoneNumber}
+                onChangeText={(text) => {
+                  // Input validation: allow only numeric characters
+                  const numericText = text.replace(/[^0-9]/g, "");
+                  setPhoneNumber(numericText);
+                }}
+              />
+            </View>
           ) : (
             <View style={styles.otpContainer}>
               {otp.map((digit, index) => (
@@ -176,6 +184,7 @@ const Login = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
   },
   backgroundImage: {
     width: "100%",
@@ -188,32 +197,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 20,
+    bottom: 10,
     marginLeft: "5%",
     marginRight: "5%",
   },
   title: {
-    color: "white",
-    fontSize: windowWidth * 0.08,
-    fontWeight: "bold",
-    marginBottom: 20,
+    color: '#FFF',
+    fontFamily: 'Glory',
+    fontSize: 30,
+    fontStyle: 'normal',
+    fontWeight: '700',
+    marginBottom: 10,
   },
+  
   subtitle: {
-    color: "#FFFFFFB2",
-    fontSize: windowWidth * 0.035,
-    fontWeight: "bold",
-    marginBottom: 60,
+    color: 'rgba(255, 255, 255, 0.70)',
+    fontFamily: 'Glory',
+    fontSize: 20,
+    fontStyle: 'normal',
+    fontWeight: '700',
+    marginBottom: 120,
   },
+  
   input: {
-    width: "100%",
-    height: windowHeight * 0.08,
+    width: 300,
+    height: 50,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",
     fontSize: windowWidth * 0.05,
-    borderRadius: windowWidth * 0.03,
-    paddingLeft: windowWidth * 0.04,
+    paddingLeft: 10,
     alignContent: "space-between",
+    borderRadius:7
   },
   otpContainer: {
     flexDirection: "row",
@@ -230,22 +245,50 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.04,
     borderRadius: windowWidth * 0.04,
     textAlign: "center",
+    marginBottom: 20,
   },
   button: {
-    backgroundColor: "black",
-    width: "40%",
-    height: windowHeight * 0.07,
-    borderRadius: windowWidth * 0.02,
-    marginTop: 40,
-    justifyContent: "center",
-    marginLeft: "60%",
+    backgroundColor: 'black',
+    width: '40%',
+    height: windowHeight * 0.05,
+    borderRadius: 10,
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center', // Align text to the right
+    marginLeft: '65%',
+    bottom: 0,
   },
+  
   buttonText: {
-    color: "white",
-
+    color: 'white',
     fontSize: windowWidth * 0.05,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
+    borderRadius: 10,
+    backgroundColor: '#212121',
+    width: 148,
+    height: 50,
+  },
+  
+  phoneIcon: {
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+    borderRadius: 7,
+    borderWidth: 3,
+    borderColor: "#212121",
+  },
+  icon: {  backgroundColor: "white" },
+  phonecon: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 80,
+    width: "80%",
+    height: 50,
   },
 });
 
