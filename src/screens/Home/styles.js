@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign:'right',
     color:'red',
-    paddingRight:10,
-    paddingTop:10
+    paddingRight:15,
+    paddingTop:15
     // Add other icon styling here
   },
   disabledIcon: {
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     color:'black',
     fontSize: 20,
     textAlign:'right',
-    paddingRight:10,
-    paddingTop:10
+    paddingRight:15,
+    paddingTop:15
     // Add styles for disabled icon here
   },
 });
