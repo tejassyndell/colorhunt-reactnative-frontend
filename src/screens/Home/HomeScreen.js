@@ -710,7 +710,7 @@ export default function HomeScreen(props) {
             <View
               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
             >
-              <ButtomNavigation  isLoggedIn={isLoggedIn} navigation={navigation} page="home"/>
+              <ButtomNavigation navigation={navigation} page="home"/>
             </View>
           )}
 
@@ -743,7 +743,6 @@ export default function HomeScreen(props) {
                 }}
               >
                 <Filter
-                status={false}
                   onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter}
                   Scategories={selectedCategories}
