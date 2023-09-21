@@ -158,7 +158,7 @@ const Orderlist = (props) => {
                     <ScrollView nestedScrollEnabled={true}>
                         <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "#828282", borderTopWidth: 1, borderStyle: "solid" }}>
                             <View style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", backgroundColor: "#FFF" }}>
-                                <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+                                <View style={{ paddingHorizontal: 20, paddingVertical: 10 ,gap:5}}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Date</Text>
                                     <View style={{
                                         width: "100%",
@@ -172,7 +172,7 @@ const Orderlist = (props) => {
                                     ><Text style={{color:"#626262",fontSize:18,fontWeight:500}}>{formattedDate}</Text></View>
 
                                 </View>
-                                <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+                                <View style={{ paddingHorizontal: 20,paddingTop:8,gap:5 }}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Destination</Text>
                                     <TextInput value={destinationVal} style={{
                                         width: "100%",
@@ -186,7 +186,7 @@ const Orderlist = (props) => {
                                         <Text style={{color:"red",fontWeight:500}}>{fillvalue?"Filed cannot be empty":""}</Text>
                                     </View>
                                 </View>
-                                <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+                                <View style={{ paddingHorizontal: 20 ,paddingBottom:10,paddingTop:2,gap:5}}>
                                     <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Transportation</Text>
 
                                     {/* <TextInput  value={transportationVal} onChangeText={(e) => filterTransportationValue(e)}   style={{
@@ -348,8 +348,8 @@ const Orderlist = (props) => {
                                 }}>
                                     <View style={{ width: "100%", paddingLeft: "60%" }}>
                                         <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
-                                            <View style={{ width: '50%', paddingTop: 2 }}>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>Rate</Text>
+                                            <View style={{ width: '50%', paddingTop: 2,paddingRight:4 }}>
+                                                <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right"}}>Rate</Text>
                                             </View>
                                             <View style={{ width: '45%' }}>
                                                 <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{totalrate}.00</Text>

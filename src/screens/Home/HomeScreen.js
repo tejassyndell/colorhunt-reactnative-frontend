@@ -22,7 +22,7 @@ import SearchBar from "../../components/SearchBar/searchbar";
 import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
-
+import ResponsiveImage from 'react-native-responsive-image';
 export default function HomeScreen(props) {
   const { navigation } = props;
   const route = useRoute();
