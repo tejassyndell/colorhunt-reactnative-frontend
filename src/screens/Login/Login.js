@@ -57,7 +57,7 @@ const Login = (props) => {
             console.log("{}{}{}{}{}{}{}{}{}");
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
-            navigation.navigate("Skip");
+            navigation.navigate("Home", { isLoggedIn: false });
             return;
           } else {
           }
@@ -96,7 +96,7 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         // Navigate to the Home screen or your desired destination.
-        navigation.navigate("Home");
+        navigation.navigate("Home", { isLoggedIn: true });
       } else {
         // Handle invalid OTP (display an error message, etc.).
         alert("Invalid OTP. Please try again.");
@@ -125,7 +125,6 @@ const Login = (props) => {
       <ImageBackground
         source={require("../../../assets/Login/mainlogo.png")}
         style={styles.backgroundImage}
-        resizeMode="cover"
       >
         {/* Content inside the ImageBackground */}
         <View style={styles.contentContainer}>
@@ -177,15 +176,11 @@ const Login = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    height: "100%",
   },
   backgroundImage: {
     width: "100%",
-    height: "100%",
-    flex: 1,
     resizeMode: "cover",
-    padding: 0,
+    flex: 1,
   },
   contentContainer: {
     flex: 1,
