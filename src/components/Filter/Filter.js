@@ -7,7 +7,7 @@ import { useRef } from "react"
 
 export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     minArticleRate,
-    maxArticleRate, }) {
+    maxArticleRate, status }) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
     const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
@@ -105,7 +105,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                     //   backgroundColor: 'blue',
                 }}
             >
-                <View style={styles.header}>
+                {status === false ? <View style={status === false ? styles.header : styles.categoryx}>
                     <Text style={styles.headerText}>Categories</Text>
                     <TouchableOpacity onPress={closeFilter}>
                         <Image
@@ -113,8 +113,8 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                             style={styles.closeIcon}
                         />
                     </TouchableOpacity>
-                </View>
-                <View style={styles.categoriesContainer}>
+                </View> : ""}
+                {status === false ? <View style={styles.categoriesContainer}>
                     {data.map((item) => (
                         <TouchableOpacity
                             key={item.Id}
@@ -145,9 +145,21 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
                         </TouchableOpacity>
                     ))}
-                </View>
+                </View> : ""}
                 <View style={styles.container2}>
-                    <Text style={styles.label}>Price Range</Text>
+                    {status ?
+                        <View style={ styles.headertrue }>
+                            <Text style={styles.headerText}>Price Range </Text>
+                            <TouchableOpacity onPress={closeFilter}>
+                                <Image
+                                    source={require("../../../assets/FilterIcon/Close.png")}
+                                    style={styles.closeIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        :
+                        <Text style={styles.label}>Price Range</Text>}
+
                     <View style={styles.sliderContainer}>
                         <Text>{minArticleRate}</Text>
                         <MultiSlider
@@ -188,9 +200,10 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         onPress={resetFilters}
                     >
                         <Text
-                            style={{
-                                color: selectedCategories.length > 0 ? "white" : "black",
-                            }}
+                          style={{
+                            color: selectedCategories.length > 0 ? "white" : "black",
+                            fontWeight: 'bold', fontSize:18 // Add this line for bold text
+                        }}
                         >
                             Reset
                         </Text>
@@ -220,6 +233,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+    },
+    headertrue:{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom:15
     },
     headerText: {
         fontSize: 25,
@@ -255,6 +274,14 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 20, // For Android
     },
+    // categoryx:{
+    //     flex:1,
+    //     display:'flex',
+    //     flexDirection:'row',
+    //     justifyContent:'flex-end',
+    //     alignContent:'flex-end',
+    //     width:'100%',
+    // },
     radioButton: {
         width: 20,
         height: 20,
@@ -289,7 +316,7 @@ const styles = StyleSheet.create({
         height: 38
     },
     container2: {
-        marginTop: 30
+        marginTop: 5
     },
     label: {
         fontSize: 24,
@@ -309,7 +336,7 @@ const styles = StyleSheet.create({
         borderRadius: 7.6,
         height: 38,
         fontSize: 24,
-        fontWeight:700,
+        fontWeight: 700,
         width: 76,
         alignItems: 'center',
         justifyContent: 'center',

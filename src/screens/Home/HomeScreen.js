@@ -698,6 +698,7 @@ export default function HomeScreen(props) {
             }}
           >
             <Filter
+              status={false}
               onFilterChange={handleFilterChange}
               onCloseFilter={handleCloseFilter}
               Scategories={selectedCategories}
