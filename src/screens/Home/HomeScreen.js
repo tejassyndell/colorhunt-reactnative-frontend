@@ -16,22 +16,9 @@ import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount"
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 export default function HomeScreen(props) {
-  const checkUserLogin = async () => {
-    const token = await AsyncStorage.getItem("UserData");
 
-    if (token) {
-      console.log(token);
-      setIsLoggedIn(true);
-    } else {
-      console.log(token,"()()()()(");
-      setIsLoggedIn(false);
-    }
-  };
-
-  useEffect(() => {
-    checkUserLogin();
-  },[]);
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
   const [ApplyStatushBack, setApplyStatushBack] = useState(true);
@@ -48,8 +35,14 @@ export default function HomeScreen(props) {
   const [filterDataSearch, setFilterDataSearch] = useState([]);
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible,setCreateAccountVisible]=useState(false);
+  
+
+  // useFocusEffect(
+  //   React.
+  //   checkUserLogin();
+  // );
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -58,7 +51,20 @@ export default function HomeScreen(props) {
     console.log("done");
     setCreateAccountVisible(true);
   };
-
+  const checkUserLoginforheader = async () => {
+    try {
+      const data = await AsyncStorage.getItem("UserData");
+      if (data) {
+        navigation.navigate("Profile")
+      } else {
+        openCreateAccountModal();
+      }
+    } catch (error) {
+      console.error("Error while checking user data:", error);
+      return false; // Handle errors by returning false or appropriate error handling
+    }
+  };
+  
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
@@ -190,8 +196,10 @@ export default function HomeScreen(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              isLoggedIn?
-              navigation.navigate("Profile"):openCreateAccountModal()
+              checkUserLoginforheader();
+              // console.log(val,";;;;;;");
+              // val===true?
+              // :openCreateAccountModal()
             }}
           >
             <Image
@@ -276,7 +284,21 @@ export default function HomeScreen(props) {
     setMaxArticleRate(maxRate);
     console.log(maxArticleRate);
   }, [nameDatas]);
+  const checkUserLogin = async () => {
+    const token = await AsyncStorage.getItem("UserData");
 
+    if (token) {
+      console.log(token,"------------");
+      setIsLoggedIn(true);
+    } else {
+      console.log(token,"()()()()(");
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(()=>{
+      checkUserLogin();
+    },[])
   return (
     <>
       {isLoading ? (
@@ -696,7 +718,7 @@ export default function HomeScreen(props) {
         <View
           style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
         >
-          <ButtomNavigation navigation={navigation} page="home"/>
+          <ButtomNavigation navigation={navigation} isLoggedIn={isLoggedIn} page="home"/>
         </View>
       )}
 

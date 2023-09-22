@@ -73,7 +73,7 @@ export default function DrawerContainer(props) {
                 paddingTop: 10,
               }}
             >
-              {name}
+              {name?name:"Guest"}
             </Text>
           </View>
           <View style={{ marginTop: 12 }}>
@@ -122,7 +122,7 @@ export default function DrawerContainer(props) {
             />
             <MenuButton
               title="About us"
-              source={require("../../../assets/sidebaricons/1000005827.png")}
+              source={require("../../../assets/about.png")}
               onPress={() => {
                 navigation.navigate("AboutUs");
                 navigation.closeDrawer();
@@ -130,7 +130,7 @@ export default function DrawerContainer(props) {
             />
             <MenuButton
               title="Contact Us"
-              source={require("../../../assets/sidebaricons/1000005828.png")}
+              source={require("../../../assets/contact.png")}
               onPress={() => {
                 navigation.navigate("Contact");
                 navigation.closeDrawer();
@@ -157,7 +157,7 @@ export default function DrawerContainer(props) {
           <>
             <MenuButton
               title="About us"
-              source={require("../../../assets/sidebaricons/1000005827.png")}
+              source={require("../../../assets/about.png")}
               onPress={() => {
                 navigation.navigate("AboutUs");
                 navigation.closeDrawer();
@@ -165,7 +165,7 @@ export default function DrawerContainer(props) {
             />
             <MenuButton
               title="Contact Us"
-              source={require("../../../assets/sidebaricons/1000005828.png")}
+              source={require("../../../assets/contact.png")}
               onPress={() => {
                 navigation.navigate("Contact");
                 navigation.closeDrawer();
@@ -173,9 +173,9 @@ export default function DrawerContainer(props) {
             />
             <MenuButton
               title="Sign Up"
-              source={require("../../../assets/sidebaricons/cart.png")}
+              source={require("../../../assets/sidebaricons/download-4.png")}
               onPress={() => {
-                navigation.navigate("SignUp");
+                navigation.navigate("login");
                 navigation.closeDrawer();
               }}
             />
