@@ -213,7 +213,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const handlePress = (item) => {
-    navigation.navigate("CategorisWiseArticle", { item: item });
+    navigation.navigate("CategorisWiseArticle", { item1: item });
   };
 
   const filterData = () => {
@@ -318,7 +318,7 @@ export default function HomeScreen(props) {
                   paddingLeft: 8,
                   height: 30,
                   alignItems: "center",
-                  fontFamily: "Glory-Regular",
+                  // fontFamily: "Glory-Regular",
                 }}
               >
                 Welcome
