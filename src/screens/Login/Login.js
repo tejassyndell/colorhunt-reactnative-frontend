@@ -144,8 +144,9 @@ const Login = (props) => {
               />
             </View>
             <TextInput
-              style={styles.input}
+              style={[styles.input,{color:"black"}]}
               placeholder="Phone Number"
+              placeholderTextColor="#0000004D"
               keyboardType="numeric"
               maxLength={10}
               value={phoneNumber}
