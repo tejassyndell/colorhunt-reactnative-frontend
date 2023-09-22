@@ -66,11 +66,12 @@ export default function DrawerContainer(props) {
 
             <Text
               style={{
-                color: "#ffff",
+                color: "#FFF",
                 left: 10,
-                fontSize: 19,
+                fontSize: 16,
                 height: 50,
                 paddingTop: 10,
+                fontWeight:700,
               }}
             >
               {name?name:"Guest"}

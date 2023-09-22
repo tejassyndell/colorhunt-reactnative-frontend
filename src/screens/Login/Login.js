@@ -125,20 +125,74 @@ const Login = (props) => {
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
   return (
-    <View style={styles.container}>
-      <ImageBackground
+    // <View style={styles.container}>
+    //   <ImageBackground
+    //     source={require("../../../assets/Login/mainlogo.png")}
+    //     style={styles.backgroundImage} 
+    //   />
+    //     <View style={styles.contentContainer}>
+    //       <Text style={styles.title}>Welcome!</Text>
+    //       <Text style={styles.subtitle}>
+    //         {showLogin
+    //           ? "Please Login To Continue"
+    //           : "Please Login To Continue"}
+    //       </Text>
+    //       {showLogin ? (
+    //         <View style={styles.inputContainer}>
+    //         <View style={styles.phoneIconContainer}>
+    //           <Image
+    //             source={require("../../../assets/Login/phone.png")}
+    //             style={styles.phoneIcon}
+    //           />
+    //         </View>
+    //         <TextInput
+    //           style={styles.input}
+    //           placeholder="Phone Number"
+    //           keyboardType="numeric"
+    //           maxLength={10}
+    //           value={phoneNumber}
+    //           onChangeText={(text) => {
+    //             const numericText = text.replace(/[^0-9]/g, "");
+    //             setPhoneNumber(numericText);
+    //           }}
+    //         />
+    //       </View>
+    //       ) : (
+    //         <View style={styles.otpContainer}>
+    //           {otp.map((digit, index) => (
+    //             <TextInput
+    //               key={index}
+    //               style={styles.otpInput}
+    //               placeholder=""
+    //               keyboardType="numeric"
+    //               maxLength={1}
+    //               value={digit}
+    //               onChangeText={(text) => handleOTPDigitChange(index, text)}
+    //               ref={otpInput[index]}
+    //             />
+    //           ))}
+    //         </View>
+    //       )}
+    //       <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
+    //         <Text style={styles.buttonText}>{buttonLabel}</Text>
+    //       </TouchableOpacity>
+    //     </View>
+    // </View>
+    <View style={styles.container1}>
+      <Image
         source={require("../../../assets/Login/mainlogo.png")}
-        style={styles.backgroundImage} 
+        style={styles.backgroundImage1}
       />
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>Welcome!</Text>
-          <Text style={styles.subtitle}>
-            {showLogin
-              ? "Please Login To Continue"
-              : "Please Login To Continue"}
-          </Text>
-          {showLogin ? (
-            <View style={styles.inputContainer}>
+
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Welcome!</Text>
+        <Text style={styles.subtitle}>
+          {showLogin
+            ? "Please Login To Continue"
+            : "Please Login To Continue"}
+        </Text>
+        {showLogin ? (
+          <View style={styles.inputContainer}>
             <View style={styles.phoneIconContainer}>
               <Image
                 source={require("../../../assets/Login/phone.png")}
@@ -157,26 +211,26 @@ const Login = (props) => {
               }}
             />
           </View>
-          ) : (
-            <View style={styles.otpContainer}>
-              {otp.map((digit, index) => (
-                <TextInput
-                  key={index}
-                  style={styles.otpInput}
-                  placeholder=""
-                  keyboardType="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChangeText={(text) => handleOTPDigitChange(index, text)}
-                  ref={otpInput[index]}
-                />
-              ))}
-            </View>
-          )}
-          <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
-            <Text style={styles.buttonText}>{buttonLabel}</Text>
-          </TouchableOpacity>
-        </View>
+        ) : (
+          <View style={styles.otpContainer}>
+            {otp.map((digit, index) => (
+              <TextInput
+                key={index}
+                style={styles.otpInput}
+                placeholder=""
+                keyboardType="numeric"
+                maxLength={1}
+                value={digit}
+                onChangeText={(text) => handleOTPDigitChange(index, text)}
+                ref={otpInput[index]}
+              />
+            ))}
+          </View>
+        )}
+        <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
+          <Text style={styles.buttonText}>{buttonLabel}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -189,8 +243,8 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    height:'100%',
-    width:'100%',
+    height: '100%',
+    width: '100%',
     resizeMode: "cover",
     justifyContent: "center",
   },
@@ -202,7 +256,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 30,
     marginHorizontal: 5,
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
   },
   title: {
     color: "white",
@@ -229,7 +283,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 20,
-    width: "90%",
+    width: "87%",
   },
   otpInput: {
     width: "22%",
@@ -244,12 +298,12 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "black",
-    width: "40%",
+    width: 148,
     height: windowHeight * 0.05,
-    borderRadius: windowWidth * 0.02,
-    marginTop: 30,
+    borderRadius: 10,
+    marginTop: 50,
     justifyContent: "center",
-    marginLeft: "71%",
+    marginLeft: "58%",
     bottom: 0,
   },
   buttonText: {
@@ -265,11 +319,14 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: '100%',
+    width: '91%',
     height: 50,
     borderColor: "gray",
     borderRadius: 7,
     marginBottom: 30,
+    // paddingHorizontal:20,
+    paddingLeft:8,
+    paddingRight:20
   },
   phoneIconContainer: {
     height: 50,
@@ -280,6 +337,28 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderRightWidth: 3,
     borderColor: "#212121",
+  },
+  container1: {
+    flex: 1,
+    // justifyContent:"center",
+    // alignContent:"center",
+    // alignItems:"center",
+    backgroundColor: '#FFF'
+  },
+  backgroundImage1: {
+    flex: 1,
+    resizeMode: 'stretch', // This ensures the image covers the entire screen
+    width: '90%',
+    // height:"90%" ,
+    // marginLeft:30,
+    marginTop: 15,// This will make the image take the full width of the parent container
+    marginHorizontal: 20
+  },
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // You can add padding or additional styling here
   },
 });
 
