@@ -156,7 +156,7 @@ export default function DrawerContainer(props) {
           // If user is not logged in
           <>
             <MenuButton
-              title="Sign Up"
+              title="SignUp"
               source={require("../../../assets/sidebaricons/cart.png")}
               onPress={() => {
                 navigation.navigate("SignUp");
