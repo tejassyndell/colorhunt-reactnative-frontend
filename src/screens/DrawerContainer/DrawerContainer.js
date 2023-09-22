@@ -164,6 +164,14 @@ export default function DrawerContainer(props) {
               }}
             />
             <MenuButton
+              title="Sign Up"
+              source={require("../../../assets/sidebaricons/cart.png")}
+              onPress={() => {
+                navigation.navigate("SignUp");
+                navigation.closeDrawer();
+              }}
+            />
+            <MenuButton
               title="About us"
               source={require("../../../assets/about.png")}
               onPress={() => {
