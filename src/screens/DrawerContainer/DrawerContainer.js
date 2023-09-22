@@ -156,6 +156,14 @@ export default function DrawerContainer(props) {
           // If user is not logged in
           <>
             <MenuButton
+              title="Sign Up"
+              source={require("../../../assets/sidebaricons/cart.png")}
+              onPress={() => {
+                navigation.navigate("SignUp");
+                navigation.closeDrawer();
+              }}
+            />
+            <MenuButton
               title="About us"
               source={require("../../../assets/sidebaricons/1000005827.png")}
               onPress={() => {
@@ -168,14 +176,6 @@ export default function DrawerContainer(props) {
               source={require("../../../assets/sidebaricons/1000005828.png")}
               onPress={() => {
                 navigation.navigate("Contact");
-                navigation.closeDrawer();
-              }}
-            />
-            <MenuButton
-              title="Sign Up"
-              source={require("../../../assets/sidebaricons/cart.png")}
-              onPress={() => {
-                navigation.navigate("SignUp");
                 navigation.closeDrawer();
               }}
             />

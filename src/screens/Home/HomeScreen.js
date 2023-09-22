@@ -1,5 +1,12 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity , Modal } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 // import Image from 'react-native-responsive-image';
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -14,7 +21,7 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
-import CreateAccount from "../../components/CreateAccount/CreateAccount"
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function HomeScreen(props) {
   const checkUserLogin = async () => {
@@ -24,14 +31,14 @@ export default function HomeScreen(props) {
       console.log(token);
       setIsLoggedIn(true);
     } else {
-      console.log(token,"()()()()(");
+      console.log(token, "()()()()(");
       setIsLoggedIn(false);
     }
   };
 
   useEffect(() => {
     checkUserLogin();
-  },[]);
+  }, []);
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
   const [ApplyStatushBack, setApplyStatushBack] = useState(true);
@@ -48,8 +55,8 @@ export default function HomeScreen(props) {
   const [filterDataSearch, setFilterDataSearch] = useState([]);
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isCreateAccountVisible,setCreateAccountVisible]=useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -65,24 +72,24 @@ export default function HomeScreen(props) {
   const getWishlist = async () => {
     const data = {
       party_id: 197,
-    }
+    };
     const result = await getWishlistData(data).then((res) => {
-      setSelectprd(res.data)
-    })
-  }
+      setSelectprd(res.data);
+    });
+  };
   function convertToTitleCase(str) {
     return str
       .toLowerCase()
-      .split('-') // Split the string at hyphens or spaces
+      .split("-") // Split the string at hyphens or spaces
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join('-'); // Join the words with spaces
+      .join("-"); // Join the words with spaces
   }
   const addArticleWishlist = async (i) => {
     let data = {
       user_id: 197,
       article_id: i.Id,
     };
-    console.log('............111',data);
+    console.log("............111", data);
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist();
@@ -93,23 +100,23 @@ export default function HomeScreen(props) {
   };
 
   const rmvProductWishlist = async (i) => {
-    console.log(i, 'r')
+    console.log(i, "r");
     let data = {
       party_id: 197,
       article_id: i.Id,
-    }
-    console.log(data)
+    };
+    console.log(data);
 
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist()
+          getWishlist();
         }
-      })
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getCategoriesname();
@@ -190,8 +197,9 @@ export default function HomeScreen(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              isLoggedIn?
-              navigation.navigate("Profile"):openCreateAccountModal()
+              isLoggedIn
+                ? navigation.navigate("Profile")
+                : openCreateAccountModal();
             }}
           >
             <Image
@@ -285,7 +293,12 @@ export default function HomeScreen(props) {
         </View>
       ) : (
         <View
-          style={{ width: "100%", height: "100%", backgroundColor: "#FFF",paddingStart:5}}
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#FFF",
+            paddingStart: 5,
+          }}
         >
           <View style={{ marginTop: 10 }}>
             <View>
@@ -313,7 +326,11 @@ export default function HomeScreen(props) {
                 searchPhrase={searchText}
                 setSearchPhrase={setSearchText}
               />
-              <TouchableOpacity onPress={()=>{isLoggedIn?openFilter():openCreateAccountModal()}}>
+              <TouchableOpacity
+                onPress={() => {
+                  isLoggedIn ? openFilter() : openCreateAccountModal();
+                }}
+              >
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{ width: 40, height: 40, borderRadius: 10 }}
@@ -337,7 +354,9 @@ export default function HomeScreen(props) {
                   fontSize: 12,
                   fontWeight: 600,
                 }}
-                onPress={()=>{isLoggedIn?viewAllArticles():openCreateAccountModal()}}
+                onPress={() => {
+                  isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                }}
               >
                 View All
               </Text>
@@ -361,45 +380,48 @@ export default function HomeScreen(props) {
                   ? finalData.length > 0
                     ? finalData.map((item) => (
                         <TouchableOpacity
-                          onPress={() =>{isLoggedIn?
-                            navigation.navigate("DetailsOfArticals", {
-                              id: item.Id,
-                            }):openCreateAccountModal()
-                          }
-                          }
+                          onPress={() => {
+                            isLoggedIn
+                              ? navigation.navigate("DetailsOfArticals", {
+                                  id: item.Id,
+                                })
+                              : openCreateAccountModal();
+                          }}
                         >
                           <View
                             key={item.id}
                             style={{
-                             alignItems: "center",
-                            height: 280,
-                            width: 155,
-                            marginLeft: 10,
-                            marginRight: 5,
-                            borderRadius: 10,
+                              alignItems: "center",
+                              height: 280,
+                              width: 155,
+                              marginLeft: 10,
+                              marginRight: 5,
+                              borderRadius: 10,
                             }}
                           >
                             <View
                               style={{
                                 width: 155,
-                              height: 190,
-                              borderColor: "gray",
-                              shadowColor: "rgba(0, 0, 0, 0.5)",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 3,
-                              borderRadius:10,
-                              elevation:4, // For Android, use elevation
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
+                                height: 190,
+                                borderColor: "gray",
+                                shadowColor: "rgba(0, 0, 0, 0.5)",
+                                shadowOpacity: 0.9,
+                                shadowRadius: 3,
+                                borderRadius: 10,
+                                elevation: 4, // For Android, use elevation
+                                shadowOffset: {
+                                  width: 0,
+                                  height: 0,
+                                },
                               }}
                             >
                               <View id={item.id} style={styles.producticones}>
                                 {selectedprd.some((i) => i.Id === item.Id) ? (
                                   <TouchableOpacity
-                                    onPress={() => {isLoggedIn?
-                                      rmvProductWishlist(item):openCreateAccountModal()
+                                    onPress={() => {
+                                      isLoggedIn
+                                        ? rmvProductWishlist(item)
+                                        : openCreateAccountModal();
                                     }}
                                   >
                                     <FontAwesome
@@ -412,8 +434,10 @@ export default function HomeScreen(props) {
                                   </TouchableOpacity>
                                 ) : (
                                   <TouchableOpacity
-                                    onPress={() => {isLoggedIn?
-                                      addArticleWishlist(item):openCreateAccountModal()
+                                    onPress={() => {
+                                      isLoggedIn
+                                        ? addArticleWishlist(item)
+                                        : openCreateAccountModal();
                                     }}
                                   >
                                     <FontAwesome
@@ -441,7 +465,7 @@ export default function HomeScreen(props) {
                             </Text>
                             <Text>{convertToTitleCase(item.Category)}</Text>
                             <Text style={{ fontWeight: "bold" }}>
-                              {"₹" + item.ArticleRate +".00"}
+                              {"₹" + item.ArticleRate + ".00"}
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -461,8 +485,10 @@ export default function HomeScreen(props) {
                           }}
                         >
                           <TouchableOpacity
-                            onPress={() => {isLoggedIn?
-                              handlePress(item):openCreateAccountModal()
+                            onPress={() => {
+                              isLoggedIn
+                                ? handlePress(item)
+                                : openCreateAccountModal();
                             }}
                           >
                             <View
@@ -513,8 +539,10 @@ export default function HomeScreen(props) {
                         }}
                       >
                         <TouchableOpacity
-                          onPress={() => {isLoggedIn?
-                            handlePress(item):openCreateAccountModal()
+                          onPress={() => {
+                            isLoggedIn
+                              ? handlePress(item)
+                              : openCreateAccountModal();
                           }}
                         >
                           <Image
@@ -527,7 +555,7 @@ export default function HomeScreen(props) {
                           />
                         </TouchableOpacity>
                         <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                        {convertToTitleCase(item.Category)}
+                          {convertToTitleCase(item.Category)}
                         </Text>
                       </View>
                     ))}
@@ -554,7 +582,9 @@ export default function HomeScreen(props) {
                     fontSize: 12,
                     fontWeight: 600,
                   }}
-                  onPress={()=>{isLoggedIn?viewAllArticles():openCreateAccountModal()}}
+                  onPress={() => {
+                    isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                  }}
                 >
                   View All
                 </Text>
@@ -586,8 +616,6 @@ export default function HomeScreen(props) {
                             marginRight: 5,
                             marginBottom: 120,
                             borderRadius: 10,
-                            
-                            
                           }}
                         >
                           <View
@@ -598,8 +626,8 @@ export default function HomeScreen(props) {
                               shadowColor: "rgba(0, 0, 0, 0.5)",
                               shadowOpacity: 0.9,
                               shadowRadius: 3,
-                              borderRadius:10,
-                              elevation:4, // For Android, use elevation
+                              borderRadius: 10,
+                              elevation: 4, // For Android, use elevation
                               shadowOffset: {
                                 width: 0,
                                 height: 0,
@@ -608,10 +636,11 @@ export default function HomeScreen(props) {
                           >
                             <View id={item.id} style={styles.producticones}>
                               {selectedprd.some((i) => i.Id === item.Id) ? (
-                                
                                 <TouchableOpacity
-                                  onPress={() => {isLoggedIn?
-                                    rmvProductWishlist(item):openCreateAccountModal()
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? rmvProductWishlist(item)
+                                      : openCreateAccountModal();
                                   }}
                                 >
                                   <FontAwesome
@@ -624,8 +653,10 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               ) : (
                                 <TouchableOpacity
-                                  onPress={() => {isLoggedIn?
-                                    addArticleWishlist(item):openCreateAccountModal()
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? addArticleWishlist(item)
+                                      : openCreateAccountModal();
                                   }}
                                 >
                                   <FontAwesome
@@ -653,7 +684,7 @@ export default function HomeScreen(props) {
                           </Text>
                           <Text>{convertToTitleCase(item.Category)}</Text>
                           <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate +'.00'}
+                            {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
                       ))
@@ -682,7 +713,7 @@ export default function HomeScreen(props) {
                           </Text>
                           <Text>{convertToTitleCase(item.Category)}</Text>
                           <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate + '.00'}
+                            {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
                       ))}
@@ -693,28 +724,26 @@ export default function HomeScreen(props) {
         </View>
       )}
       {isFilterVisible ? null : (
-        <View
-          style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-        >
-          <ButtomNavigation navigation={navigation} page="home"/>
+        <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+          <ButtomNavigation navigation={navigation} page="home" />
         </View>
       )}
 
       {isFilterVisible && (
         <View
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          top: 0,
-          right: 0, // Updated to 0
-          left: 0,
-          zIndex:2,
-        }}
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            right: 0, // Updated to 0
+            left: 0,
+            zIndex: 2,
+          }}
         >
           <View
-             style={{
+            style={{
               width: "92%",
               backgroundColor: "white",
               position: "absolute",
@@ -734,37 +763,36 @@ export default function HomeScreen(props) {
               maxArticleRate={maxArticleRate}
             />
           </View>
-          
         </View>
       )}
       <Modal
-            visible={isCreateAccountVisible}
-            animationType="slide"
-            transparent={true}
-            onRequestClose={closeCreateAccountModal}
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%", // Adjust the width as needed
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
           >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(0, 0, 0, 0.4)",
-              }}
-            >
-              <View
-                style={{
-                  width: "100%", // Adjust the width as needed
-                  backgroundColor: "#fff",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginTop: 25,
-                  marginBottom: 25,
-                }}
-              >
-                <CreateAccount onClose={closeCreateAccountModal} />
-              </View>
-            </View>
-          </Modal>
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
