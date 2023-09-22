@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity,AsyncStorage } from "react-native";
+import { Text, View, Image, ScrollView, TouchableOpacity , Modal } from "react-native";
 // import Image from 'react-native-responsive-image';
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -14,8 +14,24 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
 import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
-
+import CreateAccount from "../../components/CreateAccount/CreateAccount"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function HomeScreen(props) {
+  const checkUserLogin = async () => {
+    const token = await AsyncStorage.getItem("UserData");
+
+    if (token) {
+      console.log(token);
+      setIsLoggedIn(true);
+    } else {
+      console.log(token,"()()()()(");
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    checkUserLogin();
+  },[]);
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
   const [ApplyStatushBack, setApplyStatushBack] = useState(true);
@@ -32,10 +48,20 @@ export default function HomeScreen(props) {
   const [filterDataSearch, setFilterDataSearch] = useState([]);
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isCreateAccountVisible,setCreateAccountVisible]=useState(false);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   // ------- add product in wishlist start-------------
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
   const getWishlist = async () => {
     const data = {
       party_id: 197,
@@ -164,7 +190,8 @@ export default function HomeScreen(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile");
+              isLoggedIn?
+              navigation.navigate("Profile"):openCreateAccountModal()
             }}
           >
             <Image
@@ -286,7 +313,7 @@ export default function HomeScreen(props) {
                 searchPhrase={searchText}
                 setSearchPhrase={setSearchText}
               />
-              <TouchableOpacity onPress={openFilter}>
+              <TouchableOpacity onPress={()=>{isLoggedIn?openFilter():openCreateAccountModal()}}>
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{ width: 40, height: 40, borderRadius: 10 }}
@@ -310,7 +337,7 @@ export default function HomeScreen(props) {
                   fontSize: 12,
                   fontWeight: 600,
                 }}
-                onPress={viewAllArticles}
+                onPress={()=>{isLoggedIn?viewAllArticles():openCreateAccountModal()}}
               >
                 View All
               </Text>
@@ -334,10 +361,11 @@ export default function HomeScreen(props) {
                   ? finalData.length > 0
                     ? finalData.map((item) => (
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() =>{isLoggedIn?
                             navigation.navigate("DetailsOfArticals", {
                               id: item.Id,
-                            })
+                            }):openCreateAccountModal()
+                          }
                           }
                         >
                           <View
@@ -370,8 +398,8 @@ export default function HomeScreen(props) {
                               <View id={item.id} style={styles.producticones}>
                                 {selectedprd.some((i) => i.Id === item.Id) ? (
                                   <TouchableOpacity
-                                    onPress={() => {
-                                      rmvProductWishlist(item);
+                                    onPress={() => {isLoggedIn?
+                                      rmvProductWishlist(item):openCreateAccountModal()
                                     }}
                                   >
                                     <FontAwesome
@@ -384,8 +412,8 @@ export default function HomeScreen(props) {
                                   </TouchableOpacity>
                                 ) : (
                                   <TouchableOpacity
-                                    onPress={() => {
-                                      addArticleWishlist(item);
+                                    onPress={() => {isLoggedIn?
+                                      addArticleWishlist(item):openCreateAccountModal()
                                     }}
                                   >
                                     <FontAwesome
@@ -433,8 +461,8 @@ export default function HomeScreen(props) {
                           }}
                         >
                           <TouchableOpacity
-                            onPress={() => {
-                              handlePress(item);
+                            onPress={() => {isLoggedIn?
+                              handlePress(item):openCreateAccountModal()
                             }}
                           >
                             <View
@@ -485,8 +513,8 @@ export default function HomeScreen(props) {
                         }}
                       >
                         <TouchableOpacity
-                          onPress={() => {
-                            handlePress(item);
+                          onPress={() => {isLoggedIn?
+                            handlePress(item):openCreateAccountModal()
                           }}
                         >
                           <Image
@@ -526,7 +554,7 @@ export default function HomeScreen(props) {
                     fontSize: 12,
                     fontWeight: 600,
                   }}
-                  onPress={viewAllArticles}
+                  onPress={()=>{isLoggedIn?viewAllArticles():openCreateAccountModal()}}
                 >
                   View All
                 </Text>
@@ -582,8 +610,8 @@ export default function HomeScreen(props) {
                               {selectedprd.some((i) => i.Id === item.Id) ? (
                                 
                                 <TouchableOpacity
-                                  onPress={() => {
-                                    rmvProductWishlist(item);
+                                  onPress={() => {isLoggedIn?
+                                    rmvProductWishlist(item):openCreateAccountModal()
                                   }}
                                 >
                                   <FontAwesome
@@ -596,8 +624,8 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               ) : (
                                 <TouchableOpacity
-                                  onPress={() => {
-                                    addArticleWishlist(item);
+                                  onPress={() => {isLoggedIn?
+                                    addArticleWishlist(item):openCreateAccountModal()
                                   }}
                                 >
                                   <FontAwesome
@@ -706,8 +734,37 @@ export default function HomeScreen(props) {
               maxArticleRate={maxArticleRate}
             />
           </View>
+          
         </View>
       )}
+      <Modal
+            visible={isCreateAccountVisible}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={closeCreateAccountModal}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+              }}
+            >
+              <View
+                style={{
+                  width: "100%", // Adjust the width as needed
+                  backgroundColor: "#fff",
+                  borderRadius: 10,
+                  padding: 10,
+                  marginTop: 25,
+                  marginBottom: 25,
+                }}
+              >
+                <CreateAccount onClose={closeCreateAccountModal} />
+              </View>
+            </View>
+          </Modal>
     </>
   );
 }

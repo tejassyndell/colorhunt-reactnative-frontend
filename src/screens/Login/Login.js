@@ -7,17 +7,19 @@ import {
   ImageBackground,
   StyleSheet,
   Dimensions,
+  Image
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const Login = (props) => {
   const { navigation } = props;
-
+  const route = useRoute();
+  const { getstatus } = route.params;
   // State variables
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
@@ -55,9 +57,10 @@ const Login = (props) => {
         try {
           if (!phoneNumber) {
             console.log("{}{}{}{}{}{}{}{}{}");
+            getstatus(false);
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
-            navigation.navigate("Home", { isLoggedIn: false });
+            navigation.navigate("Slider", { isLoggedIn: false });
             return;
           } else {
           }
@@ -69,6 +72,8 @@ const Login = (props) => {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res.status === 200) {
               // Store data in local storage
+              console.log(res.data[0].Name);
+              getstatus(true, res.data[0].Name);
               const userData = res.data; // Assuming res.data contains user data
               AsyncStorage.setItem("UserData", JSON.stringify(userData))
                 .then(() => {
@@ -96,7 +101,7 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         // Navigate to the Home screen or your desired destination.
-        navigation.navigate("Home", { isLoggedIn: true });
+        navigation.navigate("Slider");
       } else {
         // Handle invalid OTP (display an error message, etc.).
         alert("Invalid OTP. Please try again.");
@@ -123,7 +128,7 @@ const Login = (props) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../../assets/Login/mainlogo.png")}
+        source={require("../../../assets/Login/FrameLoginImage.png")}
         style={styles.backgroundImage}
       >
         {/* Content inside the ImageBackground */}
@@ -132,9 +137,16 @@ const Login = (props) => {
           <Text style={styles.subtitle}>
             {showLogin
               ? "Please Login To Continue"
-              : "Enter the 4-digit OTP sent to your phone"}
+              : "Please Login To Continue"}
           </Text>
           {showLogin ? (
+            <View style={styles.phonecon}>
+            <View style={styles.phoneIcon}>
+              <Image
+                source={require("../../../assets/Login/phone.png")}
+                style={styles.icon}
+              />
+            </View>
             <TextInput
               style={styles.input}
               placeholder="Phone Number"
@@ -147,6 +159,7 @@ const Login = (props) => {
                 setPhoneNumber(numericText);
               }}
             />
+          </View>
           ) : (
             <View style={styles.otpContainer}>
               {otp.map((digit, index) => (
@@ -176,6 +189,7 @@ const Login = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
   },
   backgroundImage: {
     width: "100%",
@@ -188,7 +202,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 20,
+    bottom: 10,
     marginLeft: "5%",
     marginRight: "5%",
   },
@@ -196,7 +210,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: windowWidth * 0.08,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   subtitle: {
     color: "#FFFFFFB2",
@@ -205,15 +219,16 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   input: {
-    width: "100%",
-    height: windowHeight * 0.08,
+    width: 300,
+    height: 50,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",
     fontSize: windowWidth * 0.05,
-    borderRadius: windowWidth * 0.03,
-    paddingLeft: windowWidth * 0.04,
+    paddingLeft: 10,
     alignContent: "space-between",
+    borderRadius:7,
+    marginBottom: 30,
   },
   otpContainer: {
     flexDirection: "row",
@@ -230,15 +245,17 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.04,
     borderRadius: windowWidth * 0.04,
     textAlign: "center",
+    marginBottom: 20,
   },
   button: {
     backgroundColor: "black",
     width: "40%",
-    height: windowHeight * 0.07,
+    height: windowHeight * 0.05,
     borderRadius: windowWidth * 0.02,
-    marginTop: 40,
+    marginTop: 30,
     justifyContent: "center",
-    marginLeft: "60%",
+    marginLeft: "71%",
+    bottom: 0,
   },
   buttonText: {
     color: "white",
@@ -246,6 +263,26 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.05,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  phoneIcon: {
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+    borderRadius: 7,
+    borderWidth: 3,
+    borderColor: "#212121",
+  },
+  icon: {  backgroundColor: "white" },
+  phonecon: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 80,
+    width: "80%",
+    height: 50,
   },
 });
 
