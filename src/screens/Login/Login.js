@@ -219,11 +219,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: "100%",
-    fontSize: windowWidth * 0.05,
-    paddingLeft: 10,
+    fontSize: 22,
+    paddingLeft: 5,
     backgroundColor: "white",
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
+    color:' rgba(0, 0, 0, 0.30)'
   },
   otpContainer: {
     flexDirection: "row",
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "black",
+    backgroundColor:'#212121',
     width: "40%",
     height: windowHeight * 0.05,
     borderRadius: windowWidth * 0.02,
@@ -254,9 +255,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: windowWidth * 0.05,
-    fontWeight: "bold",
+    fontSize: 23,
+    fontWeight: 700,
     textAlign: "center",
+   
   },
   phoneIcon: {
     height: 20, // Adjust the icon size as needed
@@ -269,7 +271,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderColor: "gray",
     borderRadius: 7,
-    marginBottom: 30,
+    marginBottom: 40,
   },
   phoneIconContainer: {
     height: 50,
