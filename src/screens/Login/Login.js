@@ -123,15 +123,13 @@ const Login = (props) => {
     }
   };
 
-  // Determine the button label based on the current state
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../../assets/Login/FrameLoginImage.png")}
-        style={styles.backgroundImage}
-      >
-        {/* Content inside the ImageBackground */}
+        source={require("../../../assets/Login/mainlogo.png")}
+        style={styles.backgroundImage} 
+      />
         <View style={styles.contentContainer}>
           <Text style={styles.title}>Welcome!</Text>
           <Text style={styles.subtitle}>
@@ -140,11 +138,11 @@ const Login = (props) => {
               : "Please Login To Continue"}
           </Text>
           {showLogin ? (
-            <View style={styles.phonecon}>
-            <View style={styles.phoneIcon}>
+            <View style={styles.inputContainer}>
+            <View style={styles.phoneIconContainer}>
               <Image
                 source={require("../../../assets/Login/phone.png")}
-                style={styles.icon}
+                style={styles.phoneIcon}
               />
             </View>
             <TextInput
@@ -154,7 +152,6 @@ const Login = (props) => {
               maxLength={10}
               value={phoneNumber}
               onChangeText={(text) => {
-                // Input validation: allow only numeric characters
                 const numericText = text.replace(/[^0-9]/g, "");
                 setPhoneNumber(numericText);
               }}
@@ -176,12 +173,10 @@ const Login = (props) => {
               ))}
             </View>
           )}
-
           <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
             <Text style={styles.buttonText}>{buttonLabel}</Text>
           </TouchableOpacity>
         </View>
-      </ImageBackground>
     </View>
   );
 };
@@ -190,45 +185,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    alignItems: 'center',
   },
   backgroundImage: {
-    width: "100%",
-    resizeMode: "cover",
     flex: 1,
+    height:'100%',
+    width:'100%',
+    resizeMode: "cover",
+    justifyContent: "center",
   },
   contentContainer: {
     flex: 1,
-    width: "90%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 10,
-    marginLeft: "5%",
-    marginRight: "5%",
+    bottom: 30,
+    marginHorizontal: 5,
+    paddingHorizontal: 10,
   },
   title: {
     color: "white",
-    fontSize: windowWidth * 0.08,
-    fontWeight: "bold",
+    fontSize: 30,
+    fontWeight: 700,
     marginBottom: 10,
   },
   subtitle: {
-    color: "#FFFFFFB2",
-    fontSize: windowWidth * 0.035,
-    fontWeight: "bold",
+    color: "rgba(255, 255, 255, 0.70)",
+    fontSize: 20,
+    fontWeight: 700,
     marginBottom: 60,
   },
   input: {
-    width: 300,
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 1,
+    flex: 1,
+    height: "100%",
+    fontSize: 22,
+    paddingLeft: 5,
     backgroundColor: "white",
-    fontSize: windowWidth * 0.05,
-    paddingLeft: 10,
-    alignContent: "space-between",
-    borderRadius:7,
-    marginBottom: 30,
+    borderTopRightRadius: 7,
+    borderBottomRightRadius: 7,
+    color:' rgba(0, 0, 0, 0.30)'
   },
   otpContainer: {
     flexDirection: "row",
@@ -248,7 +244,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "black",
+    backgroundColor:'#212121',
     width: "40%",
     height: windowHeight * 0.05,
     borderRadius: windowWidth * 0.02,
@@ -259,31 +255,35 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-
-    fontSize: windowWidth * 0.05,
-    fontWeight: "bold",
+    fontSize: 23,
+    fontWeight: 700,
     textAlign: "center",
+   
   },
   phoneIcon: {
+    height: 20, // Adjust the icon size as needed
+    width: 20, // Adjust the icon size as needed
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: '100%',
+    height: 50,
+    borderColor: "gray",
+    borderRadius: 7,
+    marginBottom: 40,
+  },
+  phoneIconContainer: {
     height: 50,
     width: 50,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFF",
     borderRadius: 7,
-    borderWidth: 3,
+    borderRightWidth: 3,
     borderColor: "#212121",
   },
-  icon: {  backgroundColor: "white" },
-  phonecon: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 80,
-    width: "80%",
-    height: 50,
-  },
 });
+
 
 export default Login;
