@@ -8,6 +8,7 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import Filter from "../../components/Filter/Filter";
 import { FontAwesome } from '@expo/vector-icons';
+import { log } from "react-native-reanimated";
 
 export default function AllArticle(props) {
   const { navigation } = props;
@@ -37,6 +38,7 @@ export default function AllArticle(props) {
       .join('-'); // Join the words with hyphens
   }
   const category = (item.Category);
+  // console.log('..............',category);
 
   const titlename = convertToTitleCase(item.Category);
 
@@ -48,14 +50,17 @@ export default function AllArticle(props) {
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
-  const getproductname = async () => {
+  const getproductnamess = async () => {
     try {
       const res = await getProductName()
       if (res.status === 200) {
+        console.log(res.data);
         const sdPrds = res.data.slice()
+        console.log(sdPrds,'1233444');
         const fildata = sdPrds.filter((item) => item.Category === category)
         setNameDatas(fildata)
         setSelectprd(fildata)
+        console.log(fildata,'00000000000000000000000000000000');
         setFilterDataSearch(fildata)
         setFinalData(fildata)
       }
@@ -74,7 +79,7 @@ export default function AllArticle(props) {
     try {
       await getAddWishlist(data).then((res) => {
         console.log("Item added to wishlist:", i.Id);
-        console.log("Wishlist data after adding:", res.data);
+        // console.log("Wishlist data after adding:", res.data);
         // Assuming getAddWishlist returns the updated wishlist data
         const updatedWishlistData = res.data; // Update this based on your API response
         setSelectprd(updatedWishlistData); // Update the selectedprd state
@@ -94,8 +99,8 @@ export default function AllArticle(props) {
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          console.log("Item removed from wishlist:", i.Id);
-          console.log("Wishlist data after removal:", res.data);
+          // console.log("Item removed from wishlist:", i.Id);
+          // console.log("Wishlist data after removal:", res.data);
           // Assuming DeleteWishlist returns the updated wishlist data
           const updatedWishlistData = res.data; // Update this based on your API response
           setSelectprd(updatedWishlistData); // Update the selectedprd state
@@ -109,7 +114,7 @@ export default function AllArticle(props) {
 
 
   useEffect(() => {
-    getproductname();
+    getproductnamess();
   }, []);
 
   useLayoutEffect(() => {
@@ -239,8 +244,6 @@ export default function AllArticle(props) {
     if (searchText === '') {
       setFilteredData(nameDatas)
     } else {
-      console.log(filterDataSearch.length)
-      console.log(searchText)
       const filtered = filterDataSearch.filter((item) =>
         item.ArticleNumber.toString().includes(searchText.toString()) ||
         item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -249,7 +252,7 @@ export default function AllArticle(props) {
         item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
       )
       setFilteredData(filtered)
-      console.log(filteredData.length)
+      // console.log(filteredData.length)
       setNameDatas(filtered)
       setFinalData(filtered)
     }
@@ -269,9 +272,9 @@ export default function AllArticle(props) {
     }, -Infinity);
 
     setMinArticleRate(minRate);
-    console.log(minArticleRate)
+    // console.log(minArticleRate)
     setMaxArticleRate(maxRate);
-    console.log(maxArticleRate)
+    // console.log(maxArticleRate)
   }, [nameDatas]);
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
