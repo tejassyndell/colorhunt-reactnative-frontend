@@ -57,7 +57,7 @@ export default function DrawerContainer(props) {
               marginTop: 30,
             }}
           >
-            <TouchableOpacity onPress={() => navigation.navigate("")}>
+            <TouchableOpacity onPress={() =>  {isLoggedIn ?navigation.navigate("Profile"):""}}>
               <Image
                 source={require("../../../assets/sidebaricons/1171274903.png")}
                 style={{ width: 50, height: 50 }}
@@ -155,6 +155,14 @@ export default function DrawerContainer(props) {
         ) : (
           // If user is not logged in
           <>
+           <MenuButton
+              title="Sign Up"
+              source={require("../../../assets/sidebaricons/download-4.png")}
+              onPress={() => {
+                navigation.navigate("login");
+                navigation.closeDrawer();
+              }}
+            />
             <MenuButton
               title="About us"
               source={require("../../../assets/about.png")}
@@ -168,14 +176,6 @@ export default function DrawerContainer(props) {
               source={require("../../../assets/contact.png")}
               onPress={() => {
                 navigation.navigate("Contact");
-                navigation.closeDrawer();
-              }}
-            />
-            <MenuButton
-              title="Sign Up"
-              source={require("../../../assets/sidebaricons/download-4.png")}
-              onPress={() => {
-                navigation.navigate("login");
                 navigation.closeDrawer();
               }}
             />
