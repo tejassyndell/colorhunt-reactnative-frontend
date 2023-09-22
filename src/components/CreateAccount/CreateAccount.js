@@ -257,6 +257,10 @@ const CreateAccount = ({ onClose }) => {
       />
       {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
       <TextInput
+        editable // Make the input editable
+        multiline // Allow multiple lines
+        numberOfLines={4} // Set the number of lines to 4
+        maxLength={100}
         style={[styles.input, addressError && styles.inputError]}
         placeholder="Address"
         value={address}
@@ -402,7 +406,7 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     // padding: 18,
     borderRadius: 5,
-    justifyContent:"center",
+    justifyContent: "center",
     alignItems: "center",
     height: windowHeight * 0.06,
 
@@ -410,7 +414,7 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: 700,
     fontSize: windowWidth * 0.04,
   },
   closeButton: {
