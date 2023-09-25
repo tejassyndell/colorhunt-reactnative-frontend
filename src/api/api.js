@@ -141,12 +141,8 @@ export const updateCartArticale = async (data) => {
 };
 
 export const cartdetails = async () => {
-  let partyData = await AsyncStorage.getItem("UserData");
-  partyData = JSON.parse(partyData);
-  console.log(partyData);
-
   try {
-    return await axios.post(`${url}/cartdetails`, { party_id: party_id });
+    return await axios.post(`${url}/cartdetails`, { party_id: 197 });
   } catch (err) {
     console.log(err, "err in react api");
   }
@@ -197,6 +193,15 @@ export const addso = async (data) => {
 export const CollectInwardForCartArticals = async (data) => {
   try {
     return await axios.post(`${url}/collectinwardforcartarticals`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
+
+
+export const getsonumber = async (data) => {
+  try {
+    return await axios.post(`${url}/getsonumber`,data);
   } catch (err) {
     console.log(err, "err in react api");
   }
