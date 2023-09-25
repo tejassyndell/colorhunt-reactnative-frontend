@@ -347,7 +347,7 @@ export default function HomeScreen(props) {
             showsHorizontalScrollIndicator={false}
             style={{ overflow: "hidden" }}
           >
-            <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
+            <View style={{ width: "100%", flexDirection: "row", top: 10, }}>
               <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
                 Men's
               </Text>
@@ -371,7 +371,7 @@ export default function HomeScreen(props) {
                 maxWidth: "100%",
                 height: "auto",
                 flexDirection: "row",
-                top: 20,
+                top: 8,
               }}
             >
               <ScrollView
@@ -516,6 +516,7 @@ export default function HomeScreen(props) {
                             style={{
                               marginTop: 10,
                               fontWeight: "bold",
+                              fontSize:17,
                               marginBottom: 10,
                             }}
                           >
@@ -548,7 +549,7 @@ export default function HomeScreen(props) {
                             }}
                           />
                         </TouchableOpacity>
-                        <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                        <Text style={{ marginTop: 10,fontSize:17, fontWeight: "bold" }}>
                         {convertToTitleCase(item.Category)}
                         </Text>
                       </View>
@@ -562,7 +563,7 @@ export default function HomeScreen(props) {
                   width: "100%",
                   flexDirection: "row",
                   top: 10,
-                  marginTop: 20,
+                  marginTop:5,
                 }}
               >
                 <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
@@ -663,8 +664,9 @@ export default function HomeScreen(props) {
                             <Image
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
-                                width: "94%",
-                                height: 190,
+                              
+                                flex:1,
+                                resizeMode:'contain',
                                 borderRadius: 10,
                               }}
                             />

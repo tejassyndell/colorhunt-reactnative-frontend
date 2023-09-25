@@ -188,7 +188,12 @@ export default function AllArticle(props) {
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, borderRadius: 10, zIndex: 1, marginTop: 10 }} />
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ 
+          width: "90%",
+           height: 180,
+            borderRadius: 10,
+             zIndex: 1,
+              marginTop: 10 }} />
       </View>
       <View style={{ width: "100%", marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 0 }}>
