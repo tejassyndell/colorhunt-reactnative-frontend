@@ -238,7 +238,7 @@ const AddToCart = (props) => {
                 return (
                     // <View style={{width:"100%"}}>
                     <Text style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: 500,
                         color: "red",
                         textAlign: "right"
@@ -327,8 +327,8 @@ const AddToCart = (props) => {
 
                     </View>
                     :
-                    <KeyboardAvoidingView style={{flex: 1 }} behavior={Platform.OS==='ios'?"padding":"height"}>
-                        <ScrollView nestedScrollEnabled={true} contentContainerStyle={{flex:1}}   keyboardShouldPersistTaps="handled">
+                    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : "height"}>
+                        <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps="handled">
                             <View style={{ flex: 1, backgroundColor: "#FFF", borderTopColor: "#828282", borderTopWidth: 1 }}>
                                 <View style={{ width: "100%", backgroundColor: "#FFF" }}>
                                     <ScrollView nestedScrollEnabled={true}  >
@@ -337,274 +337,274 @@ const AddToCart = (props) => {
                                                 <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                                     <View style={{ paddingBottom: 20 }}>
                                                         {orderItems.map((item) =>
-                                                            array_1.length > 0 ? array_1.includes(item.article_id)? 
+                                                            array_1.length > 0 ? array_1.includes(item.article_id) ?
                                                                 // id === item.article_id ?
-                                                                    <View key={item.id} style={{
-                                                                        display: "flex",
-                                                                        flexDirection: "row",
-                                                                        width: "95%",
-                                                                        backgroundColor: "#FFF",
-                                                                        elevation: 10,
-                                                                        shadowColor: "gray",
-                                                                        marginHorizontal: 9.5,
-                                                                        marginTop: 15,
-                                                                        borderRadius: 12,
-                                                                        height: 150,
-                                                                        paddingVertical: 5,
-                                                                        // maxHeight: "45%"
-                                                                    }}>
-                                                                        <View style={{
-                                                                            width: "35%",
-                                                                            // width: 120,
-                                                                            // height: 102.746,
-                                                                            display: "flex",
-                                                                            justifyContent: "center",
-                                                                            alignItems: "center",
-                                                                            marginLeft: 2,
-                                                                            marginVertical: 10,
-                                                                            borderRadius: 10,
-                                                                        }}>
-                                                                            <Image style={{
-                                                                                height: "100%",
-                                                                                width: "68%",
-                                                                                borderRadius: 10,
-                                                                            }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                                                        </View>
-                                                                        <View style={{
-                                                                            width: "35%",
-                                                                            marginHorizontal: 4,
-                                                                            marginVertical: 10,
-                                                                            borderRadius: 10
-                                                                        }}>
-                                                                            <View style={{ height: "50%" }}>
-                                                                                <Text style={{
-                                                                                    fontSize: 18,
-                                                                                    fontWeight: 700, color: "#000"
-                                                                                }}>{item.ArticleNumber}</Text>
-                                                                                <Text style={{
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: 400, color: "#000"
-                                                                                }}>{item.StyleDescription}</Text>
-                                                                            </View>
-                                                                            <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
-                                                                                <Text style={{
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: 400, color: "#000"
-                                                                                }}>Rate</Text>
-                                                                                <Text style={{
-                                                                                    fontSize: 17,
-                                                                                    fontWeight: 700, color: "#000"
-                                                                                }}>₹{item.rate}.00</Text>
-                                                                                {/* {compreInward ? compreInward.map((it) => (
-                                                                        checkOutOfStock(it, item)
-                                                                        // console.log(it.SalesNoPacks)
-                                                                    )) : ""} */}
-
-                                                                            </View>
-                                                                        </View>
-                                                                        <View style={{
-                                                                            width: "25%",
-                                                                            display: "flex",
-                                                                            flexDirection: "column",
-                                                                            height: "90%"
-                                                                        }}>
-                                                                            <View style={{
-                                                                                width: "100%",
-                                                                                display: "flex",
-                                                                                flexDirection: "row",
-                                                                                justifyContent: "flex-end",
-                                                                                gap: 8,
-                                                                                paddingRight: 5,
-                                                                                marginVertical: 10,
-                                                                                borderRadius: 10
-                                                                            }}>
-                                                                                <TouchableOpacity
-                                                                                    onPress={() => handleEditOrder(item.article_id)}
-                                                                                >
-
-                                                                                    <Image alt="edite"
-                                                                                        style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
-                                                                                </TouchableOpacity>
-                                                                                <TouchableOpacity
-                                                                                    onPress={() => handleDeleteOrder(item.article_id)}
-                                                                                >
-                                                                                    <Image alt="Delete"
-                                                                                        style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
-                                                                                </TouchableOpacity>
-                                                                            </View>
-
-                                                                        </View>
-
-                                                                    </View>
-                                                                    :
-                                                                    <View key={item.id} style={{
-                                                                        display: "flex",
-                                                                        flexDirection: "row",
-                                                                        width: "95%",
-                                                                        backgroundColor: "#FFF",
-                                                                        elevation: 10,
-                                                                        shadowColor: "gray",
-                                                                        marginHorizontal: 9.5,
-                                                                        marginTop: 15,
-                                                                        borderRadius: 12,
-                                                                        height: 150,
-                                                                        paddingVertical: 5,
-                                                                       
-                                                                        // maxHeight: "45%"
-                                                                    }}>
-                                                                        <View style={{
-                                                                            width: "35%",
-                                                                            opacity:0.4,
-                                                                            // width: 120,
-                                                                            // height: 102.746,
-                                                                            display: "flex",
-                                                                            justifyContent: "center",
-                                                                            alignItems: "center",
-                                                                            marginLeft: 2,
-                                                                            marginVertical: 10,
-                                                                            borderRadius: 10,
-                                                                        }}>
-
-                                                                            <Image style={{
-                                                                                height: "100%",
-                                                                                width: "68%",
-                                                                                borderRadius: 10,
-                                                                                filter: "blur(20)"
-                                                                            }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                                                        </View>
-                                                                        <View style={{
-                                                                            width: "35%",
-                                                                            marginHorizontal: 4,
-                                                                            marginVertical: 10,
-                                                                            borderRadius: 10
-                                                                        }}>
-                                                                            <View style={{ height: "50%" }}>
-                                                                                <Text style={{
-                                                                                    fontSize: 18,
-                                                                                    fontWeight: 700, color: "#00000040"
-                                                                                }}>{item.ArticleNumber}</Text>
-                                                                                <Text style={{
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: 400, color: "#00000040"
-                                                                                }}>{item.StyleDescription}</Text>
-                                                                            </View>
-                                                                            <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
-                                                                                <Text style={{
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: 400, color: "#00000040"
-                                                                                }}>Rate</Text>
-                                                                                <Text style={{
-                                                                                    fontSize: 17,
-                                                                                    fontWeight: 700, color: "#00000040"
-                                                                                }}>₹{item.rate}.00</Text>
-                                                                                {/* {compreInward ? compreInward.map((it) => (
-                                                                            checkOutOfStock(it, item)
-                                                                            // console.log(it.SalesNoPacks)
-                                                                        )) : ""} */}
-
-                                                                            </View>
-                                                                        </View>
-                                                                        <View style={{
-                                                                            width: "25%",
-                                                                            display: "flex",
-                                                                            flexDirection: "column",
-                                                                            height: "90%"
-                                                                        }}>
-                                                                            <View style={{
-                                                                                width: "100%",
-                                                                                display: "flex",
-                                                                                flexDirection: "row",
-                                                                                justifyContent: "flex-end",
-                                                                                gap: 8,
-                                                                                paddingRight: 5,
-                                                                                marginVertical: 10,
-                                                                                borderRadius: 10
-                                                                            }}>
-                                                                                <TouchableOpacity
-                                                                                    onPress={() => handleEditOrder(item.article_id)}
-                                                                                >
-
-                                                                                    <Image alt="edite"
-                                                                                        style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
-                                                                                </TouchableOpacity>
-                                                                                <TouchableOpacity
-                                                                                    onPress={() => handleDeleteOrder(item.article_id)}
-                                                                                >
-                                                                                    <Image alt="Delete"
-                                                                                        style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
-                                                                                </TouchableOpacity>
-                                                                            </View>
-                                                                            <View style={{
-                                                                                width: "100%",
-                                                                                position: "absolute",
-                                                                                bottom: 0,
-                                                                                paddingRight: 5
-                                                                            }}>
-                                                                                {compreInward ? compreInward.map((it) => (
-                                                                                    checkOutOfStock(it, item)
-                                                                                    // console.log(it.SalesNoPacks)
-                                                                                )) : ""}
-                                                                            </View>
-                                                                        </View>
-
-                                                                    </View>
-                                                             :
                                                                 <View key={item.id} style={{
                                                                     display: "flex",
                                                                     flexDirection: "row",
-                                                                    width: "95%",
+                                                                    width: "90%",
                                                                     backgroundColor: "#FFF",
-                                                                    elevation: 10,
-                                                                    shadowColor: "gray",
-                                                                    marginHorizontal: 9.5,
+                                                                    elevation: 5,
+                                                                    shadowColor: 'gray',
+                                                                    shadowOpacity: 0.5,
+                                                                    marginHorizontal: 20,
                                                                     marginTop: 15,
-                                                                    borderRadius: 12,
-                                                                    height: 150,
+                                                                    borderRadius: 10,
+                                                                    height: 104,
                                                                     paddingVertical: 5,
-                                                                    // maxHeight: "45%"
+                                                                    backgroundColor: "#FFF"
                                                                 }}>
                                                                     <View style={{
-                                                                        width: "35%",
-                                                                        // width: 120,
-                                                                        // height: 102.746,
-                                                                        display: "flex",
-                                                                        justifyContent: "center",
-                                                                        alignItems: "center",
-                                                                        marginLeft: 2,
-                                                                        marginVertical: 10,
-                                                                        borderRadius: 10,
+                                                                       width: 88,
+                                                                       margin:10,
+                                                                       marginTop:5,
+                                                                       height: 84,
+                                                                       display: "flex",
+                                                                       justifyContent: "center",
+                                                                       alignItems: "center",
+                                                                       // marginVertical: 10,
+                                                                       borderRadius: 10,
                                                                     }}>
-
-                                                                        <Image blurRadius={6} style={{
-                                                                            height: "100%",
-                                                                            width: "68%",
+                                                                        <Image style={{
+                                                                            flex: 1, resizeMode: "contain", height: '100%', width: "100%",
                                                                             borderRadius: 10,
-                                                                            filter: "blur(20)"
-                                                                        }} resizeMode="cover" source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                                        }}  source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
                                                                     </View>
                                                                     <View style={{
-                                                                        width: "35%",
+                                                                        width: "40%",
                                                                         marginHorizontal: 4,
                                                                         marginVertical: 10,
                                                                         borderRadius: 10
                                                                     }}>
-                                                                        <View style={{ height: "50%" }}>
+                                                                        <View style={{ height: "50%" , paddingBottom:1 }}>
                                                                             <Text style={{
-                                                                                fontSize: 18,
+                                                                                fontSize: 14,
+                                                                                fontWeight: 700, color: "#000"
+                                                                            }}>{item.ArticleNumber}</Text>
+                                                                            <Text style={{
+                                                                                fontSize: 10,
+                                                                                fontWeight: 400, color: "#000"
+                                                                            }}>{item.StyleDescription}</Text>
+                                                                        </View>
+                                                                        <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%"}}>
+                                                                            <Text style={{
+                                                                                fontSize: 10,
+                                                                                fontWeight: 400, color: "#000"
+                                                                            }}>Rate</Text>
+                                                                            <Text style={{
+                                                                                fontSize: 13,
+                                                                                fontWeight: 700, color: "#000"
+                                                                            }}>₹{item.rate}.00</Text>
+                                                                            {/* {compreInward ? compreInward.map((it) => (
+                                                                        checkOutOfStock(it, item)
+                                                                        // console.log(it.SalesNoPacks)
+                                                                    )) : ""} */}
+
+                                                                        </View>
+                                                                    </View>
+                                                                    <View style={{
+                                                                        width: "25%",
+                                                                        display: "flex",
+                                                                        flexDirection: "column",
+                                                                        height: "90%"
+                                                                    }}>
+                                                                        <View style={{
+                                                                            width: "100%",
+                                                                            display: "flex",
+                                                                            flexDirection: "row",
+                                                                            justifyContent: "flex-end",
+                                                                            gap: 8,
+                                                                            paddingRight: 5,
+                                                                            marginVertical: 10,
+                                                                            borderRadius: 10
+                                                                        }}>
+                                                                            <TouchableOpacity
+                                                                                onPress={() => handleEditOrder(item.article_id)}
+                                                                            >
+
+                                                                                <Image alt="edite"
+                                                                                    style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                                            </TouchableOpacity>
+                                                                            <TouchableOpacity
+                                                                                onPress={() => handleDeleteOrder(item.article_id)}
+                                                                            >
+                                                                                <Image alt="Delete"
+                                                                                    style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                                            </TouchableOpacity>
+                                                                        </View>
+
+                                                                    </View>
+
+                                                                </View>
+                                                                :
+                                                                <View key={item.id} style={{
+                                                                    display: "flex",
+                                                                    flexDirection: "row",
+                                                                    width: "90%",
+                                                                    backgroundColor: "#FFF",
+                                                                    elevation: 5,
+                                                                    shadowColor: 'gray',
+                                                                    shadowOpacity: 0.5,
+                                                                    marginHorizontal: 20,
+                                                                    marginTop: 15,
+                                                                    borderRadius: 10,
+                                                                    height: 104,
+                                                                    paddingVertical: 5,
+                                                                    backgroundColor: "#FFF",
+                                                                  
+                                                                }}>
+                                                                    <View style={{
+                                                                         width: 88,
+                                                                         margin:10,
+                                                                         marginTop:5,
+                                                                         height: 84,
+                                                                         display: "flex",
+                                                                         justifyContent: "center",
+                                                                         alignItems: "center",
+                                                                         // marginVertical: 10,
+                                                                         borderRadius: 10,
+                                                                         opacity:0.6
+                                                                    }}>
+
+                                                                        <Image style={{
+                                                                            flex: 1, resizeMode: "contain", height: '100%', width: "100%",
+                                                                            borderRadius: 10,
+                                                                        }}  source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                                    </View>
+                                                                    <View style={{
+                                                                        width: "40%",
+                                                                        marginHorizontal: 4,
+                                                                        marginVertical: 10,
+                                                                        borderRadius: 10
+                                                                    }}>
+                                                                        <View style={{ height: "50%",paddingBottom:1 }}>
+                                                                            <Text style={{
+                                                                                fontSize: 14,
                                                                                 fontWeight: 700, color: "#00000040"
                                                                             }}>{item.ArticleNumber}</Text>
                                                                             <Text style={{
-                                                                                fontSize: 14,
+                                                                                fontSize: 10,
                                                                                 fontWeight: 400, color: "#00000040"
                                                                             }}>{item.StyleDescription}</Text>
                                                                         </View>
-                                                                        <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
+                                                                        <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%"}}>
                                                                             <Text style={{
-                                                                                fontSize: 14,
+                                                                                fontSize: 10,
                                                                                 fontWeight: 400, color: "#00000040"
                                                                             }}>Rate</Text>
                                                                             <Text style={{
-                                                                                fontSize: 17,
+                                                                                fontSize: 13,
+                                                                                fontWeight: 700, color: "#00000040"
+                                                                            }}>₹{item.rate}.00</Text>
+                                                                            {/* {compreInward ? compreInward.map((it) => (
+                                                                            checkOutOfStock(it, item)
+                                                                            // console.log(it.SalesNoPacks)
+                                                                        )) : ""} */}
+
+                                                                        </View>
+                                                                    </View>
+                                                                    <View style={{
+                                                                        width: "25%",
+                                                                        display: "flex",
+                                                                        flexDirection: "column",
+                                                                        height: "90%"
+                                                                    }}>
+                                                                        <View style={{
+                                                                            width: "100%",
+                                                                            display: "flex",
+                                                                            flexDirection: "row",
+                                                                            justifyContent: "flex-end",
+                                                                            gap: 8,
+                                                                            paddingRight: 5,
+                                                                            marginVertical: 10,
+                                                                            borderRadius: 10
+                                                                        }}>
+                                                                            <TouchableOpacity
+                                                                                onPress={() => handleEditOrder(item.article_id)}
+                                                                            >
+
+                                                                                <Image alt="edite"
+                                                                                    style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                                            </TouchableOpacity>
+                                                                            <TouchableOpacity
+                                                                                onPress={() => handleDeleteOrder(item.article_id)}
+                                                                            >
+                                                                                <Image alt="Delete"
+                                                                                    style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                                            </TouchableOpacity>
+                                                                        </View>
+                                                                        <View style={{
+                                                                            width: "100%",
+                                                                            position: "absolute",
+                                                                            bottom: 0,
+                                                                            paddingRight: 5
+                                                                        }}>
+                                                                            {compreInward ? compreInward.map((it) => (
+                                                                                checkOutOfStock(it, item)
+                                                                                // console.log(it.SalesNoPacks)
+                                                                            )) : ""}
+                                                                        </View>
+                                                                    </View>
+
+                                                                </View>
+                                                                :
+                                                                <View key={item.id} style={{
+                                                                    display: "flex",
+                                                                    flexDirection: "row",
+                                                                    width: "90%",
+                                                                    backgroundColor: "#FFF",
+                                                                    elevation: 5,
+                                                                    shadowColor: 'gray',
+                                                                    shadowOpacity: 0.5,
+                                                                    marginHorizontal: 20,
+                                                                    marginTop: 15,
+                                                                    borderRadius: 10,
+                                                                    height: 104,
+                                                                    paddingVertical: 5,
+                                                                    backgroundColor: "#FFF",
+                                                                  
+                                                                }}>
+                                                                    <View style={{
+                                                                         width: 88,
+                                                                         margin:10,
+                                                                         marginTop:5,
+                                                                         height: 84,
+                                                                         display: "flex",
+                                                                         justifyContent: "center",
+                                                                         alignItems: "center",
+                                                                         // marginVertical: 10,
+                                                                         borderRadius: 10,
+                                                                         opacity:0.6
+                                                                    }}>
+
+                                                                        <Image style={{
+                                                                            flex: 1, resizeMode: "contain", height: '100%', width: "100%",
+                                                                            borderRadius: 10,
+                                                                        }}  source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                                    </View>
+                                                                    <View style={{
+                                                                        width: "40%",
+                                                                        marginHorizontal: 4,
+                                                                        marginVertical: 10,
+                                                                        borderRadius: 10
+                                                                    }}>
+                                                                        <View style={{ height: "50%",paddingBottom:1 }}>
+                                                                            <Text style={{
+                                                                                fontSize: 14,
+                                                                                fontWeight: 700, color: "#00000040"
+                                                                            }}>{item.ArticleNumber}</Text>
+                                                                            <Text style={{
+                                                                                fontSize: 10,
+                                                                                fontWeight: 400, color: "#00000040"
+                                                                            }}>{item.StyleDescription}</Text>
+                                                                        </View>
+                                                                        <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%"}}>
+                                                                            <Text style={{
+                                                                                fontSize: 10,
+                                                                                fontWeight: 400, color: "#00000040"
+                                                                            }}>Rate</Text>
+                                                                            <Text style={{
+                                                                                fontSize: 13,
                                                                                 fontWeight: 700, color: "#00000040"
                                                                             }}>₹{item.rate}.00</Text>
                                                                             {/* {compreInward ? compreInward.map((it) => (
@@ -738,7 +738,7 @@ const AddToCart = (props) => {
                                         paddingRight: 12,
                                         marginTop: 6
                                     }}>
-                                        <Text style={{ fontSize: 12, fontWeight: 700 ,color:"#AAAAAA"}}>Total price</Text>
+                                        <Text style={{ fontSize: 12, fontWeight: 700, color: "#AAAAAA" }}>Total price</Text>
                                     </View>
                                     <View style={{
                                         display: "flex",
@@ -746,7 +746,7 @@ const AddToCart = (props) => {
                                         backgroundColor: "#FFF"
                                     }}>
                                         <View style={{ width: "50%", paddingLeft: "2.8%", marginBottom: 4 }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 600 , color:"#585656" }}>Total ({totalItems} item) :</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 600, color: "#585656" }}>Total ({totalItems} item) :</Text>
                                         </View>
                                         <View style={{
                                             display: "flex",
@@ -757,7 +757,7 @@ const AddToCart = (props) => {
                                             paddingRight: 12,
                                             // paddingLeft: "14%"
                                         }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 800 ,color:"#000"}}>₹{totalprice}.00</Text>
+                                            <Text style={{ fontSize: 18, fontWeight: 800, color: "#000" }}>₹{totalprice}.00</Text>
                                         </View>
                                     </View>
                                     <View style={{ padding: 10 }}>

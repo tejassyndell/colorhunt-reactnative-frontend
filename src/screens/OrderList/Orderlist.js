@@ -169,7 +169,11 @@ const Orderlist = (props) => {
                                     }}
                                     // value={formattedDate}
                                     // disableFullscreenUI
-                                    ><Text style={{color:"#626262",fontSize:18,fontWeight:500}}>{formattedDate}</Text></View>
+                                    ><Text style={{color:"#626262",fontSize:18,fontWeight:500}}>{new Date(currentDate).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                      })}</Text></View>
 
                                 </View>
                                 <View style={{ paddingHorizontal: 20,paddingTop:8,gap:5 }}>
@@ -269,33 +273,34 @@ const Orderlist = (props) => {
                                                 marginHorizontal: 20,
                                                 marginTop: 15,
                                                 borderRadius: 10,
-                                                height: 150,
+                                                height: 104,
                                                 paddingVertical: 5,
                                                 backgroundColor: "#FFF"
                                             }}>
                                                 <View style={{
-                                                    width: "35%",
-                                                    // height: 102.746,
+                                                    width: 88,
+                                                    margin:10,
+                                                    marginTop:5,
+                                                    height: 84,
                                                     display: "flex",
                                                     justifyContent: "center",
                                                     alignItems: "center",
-                                                    marginVertical: 10,
+                                                    // marginVertical: 10,
                                                     borderRadius: 10,
                                                 }}>
 
                                                     <Image source={{ uri: baseImageUrl + item.Photos }} style={{
-                                                        height: "100%",
-                                                        width: "70%", borderRadius: 10,
+                                                        flex:1,resizeMode:"contain",height:'100%',width:"100%", borderRadius: 10,
                                                     }} ></Image>
 
                                                 </View>
                                                 <View style={{
-                                                    width: "45%",
+                                                    width: "60%",
                                                     marginHorizontal: 4,
-                                                    marginVertical: 10,
+                                                    // marginVertical: 10,
                                                     borderRadius: 10
                                                 }}>
-                                                    <View style={{ height: "50%" }}>
+                                                    <View style={{ height: "50%" ,paddingTop:2}}>
                                                         <Text style={{
                                                             fontSize: 18,
                                                             fontWeight: 700, color: "#000"
@@ -305,11 +310,11 @@ const Orderlist = (props) => {
                                                             fontWeight: 400, color: "#000"
                                                         }}>{item.StyleDescription}</Text>
                                                     </View>
-                                                    <View style={{ marginTop: "10%", position: "relative", height: "50%" }}>
-                                                        <Text style={{
+                                                    <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%" }}>
+                                                        {/* <Text style={{
                                                             fontSize: 14,
                                                             fontWeight: 400, color: "#000"
-                                                        }}>Rate</Text>
+                                                        }}>Rate</Text> */}
                                                         <Text style={{
                                                             fontSize: 17,
                                                             fontWeight: 700, color: "#000"

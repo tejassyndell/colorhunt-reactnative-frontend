@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity , Modal } from "react-native";
-// import Image from 'react-native-responsive-image';
+import { Text, View, Image, ScrollView, TouchableOpacity, Modal } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -16,7 +15,6 @@ import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount"
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
 export default function HomeScreen(props) {
 
   const { navigation } = props;
@@ -36,13 +34,9 @@ export default function HomeScreen(props) {
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isCreateAccountVisible,setCreateAccountVisible]=useState(false);
-  
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
 
-  // useFocusEffect(
-  //   React.
-  //   checkUserLogin();
-  // );
+
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -64,7 +58,7 @@ export default function HomeScreen(props) {
       return false; // Handle errors by returning false or appropriate error handling
     }
   };
-  
+
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
@@ -88,7 +82,7 @@ export default function HomeScreen(props) {
       user_id: 197,
       article_id: i.Id,
     };
-    console.log('............111',data);
+    console.log('............111', data);
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist();
@@ -197,9 +191,6 @@ export default function HomeScreen(props) {
           <TouchableOpacity
             onPress={() => {
               checkUserLoginforheader();
-              // console.log(val,";;;;;;");
-              // val===true?
-              // :openCreateAccountModal()
             }}
           >
             <Image
@@ -213,13 +204,14 @@ export default function HomeScreen(props) {
   }, []);
 
   const handlePress = (item) => {
-    navigation.navigate("CategorisWiseArticle", { item: item });
+    navigation.navigate("CategorisWiseArticle", { item1: item });
   };
 
   const filterData = () => {
     if (searchText === "") {
     } else {
       console.log(searchText);
+      console.log(filterDataSearch.length, "length fds")
       const filtered = filterDataSearch.filter(
         (item) =>
           item.ArticleNumber.toString().includes(searchText.toString()) ||
@@ -288,17 +280,17 @@ export default function HomeScreen(props) {
     const token = await AsyncStorage.getItem("UserData");
 
     if (token) {
-      console.log(token,"------------");
+      console.log(token, "------------");
       setIsLoggedIn(true);
     } else {
-      console.log(token,"()()()()(");
+      console.log(token, "()()()()(");
       setIsLoggedIn(false);
     }
   };
 
-  useEffect(()=>{
-      checkUserLogin();
-    },[])
+  useEffect(() => {
+    checkUserLogin();
+  }, [])
   return (
     <>
       {isLoading ? (
@@ -307,7 +299,7 @@ export default function HomeScreen(props) {
         </View>
       ) : (
         <View
-          style={{ width: "100%", height: "100%", backgroundColor: "#FFF",paddingStart:5}}
+          style={{ width: "100%", height: "100%", backgroundColor: "#FFF", paddingStart: 5 }}
         >
           <View style={{ marginTop: 10 }}>
             <View>
@@ -318,7 +310,7 @@ export default function HomeScreen(props) {
                   paddingLeft: 8,
                   height: 30,
                   alignItems: "center",
-                  fontFamily: "Glory-Regular",
+                  // fontFamily: "Glory-Regular",
                 }}
               >
                 Welcome
@@ -335,7 +327,7 @@ export default function HomeScreen(props) {
                 searchPhrase={searchText}
                 setSearchPhrase={setSearchText}
               />
-              <TouchableOpacity onPress={()=>{isLoggedIn?openFilter():openCreateAccountModal()}}>
+              <TouchableOpacity onPress={() => { isLoggedIn ? openFilter() : openCreateAccountModal() }}>
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{ width: 40, height: 40, borderRadius: 10 }}
@@ -359,7 +351,7 @@ export default function HomeScreen(props) {
                   fontSize: 12,
                   fontWeight: 600,
                 }}
-                onPress={()=>{isLoggedIn?viewAllArticles():openCreateAccountModal()}}
+                onPress={() => { isLoggedIn ? viewAllArticles() : openCreateAccountModal() }}
               >
                 View All
               </Text>
@@ -382,177 +374,182 @@ export default function HomeScreen(props) {
                 {ApplyStatushBack === true
                   ? finalData.length > 0
                     ? finalData.map((item) => (
-                        <TouchableOpacity
-                          onPress={() =>{isLoggedIn?
+                      <TouchableOpacity
+                        onPress={() => {
+                          isLoggedIn ?
                             navigation.navigate("DetailsOfArticals", {
                               id: item.Id,
-                            }):openCreateAccountModal()
-                          }
-                          }
-                        >
-                          <View
-                            key={item.id}
-                            style={{
-                             alignItems: "center",
+                            }) : openCreateAccountModal()
+                        }
+                        }
+                      >
+                        <View
+                          key={item.id}
+                          style={{
+                            alignItems: "center",
                             height: 280,
                             width: 155,
                             marginLeft: 10,
                             marginRight: 5,
                             borderRadius: 10,
-                            }}
-                          >
-                            <View
-                              style={{
-                                width: 155,
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: 155,
                               height: 190,
                               borderColor: "gray",
                               shadowColor: "rgba(0, 0, 0, 0.5)",
                               shadowOpacity: 0.9,
                               shadowRadius: 3,
-                              borderRadius:10,
-                              elevation:4, // For Android, use elevation
+                              borderRadius: 10,
+                              elevation: 4, // For Android, use elevation
                               shadowOffset: {
                                 width: 0,
                                 height: 0,
                               },
-                              }}
-                            >
-                              <View id={item.id} style={styles.producticones}>
-                                {selectedprd.some((i) => i.Id === item.Id) ? (
-                                  <TouchableOpacity
-                                    onPress={() => {isLoggedIn?
-                                      rmvProductWishlist(item):openCreateAccountModal()
-                                    }}
-                                  >
-                                    <FontAwesome
-                                      name="heart"
-                                      style={[
-                                        styles.icon,
-                                        // isLoggedin === false ? styles.disabledIcon : null,
-                                      ]}
-                                    />
-                                  </TouchableOpacity>
-                                ) : (
-                                  <TouchableOpacity
-                                    onPress={() => {isLoggedIn?
-                                      addArticleWishlist(item):openCreateAccountModal()
-                                    }}
-                                  >
-                                    <FontAwesome
-                                      name="heart-o"
-                                      style={[
-                                        styles.disabledIcon,
-                                        // isLoggedin === false ? styles.disabledIcon : null,
-                                      ]}
-                                    />
-                                  </TouchableOpacity>
-                                )}
-                              </View>
-                              <Image
-                                source={{ uri: baseImageUrl + item.Photos }}
-                                style={{
-                                  width: "100%",
-                                  height: 190,
-                                  borderRadius: 10,
-                                }}
-                              />
-                            </View>
-
-                            <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                              {item.ArticleNumber}
-                            </Text>
-                            <Text>{convertToTitleCase(item.Category)}</Text>
-                            <Text style={{ fontWeight: "bold" }}>
-                              {"₹" + item.ArticleRate +".00"}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      ))
-                    : nameData.map((item) => (
-                        <View
-                          key={item.id}
-                          style={{
-                            alignItems: "center",
-                            height: "auto",
-                            width: 165,
-                            marginLeft: 5,
-                            marginRight: 5,
-                            marginTop: 10,
-                            marginBottom: 10,
-                            borderRadius: 10,
-                          }}
-                        >
-                          <TouchableOpacity
-                            onPress={() => {isLoggedIn?
-                              handlePress(item):openCreateAccountModal()
                             }}
                           >
-                            <View
+                            <View id={item.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn ?
+                                      rmvProductWishlist(item) : openCreateAccountModal()
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart"
+                                    style={[
+                                      styles.icon,
+                                      // isLoggedin === false ? styles.disabledIcon : null,
+                                    ]}
+                                  />
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn ?
+                                      addArticleWishlist(item) : openCreateAccountModal()
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart-o"
+                                    style={[
+                                      styles.disabledIcon,
+                                      // isLoggedin === false ? styles.disabledIcon : null,
+                                    ]}
+                                  />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            <Image
+                              source={{ uri: baseImageUrl + item.Photos }}
                               style={{
-                                width: 155,
+                                width: "100%",
                                 height: 190,
-                                borderColor: "gray",
-                                shadowColor: "gray",
-                                shadowOpacity: 0.9,
-                                shadowRadius: 10,
-                                elevation: 10,
-                                shadowOffset: {
-                                  width: 0,
-                                  height: 0,
-                                },
+                                borderRadius: 10,
                               }}
-                            >
-                              <Image
-                                source={require("../../../assets/demo.png")}
-                                style={{
-                                  width: "100%",
-                                  height: 190,
-                                  borderRadius: 10,
-                                }}
-                              />
-                            </View>
-                          </TouchableOpacity>
-                          <Text
-                            style={{
-                              marginTop: 10,
-                              fontWeight: "bold",
-                              marginBottom: 10,
-                            }}
-                          >
-                            {convertToTitleCase(item.Category)}
+                            />
+                          </View>
+
+                          <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text>{convertToTitleCase(item.Category)}</Text>
+                          <Text style={{ fontWeight: "bold" }}>
+                            {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
-                      ))
-                  : applyrData.map((item) => (
+                      </TouchableOpacity>
+                    ))
+                    : nameData.map((item) => (
                       <View
                         key={item.id}
                         style={{
                           alignItems: "center",
-                          justifyContent: "center",
-                          width: 200,
+                          height: "auto",
+                          width: 165,
                           marginLeft: 5,
                           marginRight: 5,
+                          marginTop: 10,
+                          marginBottom: 10,
+                          borderRadius: 10,
                         }}
                       >
                         <TouchableOpacity
-                          onPress={() => {isLoggedIn?
-                            handlePress(item):openCreateAccountModal()
+                          onPress={() => {
+                            isLoggedIn ?
+                              handlePress(item) : openCreateAccountModal()
                           }}
                         >
-                          <Image
-                            source={require("../../../assets/demo.png")}
+                          <View
                             style={{
-                              width: 200,
-                              height: 300,
-                              borderRadius: 10,
+                              width: 155,
+                              height: 190,
+                              borderColor: "gray",
+                              shadowColor: "gray",
+                              shadowOpacity: 0.9,
+                              shadowRadius: 10,
+                              elevation: 10,
+                              shadowOffset: {
+                                width: 0,
+                                height: 0,
+                              },
                             }}
-                          />
+                          >
+                            <Image
+                              source={require("../../../assets/demo.png")}
+                              style={{
+                                width: "100%",
+                                height: 190,
+                                borderRadius: 10,
+                              }}
+                            />
+                          </View>
                         </TouchableOpacity>
-                        <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                        {convertToTitleCase(item.Category)}
+                        <Text
+                          style={{
+                            marginTop: 10,
+                            fontWeight: "bold",
+                            marginBottom: 10,
+                          }}
+                        >
+                          {convertToTitleCase(item.Category)}
                         </Text>
                       </View>
-                    ))}
+                    ))
+                  : applyrData.map((item) => (
+                    <View
+                      key={item.id}
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: 200,
+                        marginLeft: 5,
+                        marginRight: 5,
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => {
+                          isLoggedIn ?
+                            handlePress(item) : openCreateAccountModal()
+                        }}
+                      >
+                        <Image
+                          source={require("../../../assets/demo.png")}
+                          style={{
+                            width: 200,
+                            height: 300,
+                            borderRadius: 10,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                        {convertToTitleCase(item.Category)}
+                      </Text>
+                    </View>
+                  ))}
               </ScrollView>
             </View>
             <View></View>
@@ -576,7 +573,7 @@ export default function HomeScreen(props) {
                     fontSize: 12,
                     fontWeight: 600,
                   }}
-                  onPress={()=>{isLoggedIn?viewAllArticles():openCreateAccountModal()}}
+                  onPress={() => { isLoggedIn ? viewAllArticles() : openCreateAccountModal() }}
                 >
                   View All
                 </Text>
@@ -598,116 +595,118 @@ export default function HomeScreen(props) {
                 >
                   {ApplyStatushBack === true
                     ? nameDatas.map((item) => (
-                        <View
-                          key={item.id}
-                          style={{
-                            alignItems: "center",
-                            height: 280,
-                            width: 155,
-                            marginLeft: 10,
-                            marginRight: 5,
-                            marginBottom: 120,
-                            borderRadius: 10,
-                            
-                            
-                          }}
-                        >
-                          <View
-                            style={{
-                              width: 155,
-                              height: 190,
-                              borderColor: "gray",
-                              shadowColor: "rgba(0, 0, 0, 0.5)",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 3,
-                              borderRadius:10,
-                              elevation:4, // For Android, use elevation
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
-                            }}
-                          >
-                            <View id={item.id} style={styles.producticones}>
-                              {selectedprd.some((i) => i.Id === item.Id) ? (
-                                
-                                <TouchableOpacity
-                                  onPress={() => {isLoggedIn?
-                                    rmvProductWishlist(item):openCreateAccountModal()
-                                  }}
-                                >
-                                  <FontAwesome
-                                    name="heart"
-                                    style={[
-                                      styles.icon,
-                                      // isLoggedin === false ? styles.disabledIcon : null,
-                                    ]}
-                                  />
-                                </TouchableOpacity>
-                              ) : (
-                                <TouchableOpacity
-                                  onPress={() => {isLoggedIn?
-                                    addArticleWishlist(item):openCreateAccountModal()
-                                  }}
-                                >
-                                  <FontAwesome
-                                    name="heart-o"
-                                    style={[
-                                      styles.disabledIcon,
-                                      // isLoggedin === false ? styles.disabledIcon : null,
-                                    ]}
-                                  />
-                                </TouchableOpacity>
-                              )}
-                            </View>
-                            <Image
-                              source={{ uri: baseImageUrl + item.Photos }}
-                              style={{
-                                width: "94%",
-                                height: 190,
-                                borderRadius: 10,
-                              }}
-                            />
-                          </View>
+                      <View
+                        key={item.id}
+                        style={{
+                          alignItems: "center",
+                          height: 280,
+                          width: 155,
+                          marginLeft: 10,
+                          marginRight: 5,
+                          marginBottom: 120,
+                          borderRadius: 10,
 
-                          <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                            {item.ArticleNumber}
-                          </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate +'.00'}
-                          </Text>
-                        </View>
-                      ))
-                    : applyrData.map((item) => (
+
+                        }}
+                      >
                         <View
-                          key={item.id}
                           style={{
-                            alignItems: "center",
-                            justifyContent: "center",
                             width: 155,
-                            height: 232,
-                            marginLeft: 5,
-                            marginRight: 5,
+                            height: 190,
+                            borderColor: "gray",
+                            shadowColor: "rgba(0, 0, 0, 0.5)",
+                            shadowOpacity: 0.9,
+                            shadowRadius: 3,
+                            borderRadius: 10,
+                            elevation: 4, // For Android, use elevation
+                            shadowOffset: {
+                              width: 0,
+                              height: 0,
+                            },
                           }}
                         >
+                          <View id={item.id} style={styles.producticones}>
+                            {selectedprd.some((i) => i.Id === item.Id) ? (
+
+                              <TouchableOpacity
+                                onPress={() => {
+                                  isLoggedIn ?
+                                    rmvProductWishlist(item) : openCreateAccountModal()
+                                }}
+                              >
+                                <FontAwesome
+                                  name="heart"
+                                  style={[
+                                    styles.icon,
+                                    // isLoggedin === false ? styles.disabledIcon : null,
+                                  ]}
+                                />
+                              </TouchableOpacity>
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  isLoggedIn ?
+                                    addArticleWishlist(item) : openCreateAccountModal()
+                                }}
+                              >
+                                <FontAwesome
+                                  name="heart-o"
+                                  style={[
+                                    styles.disabledIcon,
+                                    // isLoggedin === false ? styles.disabledIcon : null,
+                                  ]}
+                                />
+                              </TouchableOpacity>
+                            )}
+                          </View>
                           <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
-                              width: 200,
-                              height: 200,
+                              width: "94%",
+                              height: 190,
                               borderRadius: 10,
                             }}
                           />
-                          <Text style={{ fontWeight: "bold" }}>
-                            {item.ArticleNumber}
-                          </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate + '.00'}
-                          </Text>
                         </View>
-                      ))}
+
+                        <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                          {item.ArticleNumber}
+                        </Text>
+                        <Text>{convertToTitleCase(item.Category)}</Text>
+                        <Text style={{ fontWeight: "bold" }}>
+                          {"₹" + item.ArticleRate + '.00'}
+                        </Text>
+                      </View>
+                    ))
+                    : applyrData.map((item) => (
+                      <View
+                        key={item.id}
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: 155,
+                          height: 232,
+                          marginLeft: 5,
+                          marginRight: 5,
+                        }}
+                      >
+                        <Image
+                          source={{ uri: baseImageUrl + item.Photos }}
+                          style={{
+                            width: 200,
+                            height: 200,
+                            borderRadius: 10,
+                          }}
+                        />
+                        <Text style={{ fontWeight: "bold" }}>
+                          {item.ArticleNumber}
+                        </Text>
+                        <Text>{convertToTitleCase(item.Category)}</Text>
+                        <Text style={{ fontWeight: "bold" }}>
+                          {"₹" + item.ArticleRate + '.00'}
+                        </Text>
+                      </View>
+                    ))}
                 </ScrollView>
               </View>
             </View>
@@ -718,25 +717,25 @@ export default function HomeScreen(props) {
         <View
           style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
         >
-          <ButtomNavigation navigation={navigation} isLoggedIn={isLoggedIn} page="home"/>
+          <ButtomNavigation navigation={navigation} isLoggedIn={isLoggedIn} page="home" />
         </View>
       )}
 
       {isFilterVisible && (
         <View
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          top: 0,
-          right: 0, // Updated to 0
-          left: 0,
-          zIndex:2,
-        }}
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            right: 0, // Updated to 0
+            left: 0,
+            zIndex: 2,
+          }}
         >
           <View
-             style={{
+            style={{
               width: "92%",
               backgroundColor: "white",
               position: "absolute",
@@ -756,37 +755,37 @@ export default function HomeScreen(props) {
               maxArticleRate={maxArticleRate}
             />
           </View>
-          
+
         </View>
       )}
       <Modal
-            visible={isCreateAccountVisible}
-            animationType="slide"
-            transparent={true}
-            onRequestClose={closeCreateAccountModal}
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%", // Adjust the width as needed
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
           >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(0, 0, 0, 0.4)",
-              }}
-            >
-              <View
-                style={{
-                  width: "100%", // Adjust the width as needed
-                  backgroundColor: "#fff",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginTop: 25,
-                  marginBottom: 25,
-                }}
-              >
-                <CreateAccount onClose={closeCreateAccountModal} />
-              </View>
-            </View>
-          </Modal>
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
