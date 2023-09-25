@@ -20,15 +20,6 @@ const basesubtitle = 20
 const scaledFontSizeTitle = PixelRatio.getFontScale() * baseFontSize;
 const scaledFontSizesubtitle = PixelRatio.getFontScale() * basesubtitle
 
-const responsiveImage = {
-  1: require('../../../assets/Login/logo1x.png'),
-  2: require('../../../assets/Login/logo2x.png'),
-  3: require('../../../assets/Login/logo3x.png'),
-};
-const pixelRatio = PixelRatio.get();
-const imageSource = responsiveImage[pixelRatio];
-
-
 const Login = (props) => {
   const { navigation } = props;
   const route = useRoute();
@@ -37,6 +28,22 @@ const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
+
+  // Define a function to get the appropriate image source based on pixel ratio
+  const getResponsiveImageSource = () => {
+    const pixelRatio = PixelRatio.get();
+    if (pixelRatio <= 1) {
+      return require("../../../assets/Login/logo1x.png");
+    } else if (pixelRatio <= 2) {
+      return require("../../../assets/Login/logo2x.png");
+    } else {
+      return require("../../../assets/Login/logo3x.png");
+    }
+  };
+
+  // Use the getResponsiveImageSource function to get the image source
+  const imageSource = getResponsiveImageSource();
+
   // Function to clear data when the component is first loaded
   const clearDataOnFirstLoad = useCallback(async () => {
     try {
@@ -146,12 +153,11 @@ const Login = (props) => {
         >
           <View style={styles.loginLogoContainer}>
             <Image
-              source={require("../../../assets/Login/loginlogo.png")}
+              source={imageSource}
               style={[styles.loginLogo, { height: logoSize, width: logoSize }]}
             />
           </View>
         </ImageBackground>
-
         <View style={styles.contentContainer}>
           <Text style={styles.title}>Welcome!</Text>
           <Text style={styles.subtitle}>
