@@ -9,11 +9,11 @@ import {
   Dimensions,
 } from "react-native";
 import { UserData } from "../../api/api";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const CreateAccount = ({ onClose }) => {
-  console.log("++++++++++");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -31,6 +31,8 @@ const CreateAccount = ({ onClose }) => {
   const [countryError, setCountryError] = useState("");
   const [pinCodeError, setPinCodeError] = useState("");
   const [contactPersonError, setContactPersonError] = useState("");
+
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleInputChange = (fieldName, value) => {
     // Clear previous error for the field
@@ -154,8 +156,9 @@ const CreateAccount = ({ onClose }) => {
   };
 
   const handleFormSubmit = async () => {
-    // Clear previous errors
+    // Clear previous errors and success message
     clearErrors();
+    setShowSuccess(false);
 
     // Validate all input fields on form submission
     let isValid = true;
@@ -200,8 +203,6 @@ const CreateAccount = ({ onClose }) => {
       isValid = false;
     }
 
-    // Add more validation for other fields as needed
-
     if (isValid) {
       onClose();
       console.log("Form submitted.");
@@ -218,6 +219,9 @@ const CreateAccount = ({ onClose }) => {
           contactPerson,
         });
         console.log("API response:", response.data);
+        setShowSuccess(true); // Show success message
+        // Clear the form input fields
+        clearFormFields();
       } catch (error) {
         console.error("Error making API request:", error);
       }
@@ -235,6 +239,17 @@ const CreateAccount = ({ onClose }) => {
     setContactPersonError("");
   };
 
+  const clearFormFields = () => {
+    setName("");
+    setAddress("");
+    setPhoneNumber("");
+    setState("");
+    setCity("");
+    setCountry("");
+    setPinCode("");
+    setContactPerson("");
+  };
+
   const handleClose = () => {
     onClose();
     console.log("close");
@@ -242,129 +257,147 @@ const CreateAccount = ({ onClose }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Create Account</Text>
-        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-          <Text style={styles.closeText}>X</Text>
-        </TouchableOpacity>
-      </View>
-      <TextInput
-        style={[styles.input, nameError && styles.inputError]}
-        placeholder="Name"
-        value={name}
-        onChangeText={(text) => handleInputChange("name", text)}
-        onBlur={() => handleInputBlur("name")}
-      />
-      {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
-      <TextInput
-        editable // Make the input editable
-        multiline // Allow multiple lines
-        numberOfLines={4} // Set the number of lines to 4
-        maxLength={100}
-        style={[styles.input, addressError && styles.inputError]}
-        placeholder="Address"
-        value={address}
-        onChangeText={(text) => handleInputChange("address", text)}
-        onBlur={() => handleInputBlur("address")}
-      />
-      {addressError ? (
-        <Text style={styles.errorText}>{addressError}</Text>
-      ) : null}
-      <TextInput
-        style={[styles.input, phoneNumberError && styles.inputError]}
-        placeholder="Phone Number"
-        value={phoneNumber}
-        onChangeText={(text) => handleInputChange("phoneNumber", text)}
-        onBlur={() => handleInputBlur("phoneNumber")}
-      />
-      {phoneNumberError ? (
-        <Text style={styles.errorText}>{phoneNumberError}</Text>
-      ) : null}
-      <View style={styles.rowContainer}>
-        <View style={styles.flex1}>
+      {!showSuccess ? (
+        <>
+          <View style={styles.header}>
+            <Text style={styles.title}>Create Account</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+              <Text style={styles.closeText}>X</Text>
+            </TouchableOpacity>
+          </View>
           <TextInput
-            style={[
-              styles.input,
-              stateError && styles.inputError,
-              { marginRight: 5 },
-            ]}
-            placeholder="State"
-            value={state}
-            onChangeText={(text) => handleInputChange("state", text)}
-            onBlur={() => handleInputBlur("state")}
+            style={[styles.input, nameError && styles.inputError]}
+            placeholder="Name"
+            value={name}
+            onChangeText={(text) => handleInputChange("name", text)}
+            onBlur={() => handleInputBlur("name")}
           />
-          {stateError ? (
-            <Text style={styles.errorText}>{stateError}</Text>
+          {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
+          <TextInput
+            editable // Make the input editable
+            multiline // Allow multiple lines
+            numberOfLines={4} // Set the number of lines to 4
+            maxLength={100}
+            style={[styles.input, addressError && styles.inputError]}
+            placeholder="Address"
+            value={address}
+            onChangeText={(text) => handleInputChange("address", text)}
+            onBlur={() => handleInputBlur("address")}
+          />
+          {addressError ? (
+            <Text style={styles.errorText}>{addressError}</Text>
           ) : null}
-        </View>
-        <View style={styles.flex1}>
           <TextInput
-            style={[
-              styles.input,
-              cityError && styles.inputError,
-              { marginLeft: 5 },
-            ]}
-            placeholder="City"
-            value={city}
-            onChangeText={(text) => handleInputChange("city", text)}
-            onBlur={() => handleInputBlur("city")}
+            style={[styles.input, phoneNumberError && styles.inputError]}
+            placeholder="Phone Number"
+            value={phoneNumber}
+            onChangeText={(text) => handleInputChange("phoneNumber", text)}
+            onBlur={() => handleInputBlur("phoneNumber")}
           />
-          {cityError ? <Text style={styles.errorText}>{cityError}</Text> : null}
-        </View>
-      </View>
-      <View style={styles.rowContainer}>
-        <View style={styles.flex1}>
-          <TextInput
-            style={[
-              styles.input,
-              countryError && styles.inputError,
-              { marginRight: 5 },
-            ]}
-            placeholder="Country"
-            value={country}
-            onChangeText={(text) => handleInputChange("country", text)}
-            onBlur={() => handleInputBlur("country")}
-          />
-          {countryError ? (
-            <Text style={styles.errorText}>{countryError}</Text>
+          {phoneNumberError ? (
+            <Text style={styles.errorText}>{phoneNumberError}</Text>
           ) : null}
-        </View>
-        <View style={styles.flex1}>
+          <View style={styles.rowContainer}>
+            <View style={styles.flex1}>
+              <TextInput
+                style={[
+                  styles.input,
+                  stateError && styles.inputError,
+                  { marginRight: 5 },
+                ]}
+                placeholder="State"
+                value={state}
+                onChangeText={(text) => handleInputChange("state", text)}
+                onBlur={() => handleInputBlur("state")}
+              />
+              {stateError ? (
+                <Text style={styles.errorText}>{stateError}</Text>
+              ) : null}
+            </View>
+            <View style={styles.flex1}>
+              <TextInput
+                style={[
+                  styles.input,
+                  cityError && styles.inputError,
+                  { marginLeft: 5 },
+                ]}
+                placeholder="City"
+                value={city}
+                onChangeText={(text) => handleInputChange("city", text)}
+                onBlur={() => handleInputBlur("city")}
+              />
+              {cityError ? (
+                <Text style={styles.errorText}>{cityError}</Text>
+              ) : null}
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.flex1}>
+              <TextInput
+                style={[
+                  styles.input,
+                  countryError && styles.inputError,
+                  { marginRight: 5 },
+                ]}
+                placeholder="Country"
+                value={country}
+                onChangeText={(text) => handleInputChange("country", text)}
+                onBlur={() => handleInputBlur("country")}
+              />
+              {countryError ? (
+                <Text style={styles.errorText}>{countryError}</Text>
+              ) : null}
+            </View>
+            <View style={styles.flex1}>
+              <TextInput
+                style={[
+                  styles.input,
+                  pinCodeError && styles.inputError,
+                  { marginLeft: 5 },
+                ]}
+                placeholder="Pincode"
+                value={pinCode}
+                onChangeText={(text) => handleInputChange("pinCode", text)}
+                onBlur={() => handleInputBlur("pinCode")}
+              />
+              {pinCodeError ? (
+                <Text style={styles.errorText}>{pinCodeError}</Text>
+              ) : null}
+            </View>
+          </View>
           <TextInput
-            style={[
-              styles.input,
-              pinCodeError && styles.inputError,
-              { marginLeft: 5 },
-            ]}
-            placeholder="Pincode"
-            value={pinCode}
-            onChangeText={(text) => handleInputChange("pinCode", text)}
-            onBlur={() => handleInputBlur("pinCode")}
+            style={[styles.input, contactPersonError && styles.inputError]}
+            placeholder="Contact Person"
+            value={contactPerson}
+            onChangeText={(text) => handleInputChange("contactPerson", text)}
+            onBlur={() => handleInputBlur("contactPerson")}
           />
-          {pinCodeError ? (
-            <Text style={styles.errorText}>{pinCodeError}</Text>
+          {contactPersonError ? (
+            <Text style={styles.errorText}>{contactPersonError}</Text>
           ) : null}
-        </View>
-      </View>
-      <TextInput
-        style={[styles.input, contactPersonError && styles.inputError]}
-        placeholder="Contact Person"
-        value={contactPerson}
-        onChangeText={(text) => handleInputChange("contactPerson", text)}
-        onBlur={() => handleInputBlur("contactPerson")}
-      />
-      {contactPersonError ? (
-        <Text style={styles.errorText}>{contactPersonError}</Text>
-      ) : null}
 
-      <View style={{ width: "100%", alignItems: "center" }}>
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={handleFormSubmit}
-        >
-          <Text style={styles.submitButtonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={{ width: "100%", alignItems: "center" }}>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleFormSubmit}
+            >
+              <Text style={styles.submitButtonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <View style={styles.successContainer}>
+          <Text style={styles.successText}>Account created successfully!</Text>
+          <TouchableOpacity
+            style={styles.okButton}
+            onPress={() => {
+              setShowSuccess(false);
+            }}
+          >
+            <Text style={styles.okButtonText}>OK</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -398,23 +431,20 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    position: "fixed",
-    bottom: 20,
+    marginBottom: 10,
   },
   submitButton: {
     width: windowWidth * 0.3,
     backgroundColor: "black",
-    // padding: 18,
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
     height: windowHeight * 0.06,
-
     marginTop: windowHeight * 0.04,
   },
   submitButtonText: {
     color: "white",
-    fontWeight: 700,
+    fontWeight: "bold",
     fontSize: windowWidth * 0.04,
   },
   closeButton: {
@@ -436,6 +466,28 @@ const styles = StyleSheet.create({
   },
   flex1: {
     flex: 1,
+  },
+  successContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  successText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  okButton: {
+    backgroundColor: "black",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.06,
+  },
+  okButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });
 

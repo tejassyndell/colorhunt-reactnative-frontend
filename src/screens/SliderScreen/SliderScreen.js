@@ -240,7 +240,6 @@ const styles = StyleSheet.create({
   slideText1: {
     color: "black",
     fontSize: 22,
-    fontFamily: "Gotu",
     textAlign: "center",
   },
   slideText2: {
