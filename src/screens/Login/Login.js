@@ -144,8 +144,9 @@ const Login = (props) => {
               />
             </View>
             <TextInput
-              style={styles.input}
+              style={[styles.input,{color:"black"}]}
               placeholder="Phone Number"
+              placeholderTextColor="#0000004D"
               keyboardType="numeric"
               maxLength={10}
               value={phoneNumber}
@@ -171,10 +172,10 @@ const Login = (props) => {
             ))}
           </View>
         )}
-        <View style={{width:"100%",height:100}}>
-        <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
-          <Text style={styles.buttonText}>{buttonLabel}</Text>
-        </TouchableOpacity>
+        <View style={{ width: "100%", height: 100 }}>
+          <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
+            <Text style={styles.buttonText}>{buttonLabel}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -189,7 +190,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     bottom: 0,
-    // backgroundColor:'red'
   },
   title: {
     color: "white",
@@ -211,16 +211,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
-    color:' rgba(0, 0, 0, 0.30)'
+    color: ' rgba(0, 0, 0, 0.30)'
   },
   otpContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 20,
     width: "60%",
+    marginBottom: '10%',
   },
   otpInput: {
-    width:47,
+    width: 47,
     height: 50,
     borderColor: "gray",
     borderWidth: 1,
@@ -228,30 +228,28 @@ const styles = StyleSheet.create({
     fontSize: 23,
     borderRadius: 7,
     textAlign: "center",
-    marginBottom: 20,
+
   },
   button: {
     backgroundColor: "#212121",
     width: 148,
     height: 50,
     borderRadius: 10,
-    position:'absolute',
+    position: 'absolute',
     marginTop: 50,
     justifyContent: "center",
-    // marginLeft: "58%",
     bottom: 10,
-    right:0
+    right: 0
   },
   buttonText: {
     color: "white",
     fontSize: 23,
     fontWeight: 700,
     textAlign: "center",
-   
   },
   phoneIcon: {
-    height: 20, 
-    width: 20, 
+    height: 20,
+    width: 20,
   },
   inputContainer: {
     flexDirection: "row",
@@ -262,7 +260,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     marginBottom: '13%',
     justifyContent: "center",
-    backgroundColor:'green'
+    backgroundColor: 'green'
   },
   phoneIconContainer: {
     height: 50,
@@ -277,20 +275,14 @@ const styles = StyleSheet.create({
   container1: {
     flex: 1,
     backgroundColor: '#FFF',
-    padding:20,
-    // borderWidth:1,
-    justifyContent:'center',
-    alignItems:'center'
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   backgroundImage1: {
     flex: 1,
-    resizeMode: 'stretch', 
+    resizeMode: 'stretch',
     width: '100%',
-    // marginTop: 15,
-    // marginLeft:30,
-    // marginHorizontal: 20,
-    // backgroundColor:'red',
-    // borderWidth:1
   },
   loginContainer: {
     flex: 1,

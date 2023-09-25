@@ -21,6 +21,8 @@ export default function AllArticle(props) {
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [noArticlesFound, setNoArticlesFound] = useState(false);
+
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
@@ -129,6 +131,7 @@ export default function AllArticle(props) {
       console.log(filtered.length, "length")
       setFinalData(filtered)
       console.log(finalData.length, "FD")
+      setNoArticlesFound(filtered.length === 0);
     }
   }
 
@@ -222,6 +225,7 @@ export default function AllArticle(props) {
     );
     setFinalData(filteredData);
     console.log("handle Filter chnage", finalData.length)
+    setNoArticlesFound(filteredData.length === 0);
   };
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev)
@@ -290,21 +294,25 @@ export default function AllArticle(props) {
             </Text>
           </View>
           <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
-            {console.log(finalData.length, "when render ")}
-            <FlatList
-              style={{ backgroundColor: "#FFF" }}
-              data={finalData}
-              keyExtractor={(item) => item.Id}
-              renderItem={renderItem}
-              numColumns={2}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingVertical: 0 }}
-            />
+            {noArticlesFound ? (
+              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>NO ARTICLES FOUND</Text>
+            ) : (
+              <FlatList
+                style={{ backgroundColor: "#FFF" }}
+                data={finalData}
+                keyExtractor={(item) => item.Id}
+                renderItem={renderItem}
+                numColumns={2}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingVertical: 0 }}
+              />
+            )}
+
           </View>
           {/* </ScrollView> */}
           {isFilterVisible ? null : (
             <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-              <ButtomNavigation navigation={navigation} page="home"/>
+              <ButtomNavigation navigation={navigation} page="home" />
             </View>
           )}
 
