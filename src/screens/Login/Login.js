@@ -13,12 +13,8 @@ import { PixelRatio } from "react-native";
 
 const { width, height } = Dimensions.get('window');
 const logoSize = Math.min(width, height) * 0.4;
-// Define a base font size for a standard screen density (e.g., 2x, 3x)
 const baseFontSize = 30;
-const basesubtitle = 20
-// Calculate the scaled font size based on the device's screen density
-const scaledFontSizeTitle = PixelRatio.getFontScale() * baseFontSize;
-const scaledFontSizesubtitle = PixelRatio.getFontScale() * basesubtitle
+const baseSubtitle = 20
 
 const Login = (props) => {
   const { navigation } = props;
@@ -29,7 +25,6 @@ const Login = (props) => {
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
 
-  // Define a function to get the appropriate image source based on pixel ratio
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
     if (pixelRatio <= 1) {
@@ -41,7 +36,6 @@ const Login = (props) => {
     }
   };
 
-  // Use the getResponsiveImageSource function to get the image source
   const imageSource = getResponsiveImageSource();
 
   // Function to clear data when the component is first loaded
@@ -54,9 +48,7 @@ const Login = (props) => {
     }
   }, []);
 
-  // Call clearDataOnFirstLoad only once when the component is first loaded
   useFocusEffect(clearDataOnFirstLoad);
-  // Reset everything
   const clearAndReset = useCallback(async () => {
     try {
       await AsyncStorage.removeItem("UserData");
@@ -223,13 +215,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: scaledFontSizeTitle,
+    fontSize: baseFontSize * PixelRatio.getFontScale(),
     fontWeight: 700,
     marginBottom: '2%',
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
-    fontSize: scaledFontSizesubtitle,
+    fontSize: baseSubtitle * PixelRatio.getFontScale(),
     fontWeight: 700,
     marginBottom: '10%',
   },
