@@ -3,7 +3,7 @@ import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { Pressable } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { getsonumber } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
@@ -15,12 +15,80 @@ const OrderHistory = (props) => {
     const [toggle, setToggle] = useState(true)
     const [orderstatus, setOrderstatus] = useState(true);
     const [sonumberdata, setSoNumberData] = useState([]);
+    const [oldDataOfso, setOldDateOfso] = useState([]);
     const [isloading, setIsLoading] = useState(true);
     const [isCalendarVisible, setCalendarVisible] = useState(false);
+    const [selectedDate, setSelectedDate] = useState('DD/MM/YYYY');
+    const [selectedDateIncompleted, setSelectedDateIncompleted] = useState('DD/MM/YYYY');
+
+    const [completedsodata, setcompletedsodata] = useState();
     const toggleCalendar = () => {
         setCalendarVisible(!isCalendarVisible);
     };
 
+    const filterOsDataByDate = () => {
+        if (selectedDate !== "DD/MM/YYYY") {
+            let data = sonumberdata;
+            let filterdata = data.filter((item) => {
+                let val = new Date(item.SoDate).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                })
+                if (item.SoDate) {
+                    if (new Date(item.SoDate).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    }) === selectedDate) {
+                        console.log(val, "{}{}{}{}{}", date);
+                        return item;
+                    }
+                }
+            })
+            setSoNumberData(filterdata);
+        }
+    }
+    const filterdataOfcompleted = () => {
+        if (selectedDate !== "DD/MM/YYYY") {
+            let data = completedsodata;
+            let filterdata = data.filter((item) => {
+                let val = new Date(item.SoDate).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                })
+                if (item.SoDate) {
+                    if (new Date(item.SoDate).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                    }) === selectedDate) {
+                        console.log(val, "{}{}{}{}{}", date);
+                        return item;
+                    }
+                }
+            })
+            setcompletedsodata(filterdata);
+        }
+    }
+
+    const handleDateSelect = (day) => {
+        let date = new Date(day.dateString).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        })
+        setSelectedDate(date);
+    };
+    const handleDateSelectOfCompleted = (day) => {
+        let date = new Date(day.dateString).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        })
+        setSelectedDateIncompleted(date);
+    };
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -54,8 +122,9 @@ const OrderHistory = (props) => {
         let data = await AsyncStorage.getItem("UserData");
         data = await JSON.parse(data);
         await getsonumber({ PartyId: data[0].Id }).then((res) => {
-            console.log(res.data);
             setSoNumberData(res.data)
+            setOldDateOfso(res.data)
+            setcompletedsodata(res.data);
             setIsLoading(false);
         })
     }
@@ -66,6 +135,7 @@ const OrderHistory = (props) => {
         return articleRate.reduce((total, value, index) => total + (parseInt(value, 10) * parseInt(outwardNoPacks[index], 10)), 0);
     };
     const inputDate = "2021-04-15T11:39:25.000Z";
+
     return (
         <>
             {isloading ?
@@ -97,7 +167,7 @@ const OrderHistory = (props) => {
                         </View>
                         <View style={styles.calender_cnt}>
                             <View style={{ padding: 10, paddingRight: 32 }}>
-                                <TouchableOpacity onPress={toggleCalendar}>
+                                <TouchableOpacity onPress={() => toggleCalendar()}>
                                     <Image style={{ height: 20, width: 20 }} source={require("../../../assets/calaender.png")}></Image>
                                 </TouchableOpacity>
                             </View>
@@ -109,7 +179,7 @@ const OrderHistory = (props) => {
                             <ScrollView nestedScrollEnabled={true}>
                                 {sonumberdata ? sonumberdata.map((item) =>
                                     item.status === 0 ?
-                                        <View style={orderstyles.data_cnt}>
+                                        <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber }) }}>
                                             <View style={{ width: "62%" }}>
                                                 <View style={{ gap: 8 }}>
                                                     <View style={orderstyles.text_cnt}>
@@ -153,7 +223,8 @@ const OrderHistory = (props) => {
                                                     </View>
                                                 </View>
                                             </View>
-                                        </View> : ""
+                                        </TouchableOpacity>
+                                        : ""
                                 ) : ""}
 
                             </ScrollView>
@@ -161,7 +232,7 @@ const OrderHistory = (props) => {
                         :
                         <View style={orderstyles.order_cnt}>
                             <ScrollView nestedScrollEnabled={true}>
-                                {sonumberdata ? sonumberdata.map((item) =>
+                                {completedsodata ? completedsodata.map((item) =>
                                     item.status === 1 ?
                                         <View style={orderstyles.data_cnt}>
                                             <View style={{ width: "62%" }}>
@@ -212,6 +283,8 @@ const OrderHistory = (props) => {
 
                         </View>
                     }
+
+
                     <Modal
                         animationType="slide"
                         transparent={false}
@@ -219,24 +292,32 @@ const OrderHistory = (props) => {
                         onRequestClose={() => {
                             setCalendarVisible(!isCalendarVisible);
                         }}
+                        style={{ margin: 20 }}
                     >
                         <View >
-                            <View style={{ flex: 1 ,backgroundColor:"#FFF"}}>
-                                <View style={{ flex: 0.4 }}>
-                                <Text>Date</Text>
+                            <View style={styles.calendarModal}>
+                                <View style={{ width: "80%", height: 48.752, gap: 12, display: "flex", flexDirection: "row", paddingVertical: 13, paddingLeft: 20 }}>
+                                    <Image style={{ height: 20, width: 20, }} source={require("../../../assets/gray_calender.png")}></Image>
+                                    <Text style={{ fontSize: 18, fontWeight: 400, color: "#BBB" }}>{orderstatus ? selectedDate : selectedDateIncompleted}</Text>
                                 </View>
-                                <View>
-                                    <TouchableOpacity onPress={toggleCalendar}>
-                                        <Text>Close Calendar</Text>
+                                <View style={{ width: "20%", justifyContent: "center", alignItems: "center" }}>
+                                    <TouchableOpacity onPress={() => { toggleCalendar(); setSelectedDate("DD/MM/YYYY"); setSoNumberData(oldDataOfso); }}>
+                                        <Image style={{ height: 24, width: 24 }} source={require("../../../assets/grayclose.png")}></Image>
                                     </TouchableOpacity>
                                 </View>
                             </View>
-
                             <Calendar
-                                style={{ margin: 20, borderRadius: 5.477 }}
-                            // Customize calendar properties here
-                            // onDayPress={(day) => handleDayPress(day)}
+                                // Customize calendar properties here
+                                onDayPress={(day) => { orderstatus ? handleDateSelect(day) : handleDateSelectOfCompleted(day) }}
+                                style={{ borderRadius: 5.477, borderWidth: 0.685, borderStyle: "solid", borderColor: "#DDD" }}
                             />
+                            <View style={styles.calendarModal2}>
+                                <View style={{ width: 100, justifyContent: "flex-end" }}>
+                                    <Pressable style={{ padding: 10, backgroundColor: "black", borderRadius: 3.423 }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
+                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: 16 }}>Next</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
                         </View>
                     </Modal>
                     <View
@@ -254,6 +335,31 @@ const OrderHistory = (props) => {
 export default OrderHistory;
 
 const styles = StyleSheet.create({
+
+    calendarModal: {
+        width: "100%",
+        backgroundColor: "#FFF",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        borderRadius: 5.477,
+        borderWidth: 0.685,
+        borderStyle: "solid",
+        borderColor: "#DDD"
+    },
+    calendarModal2: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        marginTop: 20
+    },
+    calendar: {
+        color: "#FFF",
+        borderRadius: 5.477, // Apply your desired border radius
+        width: 300, // Apply your desired width
+        height: "auto", // Apply your desired height
+    },
     container: {
         width: '100%',
         height: "100%",

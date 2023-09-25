@@ -68,7 +68,7 @@ const AddToCart = (props) => {
             }))
             getDetailsOfInward(arr1, parsedOrderItems);
 
-            console.log(parsedOrderItems);
+            console.log(parsedOrderItems,"-=-==-=-=-=--=-=-=");
             setOrderItems(parsedOrderItems);
             setIsLoading(false);
         })
@@ -205,9 +205,10 @@ const AddToCart = (props) => {
             console.log('Erro deleting article:', error)
         }
     }
-    const handleEditOrder = (article_id) => {
+    const handleEditOrder = (article_id,qty) => {
         const id = article_id
-        navigation.navigate('DetailsOfArticals', { id });
+        const Quantity = qty;
+        navigation.navigate('DetailsOfArticals', { id,Quantity });
 
     }
     const totalItems = orderItems.length
@@ -419,7 +420,7 @@ const AddToCart = (props) => {
                                                                             borderRadius: 10
                                                                         }}>
                                                                             <TouchableOpacity
-                                                                                onPress={() => handleEditOrder(item.article_id)}
+                                                                                onPress={() => handleEditOrder(item.article_id,item.Quantity)}
                                                                             >
 
                                                                                 <Image alt="edite"
@@ -520,7 +521,7 @@ const AddToCart = (props) => {
                                                                             borderRadius: 10
                                                                         }}>
                                                                             <TouchableOpacity
-                                                                                onPress={() => handleEditOrder(item.article_id)}
+                                                                                onPress={() => handleEditOrder(item.article_id,item.Quantity)}
                                                                             >
 
                                                                                 <Image alt="edite"
@@ -631,7 +632,7 @@ const AddToCart = (props) => {
                                                                             borderRadius: 10
                                                                         }}>
                                                                             <TouchableOpacity
-                                                                                onPress={() => handleEditOrder(item.article_id)}
+                                                                                onPress={() => handleEditOrder(item.article_id,item.Quantity)}
                                                                             >
 
                                                                                 <Image alt="edite"
