@@ -10,11 +10,11 @@ import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
+import { RFPercentage,RFValue } from "react-native-responsive-fontsize";
 
 const { width, height } = Dimensions.get('window');
 const logoSize = Math.min(width, height) * 0.4;
-const baseFontSize = 30;
-const baseSubtitle = 20
+
 
 const Login = (props) => {
   const { navigation } = props;
@@ -215,13 +215,15 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: baseFontSize * PixelRatio.getFontScale(),
+    fontSize: RFValue(25),
+    // fontSize:RFPercentage(5),
     fontWeight: 700,
     marginBottom: '2%',
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
-    fontSize: baseSubtitle * PixelRatio.getFontScale(),
+    fontSize: RFValue(20),
+    // fontSize:RFPercentage(5),
     fontWeight: 700,
     marginBottom: '10%',
   },
@@ -276,11 +278,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: '85%',
+    width: '90%',
     height: 50,
     borderColor: "gray",
     borderRadius: 7,
-    marginBottom: '10%',
+    marginBottom: '5%',
     justifyContent: "center",
   },
   phoneIconContainer: {
