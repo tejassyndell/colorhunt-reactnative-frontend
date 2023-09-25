@@ -1,831 +1,813 @@
-import { useLayoutEffect, useState, useEffect } from "react";
-import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
-  View,
   Text,
+  View,
   Image,
   ScrollView,
   TouchableOpacity,
-  TextInput,
-  Pressable,
   Modal,
 } from "react-native";
-import { addso, gettransportation } from "../../api/api";
+import styles from "./styles";
+import { FontAwesome } from "@expo/vector-icons";
+import {
+  getProductName,
+  getcateGorywithphotos,
+  getWishlistData,
+  getAddWishlist,
+  DeleteWishlist,
+} from "../../api/api";
+import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
+import SearchBar from "../../components/SearchBar/searchbar";
 import { ActivityIndicator } from "react-native";
+import Filter from "../../components/Filter/Filter";
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
-import { TouchableWithoutFeedback } from "react-native";
-
-const Orderlist = (props) => {
+export default function HomeScreen(props) {
   const { navigation } = props;
+  const [categoryName, setCategoryName] = useState();
+  const [ApplyStatushBack, setApplyStatushBack] = useState(true);
+  const [nameData, setNameData] = useState([]);
+  const [nameDatas, setNameDatas] = useState([]);
+  const [applyrData, setApplyData] = useState([]);
+  const [selectedprd, setSelectprd] = useState([]);
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
+  const [finalData, setFinalData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [destinationVal, setDestinationVal] = useState("");
-  const [showTransporatation, setshowTransporatation] = useState(false);
-  const [transportationVal, setTransportationVal] = useState();
-  const [fillvalue, setValue] = useState(false);
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const [searchText, setSearchText] = useState("");
+  const [filterDataSearch, setFilterDataSearch] = useState([]);
+  const [minArticleRate, setMinArticleRate] = useState(null);
+  const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
 
-  // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
-  const [Transportation, setTransportation] = useState([]);
-  const [OldTransportation, setOldTransportation] = useState([]);
-  const [ParsedData, setParsedData] = useState([]);
-  const currentDate = new Date();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  useEffect(() => {
-    fetchprofiledata();
-  }, []);
-  const fetchprofiledata = async () => {
+  const openFilter = () => {
+    setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
+  };
+  // ------- add product in wishlist start-------------
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+  const checkUserLoginforheader = async () => {
     try {
-      let partyData = await AsyncStorage.getItem("UserData");
-      partyData = JSON.parse(partyData);
-      console.log(partyData);
-      const data = { party_id: partyData[0].Id };
-      const response = await Profiledata(data);
-      setprofile(response.data);
-    } catch (err) {
-      console.log(err, "error in fetching data");
-    }
-  };
-  const AddSo = async () => {
-    let Articldata = ParsedData.map(
-      ({
-        article_id,
-        articleRate,
-        ArticleColor,
-        ArticleOpenFlag,
-        Quantity,
-      }) => ({
-        article_id,
-        articleRate,
-        ArticleColor,
-        ArticleOpenFlag,
-        Quantity,
-      })
-    );
-    const data = {
-      Date: currentDate,
-      Destination: destinationVal,
-      Transporter: transportationVal,
-      GSTType: "GST",
-      GST: "",
-      GST_Percentage: "",
-      PartyId: party_id,
-      Remarks: "",
-      SoNumberId: "Add",
-      UserId: 38,
-      DataArticle: Articldata,
-      NoPacksNew: null,
-    };
-    console.log("-=-=-=-", data);
-    await addso(data).then((res) => {
-      if (res.status === 200) {
-        setIsModalVisible(true);
-      }
-    });
-  };
-  const showSuccessModal = () => {
-    if (destinationVal) {
-      AddSo();
-    } else {
-      setValue(true);
-    }
-  };
-  // let ParsedData = [];
-  const formattedDate = `${
-    currentDate.getMonth() + 1
-  }/${currentDate.getDate()}/${currentDate.getFullYear()}`;
-  AsyncStorage.getItem("Orderlist")
-    .then((Storagedata) => {
-      if (Storagedata !== null) {
-        setParsedData(JSON.parse(Storagedata));
+      const data = await AsyncStorage.getItem("UserData");
+      if (data) {
+        navigation.navigate("Profile");
       } else {
-        console.log("No data found");
+        openCreateAccountModal();
       }
-    })
-    .catch((error) => {
-      console.error("Error retrieving data:", error);
-    });
-
-  const GetTransportation = async () => {
-    await gettransportation()
-      .then((response) => {
-        setTransportation(response.data);
-        setTransportationVal(response.data[0].Name);
-        setOldTransportation(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching transportation data:", error);
-      });
+    } catch (error) {
+      console.error("Error while checking user data:", error);
+      return false; // Handle errors by returning false or appropriate error handling
+    }
   };
-  useEffect(() => {
-    GetTransportation();
-    // setIsLoading(false);
-  }, []);
-  let totalrate = "";
-  if (ParsedData) {
-    totalrate = ParsedData.reduce(
-      (total, item) => total + parseInt(item.rate),
-      0
-    );
-  } else {
-    console.log(ParsedData);
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
+  const getWishlist = async () => {
+    const data = {
+      party_id: 197,
+    };
+    const result = await getWishlistData(data).then((res) => {
+      setSelectprd(res.data);
+    });
+  };
+  function convertToTitleCase(str) {
+    return str
+      .toLowerCase()
+      .split("-") // Split the string at hyphens or spaces
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join("-"); // Join the words with spaces
   }
+  const addArticleWishlist = async (i) => {
+    let data = {
+      user_id: 197,
+      article_id: i.Id,
+    };
+    console.log("............111", data);
+    try {
+      await getAddWishlist(data).then((res) => {
+        getWishlist();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const rmvProductWishlist = async (i) => {
+    console.log(i, "r");
+    let data = {
+      party_id: 197,
+      article_id: i.Id,
+    };
+    console.log(data);
+
+    try {
+      await DeleteWishlist(data).then((res) => {
+        if (res.status === 200) {
+          getWishlist();
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCategoriesname();
+    getWishlist();
+  }, []);
+
+  // uploard url image
+  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  //getCategoriesname
+  const getCategoriesname = async () => {
+    try {
+      const result1 = await getcateGorywithphotos();
+      if (result1.status === 200) {
+        setCategoryName(result1.data);
+        setNameData(result1.data);
+        setApplyData(result1.data);
+      }
+
+      const result2 = await getProductName();
+      if (result2.status === 200) {
+        setCategoryName(result2.data);
+        setNameDatas(result2.data);
+        setApplyData(result2.data);
+        setFilterDataSearch(result2.data);
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      // Handle any errors that might occur during the API requests.
+      console.error(error);
+      setIsLoading(false); // Make sure to set isLoading to false in case of an error.
+    }
+  };
+
+  useEffect(() => {
+    getCategoriesname();
+  }, []);
+
+  const viewAllArticles = () => {
+    console.log(finalData.length, "lenght of navigation data ");
+    navigation.navigate("AllArticle", { finalData });
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <MenuBackArrow
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      ),
-      headerTitle: () => (
         <View
           style={{
+            marginLeft: 5,
+            width: 50,
+            height: 100,
             display: "flex",
-            flexDirection: "row",
-            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 25,
-              fontWeight: 700,
-              width: "100%",
+          <TouchableOpacity
+            onPress={() => {
+              navigation.openDrawer();
             }}
           >
-            Sales order
-          </Text>
+            <Image
+              source={require("../../../assets/sidbarOpenIcone.png")}
+              style={{ width: 38, height: 38, borderRadius: 5 }}
+            ></Image>
+          </TouchableOpacity>
         </View>
       ),
+      headerTitle: () => <View />,
       headerRight: () => (
-        // <View style={{ marginRight: 20, width: 50, height: 40, display: "flex", justifyContent: "center", alignItems: "center" }}>
-        //     <TouchableOpacity  onPress={handleGoToOrderList}>
-        //     <Image  source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
-        //     </TouchableOpacity>
-        <View />
+        <View
+          style={{
+            marginHorizontal: 10,
+            width: "auto",
+            height: "auto",
+            padding: 4,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              checkUserLoginforheader();
+            }}
+          >
+            <Image
+              style={styles.searchIcon}
+              source={require("../../../assets/Nevbar/Profile.png")}
+            />
+          </TouchableOpacity>
+        </View>
       ),
     });
   }, []);
 
-  const filterTransportationValue = (e) => {
-    setTransportationVal(e);
-    console.log(e);
-    setshowTransporatation(true);
-    if (e !== "") {
-      let filterVal = Transportation.filter((item) =>
-        item.Name.toLocaleLowerCase().includes(e.toLocaleLowerCase())
-      );
-      console.log(filterVal);
-      setTransportation(filterVal);
+  const handlePress = (item) => {
+    navigation.navigate("CategorisWiseArticle", { item1: item });
+  };
+
+  const filterData = () => {
+    if (searchText === "") {
     } else {
-      setTransportation(OldTransportation);
-      setshowTransporatation(false);
+      console.log(searchText);
+      console.log(filterDataSearch.length, "length fds");
+      const filtered = filterDataSearch.filter(
+        (item) =>
+          item.ArticleNumber.toString().includes(searchText.toString()) ||
+          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.ArticleRate.toString().includes(searchText.toString()) ||
+          item.StyleDescription.toLowerCase().includes(
+            searchText.toLowerCase()
+          ) ||
+          item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
+      );
+      console.log(filtered.length, "search data lnegth");
+      setFinalData(filtered);
+    }
+  };
+  useEffect(() => {
+    filterData();
+  }, [searchText]);
+  const handleFilterChange = (categories, priceRange) => {
+    setSelectedCategories(categories);
+    setSelectedPriceRange(priceRange);
+    setSearchText("");
+    const filteredData = nameDatas.filter(
+      (item) =>
+        selectedCategories.includes(item.Category) &&
+        item.ArticleRate >= selectedPriceRange[0] &&
+        item.ArticleRate <= selectedPriceRange[1]
+    );
+
+    setFinalData(filteredData);
+  };
+  useEffect(() => {
+    console.log(selectedCategories, "Sc");
+    console.log(selectedPriceRange, "Range");
+    const abc = nameDatas.filter(
+      (item) =>
+        (!selectedCategories.length ||
+          selectedCategories.includes(item.Category)) &&
+        item.ArticleRate >= selectedPriceRange[0] &&
+        item.ArticleRate <= selectedPriceRange[1]
+    );
+    console.log(abc.length);
+    setFinalData(abc);
+  }, [selectedCategories, selectedPriceRange]);
+
+  const handleCloseFilter = (isClosed) => {
+    setIsFilterVisible(isClosed);
+  };
+
+  useEffect(() => {
+    const minRate = nameDatas.reduce((min, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate < min ? articleRate : min;
+    }, Infinity);
+
+    const maxRate = nameDatas.reduce((max, item) => {
+      const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
+      return articleRate > max ? articleRate : max;
+    }, -Infinity);
+
+    setMinArticleRate(minRate);
+    console.log(minArticleRate);
+    setMaxArticleRate(maxRate);
+    console.log(maxArticleRate);
+  }, [nameDatas]);
+  const checkUserLogin = async () => {
+    const token = await AsyncStorage.getItem("UserData");
+
+    if (token) {
+      console.log(token, "------------");
+      setIsLoggedIn(true);
+    } else {
+      console.log(token, "()()()()(");
+      setIsLoggedIn(false);
     }
   };
 
+  useEffect(() => {
+    checkUserLogin();
+  }, []);
   return (
     <>
       {isLoading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      ) : (
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#FFF",
+            paddingStart: 5,
+          }}
+        >
+          <View style={{ marginTop: 10 }}>
+            <View>
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: 700,
+                  paddingLeft: 8,
+                  height: 30,
+                  alignItems: "center",
+                  // fontFamily: "Glory-Regular",
+                }}
+              >
+                Welcome
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                width: "89%",
+              }}
+            >
+              <SearchBar
+                searchPhrase={searchText}
+                setSearchPhrase={setSearchText}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  isLoggedIn ? openFilter() : openCreateAccountModal();
+                }}
+              >
+                <Image
+                  source={require("../../../assets/filetr_icone.png")}
+                  style={{ width: 40, height: 40, borderRadius: 10 }}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            style={{ overflow: "hidden" }}
+          >
+            <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
+              <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
+                Men's
+              </Text>
+              <Text
+                style={{
+                  position: "absolute",
+                  color: "rgba(102, 102, 102, 1)",
+                  end: 10,
+                  fontSize: 12,
+                  fontWeight: 600,
+                }}
+                onPress={() => {
+                  isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                }}
+              >
+                View All
+              </Text>
+            </View>
+
+            <View
+              style={{
+                position: "relative",
+                maxWidth: "100%",
+                height: "auto",
+                flexDirection: "row",
+                top: 20,
+              }}
+            >
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                style={{ flex: 1, overflow: "hidden" }}
+              >
+                {ApplyStatushBack === true
+                  ? finalData.length > 0
+                    ? finalData.map((item) => (
+                        <TouchableOpacity
+                          onPress={() => {
+                            isLoggedIn
+                              ? navigation.navigate("DetailsOfArticals", {
+                                  id: item.Id,
+                                })
+                              : openCreateAccountModal();
+                          }}
+                        >
+                          <View
+                            key={item.id}
+                            style={{
+                              alignItems: "center",
+                              height: 280,
+                              width: 155,
+                              marginLeft: 10,
+                              marginRight: 5,
+                              borderRadius: 10,
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: 155,
+                                height: 190,
+                                borderColor: "gray",
+                                shadowColor: "rgba(0, 0, 0, 0.5)",
+                                shadowOpacity: 0.9,
+                                shadowRadius: 3,
+                                borderRadius: 10,
+                                elevation: 4, // For Android, use elevation
+                                shadowOffset: {
+                                  width: 0,
+                                  height: 0,
+                                },
+                              }}
+                            >
+                              <View id={item.id} style={styles.producticones}>
+                                {selectedprd.some((i) => i.Id === item.Id) ? (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      isLoggedIn
+                                        ? rmvProductWishlist(item)
+                                        : openCreateAccountModal();
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart"
+                                      style={[
+                                        styles.icon,
+                                        // isLoggedin === false ? styles.disabledIcon : null,
+                                      ]}
+                                    />
+                                  </TouchableOpacity>
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      isLoggedIn
+                                        ? addArticleWishlist(item)
+                                        : openCreateAccountModal();
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart-o"
+                                      style={[
+                                        styles.disabledIcon,
+                                        // isLoggedin === false ? styles.disabledIcon : null,
+                                      ]}
+                                    />
+                                  </TouchableOpacity>
+                                )}
+                              </View>
+                              <Image
+                                source={{ uri: baseImageUrl + item.Photos }}
+                                style={{
+                                  width: "100%",
+                                  height: 190,
+                                  borderRadius: 10,
+                                }}
+                              />
+                            </View>
+
+                            <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                              {item.ArticleNumber}
+                            </Text>
+                            <Text>{convertToTitleCase(item.Category)}</Text>
+                            <Text style={{ fontWeight: "bold" }}>
+                              {"₹" + item.ArticleRate + ".00"}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      ))
+                    : nameData.map((item) => (
+                        <View
+                          key={item.id}
+                          style={{
+                            alignItems: "center",
+                            height: "auto",
+                            width: 165,
+                            marginLeft: 5,
+                            marginRight: 5,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            borderRadius: 10,
+                          }}
+                        >
+                          <TouchableOpacity
+                            onPress={() => {
+                              isLoggedIn
+                                ? handlePress(item)
+                                : openCreateAccountModal();
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: 155,
+                                height: 190,
+                                borderColor: "gray",
+                                shadowColor: "gray",
+                                shadowOpacity: 0.9,
+                                shadowRadius: 10,
+                                elevation: 10,
+                                shadowOffset: {
+                                  width: 0,
+                                  height: 0,
+                                },
+                              }}
+                            >
+                              <Image
+                                source={require("../../../assets/demo.png")}
+                                style={{
+                                  width: "100%",
+                                  height: 190,
+                                  borderRadius: 10,
+                                }}
+                              />
+                            </View>
+                          </TouchableOpacity>
+                          <Text
+                            style={{
+                              marginTop: 10,
+                              fontWeight: "bold",
+                              marginBottom: 10,
+                            }}
+                          >
+                            {convertToTitleCase(item.Category)}
+                          </Text>
+                        </View>
+                      ))
+                  : applyrData.map((item) => (
+                      <View
+                        key={item.id}
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: 200,
+                          marginLeft: 5,
+                          marginRight: 5,
+                        }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            isLoggedIn
+                              ? handlePress(item)
+                              : openCreateAccountModal();
+                          }}
+                        >
+                          <Image
+                            source={require("../../../assets/demo.png")}
+                            style={{
+                              width: 200,
+                              height: 300,
+                              borderRadius: 10,
+                            }}
+                          />
+                        </TouchableOpacity>
+                        <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                          {convertToTitleCase(item.Category)}
+                        </Text>
+                      </View>
+                    ))}
+              </ScrollView>
+            </View>
+            <View></View>
+            <View style={{ marginTop: 10 }}>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  top: 10,
+                  marginTop: 20,
+                }}
+              >
+                <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
+                  Kid’s
+                </Text>
+                <Text
+                  style={{
+                    position: "absolute",
+                    end: 10,
+                    color: "rgba(102, 102, 102, 1)",
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                  onPress={() => {
+                    isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                  }}
+                >
+                  View All
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  position: "relative",
+                  maxWidth: "100%",
+                  height: "auto",
+                  flexDirection: "row",
+                  top: 20,
+                }}
+              >
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  style={{ flex: 1, overflow: "hidden" }}
+                >
+                  {ApplyStatushBack === true
+                    ? nameDatas.map((item) => (
+                        <View
+                          key={item.id}
+                          style={{
+                            alignItems: "center",
+                            height: 280,
+                            width: 155,
+                            marginLeft: 10,
+                            marginRight: 5,
+                            marginBottom: 120,
+                            borderRadius: 10,
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: 155,
+                              height: 190,
+                              borderColor: "gray",
+                              shadowColor: "rgba(0, 0, 0, 0.5)",
+                              shadowOpacity: 0.9,
+                              shadowRadius: 3,
+                              borderRadius: 10,
+                              elevation: 4, // For Android, use elevation
+                              shadowOffset: {
+                                width: 0,
+                                height: 0,
+                              },
+                            }}
+                          >
+                            <View id={item.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? rmvProductWishlist(item)
+                                      : openCreateAccountModal();
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart"
+                                    style={[
+                                      styles.icon,
+                                      // isLoggedin === false ? styles.disabledIcon : null,
+                                    ]}
+                                  />
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? addArticleWishlist(item)
+                                      : openCreateAccountModal();
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart-o"
+                                    style={[
+                                      styles.disabledIcon,
+                                      // isLoggedin === false ? styles.disabledIcon : null,
+                                    ]}
+                                  />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            <Image
+                              source={{ uri: baseImageUrl + item.Photos }}
+                              style={{
+                                width: "94%",
+                                height: 190,
+                                borderRadius: 10,
+                              }}
+                            />
+                          </View>
+
+                          <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text>{convertToTitleCase(item.Category)}</Text>
+                          <Text style={{ fontWeight: "bold" }}>
+                            {"₹" + item.ArticleRate + ".00"}
+                          </Text>
+                        </View>
+                      ))
+                    : applyrData.map((item) => (
+                        <View
+                          key={item.id}
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: 155,
+                            height: 232,
+                            marginLeft: 5,
+                            marginRight: 5,
+                          }}
+                        >
+                          <Image
+                            source={{ uri: baseImageUrl + item.Photos }}
+                            style={{
+                              width: 200,
+                              height: 200,
+                              borderRadius: 10,
+                            }}
+                          />
+                          <Text style={{ fontWeight: "bold" }}>
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text>{convertToTitleCase(item.Category)}</Text>
+                          <Text style={{ fontWeight: "bold" }}>
+                            {"₹" + item.ArticleRate + ".00"}
+                          </Text>
+                        </View>
+                      ))}
+                </ScrollView>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      )}
+      {isFilterVisible ? null : (
+        <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+          <ButtomNavigation
+            navigation={navigation}
+            isLoggedIn={isLoggedIn}
+            page="home"
+          />
+        </View>
+      )}
+
+      {isFilterVisible && (
+        <View
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            right: 0, // Updated to 0
+            left: 0,
+            zIndex: 2,
+          }}
+        >
+          <View
+            style={{
+              width: "92%",
+              backgroundColor: "white",
+              position: "absolute",
+              bottom: 0,
+              marginLeft: "4%",
+              padding: 5,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          >
+            <Filter
+              status={false}
+              onFilterChange={handleFilterChange}
+              onCloseFilter={handleCloseFilter}
+              Scategories={selectedCategories}
+              minArticleRate={minArticleRate}
+              maxArticleRate={maxArticleRate}
+            />
+          </View>
+        </View>
+      )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
         <View
           style={{
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
           }}
         >
-          <ActivityIndicator size="large" color="black" />
+          <View
+            style={{
+              width: "100%", // Adjust the width as needed
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
         </View>
-      ) : (
-        <View
-          style={{ height: "100%", width: "100%", backgroundColor: "white" }}
-        >
-          <ScrollView nestedScrollEnabled={true}>
-            <View
-              style={{
-                height: "100%",
-                width: "100%",
-                backgroundColor: "white",
-                borderTopColor: "#828282",
-                borderTopWidth: 1,
-                borderStyle: "solid",
-              }}
-            >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
-                  height: "auto",
-                  backgroundColor: "#FFF",
-                }}
-              >
-                <View
-                  style={{ paddingHorizontal: 20, paddingVertical: 10, gap: 5 }}
-                >
-                  <Text
-                    style={{ fontSize: 18, fontWeight: 500, color: "#000" }}
-                  >
-                    Date
-                  </Text>
-                  <View
-                    style={{
-                      width: "100%",
-                      borderWidth: 1,
-                      paddingVertical: 10,
-                      paddingLeft: 15,
-                      borderRadius: 6,
-                      borderColor: "#E4E7EA",
-                      fontSize: 18,
-                      backgroundColor: "#EEE",
-                    }}
-                    // value={formattedDate}
-                    // disableFullscreenUI
-                  >
-                    <Text
-                      style={{
-                        color: "#626262",
-                        fontSize: 18,
-                        fontWeight: 500,
-                      }}
-                    >
-                      {formattedDate}
-                    </Text>
-                  </View>
-                </View>
-                <View style={{ paddingHorizontal: 20, paddingTop: 8, gap: 5 }}>
-                  <Text
-                    style={{ fontSize: 18, fontWeight: 500, color: "#000" }}
-                  >
-                    Destination
-                  </Text>
-                  <TextInput
-                    value={destinationVal}
-                    style={{
-                      width: "100%",
-                      borderWidth: 1,
-                      paddingVertical: 5,
-                      paddingLeft: 15,
-                      borderRadius: 6,
-                      borderColor: "#E4E7EA",
-                      color: "#626262",
-                      fontSize: 18,
-                      backgroundColor: "#EEE",
-                    }}
-                    onChangeText={(e) => {
-                      setDestinationVal(e);
-                      e ? setValue(false) : setValue(true);
-                    }}
-                  ></TextInput>
-                  <View>
-                    <Text style={{ color: "red", fontWeight: 500 }}>
-                      {fillvalue ? "Filed cannot be empty" : ""}
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    paddingHorizontal: 20,
-                    paddingBottom: 10,
-                    paddingTop: 2,
-                    gap: 5,
-                  }}
-                >
-                  <Text
-                    style={{ fontSize: 18, fontWeight: 500, color: "#000" }}
-                  >
-                    Transportation
-                  </Text>
-
-                  {/* <TextInput  value={transportationVal} onChangeText={(e) => filterTransportationValue(e)}   style={{
-                                        width: "100%",
-                                        borderWidth: 1, paddingVertical: 5,
-                                        paddingLeft: 15, borderRadius: 6,
-                                        borderColor: "#E4E7EA",
-                                        fontSize: 16, backgroundColor: "#EEE"
-                                        
-                                    }} editable={false}  placeholder="Select transportation"></TextInput> */}
-                  <View
-                    style={{
-                      width: "100%",
-                      borderWidth: 1,
-                      paddingVertical: 10,
-                      paddingLeft: 15,
-                      borderRadius: 6,
-                      borderColor: "#E4E7EA",
-                      fontSize: 16,
-                      backgroundColor: "#EEE",
-                      display: "flex",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#626262",
-                        fontSize: 18,
-                        fontWeight: 500,
-                      }}
-                    >
-                      {transportationVal}
-                    </Text>
-                    <TouchableOpacity
-                      style={{
-                        position: "absolute",
-                        top: "64%",
-                        left: "95%",
-                        right: 0,
-                      }}
-                      onPress={() => {
-                        Transportation.length !== 0
-                          ? setshowTransporatation(!showTransporatation)
-                          : "";
-                      }}
-                    >
-                      <Image
-                        style={{
-                          width: 20,
-                          height: 20,
-                        }}
-                        source={require("../../../assets/DownArrow(1).png")}
-                      ></Image>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                {showTransporatation && Transportation.length !== 0 && (
-                  <ScrollView
-                    style={{
-                      // height: "auto",
-                      maxHeight: "30%",
-                      borderWidth: 1,
-                      backgroundColor: "#EEEEEE",
-                      marginHorizontal: 20,
-                      borderRadius: 6,
-                      borderColor: "#E4E7EA",
-                      paddingHorizontal: 10,
-                      paddingBottom: 18,
-                      width: "90%",
-                    }}
-                    nestedScrollEnabled={true}
-                  >
-                    <View>
-                      {Transportation.map((item) => (
-                        <TouchableOpacity
-                          key={item.Id}
-                          onPress={() => {
-                            setTransportationVal(item.Name);
-                            setshowTransporatation(!showTransporatation);
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              marginVertical: 10,
-                            }}
-                          >
-                            {item.Name}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  </ScrollView>
-                )}
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 380,
-                  width: "100%",
-                  backgroundColor: "#FFFFFF",
-                }}
-              >
-                <ScrollView nestedScrollEnabled={true}>
-                  {ParsedData &&
-                    ParsedData.map((item, index) => (
-                      <View key={item.id} style={{ paddingBottom: 20 }}>
-                        <View
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "90%",
-                            backgroundColor: "#FFF",
-                            elevation: 5,
-                            shadowColor: "gray",
-                            shadowOpacity: 0.5,
-                            marginHorizontal: 20,
-                            marginTop: 15,
-                            borderRadius: 10,
-                            height: 150,
-                            paddingVertical: 5,
-                            backgroundColor: "#FFF",
-                          }}
-                        >
-                          <View
-                            style={{
-                              width: "35%",
-                              // height: 102.746,
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              marginVertical: 10,
-                              borderRadius: 10,
-                            }}
-                          >
-                            <Image
-                              source={{ uri: baseImageUrl + item.Photos }}
-                              style={{
-                                height: "100%",
-                                width: "70%",
-                                borderRadius: 10,
-                              }}
-                            ></Image>
-                          </View>
-                          <View
-                            style={{
-                              width: "45%",
-                              marginHorizontal: 4,
-                              marginVertical: 10,
-                              borderRadius: 10,
-                            }}
-                          >
-                            <View style={{ height: "50%" }}>
-                              <Text
-                                style={{
-                                  fontSize: 18,
-                                  fontWeight: 700,
-                                  color: "#000",
-                                }}
-                              >
-                                {item.ArticleNumber}
-                              </Text>
-                              <Text
-                                style={{
-                                  fontSize: 14,
-                                  fontWeight: 400,
-                                  color: "#000",
-                                }}
-                              >
-                                {item.StyleDescription}
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                marginTop: "10%",
-                                position: "relative",
-                                height: "50%",
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  fontSize: 14,
-                                  fontWeight: 400,
-                                  color: "#000",
-                                }}
-                              >
-                                Rate
-                              </Text>
-                              <Text
-                                style={{
-                                  fontSize: 17,
-                                  fontWeight: 700,
-                                  color: "#000",
-                                }}
-                              >
-                                ₹{item.rate}.00
-                              </Text>
-                            </View>
-                          </View>
-                          {/* <View style={{
-                                                width: "15%",
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                justifyContent: "flex-end",
-                                                gap: 8,
-                                                marginLeft: 15,
-                                                marginVertical: 10,
-                                                borderRadius: 10,
-
-                                            }}>
-                                            </View> */}
-                        </View>
-                      </View>
-                    ))}
-                </ScrollView>
-              </View>
-              <View
-                style={{
-                  height: 250,
-                  // height:"auto",
-                  backgroundColor: "#FFF",
-                  paddingHorizontal: 10,
-                }}
-              >
-                <View
-                  style={{
-                    width: "100%",
-                    // height:"100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    paddingTop: 30,
-                  }}
-                >
-                  <View style={{ width: "100%", paddingLeft: "60%" }}>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        paddingVertical: 5,
-                      }}
-                    >
-                      <View
-                        style={{ width: "50%", paddingTop: 2, paddingRight: 4 }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: 400,
-                            color: "#00000080",
-                            textAlign: "right",
-                          }}
-                        >
-                          Rate
-                        </Text>
-                      </View>
-                      <View style={{ width: "45%" }}>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: 500,
-                            color: "#00000080",
-                            textAlign: "right",
-                          }}
-                        >
-                          ₹{totalrate}.00
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        paddingVertical: 5,
-                      }}
-                    >
-                      <View style={{ width: "50%", paddingTop: 2 }}>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: 400,
-                            color: "#00000080",
-                            textAlign: "right",
-                          }}
-                        >
-                          SGST 1%
-                        </Text>
-                      </View>
-                      <View style={{ width: "45%" }}>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: 500,
-                            color: "#00000080",
-                            textAlign: "right",
-                          }}
-                        >
-                          ₹2.7
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        paddingVertical: 5,
-                      }}
-                    >
-                      <View style={{ width: "50%", paddingTop: 2 }}>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: 400,
-                            color: "#00000080",
-                            textAlign: "right",
-                          }}
-                        >
-                          SGST 1%
-                        </Text>
-                      </View>
-                      <View style={{ width: "45%" }}>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: 500,
-                            color: "#00000080",
-                            textAlign: "right",
-                          }}
-                        >
-                          ₹2.7
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={{ width: "50%", marginLeft: "45%" }}>
-                      <View style={{ borderWidth: 1 }}></View>
-                    </View>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        paddingVertical: 5,
-                      }}
-                    >
-                      <View style={{ width: "95%" }}>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: 500,
-                            color: "#212121",
-                            textAlign: "right",
-                          }}
-                        >
-                          ₹280.40
-                        </Text>
-                      </View>
-                    </View>
-                    {/* <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
-                                            <View style={{ width: '50%', paddingTop: 2 }}>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>Discount</Text>
-
-                                            </View>
-                                            <View style={{ width: '45%' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹28.04</Text>
-                                            </View>
-                                        </View> */}
-                    <View style={{ width: "50%", marginLeft: "45%" }}>
-                      <View style={{ borderWidth: 1 }}></View>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    backgroundColor: "#FFF",
-                    height: "auto",
-                    flexDirection: "row",
-                  }}
-                >
-                  <View style={{ width: "50%" }}>
-                    <Pressable
-                      style={{
-                        width: 165,
-                        height: 50,
-                        marginLeft: 5,
-                      }}
-                      onPress={showSuccessModal}
-                    >
-                      <Text
-                        style={{
-                          color: "white",
-                          backgroundColor: "#212121",
-                          borderRadius: 7.6,
-                          paddingHorizontal: 33,
-                          paddingBottom: 15,
-                          paddingTop: 12,
-                          fontSize: 18,
-                          fontWeight: 600,
-                          textAlign: "center",
-                        }}
-                      >
-                        Place Order
-                      </Text>
-                    </Pressable>
-                  </View>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      gap: 5,
-                      // paddingLeft: 30,
-                      justifyContent: "flex-end",
-                      // paddingTop: "2%",
-                      width: "50%",
-                      alignItems: "flex-end",
-                      height: 50,
-                      gap: 5,
-                      paddingBottom: 20,
-                      paddingRight: 4,
-                    }}
-                  >
-                    <View style={{ paddingBottom: 2 }}>
-                      <Text style={{ fontSize: 15, fontWeight: 500 }}>
-                        Total price
-                      </Text>
-                    </View>
-                    <View style={{}}>
-                      <Text style={{ fontSize: 20, fontWeight: 700 }}>
-                        ₹500.00
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <Modal
-              visible={isModalVisible}
-              transparent={true}
-              animationType="slide"
-              onRequestClose={() => setIsModalVisible(false)}
-            >
-              <TouchableWithoutFeedback
-                onPress={() => setIsModalVisible(false)}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  }}
-                >
-                  <View
-                    style={{
-                      width: 360,
-                      height: 390,
-                      backgroundColor: "white",
-                      borderRadius: 25,
-                      alignItems: "center",
-                      padding: 5,
-                    }}
-                  >
-                    <Image
-                      source={require("../../../assets/icons/Modalicon.png")}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        marginBottom: 20,
-                        marginTop: 30,
-                      }}
-                    />
-
-                    <Text
-                      style={{
-                        fontSize: 32,
-                        fontWeight: 700,
-                        marginBottom: 10,
-                      }}
-                    >
-                      Successful!
-                    </Text>
-
-                    <Text
-                      style={{
-                        fontSize: 24,
-                        textAlign: "center",
-                        marginBottom: 20,
-                        fontWeight: 500,
-                        color: "rgba(0, 0, 0, 0.70)",
-                      }}
-                    >
-                      "Your Order Is {"\n"} Confirmed Successfully"
-                    </Text>
-
-                    <TouchableOpacity
-                      onPress={() => {
-                        setIsModalVisible(false);
-                        navigation.navigate("Home");
-                      }}
-                      style={{
-                        backgroundColor: "black",
-                        width: 189,
-                        height: 50,
-                        borderRadius: 10,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginVertical: 20,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: 700,
-                          color: "white",
-                          paddingHorizontal: 15,
-                        }}
-                      >
-                        Continue Shopping
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </Modal>
-          </ScrollView>
-        </View>
-      )}
+      </Modal>
     </>
   );
-};
-
-export default Orderlist;
+}

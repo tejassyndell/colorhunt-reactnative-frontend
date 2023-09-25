@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-// import Image from 'react-native-responsive-image';
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -23,7 +22,6 @@ import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [categoryName, setCategoryName] = useState();
@@ -44,25 +42,6 @@ export default function HomeScreen(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
 
-  // useFocusEffect(
-  //   React.
-  //   checkUserLogin();
-  // );
-  useEffect(() => {
-    fetchprofiledata();
-  }, []);
-  const fetchprofiledata = async () => {
-    try {
-      let partyData = await AsyncStorage.getItem("UserData");
-      partyData = JSON.parse(partyData);
-      console.log(partyData);
-      const data = { party_id: partyData[0].Id };
-      const response = await Profiledata(data);
-      setprofile(response.data);
-    } catch (err) {
-      console.log(err, "error in fetching data");
-    }
-  };
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -90,7 +69,7 @@ export default function HomeScreen(props) {
   };
   const getWishlist = async () => {
     const data = {
-      party_id: party_id,
+      party_id: 197,
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -105,7 +84,7 @@ export default function HomeScreen(props) {
   }
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: party_id,
+      user_id: 197,
       article_id: i.Id,
     };
     console.log("............111", data);
@@ -121,7 +100,7 @@ export default function HomeScreen(props) {
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
     let data = {
-      party_id: party_id,
+      party_id: 197,
       article_id: i.Id,
     };
     console.log(data);
@@ -217,9 +196,6 @@ export default function HomeScreen(props) {
           <TouchableOpacity
             onPress={() => {
               checkUserLoginforheader();
-              // console.log(val,";;;;;;");
-              // val===true?
-              // :openCreateAccountModal()
             }}
           >
             <Image
@@ -233,13 +209,14 @@ export default function HomeScreen(props) {
   }, []);
 
   const handlePress = (item) => {
-    navigation.navigate("CategorisWiseArticle", { item: item });
+    navigation.navigate("CategorisWiseArticle", { item1: item });
   };
 
   const filterData = () => {
     if (searchText === "") {
     } else {
       console.log(searchText);
+      console.log(filterDataSearch.length, "length fds");
       const filtered = filterDataSearch.filter(
         (item) =>
           item.ArticleNumber.toString().includes(searchText.toString()) ||
@@ -343,6 +320,7 @@ export default function HomeScreen(props) {
                   paddingLeft: 8,
                   height: 30,
                   alignItems: "center",
+                  // fontFamily: "Glory-Regular",
                 }}
               >
                 Welcome

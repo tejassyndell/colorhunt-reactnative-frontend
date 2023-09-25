@@ -4,17 +4,14 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ImageBackground,
   StyleSheet,
-  Dimensions,
   Image
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+
 
 const Login = (props) => {
   const { navigation } = props;
@@ -125,20 +122,21 @@ const Login = (props) => {
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
   return (
-    <View style={styles.container}>
-      <ImageBackground
+    <View style={styles.container1}>
+      <Image
         source={require("../../../assets/Login/mainlogo.png")}
-        style={styles.backgroundImage} 
+        style={styles.backgroundImage1}
       />
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>Welcome!</Text>
-          <Text style={styles.subtitle}>
-            {showLogin
-              ? "Please Login To Continue"
-              : "Please Login To Continue"}
-          </Text>
-          {showLogin ? (
-            <View style={styles.inputContainer}>
+
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Welcome!</Text>
+        <Text style={styles.subtitle}>
+          {showLogin
+            ? "Please Login To Continue"
+            : "Please Login To Continue"}
+        </Text>
+        {showLogin ? (
+          <View style={styles.inputContainer}>
             <View style={styles.phoneIconContainer}>
               <Image
                 source={require("../../../assets/Login/phone.png")}
@@ -146,8 +144,9 @@ const Login = (props) => {
               />
             </View>
             <TextInput
-              style={styles.input}
+              style={[styles.input,{color:"black"}]}
               placeholder="Phone Number"
+              placeholderTextColor="#0000004D"
               keyboardType="numeric"
               maxLength={10}
               value={phoneNumber}
@@ -157,64 +156,52 @@ const Login = (props) => {
               }}
             />
           </View>
-          ) : (
-            <View style={styles.otpContainer}>
-              {otp.map((digit, index) => (
-                <TextInput
-                  key={index}
-                  style={styles.otpInput}
-                  placeholder=""
-                  keyboardType="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChangeText={(text) => handleOTPDigitChange(index, text)}
-                  ref={otpInput[index]}
-                />
-              ))}
-            </View>
-          )}
+        ) : (
+          <View style={styles.otpContainer}>
+            {otp.map((digit, index) => (
+              <TextInput
+                key={index}
+                style={styles.otpInput}
+                placeholder=""
+                keyboardType="numeric"
+                maxLength={1}
+                value={digit}
+                onChangeText={(text) => handleOTPDigitChange(index, text)}
+                ref={otpInput[index]}
+              />
+            ))}
+          </View>
+        )}
+        <View style={{ width: "100%", height: 100 }}>
           <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
             <Text style={styles.buttonText}>{buttonLabel}</Text>
           </TouchableOpacity>
         </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-  },
-  backgroundImage: {
-    flex: 1,
-    height:'100%',
-    width:'100%',
-    resizeMode: "cover",
-    justifyContent: "center",
-  },
   contentContainer: {
     flex: 1,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    bottom: 30,
-    marginHorizontal: 5,
-    paddingHorizontal: 10,
+    bottom: 0,
   },
   title: {
     color: "white",
     fontSize: 30,
     fontWeight: 700,
-    marginBottom: 10,
+    marginBottom: '2%',
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
     fontSize: 20,
     fontWeight: 700,
-    marginBottom: 60,
+    marginBottom: '12%',
   },
   input: {
     flex: 1,
@@ -224,54 +211,56 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
-    color:' rgba(0, 0, 0, 0.30)'
+    color: ' rgba(0, 0, 0, 0.30)'
   },
   otpContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 20,
-    width: "90%",
+    width: "60%",
+    marginBottom: '10%',
   },
   otpInput: {
-    width: "22%",
-    height: windowHeight * 0.08,
+    width: 47,
+    height: 50,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",
-    fontSize: windowWidth * 0.04,
-    borderRadius: windowWidth * 0.04,
+    fontSize: 23,
+    borderRadius: 7,
     textAlign: "center",
-    marginBottom: 20,
+
   },
   button: {
-    backgroundColor:'#212121',
-    width: "40%",
-    height: windowHeight * 0.05,
-    borderRadius: windowWidth * 0.02,
-    marginTop: 30,
+    backgroundColor: "#212121",
+    width: 148,
+    height: 50,
+    borderRadius: 10,
+    position: 'absolute',
+    marginTop: 50,
     justifyContent: "center",
-    marginLeft: "71%",
-    bottom: 0,
+    bottom: 10,
+    right: 0
   },
   buttonText: {
     color: "white",
     fontSize: 23,
     fontWeight: 700,
     textAlign: "center",
-   
   },
   phoneIcon: {
-    height: 20, // Adjust the icon size as needed
-    width: 20, // Adjust the icon size as needed
+    height: 20,
+    width: 20,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: '100%',
+    width: '85%',
     height: 50,
     borderColor: "gray",
     borderRadius: 7,
-    marginBottom: 40,
+    marginBottom: '13%',
+    justifyContent: "center",
+    backgroundColor: 'green'
   },
   phoneIconContainer: {
     height: 50,
@@ -282,6 +271,23 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderRightWidth: 3,
     borderColor: "#212121",
+  },
+  container1: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  backgroundImage1: {
+    flex: 1,
+    resizeMode: 'stretch',
+    width: '100%',
+  },
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

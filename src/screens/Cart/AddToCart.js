@@ -27,21 +27,6 @@ const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
 const AddToCart = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    fetchprofiledata();
-  }, []);
-  const fetchprofiledata = async () => {
-    try {
-      let partyData = await AsyncStorage.getItem("UserData");
-      partyData = JSON.parse(partyData);
-      console.log(partyData);
-      const data = { party_id: partyData[0].Id };
-      const response = await Profiledata(data);
-      setprofile(response.data);
-    } catch (err) {
-      console.log(err, "error in fetching data");
-    }
-  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -238,7 +223,7 @@ const AddToCart = (props) => {
   const handleDeleteOrder = async (article_id) => {
     // console.log(article_id);
     const data = {
-      party_id: party_id,
+      party_id: 197,
       article_id: article_id,
     };
     try {
@@ -290,7 +275,7 @@ const AddToCart = (props) => {
           // <View style={{width:"100%"}}>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: 500,
               color: "red",
               textAlign: "right",
@@ -456,38 +441,40 @@ const AddToCart = (props) => {
                                   style={{
                                     display: "flex",
                                     flexDirection: "row",
-                                    width: "95%",
+                                    width: "90%",
                                     backgroundColor: "#FFF",
-                                    elevation: 10,
+                                    elevation: 5,
                                     shadowColor: "gray",
-                                    marginHorizontal: 9.5,
+                                    shadowOpacity: 0.5,
+                                    marginHorizontal: 20,
                                     marginTop: 15,
-                                    borderRadius: 12,
-                                    height: 150,
+                                    borderRadius: 10,
+                                    height: 104,
                                     paddingVertical: 5,
-                                    // maxHeight: "45%"
+                                    backgroundColor: "#FFF",
                                   }}
                                 >
                                   <View
                                     style={{
-                                      width: "35%",
-                                      // width: 120,
-                                      // height: 102.746,
+                                      width: 88,
+                                      margin: 10,
+                                      marginTop: 5,
+                                      height: 84,
                                       display: "flex",
                                       justifyContent: "center",
                                       alignItems: "center",
-                                      marginLeft: 2,
-                                      marginVertical: 10,
+                                      // marginVertical: 10,
                                       borderRadius: 10,
                                     }}
                                   >
                                     <Image
                                       style={{
+                                        flex: 1,
+                                        resizeMode: "contain",
                                         height: "100%",
-                                        width: "68%",
+                                        width: "100%",
                                         borderRadius: 10,
                                       }}
-                                      resizeMode="cover"
                                       source={{
                                         uri:
                                           baseImageUrl +
@@ -497,16 +484,21 @@ const AddToCart = (props) => {
                                   </View>
                                   <View
                                     style={{
-                                      width: "35%",
+                                      width: "40%",
                                       marginHorizontal: 4,
                                       marginVertical: 10,
                                       borderRadius: 10,
                                     }}
                                   >
-                                    <View style={{ height: "50%" }}>
+                                    <View
+                                      style={{
+                                        height: "50%",
+                                        paddingBottom: 1,
+                                      }}
+                                    >
                                       <Text
                                         style={{
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           fontWeight: 700,
                                           color: "#000",
                                         }}
@@ -515,7 +507,7 @@ const AddToCart = (props) => {
                                       </Text>
                                       <Text
                                         style={{
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontWeight: 400,
                                           color: "#000",
                                         }}
@@ -525,14 +517,16 @@ const AddToCart = (props) => {
                                     </View>
                                     <View
                                       style={{
-                                        marginTop: "10%",
+                                        marginTop: "1%",
+                                        justifyContent: "center",
+                                        paddingTop: 10,
                                         position: "relative",
                                         height: "50%",
                                       }}
                                     >
                                       <Text
                                         style={{
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontWeight: 400,
                                           color: "#000",
                                         }}
@@ -541,7 +535,7 @@ const AddToCart = (props) => {
                                       </Text>
                                       <Text
                                         style={{
-                                          fontSize: 17,
+                                          fontSize: 13,
                                           fontWeight: 700,
                                           color: "#000",
                                         }}
@@ -613,41 +607,41 @@ const AddToCart = (props) => {
                                   style={{
                                     display: "flex",
                                     flexDirection: "row",
-                                    width: "95%",
+                                    width: "90%",
                                     backgroundColor: "#FFF",
-                                    elevation: 10,
+                                    elevation: 5,
                                     shadowColor: "gray",
-                                    marginHorizontal: 9.5,
+                                    shadowOpacity: 0.5,
+                                    marginHorizontal: 20,
                                     marginTop: 15,
-                                    borderRadius: 12,
-                                    height: 150,
+                                    borderRadius: 10,
+                                    height: 104,
                                     paddingVertical: 5,
-
-                                    // maxHeight: "45%"
+                                    backgroundColor: "#FFF",
                                   }}
                                 >
                                   <View
                                     style={{
-                                      width: "35%",
-                                      opacity: 0.4,
-                                      // width: 120,
-                                      // height: 102.746,
+                                      width: 88,
+                                      margin: 10,
+                                      marginTop: 5,
+                                      height: 84,
                                       display: "flex",
                                       justifyContent: "center",
                                       alignItems: "center",
-                                      marginLeft: 2,
-                                      marginVertical: 10,
+                                      // marginVertical: 10,
                                       borderRadius: 10,
+                                      opacity: 0.6,
                                     }}
                                   >
                                     <Image
                                       style={{
+                                        flex: 1,
+                                        resizeMode: "contain",
                                         height: "100%",
-                                        width: "68%",
+                                        width: "100%",
                                         borderRadius: 10,
-                                        filter: "blur(20)",
                                       }}
-                                      resizeMode="cover"
                                       source={{
                                         uri:
                                           baseImageUrl +
@@ -657,16 +651,21 @@ const AddToCart = (props) => {
                                   </View>
                                   <View
                                     style={{
-                                      width: "35%",
+                                      width: "40%",
                                       marginHorizontal: 4,
                                       marginVertical: 10,
                                       borderRadius: 10,
                                     }}
                                   >
-                                    <View style={{ height: "50%" }}>
+                                    <View
+                                      style={{
+                                        height: "50%",
+                                        paddingBottom: 1,
+                                      }}
+                                    >
                                       <Text
                                         style={{
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           fontWeight: 700,
                                           color: "#00000040",
                                         }}
@@ -675,7 +674,7 @@ const AddToCart = (props) => {
                                       </Text>
                                       <Text
                                         style={{
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontWeight: 400,
                                           color: "#00000040",
                                         }}
@@ -685,14 +684,16 @@ const AddToCart = (props) => {
                                     </View>
                                     <View
                                       style={{
-                                        marginTop: "10%",
+                                        marginTop: "1%",
+                                        justifyContent: "center",
+                                        paddingTop: 10,
                                         position: "relative",
                                         height: "50%",
                                       }}
                                     >
                                       <Text
                                         style={{
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontWeight: 400,
                                           color: "#00000040",
                                         }}
@@ -701,7 +702,7 @@ const AddToCart = (props) => {
                                       </Text>
                                       <Text
                                         style={{
-                                          fontSize: 17,
+                                          fontSize: 13,
                                           fontWeight: 700,
                                           color: "#00000040",
                                         }}
@@ -774,8 +775,8 @@ const AddToCart = (props) => {
                                       }}
                                     >
                                       {compreInward
-                                        ? compreInward.map(
-                                            (it) => checkOutOfStock(it, item)
+                                        ? compreInward.map((it) =>
+                                            checkOutOfStock(it, item)
                                             // console.log(it.SalesNoPacks)
                                           )
                                         : ""}
@@ -789,40 +790,41 @@ const AddToCart = (props) => {
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
-                                  width: "95%",
+                                  width: "90%",
                                   backgroundColor: "#FFF",
-                                  elevation: 10,
+                                  elevation: 5,
                                   shadowColor: "gray",
-                                  marginHorizontal: 9.5,
+                                  shadowOpacity: 0.5,
+                                  marginHorizontal: 20,
                                   marginTop: 15,
-                                  borderRadius: 12,
-                                  height: 150,
+                                  borderRadius: 10,
+                                  height: 104,
                                   paddingVertical: 5,
-                                  // maxHeight: "45%"
+                                  backgroundColor: "#FFF",
                                 }}
                               >
                                 <View
                                   style={{
-                                    width: "35%",
-                                    // width: 120,
-                                    // height: 102.746,
+                                    width: 88,
+                                    margin: 10,
+                                    marginTop: 5,
+                                    height: 84,
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    marginLeft: 2,
-                                    marginVertical: 10,
+                                    // marginVertical: 10,
                                     borderRadius: 10,
+                                    opacity: 0.6,
                                   }}
                                 >
                                   <Image
-                                    blurRadius={6}
                                     style={{
+                                      flex: 1,
+                                      resizeMode: "contain",
                                       height: "100%",
-                                      width: "68%",
+                                      width: "100%",
                                       borderRadius: 10,
-                                      filter: "blur(20)",
                                     }}
-                                    resizeMode="cover"
                                     source={{
                                       uri:
                                         baseImageUrl +
@@ -832,16 +834,18 @@ const AddToCart = (props) => {
                                 </View>
                                 <View
                                   style={{
-                                    width: "35%",
+                                    width: "40%",
                                     marginHorizontal: 4,
                                     marginVertical: 10,
                                     borderRadius: 10,
                                   }}
                                 >
-                                  <View style={{ height: "50%" }}>
+                                  <View
+                                    style={{ height: "50%", paddingBottom: 1 }}
+                                  >
                                     <Text
                                       style={{
-                                        fontSize: 18,
+                                        fontSize: 14,
                                         fontWeight: 700,
                                         color: "#00000040",
                                       }}
@@ -850,7 +854,7 @@ const AddToCart = (props) => {
                                     </Text>
                                     <Text
                                       style={{
-                                        fontSize: 14,
+                                        fontSize: 10,
                                         fontWeight: 400,
                                         color: "#00000040",
                                       }}
@@ -860,14 +864,16 @@ const AddToCart = (props) => {
                                   </View>
                                   <View
                                     style={{
-                                      marginTop: "10%",
+                                      marginTop: "1%",
+                                      justifyContent: "center",
+                                      paddingTop: 10,
                                       position: "relative",
                                       height: "50%",
                                     }}
                                   >
                                     <Text
                                       style={{
-                                        fontSize: 14,
+                                        fontSize: 10,
                                         fontWeight: 400,
                                         color: "#00000040",
                                       }}
@@ -876,7 +882,7 @@ const AddToCart = (props) => {
                                     </Text>
                                     <Text
                                       style={{
-                                        fontSize: 17,
+                                        fontSize: 13,
                                         fontWeight: 700,
                                         color: "#00000040",
                                       }}
@@ -949,8 +955,8 @@ const AddToCart = (props) => {
                                     }}
                                   >
                                     {compreInward
-                                      ? compreInward.map(
-                                          (it) => checkOutOfStock(it, item)
+                                      ? compreInward.map((it) =>
+                                          checkOutOfStock(it, item)
                                           // console.log(it.SalesNoPacks)
                                         )
                                       : ""}

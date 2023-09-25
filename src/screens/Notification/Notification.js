@@ -113,13 +113,11 @@ console.log(title,body);
           style={styles.input}
           onChangeText={setTitle}
           placeholder="Title"
-          keyboardType="numeric"
         />
         <TextInput
           style={styles.input}
           onChangeText={setBodydec}
           placeholder="Body"
-          keyboardType="numeric"
         />
       </SafeAreaView>
      
