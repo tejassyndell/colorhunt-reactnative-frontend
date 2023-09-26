@@ -17,7 +17,7 @@ const {navigation , page ,isLoggedIn = true} = props;
   };
 
   const OrderList = () => {
-    isLoggedIn ? navigation.navigate("") : "";
+    isLoggedIn ? navigation.navigate("ordershistroy") : "";
     // navigation.navigate("")
   };
 
@@ -75,7 +75,7 @@ const {navigation , page ,isLoggedIn = true} = props;
           onPress={OrderList}
         >
           <Image
-            source={require("../../../assets/AppFooterIcons/order_down_nav_icone.png")}
+            source={page==="orderhistory"?require("../../../assets/on_orderhistory.png"):require("../../../assets/AppFooterIcons/order_down_nav_icone.png")}
             style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>

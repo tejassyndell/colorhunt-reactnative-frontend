@@ -26,6 +26,7 @@ import SliderScreen from "../screens/SliderScreen/SliderScreen";
 import SkipSliderScreen from "../screens/SkipHomePage/SkipSlider";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import { useEffect } from "react";
+import OrderDetails from "../screens/OrderHistory/OrderDetails";
 const Stack = createStackNavigator();
 let value = false;
 let name = "";
@@ -79,6 +80,7 @@ function MainNavigator() {
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ordershistroy" component={OrderHistory} />
       <Stack.Screen name="DrawerContainer" component={DrawerContainer} />
+      <Stack.Screen name="orderdetails" component={OrderDetails}/>
     </Stack.Navigator>
   );
 }
