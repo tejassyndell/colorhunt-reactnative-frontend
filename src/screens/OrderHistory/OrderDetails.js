@@ -9,15 +9,19 @@ const OrderDetails = (props) => {
     const { navigation } = props;
     const route = useRoute()
     const { sonumber } = route.params;
+    const [newPrint, setNewPrint] = useState(false)
 
-
+    console.log(newPrint);
     const [tableData, setTableData] = useState({
-        tableHead: ['SN', 'ARTICLE', 'CATEGORY', 'SIZE’s','COLORWISE QTY IN PCS','TOTAL QTY','RATE','AMOUNT'],
+        tableHead: ['SN', 'ARTICLE', 'CATEGORY', 'SIZE’s', 'COLORWISE QTY IN PCS', 'TOTAL QTY', 'RATE', 'AMOUNT'],
         tableData: [
-            ['1', 'SHIRT ASSORTED (52/67)', 'ASSORTED','','--:1','1','₹195.00','₹195.00', ],
-            ['a', 'b', 'c', 'd'],
-            ['1', '2', '3', '456\n789'],
-            ['a', 'b', 'c', 'd']
+            ['1', 'SHIRT ASSORTED (52/67)', 'ASSORTED', '', '--:1', '1', '₹195.00', '₹195.00',],
+            ['2', 'SHIRT ASSORTED (52/67)', 'ASSORTED', '', '--:1', '1', '₹195.00', '₹195.00',],
+            ['3', 'SHIRT ASSORTED (52/67)', 'ASSORTED', '', '--:1', '1', '₹195.00', '₹195.00',],
+            ['4', 'SHIRT ASSORTED (52/67)', 'ASSORTED', '', '--:1', '1', '₹195.00', '₹195.00',],
+            ['5', 'SHIRT ASSORTED (52/67)', 'ASSORTED', '', '--:1', '1', '₹195.00', '₹195.00',],
+
+
         ],
     });
 
@@ -50,158 +54,306 @@ const OrderDetails = (props) => {
 
         });
     }, []);
+    const widthArr = [40, 200, 100, 60, 200, 90, 100, 100];
+
+    // Calculate column-wise totals
+    const columnTotals = tableData.tableData.reduce((totals, rowData) => {
+        for (let i = 0; i < rowData.length; i++) {
+            totals[i] = (totals[i] || 0) + parseFloat(rowData[i] || 0);
+        }
+        return totals;
+    }, []);
+
+
+
+
     return (
-        <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF' }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, alignItems: 'center', paddingEnd: 20 }}>
-                <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, borderTopRightRadius: 10, borderBottomRightRadius: 10 }}>
-                    <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF' }}>NRS(JHCPL)</Text>
+        <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%' }}>
+            {newPrint === true ? (
+                <View>
+                     <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8,  }}>
+                        <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF',textAlign:'center' }}>NRS(JHCPL)</Text>
+                    </TouchableOpacity>
+                    <ScrollView
+                        nestedScrollEnabled={true}
+                        keyboardShouldPersistTaps="handled"
+                        style={{ maxWidth: '100%', backgroundColor: '#fff' }}
+                    >
+                        <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
+                            <View style={{ paddingVertical: 10, }}>
+                               <View>
+                               <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    height: 40,
+                                    borderColor: '#000000',
+                                    borderWidth: 1,
+                                }}>
+                                    <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: 9 }}>PARTY : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: 9}}>NIRAV SIR</Text></Text>
+                                    {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
+                                    <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: 9 }}>DATE:</Text>
+                                    <Text style={{ width: 98, textAlign: 'center', fontWeight: 400, paddingTop: 9 }}>15/06/2023</Text>
+                                </View>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    height: 40,
+                                    borderColor: '#000000',
+                                    borderWidth: 1,
+                                }}>
+                                    <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: 9 }}>ADDRESS : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: 9}}>AHMEDABAD, GUJARAT, INDIA-380001</Text></Text>
+                                    {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
+                                    <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: 9 }}>SO NO:</Text>
+                                    <Text style={{ width: 160, textAlign: 'center', fontWeight: 400, paddingTop: 9 }}>NRS(JHCPL)33/23-24</Text>
+                                </View>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    height: 40,
+                                    borderColor: '#000000',
+                                    borderWidth: 1,
+                                }}>
+                                    <Text style={{ width: 800, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: 9 }}>TRANSPORT :  </Text>
+
+                                </View>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    height: 40,
+                                    borderColor: '#000000',
+                                    borderWidth: 1,
+                                }}>
+                                    <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: 9 }}>GST : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: 9}}></Text></Text>
+                                    {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
+                                    <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: 9 }}>REMARK S</Text>
+                                    <Text style={{ width: 160, textAlign: 'center', fontWeight: 400, paddingTop: 9 }}></Text>
+                                </View>
+                               </View>
+                                <View style={{marginTop:50}}>
+                                    <Table borderStyle={{ borderWidth: 2, borderColor: '#000000', }}>
+                                        {/* Fixed Header Row */}
+                                        <Row
+                                            data={tableData.tableHead}
+                                            textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: 15 }}
+
+                                            style={{
+                                                height: 60,
+                                                // Make sure the header row is displayed horizontally
+                                            }}
+                                            widthArr={widthArr}
+
+                                        />
+                                    </Table>
+                                </View>
+                                <View >
+                                    <ScrollView vertical={true} style={{ maxHeight: 80 }}>
+                                        <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
+                                            {/* Data Rows */}
+                                            <Rows
+                                                data={tableData.tableData}
+                                                textStyle={{ margin: 6, textAlign: 'center', fontSize: 13 }}
+                                                style={{
+                                                    height: 40,
+                                                    width: 'auto',
+                                                }}
+                                                widthArr={widthArr} // Apply column widths to the data rows
+                                            />
+                                        </Table>
+                                    </ScrollView>
+                                    <ScrollView>
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            height: 40,
+                                            borderColor: '#000000',
+                                            borderWidth: 2,
+
+                                        }}>
+                                            <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: 9 }}>TOTAL</Text>
+                                            <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: 9 }}>5</Text>
+                                            <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text>
+                                            <Text style={{ width: 94, textAlign: 'center', fontWeight: 'bold', paddingTop: 9 }}>₹195.00</Text>
+                                        </View>
+                                    </ScrollView>
+                                </View>
+                            </View>
+                        </ScrollView>
+                    </ScrollView>
+                </View>) : (<>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, alignItems: 'center', paddingEnd: 20 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, borderTopRightRadius: 10, borderBottomRightRadius: 10 }}>
+                        <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF' }}>NRS(JHCPL)</Text>
+                    </TouchableOpacity>
+                    <Text style={{ color: '#808080', fontSize: 20, fontWeight: 700, }}>Date: <Text style={{ color: '#000000', fontSize: 20, fontWeight: 700 }}>11/06/2023</Text></Text>
+                </View>
+                <View style={{
+                    flex: 1,
+                    paddingHorizontal: 20
+                }}>
+                        <TextInput
+                            style={{
+                                height: 35,
+                                width: '100%',
+                                borderWidth: 2,
+                                borderRadius: 6,
+                                borderColor: '#000000',
+                                paddingStart: 10,
+                                fontSize: 16,
+                                color: '#000000',
+                                fontWeight: 'bold'
+                            }}
+                            value='NIRAV SIR' />
+                        <Textarea
+                            containerStyle={{
+                                height: 80,
+                                padding: 5,
+                                borderWidth: 2,
+                                borderRadius: 6,
+
+                                borderColor: '#000000',
+                                marginTop: 10,
+                                backgroundColor: '#FFFFFF',
+                            }}
+                            style={{
+                                textAlignVertical: 'top',
+                                height: 170,
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                color: '#000000',
+                            }}
+                            // onChangeText={this.onChange}
+                            // defaultValue={this.state.text}
+                            maxLength={50}
+                            placeholder={'AHMEDABAD, GUJARAT, INDIA-380001'}
+                            placeholderTextColor={'#000000'}
+                            underlineColorAndroid={'transparent'} />
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                            <TextInput
+                                style={{
+                                    height: 35,
+                                    width: '48%',
+                                    borderWidth: 2,
+                                    borderRadius: 6,
+                                    borderColor: '#000000',
+                                    paddingStart: 10,
+                                    fontSize: 16,
+                                    color: '#000000',
+                                    fontWeight: 'bold'
+                                }}
+                                value='NRS(JHCPL)33/23-24' />
+                            <TextInput
+                                style={{
+                                    height: 35,
+                                    width: '48%',
+                                    borderWidth: 2,
+                                    borderRadius: 6,
+                                    borderColor: '#808080',
+                                    paddingStart: 10,
+                                    fontSize: 16,
+                                    color: '#000000',
+                                    fontWeight: 'bold'
+                                }}
+                                // value='NIRAV SIR'
+                                placeholder="Transport" />
+
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                            <TextInput
+                                style={{
+                                    height: 35,
+                                    width: '48%',
+                                    borderWidth: 2,
+                                    borderRadius: 6,
+                                    borderColor: '#808080',
+                                    paddingStart: 10,
+                                    fontSize: 16,
+                                    color: '#000000',
+                                    fontWeight: 'bold'
+                                }}
+                                // value='NIRAV SIR'
+                                placeholder="GST" />
+                            <TextInput
+                                style={{
+                                    height: 35,
+                                    width: '48%',
+                                    borderWidth: 2,
+                                    borderRadius: 6,
+                                    borderColor: '#808080',
+                                    paddingStart: 10,
+                                    fontSize: 16,
+                                    color: '#000000',
+                                    fontWeight: 'bold'
+                                }}
+                                // value='NIRAV SIR'
+                                placeholder="Remarks" />
+
+                        </View>
+                        <View>
+                            <ScrollView
+                                nestedScrollEnabled={true}
+                                keyboardShouldPersistTaps="handled"
+                                style={{ maxWidth: '100%', backgroundColor: '#fff' }}
+                            >
+                                <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
+                                    <View style={{ paddingVertical: 10, }}>
+                                        <View>
+                                            <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
+                                                {/* Fixed Header Row */}
+                                                <Row
+                                                    data={tableData.tableHead}
+                                                    textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: 15 }}
+
+                                                    style={{
+                                                        height: 60,
+                                                        // Make sure the header row is displayed horizontally
+                                                    }}
+                                                    widthArr={widthArr} />
+                                            </Table>
+                                        </View>
+                                        <View>
+                                            <ScrollView vertical={true} style={{ maxHeight: 80 }}>
+                                                <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
+                                                    {/* Data Rows */}
+                                                    <Rows
+                                                        data={tableData.tableData}
+                                                        textStyle={{ margin: 6, textAlign: 'center', fontSize: 13 }}
+                                                        style={{
+                                                            height: 40,
+                                                            width: 'auto',
+                                                        }}
+                                                        widthArr={widthArr} // Apply column widths to the data rows
+                                                    />
+                                                </Table>
+                                            </ScrollView>
+                                            <ScrollView>
+                                                <View style={{
+                                                    flex: 1,
+                                                    flexDirection: 'row',
+                                                    height: 40,
+                                                    borderColor: '#000000',
+                                                    borderWidth: 2,
+                                                }}>
+                                                    <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: 9 }}>TOTAL</Text>
+                                                    <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: 9 }}>5</Text>
+                                                    <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text>
+                                                    <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: 9 }}>₹195.00</Text>
+                                                </View>
+                                            </ScrollView>
+                                        </View>
+                                    </View>
+                                </ScrollView>
+                            </ScrollView>
+                        </View>
+                    </View>
+                    <View>
+                <TouchableOpacity onPress={() => setNewPrint(true)} style={{ alignItems: 'flex-end', marginRight: 10 }}>
+
+                    <Text style={{ width: 30, height: 30, backgroundColor: '#000000', color: '#FFFFFF', borderRadius: 5, textAlign: 'center', fontSize: 19, fontWeight: 'bold' }}>2</Text>
                 </TouchableOpacity>
-                <Text style={{ color: '#808080', fontSize: 20, fontWeight: 700, }}>Date: <Text style={{ color: '#000000', fontSize: 20, fontWeight: 700 }}>11/06/2023</Text></Text>
             </View>
-            <View style={{
-                flex: 1,
-                paddingHorizontal: 20
-            }}>
-                <TextInput
-                    style={{
-                        height: 35,
-                        width: '100%',
-                        borderWidth: 2,
-                        borderRadius: 6,
-                        borderColor: '#000000',
-                        paddingStart: 10,
-                        fontSize: 16,
-                        color: '#000000',
-                        fontWeight: 'bold'
-                    }}
-                    value='NIRAV SIR'
-                />
-                <Textarea
-                    containerStyle={{
-                        height: 120,
-                        padding: 5,
-                        borderWidth: 2,
-                        borderRadius: 6,
+                    </>)}
 
-                        borderColor: '#000000',
-                        marginTop: 10,
-                        backgroundColor: '#FFFFFF',
-
-                    }}
-                    style={{
-                        textAlignVertical: 'top',  // hack android
-                        height: 170,
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#000000',
-                    }}
-                    // onChangeText={this.onChange}
-                    // defaultValue={this.state.text}
-                    maxLength={50}
-                    placeholder={'AHMEDABAD, GUJARAT, INDIA-380001'}
-                    placeholderTextColor={'#000000'}
-                    underlineColorAndroid={'transparent'}
-                />
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                    <TextInput
-                        style={{
-                            height: 35,
-                            width: '48%',
-                            borderWidth: 2,
-                            borderRadius: 6,
-                            borderColor: '#000000',
-                            paddingStart: 10,
-                            fontSize: 16,
-                            color: '#000000',
-                            fontWeight: 'bold'
-                        }}
-                        value='NRS(JHCPL)33/23-24'
-                    />
-                    <TextInput
-                        style={{
-                            height: 35,
-                            width: '48%',
-                            borderWidth: 2,
-                            borderRadius: 6,
-                            borderColor: '#808080',
-                            paddingStart: 10,
-                            fontSize: 16,
-                            color: '#000000',
-                            fontWeight: 'bold'
-                        }}
-                        // value='NIRAV SIR'
-                        placeholder="Transport"
-                    />
-
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                    <TextInput
-                        style={{
-                            height: 35,
-                            width: '48%',
-                            borderWidth: 2,
-                            borderRadius: 6,
-                            borderColor: '#808080',
-                            paddingStart: 10,
-                            fontSize: 16,
-                            color: '#000000',
-                            fontWeight: 'bold'
-                        }}
-                        // value='NIRAV SIR'
-                        placeholder="GST"
-                    />
-                    <TextInput
-                        style={{
-                            height: 35,
-                            width: '48%',
-                            borderWidth: 2,
-                            borderRadius: 6,
-                            borderColor: '#808080',
-                            paddingStart: 10,
-                            fontSize: 16,
-                            color: '#000000',
-                            fontWeight: 'bold'
-                        }}
-                        // value='NIRAV SIR'
-                        placeholder="Remarks"
-                    />
-
-                </View>
-            </View>
-            <ScrollView
-      nestedScrollEnabled={true}
-      keyboardShouldPersistTaps="handled"
-      style={{ maxWidth: '100%', backgroundColor: '#fff' }}
-    >
-        <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
-      <View style={{ paddingVertical: 10 ,flex:1 }}>
-          <View style={{flex:1 }}>
-            <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
-              {/* Fixed Header Row */}
-              <Row
-                data={tableData.tableHead}
-                style={{
-                  height: 40,
-                  backgroundColor: '#f1f8ff',
-                  width: 'auto',
-                   // Make sure the header row is displayed horizontally
-                }}
-                textStyle={{ margin: 6 }}
-              />
-            </Table>
-          </View>
-          <View style={{flex:1 }}>
-            <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
-              {/* Data Rows */}
-              <Rows
-                data={tableData.tableData}
-                textStyle={{ margin: 6 }}
-              />
-            </Table>
-          </View>
-      </View>
-        </ScrollView>
-    </ScrollView>
+           
 
         </View>
 
