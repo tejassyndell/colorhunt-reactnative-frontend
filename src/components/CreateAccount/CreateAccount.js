@@ -7,13 +7,14 @@ import {
   StyleSheet,
   Keyboard,
   Dimensions,
+  Image,
 } from "react-native";
 import { UserData } from "../../api/api";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const CreateAccount = ({ onClose }) => {
+const CreateAccount = (props) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -33,7 +34,7 @@ const CreateAccount = ({ onClose }) => {
   const [contactPersonError, setContactPersonError] = useState("");
 
   const [showSuccess, setShowSuccess] = useState(false);
-
+  const { navigation, onClose } = props;
   const handleInputChange = (fieldName, value) => {
     // Clear previous error for the field
     switch (fieldName) {
@@ -204,7 +205,6 @@ const CreateAccount = ({ onClose }) => {
     }
 
     if (isValid) {
-      onClose();
       console.log("Form submitted.");
       try {
         // Make an API request to store form data
@@ -261,7 +261,7 @@ const CreateAccount = ({ onClose }) => {
         <>
           <View style={styles.header}>
             <Text style={styles.title}>Create Account</Text>
-            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Text style={styles.closeText}>X</Text>
             </TouchableOpacity>
           </View>
@@ -276,9 +276,13 @@ const CreateAccount = ({ onClose }) => {
           <TextInput
             editable // Make the input editable
             multiline // Allow multiple lines
-            numberOfLines={4} // Set the number of lines to 4
-            maxLength={100}
-            style={[styles.input, addressError && styles.inputError]}
+            numberOfLines={5} // Set the number of lines to 4
+            maxLength={500}
+            style={[
+              styles.input,
+              { height: 90 },
+              addressError && styles.inputError,
+            ]}
             placeholder="Address"
             value={address}
             onChangeText={(text) => handleInputChange("address", text)}
@@ -387,13 +391,15 @@ const CreateAccount = ({ onClose }) => {
         </>
       ) : (
         <View style={styles.successContainer}>
-          <Text style={styles.successText}>Account created successfully!</Text>
-          <TouchableOpacity
-            style={styles.okButton}
-            onPress={() => {
-              setShowSuccess(false);
-            }}
-          >
+          <Image source={require("../../../assets/images/Account.png")} />
+          <Text style={styles.successText0}>
+            "Your Account has{"\n"}been Created"
+          </Text>
+
+          <Text style={styles.successText}>
+            You will able to login{"\n"}Only admin will verify your account.
+          </Text>
+          <TouchableOpacity style={styles.okButton} onPress={onClose}>
             <Text style={styles.okButtonText}>OK</Text>
           </TouchableOpacity>
         </View>
@@ -431,7 +437,8 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    marginBottom: 10,
+    bottom: 16,
+    left: 10,
   },
   submitButton: {
     width: windowWidth * 0.3,
@@ -470,24 +477,36 @@ const styles = StyleSheet.create({
   successContainer: {
     alignItems: "center",
     marginTop: 20,
+    justifyContent: "center",
   },
   successText: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 22,
+    fontWeight: "400",
     marginBottom: 10,
+    justifyContent: "center",
+    textAlign: "center",
+    marginTop: 30,
+    color: "#000000",
   },
   okButton: {
     backgroundColor: "black",
-    borderRadius: 5,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.2,
     height: windowHeight * 0.06,
+    marginTop: 40,
   },
   okButtonText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 30,
+  },
+  successText0: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginTop: 50,
+    textAlign: "center",
   },
 });
 

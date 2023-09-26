@@ -5,22 +5,24 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 
-
-
 const Login = (props) => {
   const { navigation } = props;
   const route = useRoute();
   const { getstatus } = route.params;
+
   // State variables
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
+
   // Function to clear data when the component is first loaded
   const clearDataOnFirstLoad = useCallback(async () => {
     try {
@@ -33,6 +35,7 @@ const Login = (props) => {
 
   // Call clearDataOnFirstLoad only once when the component is first loaded
   useFocusEffect(clearDataOnFirstLoad);
+
   // Reset everything
   const clearAndReset = useCallback(async () => {
     try {
@@ -47,6 +50,7 @@ const Login = (props) => {
   }, []);
 
   useFocusEffect(clearAndReset);
+
   const handleNextOrVerify = async () => {
     if (showLogin) {
       // Check if phone number is valid (for simplicity, checking if it's 10 digits)
@@ -105,7 +109,9 @@ const Login = (props) => {
       }
     }
   };
+
   const otpInput = [useRef(), useRef(), useRef(), useRef()];
+
   // Function to handle OTP digit input
   const handleOTPDigitChange = (index, text) => {
     const newOTP = [...otp];
@@ -121,64 +127,73 @@ const Login = (props) => {
   };
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
-  return (
-    <View style={styles.container1}>
-      <Image
-        source={require("../../../assets/Login/mainlogo.png")}
-        style={styles.backgroundImage1}
-      />
 
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>Welcome!</Text>
-        <Text style={styles.subtitle}>
-          {showLogin
-            ? "Please Login To Continue"
-            : "Please Login To Continue"}
-        </Text>
-        {showLogin ? (
-          <View style={styles.inputContainer}>
-            <View style={styles.phoneIconContainer}>
-              <Image
-                source={require("../../../assets/Login/phone.png")}
-                style={styles.phoneIcon}
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={styles.container1}>
+        <Image
+          source={require("../../../assets/Login/mainlogo.png")}
+          style={styles.backgroundImage1}
+        />
+
+        <View style={styles.contentContainer}>
+          <Text style={styles.title}>Welcome!</Text>
+          <Text style={styles.subtitle}>
+            {showLogin
+              ? "Please Login To Continue"
+              : "Please Login To Continue"}
+          </Text>
+          {showLogin ? (
+            <View style={styles.inputContainer}>
+              <View style={styles.phoneIconContainer}>
+                <Image
+                  source={require("../../../assets/Login/phone.png")}
+                  style={styles.phoneIcon}
+                />
+              </View>
+              <TextInput
+                style={[styles.input, { color: "black" }]}
+                placeholder="Phone Number"
+                placeholderTextColor="#0000004D"
+                keyboardType="numeric"
+                maxLength={10}
+                value={phoneNumber}
+                onChangeText={(text) => {
+                  const numericText = text.replace(/[^0-9]/g, "");
+                  setPhoneNumber(numericText);
+                }}
               />
             </View>
-            <TextInput
-              style={[styles.input,{color:"black"}]}
-              placeholder="Phone Number"
-              placeholderTextColor="#0000004D"
-              keyboardType="numeric"
-              maxLength={10}
-              value={phoneNumber}
-              onChangeText={(text) => {
-                const numericText = text.replace(/[^0-9]/g, "");
-                setPhoneNumber(numericText);
-              }}
-            />
+          ) : (
+            <View style={styles.otpContainer}>
+              {otp.map((digit, index) => (
+                <TextInput
+                  key={index}
+                  style={styles.otpInput}
+                  placeholder=""
+                  keyboardType="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChangeText={(text) => handleOTPDigitChange(index, text)}
+                  ref={otpInput[index]}
+                />
+              ))}
+            </View>
+          )}
+          <View style={{ width: "100%", height: 100 }}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleNextOrVerify}
+            >
+              <Text style={styles.buttonText}>{buttonLabel}</Text>
+            </TouchableOpacity>
           </View>
-        ) : (
-          <View style={styles.otpContainer}>
-            {otp.map((digit, index) => (
-              <TextInput
-                key={index}
-                style={styles.otpInput}
-                placeholder=""
-                keyboardType="numeric"
-                maxLength={1}
-                value={digit}
-                onChangeText={(text) => handleOTPDigitChange(index, text)}
-                ref={otpInput[index]}
-              />
-            ))}
-          </View>
-        )}
-        <View style={{ width: "100%", height: 100 }}>
-          <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
-            <Text style={styles.buttonText}>{buttonLabel}</Text>
-          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -195,13 +210,13 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 30,
     fontWeight: 700,
-    marginBottom: '2%',
+    marginBottom: "2%",
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
     fontSize: 20,
     fontWeight: 700,
-    marginBottom: '12%',
+    marginBottom: "12%",
   },
   input: {
     flex: 1,
@@ -211,13 +226,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
-    color: ' rgba(0, 0, 0, 0.30)'
+    color: "rgba(0, 0, 0, 0.30)",
   },
   otpContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "60%",
-    marginBottom: '10%',
+    marginBottom: "10%",
   },
   otpInput: {
     width: 47,
@@ -228,18 +243,17 @@ const styles = StyleSheet.create({
     fontSize: 23,
     borderRadius: 7,
     textAlign: "center",
-
   },
   button: {
     backgroundColor: "#212121",
     width: 148,
     height: 50,
     borderRadius: 10,
-    position: 'absolute',
+    position: "absolute",
     marginTop: 50,
     justifyContent: "center",
     bottom: 10,
-    right: 0
+    right: 0,
   },
   buttonText: {
     color: "white",
@@ -254,13 +268,13 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: '85%',
+    width: "85%",
     height: 50,
     borderColor: "gray",
     borderRadius: 7,
-    marginBottom: '13%',
+    marginBottom: "13%",
     justifyContent: "center",
-    backgroundColor: 'green'
+    backgroundColor: "green",
   },
   phoneIconContainer: {
     height: 50,
@@ -274,22 +288,21 @@ const styles = StyleSheet.create({
   },
   container1: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   backgroundImage1: {
     flex: 1,
-    resizeMode: 'stretch',
-    width: '100%',
+    resizeMode: "stretch",
+    width: "100%",
   },
   loginContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
-
 
 export default Login;
