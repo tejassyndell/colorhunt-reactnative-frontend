@@ -10,15 +10,11 @@ import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
+import { RFPercentage,RFValue } from "react-native-responsive-fontsize";
 
 const { width, height } = Dimensions.get('window');
 const logoSize = Math.min(width, height) * 0.4;
-// Define a base font size for a standard screen density (e.g., 2x, 3x)
-const baseFontSize = 30;
-const basesubtitle = 20
-// Calculate the scaled font size based on the device's screen density
-const scaledFontSizeTitle = PixelRatio.getFontScale() * baseFontSize;
-const scaledFontSizesubtitle = PixelRatio.getFontScale() * basesubtitle
+
 
 const Login = (props) => {
   const { navigation } = props;
@@ -143,44 +139,14 @@ const Login = (props) => {
   return (
     <View style={styles.container1}>
       <View style={styles.imagebox}>
-      <ImageBackground
-        source={require("../../../assets/Login/LoginBackground.png")}
-        style={styles.backgroundImage1}  resizeMode="stretch" 
-      >
-        <View style={styles.loginLogoContainer}>
-          <Image
-            source={require("../../../assets/Login/loginlogo.png")}
-            style={[styles.loginLogo, { height: logoSize, width: logoSize }]}
-          />
-        </View>
-      </ImageBackground>
-      
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>Welcome!</Text>
-        <Text style={styles.subtitle}>
-          {showLogin
-            ? "Please Login To Continue"
-            : "Please Login To Continue"}
-        </Text>
-        {showLogin ? (
-          <View style={styles.inputContainer}>
-            <View style={styles.phoneIconContainer}>
-              <Image
-                source={require("../../../assets/Login/phone.png")}
-                style={styles.phoneIcon}
-              />
-            </View>
-            <TextInput
-              style={[styles.input, { color: "black" }]}
-              placeholder="Phone Number"
-              placeholderTextColor="#0000004D"
-              keyboardType="numeric"
-              maxLength={10}
-              value={phoneNumber}
-              onChangeText={(text) => {
-                const numericText = text.replace(/[^0-9]/g, "");
-                setPhoneNumber(numericText);
-              }}
+        <ImageBackground
+          source={require("../../../assets/Login/LoginBackground.png")}
+          style={styles.backgroundImage1} resizeMode="stretch"
+        >
+          <View style={styles.loginLogoContainer}>
+            <Image
+              source={imageSource}
+              style={[styles.loginLogo, { height: logoSize, width: logoSize }]}
             />
           </View>
         </ImageBackground>
@@ -235,31 +201,29 @@ const Login = (props) => {
           </View>
         </View>
       </View>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   contentContainer: {
-    // flex: 1,
-    // height:"100%",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
     bottom: 0,
-    // backgroundColor:'green'
   },
   title: {
     color: "white",
-    fontSize: scaledFontSizeTitle,
+    fontSize: RFValue(25),
+    // fontSize:RFPercentage(5),
     fontWeight: 700,
     marginBottom: '2%',
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
-    fontSize: scaledFontSizesubtitle,
+    fontSize: RFValue(20),
+    // fontSize:RFPercentage(5),
     fontWeight: 700,
     marginBottom: '10%',
   },
@@ -297,7 +261,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     position: 'absolute',
     justifyContent: "center",
-    alignItems:'center',
+    alignItems: 'center',
     bottom: 0,
     right: 0
   },
@@ -318,9 +282,8 @@ const styles = StyleSheet.create({
     height: 50,
     borderColor: "gray",
     borderRadius: 7,
-    marginBottom: '10%',
+    marginBottom: '5%',
     justifyContent: "center",
-    // backgroundColor: 'green'
   },
   phoneIconContainer: {
     height: 50,
@@ -334,15 +297,12 @@ const styles = StyleSheet.create({
   },
   container1: {
     flex: 1,
-    // backgroundColor: 'red',
     padding: 20,
-    // justifyContent: 'center',
-    // alignItems: 'center'
   },
   backgroundImage1: {
     flex: 1,
     resizeMode: 'stretch',
-    width:'100%'
+    width: '100%'
   },
   loginContainer: {
     flex: 1,
@@ -351,18 +311,15 @@ const styles = StyleSheet.create({
   },
   loginLogoContainer: {
     position: 'absolute',
-    top: '40%', // Adjust the top position as needed to center vertically
-    left: '50%', // Adjust the left position as needed to center horizontally
-    transform: [{ translateX: -logoSize / 2 }, { translateY: -logoSize / 2 }], // Half of the logo's width and height
+    top: '40%',
+    left: '50%',
+    transform: [{ translateX: -logoSize / 2 }, { translateY: -logoSize / 2 }],
   },
   loginLogo: {
     resizeMode: 'contain',
   },
-  imagebox:{
-    // justifyContent:'center',
-    // alignItems:'center',
-    // backgroundColor:'green',
-    flex:1
+  imagebox: {
+    flex: 1
   }
 });
 
