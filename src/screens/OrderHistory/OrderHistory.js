@@ -179,7 +179,7 @@ const OrderHistory = (props) => {
                             <ScrollView nestedScrollEnabled={true}>
                                 {sonumberdata ? sonumberdata.map((item) =>
                                     item.status === 0 ?
-                                        <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber }) }}>
+                                        <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber ,CreatedDate:item.CreatedDate }) }}>
                                             <View style={{ width: "62%" }}>
                                                 <View style={{ gap: 8 }}>
                                                     <View style={orderstyles.text_cnt}>

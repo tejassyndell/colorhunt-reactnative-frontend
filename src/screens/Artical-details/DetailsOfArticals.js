@@ -45,29 +45,7 @@ const DetailsOfArticals = (props) => {
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
 
-  useEffect(() => {
-    console.log(Quantity, "[][[]][]");
-    if (Quantity !== 0) {
-      let string = ',';
-      if (Quantity.includes(string)) {
-        let initialQuantities = Quantity.split(',').map((value) => parseInt(value.trim()));
-        let initialQuantitiesObj = {};
-        initialQuantities.forEach((value, index) => {
-          initialQuantitiesObj[index] = value;
-        });
-        setQuantities(initialQuantitiesObj)
-        console.log(initialQuantitiesObj, "||||||||");
-      } else {
-        let initialQuantities =[Quantity];
 
-        let initialQuantitiesObj = {};
-        initialQuantities.forEach((value, index) => {
-          initialQuantitiesObj[index] = value;
-        });
-        setQuantities(initialQuantitiesObj)
-      }
-    }
-  }, []);
 
   const ArticleDetailsData = async () => {
     let data = {
@@ -122,9 +100,24 @@ const DetailsOfArticals = (props) => {
     });
     setCombinedArray(combinedArray);
     const defaultQuantities = {};
-    combinedArray.forEach((item) => {
-      defaultQuantities[item.index] = 0;
-    });
+    if (Quantity === 0) {
+      combinedArray.forEach((item) => {
+        defaultQuantities[item.index] = 0;
+      });
+    }
+    else {
+      if (Quantity.includes(',')) {
+        let initialQuantities = Quantity.split(',').map((value) => parseInt(value.trim()));
+        combinedArray.forEach((item) => {
+          defaultQuantities[item.index] = parseInt(initialQuantities[item.index]);
+        });
+      }
+      else {
+        combinedArray.forEach((item) => {
+          defaultQuantities[item.index] = parseInt(Quantity);
+        });
+      }
+    }
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
@@ -268,6 +261,15 @@ const DetailsOfArticals = (props) => {
     setImageZoomVisible(false);
   };
 
+
+// const getfontsize=(size)=>{
+//   const screenwidth = Dimensions.get("window").width;
+//   const fontSize =  screenwidth > 400 ? 16 : 10;
+//   console.log(fontSize);
+//   return fontSize;
+// }
+
+const windowWidth = Dimensions.get("window").width
   return (
     <>
       {isLoading ? (
@@ -275,7 +277,7 @@ const DetailsOfArticals = (props) => {
           <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF" }}>
+        <View style={{ backgroundColor: "#FFF",flex:1 }}>
           <ScrollView nestedScrollEnabled={true}>
             <View style={{ zIndex: 1 }}>
               <View
@@ -322,7 +324,7 @@ const DetailsOfArticals = (props) => {
               </View>
             </View>
 
-            <View style={{ zIndex: 2 }}>
+            <View style={{ zIndex: 2,flex:1,marginBottom:"15%"}}>
               <View style={{ backgroundColor: "#FFF", elevation: 12, shadowColor: "black", width: '100%', height: "100%", borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 10 }}>
                 <View>
                   <View style={styles.product_detail} >
@@ -352,7 +354,7 @@ const DetailsOfArticals = (props) => {
                       <Text style={styles.size_label1}>Category</Text>
                       <View style={styles.size_container2}>
                         <View style={styles.size_options2}>
-                          <Text style={styles.size_p}>{subcategory}</Text>
+                          <Text style={[styles.size_p,{fontSize:windowWidth * 0.04}]}>{subcategory}</Text>
                         </View>
                       </View>
                     </View>
@@ -429,7 +431,7 @@ const DetailsOfArticals = (props) => {
                       </View>
                     </View>
                   </View>
-                  <View style={styles.total_price_container}>
+                  {/* <View style={styles.total_price_container}>
                     <View style={styles.main_total_div}>
                       <Text style={{ fontSize: 10, fontWeight: 400 }}>
                         Total Price
@@ -463,7 +465,8 @@ const DetailsOfArticals = (props) => {
                         </View>
                       </Pressable>
                     </View>
-                  </View>
+                  </View> */}
+
                 </View>
               </View>
             </View>
@@ -589,6 +592,47 @@ const DetailsOfArticals = (props) => {
           </TouchableOpacity>
         </View>
       </Modal>
+      <View style={{ position: "absolute", flexDirection:"row",padding:8,paddingHorizontal:14,bottom: 0, flex: 1, backgroundColor: "#FFF" }}>
+        <View style={{ flex: 1 ,justifyContent:"center"}}>
+          <View>
+            <Text style={{ fontSize: 10, fontWeight: 400 }}>
+              Total Price
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: "black",
+              }}
+            >
+              {formatPrice(totalPrice)}
+            </Text>
+          </View>
+        </View>
+        <View style={{ flex: 1 }}>
+          <View>
+            <TouchableOpacity
+              style={[
+                styles.addto_cart_btn,
+                {
+                  backgroundColor:
+                    totalQuantity === 0 ? "gray" : "black",
+                  opacity: totalQuantity === 0 ? 0.5 : 1,
+                },
+              ]}
+              onPress={() => addtocart(197, id)}
+              disabled={totalQuantity === 0}
+            >
+              <View style={{ flexDirection: 'row', justifyContent: "center", alignContent: "center", alignItems: 'center', width: '100%', paddingVertical: 3 }}>
+                <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 0, marginLeft: 10 }} />
+                <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '70%' }}>Add to cart</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import { Text, View, Image, ScrollView, FlatList, TouchableOpacity, Dimensions } from "react-native";
 import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,7 +11,8 @@ export default function WishList(props) {
   const [nameDatas, setNameDatas] = useState([]);
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const windowwidthe = Dimensions.get("window").width;
+  const windowheight = Dimensions.get("window").height;
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
 
@@ -70,53 +71,49 @@ export default function WishList(props) {
       headerTitle: () => (
         <View style={{
           flexDirection: "row",
+          alignItems:"center",
+          alignContent:"center",
+          paddingLeft:"10%",
           width: "100%"
         }}>
           <Text style={{
             textAlign: "center",
-            fontSize: 25,
-            left: 10,
+            fontSize: windowwidthe * 0.05,
             fontWeight: "700",
-            width: "100%"
+            width: "100%",
           }}>Wishlist</Text>
 
         </View>
       ),
-      headerRight: () => (
-        <View style={{ marginHorizontal: 10,width: "auto", height: "auto", padding: 4 }}>
-          <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
-            {/* <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} /> */}
-          </TouchableOpacity>
-        </View>
-      ),
+      headerRight: () => <View/>
     });
   }, []);
 
 
-
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}>
+    <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} >
       <View key={item.id} style={{
         alignItems: "center",
         height: 'auto',
-        width: 180,
-        marginLeft: 5,
-        marginRight: 20,
-        marginTop: 8,
-        marginBottom:20,
+        width: windowheight * 0.23,
+        marginHorizontal: "2.7%",
+        marginTop: "4%",
+        marginBottom: "10%",
         borderRadius: 10,
         borderColor: "gray",
+        backgroundColor: "#FFF"
         // Add shadow properties for iOS
 
       }}>
         <View style={{
-          width: 155,
-          height: 190,
+          width: windowheight * 0.2,
+          height: windowheight * 0.23,
           borderColor: "gray",
           shadowColor: "#000000",
           shadowOpacity: 0.9,
           shadowRadius: 4,
-          borderRadius:10,
+          borderRadius: 10,
+          backgroundColor: "#FFF",
           elevation: 5, // For Android, use elevation
           shadowOffset: {
             width: 0,
@@ -143,13 +140,15 @@ export default function WishList(props) {
             )}
           </View>
 
-          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{   flex:1,
-                                resizeMode:'contain',borderRadius: 10 }} />
+          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{
+            flex: 1,
+            resizeMode: 'contain', borderRadius: 10
+          }} />
 
         </View>
-        <Text style={{ fontWeight: 'bold', marginTop: 12 }}>{item.ArticleNumber}</Text>
-        <Text style={{ marginTop: 3 }}>{item.Title}</Text>
-        <Text style={{ fontWeight: 'bold', marginTop: 3 }}>{"₹" + item.ArticleRate + '.00'}</Text>
+        <Text style={{ fontWeight: 'bold', marginTop: "6%",fontSize:windowwidthe * 0.034 }}>{item.ArticleNumber}</Text>
+        <Text style={{ marginTop: "1.5%" ,fontSize:windowwidthe * 0.026 }}>{item.Title}</Text>
+        <Text style={{ fontWeight: 'bold', marginTop: "1.5%",fontSize:windowwidthe * 0.034 }}>{"₹" + item.ArticleRate + '.00'}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -182,22 +181,38 @@ export default function WishList(props) {
               <Text style={{ color: "white" }}>Continue Shopping</Text>
             </TouchableOpacity>
           </View> :
-          <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-            {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
+          // <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
+          //   {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
 
-            <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
-              <FlatList
-                data={selectedprd}
-                initialNumToRender={10}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-                numColumns={2}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingVertical: 10 }}
-              />
-            </View>
+          //   <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
+          //     <FlatList
+          //       data={selectedprd}
+          //       initialNumToRender={10}
+          //       keyExtractor={(item) => item.id}
+          //       renderItem={renderItem}
+          //       numColumns={2}
+          //       showsHorizontalScrollIndicator={false}
+          //       contentContainerStyle={{ paddingVertical: 10 }}
+          //     />
+          //   </View>
 
-            {/* </ScrollView> */}
+          //   {/* </ScrollView> */}
+          // </View>
+          <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+            <ScrollView>
+              <View style={{ flex: 1 ,backgroundColor:"#FFF",alignContent:"center",alignItems:"center"}}>
+                <FlatList
+                  data={selectedprd}
+                  initialNumToRender={10}
+                  keyExtractor={(item) => item.id}
+                  renderItem={renderItem}
+                  numColumns={2}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingVertical: 10 }}
+                 
+                />
+              </View>
+            </ScrollView>
           </View>
 
 

@@ -355,7 +355,7 @@ cartIsEmpty
                                                                     paddingVertical: 5,
                                                                     backgroundColor: "#FFF"
                                                                 }}>
-                                                                    <View style={{
+                                                                    <TouchableOpacity style={{
                                                                        width: 88,
                                                                        margin:10,
                                                                        marginTop:5,
@@ -365,12 +365,14 @@ cartIsEmpty
                                                                        alignItems: "center",
                                                                        // marginVertical: 10,
                                                                        borderRadius: 10,
-                                                                    }}>
+                                                                    }}  onPress={() => handleEditOrder(item.article_id,item.Quantity)}>
+                                                                       
                                                                         <Image style={{
                                                                             flex: 1, resizeMode: "contain", height: '100%', width: "100%",
                                                                             borderRadius: 10,
                                                                         }}  source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                                                    </View>
+                                                                      
+                                                                    </TouchableOpacity>
                                                                     <View style={{
                                                                         width: "40%",
                                                                         marginHorizontal: 4,
@@ -454,7 +456,7 @@ cartIsEmpty
                                                                     backgroundColor: "#FFF",
                                                                   
                                                                 }}>
-                                                                    <View style={{
+                                                                    <TouchableOpacity style={{
                                                                          width: 88,
                                                                          margin:10,
                                                                          marginTop:5,
@@ -465,13 +467,13 @@ cartIsEmpty
                                                                          // marginVertical: 10,
                                                                          borderRadius: 10,
                                                                          opacity:0.6
-                                                                    }}>
+                                                                    }}  onPress={() => handleEditOrder(item.article_id,item.Quantity)}>
 
                                                                         <Image style={{
                                                                             flex: 1, resizeMode: "contain", height: '100%', width: "100%",
                                                                             borderRadius: 10,
                                                                         }}  source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                                                    </View>
+                                                                    </TouchableOpacity>
                                                                     <View style={{
                                                                         width: "40%",
                                                                         marginHorizontal: 4,
@@ -565,7 +567,7 @@ cartIsEmpty
                                                                     backgroundColor: "#FFF",
                                                                   
                                                                 }}>
-                                                                    <View style={{
+                                                                    <TouchableOpacity style={{
                                                                          width: 88,
                                                                          margin:10,
                                                                          marginTop:5,
@@ -576,13 +578,13 @@ cartIsEmpty
                                                                          // marginVertical: 10,
                                                                          borderRadius: 10,
                                                                          opacity:0.6
-                                                                    }}>
+                                                                    }}  onPress={() => handleEditOrder(item.article_id,item.Quantity)}>
 
                                                                         <Image style={{
                                                                             flex: 1, resizeMode: "contain", height: '100%', width: "100%",
                                                                             borderRadius: 10,
                                                                         }}  source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                                                    </View>
+                                                                    </TouchableOpacity>
                                                                     <View style={{
                                                                         width: "40%",
                                                                         marginHorizontal: 4,
