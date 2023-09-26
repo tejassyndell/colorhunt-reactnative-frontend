@@ -49,6 +49,8 @@
     "react-native-safe-area-context": "^4.7.2",
     "react-native-snap-carousel": "https://github.com/ram33z/react-native-snap-carousel",
     "react-native-swiper": "^1.6.0",
+    "react-native-table-component": "^1.2.2",
+    "react-native-textarea": "^1.0.4",
     "react-native-web": "^0.18.10"
   },
   "devDependencies": {

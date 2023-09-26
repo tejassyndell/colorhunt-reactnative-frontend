@@ -40,9 +40,9 @@ function MainNavigator() {
   return (
     <Stack.Navigator screenOptions={{ unmountInactiveRoutes: true }}>
       <Stack.Screen
-        name="login"
-        component={Login}
-        options={{ headerShown: false }}
+        name="orderdetails"
+        component={OrderDetails}
+        // options={{ headerShown: false }}
         initialParams={{ getstatus }}
       />
       <Stack.Screen
@@ -80,7 +80,7 @@ function MainNavigator() {
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ordershistroy" component={OrderHistory} />
       <Stack.Screen name="DrawerContainer" component={DrawerContainer} />
-      <Stack.Screen name="orderdetails" component={OrderDetails} />
+      {/* <Stack.Screen name="orderdetails" component={OrderDetails} /> */}
     </Stack.Navigator>
   );
 }
