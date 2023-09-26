@@ -198,10 +198,9 @@ export const CollectInwardForCartArticals = async (data) => {
   }
 };
 
-
 export const getsonumber = async (data) => {
   try {
-    return await axios.post(`${url}/getsonumber`,data);
+    return await axios.post(`${url}/getsonumber`, data);
   } catch (err) {
     console.log(err, "err in react api");
   }

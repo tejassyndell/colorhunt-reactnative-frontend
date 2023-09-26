@@ -80,7 +80,7 @@ function MainNavigator() {
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ordershistroy" component={OrderHistory} />
       <Stack.Screen name="DrawerContainer" component={DrawerContainer} />
-      <Stack.Screen name="orderdetails" component={OrderDetails}/>
+      <Stack.Screen name="orderdetails" component={OrderDetails} />
     </Stack.Navigator>
   );
 }

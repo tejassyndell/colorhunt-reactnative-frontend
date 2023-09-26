@@ -16,7 +16,7 @@ web-build/
 # Native
 *.orig.*
 *.jks
-*.p8
+*.p8`
 *.p12
 *.key
 *.mobileprovision
