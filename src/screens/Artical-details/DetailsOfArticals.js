@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Pressable,ScrollView, Modal } from "react-native"
+import { View, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Pressable, ScrollView, Modal } from "react-native"
 import { ArticleDetails, addto_cart, findfromthecart, updateCartArticale } from '../../api/api'
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
@@ -19,9 +19,9 @@ const DetailsOfArticals = (props) => {
   const route = useRoute();
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
-  const { id } = route.params;
+  const { id, Quantity = 0 } = route.params;
   console.log(id);
-  const handleSizeClick = (size) => {};
+  const handleSizeClick = (size) => { };
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -44,6 +44,31 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
+
+  useEffect(() => {
+    console.log(Quantity, "[][[]][]");
+    if (Quantity !== 0) {
+      let string = ',';
+      if (Quantity.includes(string)) {
+        let initialQuantities = Quantity.split(',').map((value) => parseInt(value.trim()));
+        let initialQuantitiesObj = {};
+        initialQuantities.forEach((value, index) => {
+          initialQuantitiesObj[index] = value;
+        });
+        setQuantities(initialQuantitiesObj)
+        console.log(initialQuantitiesObj, "||||||||");
+      } else {
+        let initialQuantities =[Quantity];
+
+        let initialQuantitiesObj = {};
+        initialQuantities.forEach((value, index) => {
+          initialQuantitiesObj[index] = value;
+        });
+        setQuantities(initialQuantitiesObj)
+      }
+    }
+  }, []);
+
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
@@ -304,22 +329,22 @@ const DetailsOfArticals = (props) => {
                     <View style={styles.product_detail_sec}>
                       <Text style={styles.size_label}>Size</Text>
                       <View style={styles.size_container1}>
-                        <ScrollView horizontal={true} nestedScrollEnabled={true} style={{width:"100%",display:"flex",flexDirection:"row"}}>
-                        {articleSizeData &&
-                          articleSizeData.map((item, index) => (
-                            <View style={styles.size_options} key={index}>
-                              <View style={styles.size}>
-                                <Text
-                                  href="/"
-                                  style={styles.size_a}
-                                  onPress={() => handleSizeClick(item.Name)}
-                                >
-                                  {item.Name}
-                                </Text>
+                        <ScrollView horizontal={true} nestedScrollEnabled={true} style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+                          {articleSizeData &&
+                            articleSizeData.map((item, index) => (
+                              <View style={styles.size_options} key={index}>
+                                <View style={styles.size}>
+                                  <Text
+                                    href="/"
+                                    style={styles.size_a}
+                                    onPress={() => handleSizeClick(item.Name)}
+                                  >
+                                    {item.Name}
+                                  </Text>
+                                </View>
                               </View>
-                            </View>
-                          ))}
-                          </ScrollView>
+                            ))}
+                        </ScrollView>
                       </View>
                     </View>
                     <View></View>
@@ -340,18 +365,18 @@ const DetailsOfArticals = (props) => {
                       <View style={{ flex: 1.21 }}>
                         <Text style={{ fontSize: 15, fontWeight: 600 }}>Available in Stock</Text>
                       </View>
-                      <View style={{ flex: 1,paddingLeft:2 }}>
+                      <View style={{ flex: 1, paddingLeft: 2 }}>
                         <Text style={{ fontSize: 15, fontWeight: 600 }}>Add Qty.</Text>
                       </View>
                     </View>
-                    {combinedArray.map((item) => (
+                    {combinedArray.map((item, key) => (
                       <View style={{ flex: 1, flexDirection: 'row', gap: 12 }}>
 
                         <View style={{ flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 8, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
-                          <Text style={{ textAlign: 'center' ,fontSize:18,fontWeight:500,color:"#626262"}}>{item.Name}</Text>
+                          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 500, color: "#626262" }}>{item.Name}</Text>
                         </View>
                         <View style={{ flex: 1.1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 8, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
-                          <Text style={{ textAlign: 'center' ,fontSize:18,fontWeight:500,color:"#626262"}}>{item.available}</Text>
+                          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 500, color: "#626262" }}>{item.available}</Text>
                         </View>
                         <View style={{ flex: 1, flexDirection: "row", borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", height: 42.953, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
                           <Pressable onPress={() => handleDecrease(item.index)}
@@ -365,11 +390,11 @@ const DetailsOfArticals = (props) => {
                             }}
                           >
 
-                            <Text style={{ fontSize: 24,fontWeight:800 }}>-</Text>
+                            <Text style={{ fontSize: 24, fontWeight: 800 }}>-</Text>
 
                           </Pressable>
                           <View style={{ flex: 1 }}>
-                            <Text style={{ fontSize: 16, textAlign: "center",fontWeight:600,color:'#000' }}>{quantities[item.index]}</Text>
+                            <Text style={{ fontSize: 16, textAlign: "center", fontWeight: 600, color: '#000' }}>{quantities[item.index]}</Text>
                           </View>
                           <Pressable
                             onPress={() => handleIncrease(item.index)}
@@ -432,7 +457,7 @@ const DetailsOfArticals = (props) => {
                         onPress={() => addtocart(197, id)}
                         disabled={totalQuantity === 0}
                       >
-                        <View style={{ flexDirection: 'row',justifyContent:"center",alignContent:"center", alignItems: 'center', width: '100%',paddingVertical:3 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: "center", alignContent: "center", alignItems: 'center', width: '100%', paddingVertical: 3 }}>
                           <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 0, marginLeft: 10 }} />
                           <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '70%' }}>Add to cart</Text>
                         </View>

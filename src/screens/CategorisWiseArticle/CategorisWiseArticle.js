@@ -42,7 +42,7 @@ export default function CategorisWiseArticle(props) {
         const fildata = sdPrds.filter((item) => item.Category === category)
         setNameDatas(fildata);
       setFinalData(fildata)
-      setIsLoading(false)
+      setIsLoading(false) 
     
       }
     } catch (error) {
@@ -319,7 +319,6 @@ export default function CategorisWiseArticle(props) {
             )}
             
           </View>
-          {/* </ScrollView> */}
           {isFilterVisible ? null : (
             <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
               <ButtomNavigation navigation={navigation} page="home" />

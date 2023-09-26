@@ -97,7 +97,7 @@ export default function DrawerContainer(props) {
               title="Order History"
               source={require("../../../assets/sidebaricons/order.png")}
               onPress={() => {
-                navigation.navigate("ordershistory");
+                navigation.navigate("ordershistroy");
                 navigation.closeDrawer();
               }}
             />
@@ -124,8 +124,7 @@ export default function DrawerContainer(props) {
                 navigation.navigate("Notification");
                 navigation.closeDrawer();
               }}
-              customIconStyle={{   flex:1,
-                resizeMode:'contain', }}
+              customIconStyle={{ flex: 1, resizeMode: "contain" }}
             />
             <MenuButton
               title="About us"
