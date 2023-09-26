@@ -83,7 +83,7 @@ export default function WishList(props) {
         </View>
       ),
       headerRight: () => (
-        <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
+        <View style={{ marginHorizontal: 10,width: "auto", height: "auto", padding: 4 }}>
           <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
             {/* <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} /> */}
           </TouchableOpacity>
@@ -102,7 +102,8 @@ export default function WishList(props) {
         width: 180,
         marginLeft: 5,
         marginRight: 20,
-        marginTop: 20,
+        marginTop: 8,
+        marginBottom:20,
         borderRadius: 10,
         borderColor: "gray",
         // Add shadow properties for iOS
@@ -142,7 +143,8 @@ export default function WishList(props) {
             )}
           </View>
 
-          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{ width: "100%", height: 190, borderRadius: 10 }} />
+          <Image source={{ uri: baseImageUrl + item.article_photos }} style={{   flex:1,
+                                resizeMode:'contain',borderRadius: 10 }} />
 
         </View>
         <Text style={{ fontWeight: 'bold', marginTop: 12 }}>{item.ArticleNumber}</Text>

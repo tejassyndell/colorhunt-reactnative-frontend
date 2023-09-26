@@ -75,7 +75,7 @@ export default function DrawerContainer(props) {
                 fontSize: 16,
                 height: 50,
                 paddingTop: 10,
-                fontWeight:700,
+                fontWeight: 700,
               }}
             >
               {name ? name : "Guest"}
@@ -124,6 +124,8 @@ export default function DrawerContainer(props) {
                 navigation.navigate("Notification");
                 navigation.closeDrawer();
               }}
+              customIconStyle={{   flex:1,
+                resizeMode:'contain', }}
             />
             <MenuButton
               title="About us"

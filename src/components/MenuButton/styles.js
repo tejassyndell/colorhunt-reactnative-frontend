@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
   },
   btnIcon: {
     height: 20,
-    width: 20
+    width: 20,
+    resizeMode:'contain'
   },
   btnText: {
     fontSize: 16,

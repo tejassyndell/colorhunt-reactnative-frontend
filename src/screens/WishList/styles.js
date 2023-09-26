@@ -29,18 +29,19 @@ const styles = StyleSheet.create({
       },
       producticones: {
         // Add your styles for the container view here
-        width:'98%',
+        width:'20%',
         position:'absolute',
+        resizeMode:'contain',
         zIndex: 2,
-        marginRight:120
+        right:10,
+        top:10
       },
       icon: {
         width:'100%',
         fontSize: 20,
         textAlign:'right',
         color:'red',
-        paddingRight:10,
-        paddingTop:10
+       
       },
       loader:{
         flex:1,

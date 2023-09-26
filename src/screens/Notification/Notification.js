@@ -76,6 +76,24 @@ export default function Notification(props) {
       console.error('Error sending notification:', error);
     }
   };
+  const sendAllNotification = async () => {
+    try {
+      await fetch('http://10.0.2.2:4000/getNotification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          registrationToken: token,
+          title: title,
+          body: bodydec,
+        }),
+      });
+      console.log('Notification sent successfully');
+    } catch (error) {
+      console.error('Error sending notification:', error);
+    }
+  };
 
   useEffect(() => {
     const subscription = Notifications.addNotificationReceivedListener((notification) => {
@@ -128,7 +146,14 @@ console.log(title,body);
         <Text style={{ color: 'white' }}>Send Notification</Text>
       </TouchableOpacity>
 
-      {/* Render notification data */}
+      <TouchableOpacity
+        style={{ backgroundColor: 'gray', padding: 10,marginTop:20, borderRadius: 5 }}
+        onPress={sendAllNotification}
+      >
+        <Text style={{ color: 'white' }}>Send All Notification</Text>
+      </TouchableOpacity>
+
+      {/* {/ Render notification data /} */}
      
 
       <StatusBar style="auto" />

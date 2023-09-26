@@ -31,18 +31,19 @@ const styles = StyleSheet.create({
   },
   producticones: {
     // Add your styles for the container view here
-    width:'98%',
+    width:'20%',
     position:'absolute',
+    resizeMode:'contain',
     zIndex: 2,
-    marginRight:120
+    right:10,
+    top:15
   },
   icon: {
     width:'100%',
     fontSize: 20,
     textAlign:'right',
     color:'red',
-    paddingRight:15,
-    paddingTop:15
+  
     // Add other icon styling here
   },
   disabledIcon: {
@@ -50,8 +51,7 @@ const styles = StyleSheet.create({
     color:'black',
     fontSize: 20,
     textAlign:'right',
-    paddingRight:15,
-    paddingTop:15
+ 
     // Add styles for disabled icon here
   },
 });
