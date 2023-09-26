@@ -37,12 +37,12 @@ export default function HomeScreen(props) {
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible,setCreateAccountVisible]=useState(false);
-  
+  const [kidsdata, setkidsdata] = useState([])
+  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
 
   useEffect(() => {
     // Set isLoading to true initially
     setIsLoading(true);
-
     // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
@@ -56,11 +56,12 @@ export default function HomeScreen(props) {
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
-  // ------- add product in wishlist start-------------
+
   const openCreateAccountModal = () => {
     console.log("done");
     setCreateAccountVisible(true);
   };
+
   const checkUserLoginforheader = async () => {
     try {
       const data = await AsyncStorage.getItem("UserData");
@@ -78,6 +79,7 @@ export default function HomeScreen(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
+
   const getWishlist = async () => {
     const data = {
       party_id: 197,
@@ -86,6 +88,7 @@ export default function HomeScreen(props) {
       setSelectprd(res.data)
     })
   }
+
   function convertToTitleCase(str) {
     return str
       .toLowerCase()
@@ -93,6 +96,7 @@ export default function HomeScreen(props) {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join('-'); // Join the words with spaces
   }
+
   const addArticleWishlist = async (i) => {
     let data = {
       user_id: 197,
@@ -132,9 +136,6 @@ export default function HomeScreen(props) {
     getWishlist();
   }, []);
 
-  // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
-  //getCategoriesname
   const getCategoriesname = async () => {
     try {
       const result1 = await getcateGorywithphotos();
@@ -151,12 +152,10 @@ export default function HomeScreen(props) {
         setApplyData(result2.data);
         setFilterDataSearch(result2.data);
       }
-
       setIsLoading(false);
     } catch (error) {
-      // Handle any errors that might occur during the API requests.
       console.error(error);
-      setIsLoading(false); // Make sure to set isLoading to false in case of an error.
+      setIsLoading(false);
     }
   };
 
@@ -244,9 +243,11 @@ export default function HomeScreen(props) {
       setFinalData(filtered);
     }
   };
+
   useEffect(() => {
     filterData();
   }, [searchText]);
+
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
@@ -294,6 +295,7 @@ export default function HomeScreen(props) {
     setMaxArticleRate(maxRate);
     console.log(maxArticleRate);
   }, [nameDatas]);
+
   const checkUserLogin = async () => {
     const token = await AsyncStorage.getItem("UserData");
 
@@ -306,9 +308,11 @@ export default function HomeScreen(props) {
     }
   };
 
-  useEffect(()=>{
-      checkUserLogin();
-    },[])
+  const kids = nameDatas.filter((item) => item.Category === kids)
+  console.log("kids", kids)
+  useEffect(() => {
+    checkUserLogin();
+  }, [])
   return (
     <>
       {isLoading ? (
@@ -609,119 +613,89 @@ export default function HomeScreen(props) {
                   showsHorizontalScrollIndicator={false}
                   style={{ flex: 1, overflow: "hidden" }}
                 >
-                  {ApplyStatushBack === true
-                    ? nameDatas.map((item) => (
-                        <View
-                          key={item.id}
-                          style={{
-                            alignItems: "center",
-                            height: 280,
-                            width: 155,
-                            marginLeft: 10,
-                            marginRight: 5,
-                            marginBottom: 120,
-                            borderRadius: 10,
-                            
-                            
-                          }}
-                        >
-                          <View
-                            style={{
-                              width: 155,
-                              height: 190,
-                              borderColor: "gray",
-                              shadowColor: "rgba(0, 0, 0, 0.5)",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 3,
-                              borderRadius:10,
-                              elevation:4, // For Android, use elevation
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
-                            }}
-                          >
-                            <View id={item.id} style={styles.producticones}>
-                              {selectedprd.some((i) => i.Id === item.Id) ? (
-                                
-                                <TouchableOpacity
-                                  onPress={() => {isLoggedIn?
-                                    rmvProductWishlist(item):openCreateAccountModal()
-                                  }}
-                                >
-                                  <FontAwesome
-                                    name="heart"
-                                    style={[
-                                      styles.icon,
-                                      // isLoggedin === false ? styles.disabledIcon : null,
-                                    ]}
-                                  />
-                                </TouchableOpacity>
-                              ) : (
-                                <TouchableOpacity
-                                  onPress={() => {isLoggedIn?
-                                    addArticleWishlist(item):openCreateAccountModal()
-                                  }}
-                                >
-                                  <FontAwesome
-                                    name="heart-o"
-                                    style={[
-                                      styles.disabledIcon,
-                                      // isLoggedin === false ? styles.disabledIcon : null,
-                                    ]}
-                                  />
-                                </TouchableOpacity>
-                              )}
-                            </View>
-                            <Image
-                              source={{ uri: baseImageUrl + item.Photos }}
-                              style={{
-                              
-                                flex:1,
-                                resizeMode:'contain',
-                                borderRadius: 10,
-                              }}
-                            />
-                          </View>
+                  {nameDatas.map((item) => (
+                    <View
+                      key={item.id}
+                      style={{
+                        alignItems: "center",
+                        height: 280,
+                        width: 155,
+                        marginLeft: 10,
+                        marginRight: 5,
+                        marginBottom: 120,
+                        borderRadius: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: 155,
+                          height: 190,
+                          borderColor: "gray",
+                          shadowColor: "rgba(0, 0, 0, 0.5)",
+                          shadowOpacity: 0.9,
+                          shadowRadius: 3,
+                          borderRadius: 10,
+                          elevation: 4, // For Android, use elevation
+                          shadowOffset: {
+                            width: 0,
+                            height: 0,
+                          },
+                        }}
+                      >
+                        <View id={item.id} style={styles.producticones}>
+                          {selectedprd.some((i) => i.Id === item.Id) ? (
 
-                          <Text style={{ fontWeight: "bold", marginTop: 10 }}>
-                            {item.ArticleNumber}
-                          </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate +'.00'}
-                          </Text>
+                            <TouchableOpacity
+                              onPress={() => {
+                                isLoggedIn ?
+                                  rmvProductWishlist(item) : openCreateAccountModal()
+                              }}
+                            >
+                              <FontAwesome
+                                name="heart"
+                                style={[
+                                  styles.icon,
+                                  // isLoggedin === false ? styles.disabledIcon : null,
+                                ]}
+                              />
+                            </TouchableOpacity>
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => {
+                                isLoggedIn ?
+                                  addArticleWishlist(item) : openCreateAccountModal()
+                              }}
+                            >
+                              <FontAwesome
+                                name="heart-o"
+                                style={[
+                                  styles.disabledIcon,
+                                  // isLoggedin === false ? styles.disabledIcon : null,
+                                ]}
+                              />
+                            </TouchableOpacity>
+                          )}
                         </View>
-                      ))
-                    : applyrData.map((item) => (
-                        <View
-                          key={item.id}
+                        <Image
+                          source={{ uri: baseImageUrl + item.Photos }}
                           style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: 155,
-                            height: 232,
-                            marginLeft: 5,
-                            marginRight: 5,
+                            width: "94%",
+                            height: 190,
+                            borderRadius: 10,
                           }}
-                        >
-                          <Image
-                            source={{ uri: baseImageUrl + item.Photos }}
-                            style={{
-                              width: 200,
-                              height: 200,
-                              borderRadius: 10,
-                            }}
-                          />
-                          <Text style={{ fontWeight: "bold" }}>
-                            {item.ArticleNumber}
-                          </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate + '.00'}
-                          </Text>
-                        </View>
-                      ))}
+                        />
+                      </View>
+
+                      <Text style={{ fontWeight: "bold", marginTop: 10 }}>
+                        {item.ArticleNumber}
+                      </Text>
+                      <Text>{convertToTitleCase(item.Category)}</Text>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {"₹" + item.ArticleRate + '.00'}
+                      </Text>
+                    </View>
+                  ))
+                  }
                 </ScrollView>
               </View>
             </View>
