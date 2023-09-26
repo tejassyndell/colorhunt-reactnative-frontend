@@ -98,7 +98,7 @@ const AddToCart = (props) => {
     const handleAddMoreItems = () => {
         navigation.navigate("Home");
     }
-
+cartIsEmpty
     const handleGoBack = () => {
         //   navigate(-1)
     }

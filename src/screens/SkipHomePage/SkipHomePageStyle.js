@@ -30,18 +30,19 @@ const styles = StyleSheet.create({
   },
   producticones: {
     // Add your styles for the container view here
-    width: "98%",
-    position: "absolute",
+    width:'20%',
+    position:'absolute',
+    resizeMode:'contain',
     zIndex: 2,
-    marginRight: 120,
+    right:15,
+    top:15
   },
   icon: {
     width: "100%",
     fontSize: 20,
     textAlign: "right",
     color: "red",
-    paddingRight: 10,
-    paddingTop: 10,
+   
     // Add other icon styling here
   },
   disabledIcon: {
@@ -49,8 +50,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 20,
     textAlign: "right",
-    paddingRight: 10,
-    paddingTop: 10,
+
     // Add styles for disabled icon here
   },
   modalContainer: {

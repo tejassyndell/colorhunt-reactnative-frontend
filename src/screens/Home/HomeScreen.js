@@ -39,10 +39,20 @@ export default function HomeScreen(props) {
   const [isCreateAccountVisible,setCreateAccountVisible]=useState(false);
   
 
-  // useFocusEffect(
-  //   React.
-  //   checkUserLogin();
-  // );
+  useEffect(() => {
+    // Set isLoading to true initially
+    setIsLoading(true);
+
+    // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    // Clear the timeout when the component unmounts to prevent memory leaks
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -179,7 +189,7 @@ export default function HomeScreen(props) {
           >
             <Image
               source={require("../../../assets/sidbarOpenIcone.png")}
-              style={{ width: 38, height: 38, borderRadius: 5 }}
+              style={{ width: 38, height: 38,resizeMode:'contain', borderRadius: 5 }}
             ></Image>
           </TouchableOpacity>
         </View>
@@ -203,7 +213,7 @@ export default function HomeScreen(props) {
             }}
           >
             <Image
-              style={styles.searchIcon}
+              style={{resizeMode:'contain'}}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
           </TouchableOpacity>
@@ -309,7 +319,7 @@ export default function HomeScreen(props) {
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF",paddingStart:5}}
         >
-          <View style={{ marginTop: 10 }}>
+          <View style={{ marginTop: 0 }}>
             <View>
               <Text
                 style={{
@@ -338,7 +348,7 @@ export default function HomeScreen(props) {
               <TouchableOpacity onPress={()=>{isLoggedIn?openFilter():openCreateAccountModal()}}>
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
-                  style={{ width: 40, height: 40, borderRadius: 10 }}
+                  style={{ width: 40,resizeMode:'contain', height: 40, borderRadius: 10 }}
                 />
               </TouchableOpacity>
             </View>
@@ -371,7 +381,7 @@ export default function HomeScreen(props) {
                 maxWidth: "100%",
                 height: "auto",
                 flexDirection: "row",
-                top: 8,
+                marginTop: '3%',
               }}
             >
               <ScrollView
@@ -452,6 +462,7 @@ export default function HomeScreen(props) {
                                 source={{ uri: baseImageUrl + item.Photos }}
                                 style={{
                                   width: "100%",
+                                  resizeMode:'contain',
                                   height: 190,
                                   borderRadius: 10,
                                 }}
@@ -503,9 +514,10 @@ export default function HomeScreen(props) {
                               }}
                             >
                               <Image
-                                source={require("../../../assets/demo.png")}
+                                source={{ uri: baseImageUrl + item.Photos }}
                                 style={{
                                   width: "100%",
+                                  resizeMode:'contain',
                                   height: 190,
                                   borderRadius: 10,
                                 }}

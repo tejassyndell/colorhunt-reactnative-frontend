@@ -194,6 +194,7 @@ export default function AllArticle(props) {
         <Image source={{ uri: baseImageUrl + item.Photos }} style={{ 
           width: "90%",
            height: 180,
+           flex:1,resizeMode:'contain',
             borderRadius: 10,
              zIndex: 1,
               marginTop: 10 }} />
@@ -293,7 +294,7 @@ export default function AllArticle(props) {
               ALL Articles
             </Text>
           </View>
-          <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
+          <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: '74%', top: 20, paddingHorizontal: 10 }}>
             {noArticlesFound ? (
               <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>NO ARTICLES FOUND</Text>
             ) : (

@@ -36,7 +36,6 @@ function MainNavigator() {
     value = status;
     name = val;
   };
-  console.log(isLoggedIn, "-=-=-=-=-=-");
   return (
     <Stack.Navigator screenOptions={{ unmountInactiveRoutes: true }}>
       <Stack.Screen
@@ -106,7 +105,6 @@ function DrawerStack() {
 
     fetchData();
   }, []);
-  console.log(value, "-=-=--=-==+++++++");
   return (
     <Drawer.Navigator
       drawerPosition="left"

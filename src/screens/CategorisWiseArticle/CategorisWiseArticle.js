@@ -199,7 +199,7 @@ export default function CategorisWiseArticle(props) {
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, borderRadius: 10, zIndex: 1, marginTop: 10 }} />
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ width: "90%", height: 180, flex:1,resizeMode:'contain', borderRadius: 10, zIndex: 1, marginTop: 10 }} />
       </View>
       <View style={{ width: "100%", marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 0 }}>
@@ -291,8 +291,23 @@ export default function CategorisWiseArticle(props) {
               Men's {convertToTitleCase(category)}
             </Text>
           </View>
-          <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: 'auto', top: 20, paddingHorizontal: 10 }}>
-            <FlatList
+          <View style={{ position: 'relative', backgroundColor: "#FFF", width: "100%", height: '74%', top: 20, paddingHorizontal: 10 }}>
+            {finalData.length === 0 ? (
+              console.log(nameDatas.length,'ewqewqewqeewq'),
+              <View style={{
+                flex: 1,
+                justifyContent: 'center', // Center vertically
+                alignItems: 'center',     // Center horizontally
+              }}>
+                <Text style={{
+                  textAlign: 'center',
+                  fontSize:20
+                }}>
+                  No Articles Found
+                </Text>
+              </View>
+            ):(
+              <FlatList
               style={{ backgroundColor: "#FFF" }}
               data={finalData}
               keyExtractor={(item) => item.Id}
@@ -301,6 +316,8 @@ export default function CategorisWiseArticle(props) {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: 0 }}
             />
+            )}
+            
           </View>
           {/* </ScrollView> */}
           {isFilterVisible ? null : (
