@@ -71,10 +71,10 @@ export default function WishList(props) {
       headerTitle: () => (
         <View style={{
           flexDirection: "row",
-          alignItems:"center",
-          alignContent:"center",
-          paddingLeft:"10%",
-          width:parseInt(windowwidthe) >=768 ? "95%":"100%"
+          alignItems: "center",
+          alignContent: "center",
+          paddingLeft: "10%",
+          width: parseInt(windowwidthe) >= 768 ? "95%" : "100%"
         }}>
           <Text style={{
             textAlign: "center",
@@ -85,7 +85,7 @@ export default function WishList(props) {
 
         </View>
       ),
-      headerRight: () => <View/>
+      headerRight: () => <View />
     });
   }, []);
 
@@ -146,9 +146,9 @@ export default function WishList(props) {
           }} />
 
         </View>
-        <Text style={{ fontWeight: 'bold', marginTop: "6%",fontSize:windowwidthe * 0.034 }}>{item.ArticleNumber}</Text>
-        <Text style={{ marginTop: "1.5%" ,fontSize:windowwidthe * 0.026 }}>{item.Title}</Text>
-        <Text style={{ fontWeight: 'bold', marginTop: "1.5%",fontSize:windowwidthe * 0.034 }}>{"₹" + item.ArticleRate + '.00'}</Text>
+        <Text style={{ fontWeight: 'bold', marginTop: "6%", fontSize: windowwidthe * 0.034 }}>{item.ArticleNumber}</Text>
+        <Text style={{ marginTop: "1.5%", fontSize: windowwidthe * 0.026 }}>{item.Title}</Text>
+        <Text style={{ fontWeight: 'bold', marginTop: "1.5%", fontSize: windowwidthe * 0.034 }}>{"₹" + item.ArticleRate + '.00'}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -164,43 +164,32 @@ export default function WishList(props) {
         </View>
       ) : (
         selectedprd.length === 0 ?
-          <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
-            <Text style={{ fontSize: 40, fontWeight: "bolder", top: 200, textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your WishList is {"\n"} Empty</Text>
-            <TouchableOpacity
-              style={{
-                width: 189,
-                height: 50,
-                borderRadius: 10,
-                backgroundColor: "black",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 380,
-              }}
-              onPress={() => navigation.navigate("Home")}
-            >
-              <Text style={{ color: "white" }}>Continue Shopping</Text>
-            </TouchableOpacity>
+          <View style={{ flex: 1, backgroundColor: "#FFF", borderTopColor: "#828282", borderTopWidth: 0.5 }}>
+            <View style={{ flex: 1,justifyContent:"flex-end",alignContent:"center",alignItems:"center" }}>
+              <Text style={{ fontSize: windowwidthe * 0.1, fontWeight: "bolder", textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your WishList is {"\n"} Empty</Text>
+            </View>
+            <View style={{ flex: 1,justifyContent:"center",alignContent:"center",alignItems:"center" }}>
+              <TouchableOpacity
+                style={{
+                  width: windowwidthe * 0.4,
+                  height: windowheight * 0.06,
+                  borderRadius: 10,
+                  backgroundColor: "black",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  // marginTop: "100%",
+                }}
+                onPress={() => navigation.navigate("Home")}
+              >
+                <Text style={{ color: "white",fontSize:windowwidthe * 0.035 }}>Continue Shopping</Text>
+              </TouchableOpacity>
+            </View>
+
           </View> :
-          // <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
-          //   {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
 
-          //   <View style={{ position: 'relative', maxWidth: '100%', height: 'auto', top: 20 }}>
-          //     <FlatList
-          //       data={selectedprd}
-          //       initialNumToRender={10}
-          //       keyExtractor={(item) => item.id}
-          //       renderItem={renderItem}
-          //       numColumns={2}
-          //       showsHorizontalScrollIndicator={false}
-          //       contentContainerStyle={{ paddingVertical: 10 }}
-          //     />
-          //   </View>
-
-          //   {/* </ScrollView> */}
-          // </View>
           <View style={{ flex: 1, backgroundColor: "#FFF" }}>
             <ScrollView>
-              <View style={{ flex: 1 ,backgroundColor:"#FFF",alignContent:"center",alignItems:"center"}}>
+              <View style={{ flex: 1, backgroundColor: "#FFF", alignContent: "center", alignItems: "center" }}>
                 <FlatList
                   data={selectedprd}
                   initialNumToRender={10}
@@ -209,7 +198,7 @@ export default function WishList(props) {
                   numColumns={2}
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{ paddingVertical: 10 }}
-                 
+
                 />
               </View>
             </ScrollView>

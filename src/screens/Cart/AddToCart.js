@@ -322,26 +322,28 @@ cartIsEmpty
                 </View>
             ) : (
                 orderItems.length === 0 ?
-                    <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
-
-                        <Text style={{ fontSize: 40, fontWeight: "bolder", top: 200, textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your Cart is {"\n"} Empty</Text>
-                        <TouchableOpacity
-                            style={{
-                                width: 189,
-                                height: 50,
-                                borderRadius: 10,
-                                backgroundColor: "black",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginTop: 380,
-                            }}
-                            onPress={() => navigation.navigate("Home")}
-                        >
-                            <Text style={{ color: "white" }}>Create Order</Text>
-                        </TouchableOpacity>
-
-
-                    </View>
+                <View style={{ flex: 1, backgroundColor: "#FFF", borderTopColor: "#828282", borderTopWidth: 0.5 }}>
+                <View style={{ flex: 1,justifyContent:"flex-end",alignContent:"center",alignItems:"center" }}>
+                  <Text style={{ fontSize: windowwidthe * 0.1, fontWeight: "bolder", textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your Cart is {"\n"} Empty</Text>
+                </View>
+                <View style={{ flex: 1,justifyContent:"center",alignContent:"center",alignItems:"center" }}>
+                  <TouchableOpacity
+                    style={{
+                      width: windowwidthe * 0.4,
+                      height: windowheight * 0.06,
+                      borderRadius: 10,
+                      backgroundColor: "black",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      // marginTop: "100%",
+                    }}
+                    onPress={() => navigation.navigate("Home")}
+                  >
+                    <Text style={{ color: "white",fontSize:windowwidthe * 0.035 }}>Create Order</Text>
+                  </TouchableOpacity>
+                </View>
+    
+              </View>
                     :
                     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : "height"}>
                         <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ flex: 1 }} keyboardShouldPersistTaps="handled">
