@@ -6,14 +6,20 @@ import styles from "./styles.js";
 export default function MenuBackArrow(props) {
   const windowwidthe = Dimensions.get("window").width;
   const windowHighte = Dimensions.get("window").height;
+  const iconewidth = () => {
+    if (parseInt(windowwidthe) >= 800) {
+      return windowwidthe * 0.06
+    }
+    else {  return windowwidthe * 0.07 }
+  }
   return (
     <View style={{ width: "100%" }}>
       <TouchableOpacity
-        style={{ flexDirection: "row",width: "100%", height: "auto"}}
+        style={{ flexDirection: "row", width: "100%", height: "auto" }}
         onPress={props.onPress}
       >
         <Image
-          style={{ marginLeft: 10, resizeMode: "contain",width:windowwidthe * 0.07,height:windowHighte * 0.05 }}
+          style={{ marginLeft: 10, resizeMode: "contain", width: iconewidth(), height: windowHighte * 0.05 }}
           source={require("../../../assets/arrow.png")}
         />
       </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Pressable, Platform } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Dimensions,Pressable, Platform } from "react-native";
 import React, { useLayoutEffect } from "react";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useState } from "react";
@@ -14,11 +14,12 @@ const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 const AddToCart = (props) => {
     const { navigation } = props;
     const [isLoading, setIsLoading] = useState(true);
-
+    const windowwidthe = Dimensions.get("window").width;
+    const windowheight = Dimensions.get("window").height;
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
-                <View style={{ marginTop: 2 }}>
+                <View style={{ marginTop: 0 }}>
                     <MenuBackArrow
                         onPress={() => {
                             navigation.navigate('Home');
@@ -29,13 +30,17 @@ const AddToCart = (props) => {
             ),
             headerTitle: () => (
                 <View style={{
-                    display: "flex",
                     flexDirection: "row",
-                    width: "100%"
-                }}>
+                    alignItems:"center",
+                    alignContent:"center",
+                    paddingLeft:"10%",
+                    width:parseInt(windowwidthe) >=800 ? "95%":"100%"
+                  }}>
                     <Text style={{
-                        textAlign: "center",
-                        fontSize: 25, fontWeight: 700, width: "100%"
+                      textAlign: "center",
+                      fontSize: windowwidthe * 0.05,
+                      fontWeight: "700",
+                      width: "100%",
                     }}>Cart</Text>
                 </View>
             ),
@@ -239,7 +244,7 @@ cartIsEmpty
                 return (
                     // <View style={{width:"100%"}}>
                     <Text style={{
-                        fontSize: 14,
+                        fontSize: windowwidthe * 0.035,
                         fontWeight: 500,
                         color: "red",
                         textAlign: "right"
@@ -253,7 +258,7 @@ cartIsEmpty
                 // setCartDataIdArray((itme)=>[...itme,it.ArticalId])
                 return (
                     <Text style={{
-                        fontSize: 14,
+                        fontSize: windowwidthe * 0.035,
                         fontWeight: 400,
                         color: "red"
                     }}>Out of stock</Text>
@@ -291,6 +296,16 @@ cartIsEmpty
         // return null;
     };
 
+    const geticondeHeighte = ()=>{
+        if(parseInt(windowwidthe)>=800){
+            console.log("same and above 800");
+           return windowheight * 0.05
+    
+        }else{
+            console.log("below 800");
+            return windowheight * 0.04
+        }
+    }
     return (
 
         <>
@@ -334,7 +349,7 @@ cartIsEmpty
                                 <View style={{ width: "100%", backgroundColor: "#FFF" }}>
                                     <ScrollView nestedScrollEnabled={true}  >
                                         <View style={{ width: "100%", backgroundColor: "#FFF", borderTopColor: "black", }}>
-                                            <ScrollView nestedScrollEnabled={true} style={{ backgroundColor: "#FFF", height: "auto", maxHeight: 450 }}>
+                                            <ScrollView nestedScrollEnabled={true} style={{ backgroundColor: "#FFF",height:"auto",maxHeight: windowwidthe * 1 }}>
                                                 <View style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                                                     <View style={{ paddingBottom: 20 }}>
                                                         {orderItems.map((item) =>
@@ -348,94 +363,97 @@ cartIsEmpty
                                                                     elevation: 5,
                                                                     shadowColor: 'gray',
                                                                     shadowOpacity: 0.5,
-                                                                    marginHorizontal: 20,
-                                                                    marginTop: 15,
+                                                                    marginHorizontal: "5%",
+                                                                    marginTop: "5%",
                                                                     borderRadius: 10,
-                                                                    height: 104,
-                                                                    paddingVertical: 5,
-                                                                    backgroundColor: "#FFF"
+                                                                    height: windowheight * 0.142,
+                                                                    paddingVertical: "1.5%",
+                                                                    backgroundColor: "#FFF",
+                                                                  
                                                                 }}>
                                                                     <TouchableOpacity style={{
-                                                                       width: 88,
-                                                                       margin:10,
-                                                                       marginTop:5,
-                                                                       height: 84,
-                                                                       display: "flex",
-                                                                       justifyContent: "center",
-                                                                       alignItems: "center",
-                                                                       // marginVertical: 10,
-                                                                       borderRadius: 10,
+                                                                         width: windowwidthe * 0.18,
+                                                                         margin:"3.8%",
+                                                                         marginTop:"1.5%",
+                                                                         height: windowheight * 0.108,
+                                                                         display: "flex",
+                                                                         justifyContent: "center",
+                                                                         alignItems: "center",
+                                                                         // marginVertical: 10,
+                                                                         borderRadius: 10,
                                                                     }}  onPress={() => handleEditOrder(item.article_id,item.Quantity)}>
-                                                                       
+
                                                                         <Image style={{
                                                                             flex: 1, resizeMode: "contain", height: '100%', width: "100%",
                                                                             borderRadius: 10,
                                                                         }}  source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
-                                                                      
                                                                     </TouchableOpacity>
                                                                     <View style={{
                                                                         width: "40%",
-                                                                        marginHorizontal: 4,
-                                                                        marginVertical: 10,
+                                                                        marginHorizontal: "1%",
+                                                                        marginBottom: "1%",
+                                                                        marginTop:"0.8%",
                                                                         borderRadius: 10
                                                                     }}>
-                                                                        <View style={{ height: "50%" , paddingBottom:1 }}>
+                                                                        <View style={{ height: "50%",paddingBottom:1 }}>
                                                                             <Text style={{
-                                                                                fontSize: 14,
-                                                                                fontWeight: 700, color: "#000"
+                                                                                fontSize: windowwidthe * 0.035,
+                                                                                fontWeight: 700,
                                                                             }}>{item.ArticleNumber}</Text>
                                                                             <Text style={{
-                                                                                fontSize: 10,
-                                                                                fontWeight: 400, color: "#000"
+                                                                                fontSize: windowwidthe * 0.025,
+                                                                                fontWeight: 400,
                                                                             }}>{item.StyleDescription}</Text>
                                                                         </View>
                                                                         <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%"}}>
                                                                             <Text style={{
-                                                                                fontSize: 10,
-                                                                                fontWeight: 400, color: "#000"
+                                                                                fontSize: windowwidthe * 0.025,
+                                                                                fontWeight: 400,
                                                                             }}>Rate</Text>
                                                                             <Text style={{
-                                                                                fontSize: 13,
-                                                                                fontWeight: 700, color: "#000"
+                                                                                fontSize: windowwidthe * 0.035,
+                                                                                fontWeight: 700,
                                                                             }}>₹{item.rate}.00</Text>
                                                                             {/* {compreInward ? compreInward.map((it) => (
-                                                                        checkOutOfStock(it, item)
-                                                                        // console.log(it.SalesNoPacks)
-                                                                    )) : ""} */}
+                                                                            checkOutOfStock(it, item)
+                                                                            // console.log(it.SalesNoPacks)
+                                                                        )) : ""} */}
 
                                                                         </View>
                                                                     </View>
                                                                     <View style={{
-                                                                        width: "25%",
+                                                                        width: "28%",
                                                                         display: "flex",
                                                                         flexDirection: "column",
-                                                                        height: "90%"
+                                                                        height: "100%",
+                                                                        
                                                                     }}>
                                                                         <View style={{
                                                                             width: "100%",
                                                                             display: "flex",
                                                                             flexDirection: "row",
                                                                             justifyContent: "flex-end",
-                                                                            gap: 8,
-                                                                            paddingRight: 5,
-                                                                            marginVertical: 10,
-                                                                            borderRadius: 10
+                                                                            gap: windowwidthe * 0.025,
+                                                                            paddingRight: "5%",
+                                                                            marginVertical: "5%",
+                                                                            borderRadius: 10,
+                                                                            height:"auto"
                                                                         }}>
                                                                             <TouchableOpacity
                                                                                 onPress={() => handleEditOrder(item.article_id,item.Quantity)}
                                                                             >
 
                                                                                 <Image alt="edite"
-                                                                                    style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                                                    style={{ width: windowwidthe * 0.05, height: windowheight * 0.03, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
                                                                             </TouchableOpacity>
                                                                             <TouchableOpacity
                                                                                 onPress={() => handleDeleteOrder(item.article_id)}
                                                                             >
                                                                                 <Image alt="Delete"
-                                                                                    style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                                                    style={{ width: windowwidthe * 0.05, height: windowheight * 0.03, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
                                                                             </TouchableOpacity>
                                                                         </View>
-
+                                                                        
                                                                     </View>
 
                                                                 </View>
@@ -448,19 +466,20 @@ cartIsEmpty
                                                                     elevation: 5,
                                                                     shadowColor: 'gray',
                                                                     shadowOpacity: 0.5,
-                                                                    marginHorizontal: 20,
-                                                                    marginTop: 15,
+                                                                    marginHorizontal: "5%",
+                                                                    marginTop: "5%",
                                                                     borderRadius: 10,
-                                                                    height: 104,
-                                                                    paddingVertical: 5,
+                                                                    height: windowheight * 0.142,
+                                                                    paddingVertical: "1.5%",
                                                                     backgroundColor: "#FFF",
+                                           
                                                                   
                                                                 }}>
                                                                     <TouchableOpacity style={{
-                                                                         width: 88,
-                                                                         margin:10,
-                                                                         marginTop:5,
-                                                                         height: 84,
+                                                                         width: windowwidthe * 0.18,
+                                                                         margin:"3.8%",
+                                                                         marginTop:"1.5%",
+                                                                         height: windowheight * 0.108,
                                                                          display: "flex",
                                                                          justifyContent: "center",
                                                                          alignItems: "center",
@@ -476,28 +495,29 @@ cartIsEmpty
                                                                     </TouchableOpacity>
                                                                     <View style={{
                                                                         width: "40%",
-                                                                        marginHorizontal: 4,
-                                                                        marginVertical: 10,
+                                                                        marginHorizontal: "1%",
+                                                                        marginBottom: "1%",
+                                                                        marginTop:"0.8%",
                                                                         borderRadius: 10
                                                                     }}>
                                                                         <View style={{ height: "50%",paddingBottom:1 }}>
                                                                             <Text style={{
-                                                                                fontSize: 14,
-                                                                                fontWeight: 700, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.035,color:"#00000040",
+                                                                                fontWeight: 700,
                                                                             }}>{item.ArticleNumber}</Text>
                                                                             <Text style={{
-                                                                                fontSize: 10,
-                                                                                fontWeight: 400, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.025,color:"#00000040",
+                                                                                fontWeight: 400,
                                                                             }}>{item.StyleDescription}</Text>
                                                                         </View>
                                                                         <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%"}}>
                                                                             <Text style={{
-                                                                                fontSize: 10,
-                                                                                fontWeight: 400, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.025,color:"#00000040",
+                                                                                fontWeight: 400,
                                                                             }}>Rate</Text>
                                                                             <Text style={{
-                                                                                fontSize: 13,
-                                                                                fontWeight: 700, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.035,color:"#00000040",
+                                                                                fontWeight: 700,
                                                                             }}>₹{item.rate}.00</Text>
                                                                             {/* {compreInward ? compreInward.map((it) => (
                                                                             checkOutOfStock(it, item)
@@ -507,40 +527,42 @@ cartIsEmpty
                                                                         </View>
                                                                     </View>
                                                                     <View style={{
-                                                                        width: "25%",
+                                                                        width: "28%",
                                                                         display: "flex",
                                                                         flexDirection: "column",
-                                                                        height: "90%"
+                                                                        height: "100%",
+                                                                        
                                                                     }}>
                                                                         <View style={{
                                                                             width: "100%",
                                                                             display: "flex",
                                                                             flexDirection: "row",
                                                                             justifyContent: "flex-end",
-                                                                            gap: 8,
-                                                                            paddingRight: 5,
-                                                                            marginVertical: 10,
-                                                                            borderRadius: 10
+                                                                            gap: windowwidthe * 0.025,
+                                                                            paddingRight: "5%",
+                                                                            marginVertical: "5%",
+                                                                            borderRadius: 10,
+                                                                            height:"auto"
                                                                         }}>
                                                                             <TouchableOpacity
                                                                                 onPress={() => handleEditOrder(item.article_id,item.Quantity)}
                                                                             >
 
                                                                                 <Image alt="edite"
-                                                                                    style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                                                    style={{ width: windowwidthe * 0.05, height: windowheight * 0.03, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
                                                                             </TouchableOpacity>
                                                                             <TouchableOpacity
                                                                                 onPress={() => handleDeleteOrder(item.article_id)}
                                                                             >
                                                                                 <Image alt="Delete"
-                                                                                    style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                                                    style={{ width: windowwidthe * 0.05, height: windowheight * 0.03, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
                                                                             </TouchableOpacity>
                                                                         </View>
                                                                         <View style={{
                                                                             width: "100%",
                                                                             position: "absolute",
                                                                             bottom: 0,
-                                                                            paddingRight: 5
+                                                                            paddingRight: '5%'
                                                                         }}>
                                                                             {compreInward ? compreInward.map((it) => (
                                                                                 checkOutOfStock(it, item)
@@ -559,19 +581,20 @@ cartIsEmpty
                                                                     elevation: 5,
                                                                     shadowColor: 'gray',
                                                                     shadowOpacity: 0.5,
-                                                                    marginHorizontal: 20,
-                                                                    marginTop: 15,
+                                                                    marginHorizontal: "5%",
+                                                                    marginTop: "5%",
                                                                     borderRadius: 10,
-                                                                    height: 104,
-                                                                    paddingVertical: 5,
+                                                                    height: windowheight * 0.142,
+                                                                    paddingVertical: "1.5%",
                                                                     backgroundColor: "#FFF",
+                                           
                                                                   
                                                                 }}>
                                                                     <TouchableOpacity style={{
-                                                                         width: 88,
-                                                                         margin:10,
-                                                                         marginTop:5,
-                                                                         height: 84,
+                                                                         width: windowwidthe * 0.18,
+                                                                         margin:"3.8%",
+                                                                         marginTop:"1.5%",
+                                                                         height: windowheight * 0.108,
                                                                          display: "flex",
                                                                          justifyContent: "center",
                                                                          alignItems: "center",
@@ -587,28 +610,29 @@ cartIsEmpty
                                                                     </TouchableOpacity>
                                                                     <View style={{
                                                                         width: "40%",
-                                                                        marginHorizontal: 4,
-                                                                        marginVertical: 10,
+                                                                        marginHorizontal: "1%",
+                                                                        marginBottom: "1%",
+                                                                        marginTop:"0.8%",
                                                                         borderRadius: 10
                                                                     }}>
                                                                         <View style={{ height: "50%",paddingBottom:1 }}>
                                                                             <Text style={{
-                                                                                fontSize: 14,
-                                                                                fontWeight: 700, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.035,color:"#00000040",
+                                                                                fontWeight: 700,
                                                                             }}>{item.ArticleNumber}</Text>
                                                                             <Text style={{
-                                                                                fontSize: 10,
-                                                                                fontWeight: 400, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.025,color:"#00000040",
+                                                                                fontWeight: 400,
                                                                             }}>{item.StyleDescription}</Text>
                                                                         </View>
                                                                         <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%"}}>
                                                                             <Text style={{
-                                                                                fontSize: 10,
-                                                                                fontWeight: 400, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.025,color:"#00000040",
+                                                                                fontWeight: 400,
                                                                             }}>Rate</Text>
                                                                             <Text style={{
-                                                                                fontSize: 13,
-                                                                                fontWeight: 700, color: "#00000040"
+                                                                                fontSize: windowwidthe * 0.035,color:"#00000040",
+                                                                                fontWeight: 700,
                                                                             }}>₹{item.rate}.00</Text>
                                                                             {/* {compreInward ? compreInward.map((it) => (
                                                                             checkOutOfStock(it, item)
@@ -618,40 +642,42 @@ cartIsEmpty
                                                                         </View>
                                                                     </View>
                                                                     <View style={{
-                                                                        width: "25%",
+                                                                        width: "28%",
                                                                         display: "flex",
                                                                         flexDirection: "column",
-                                                                        height: "90%"
+                                                                        height: "100%",
+                                                                        
                                                                     }}>
                                                                         <View style={{
                                                                             width: "100%",
                                                                             display: "flex",
                                                                             flexDirection: "row",
                                                                             justifyContent: "flex-end",
-                                                                            gap: 8,
-                                                                            paddingRight: 5,
-                                                                            marginVertical: 10,
-                                                                            borderRadius: 10
+                                                                            gap: windowwidthe * 0.025,
+                                                                            paddingRight: "5%",
+                                                                            marginVertical: "5%",
+                                                                            borderRadius: 10,
+                                                                            height:"auto"
                                                                         }}>
                                                                             <TouchableOpacity
                                                                                 onPress={() => handleEditOrder(item.article_id,item.Quantity)}
                                                                             >
 
                                                                                 <Image alt="edite"
-                                                                                    style={{ width: 20, height: 20, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
+                                                                                    style={{ width: windowwidthe * 0.05, height: windowheight * 0.03, backgroundColor: "green" }} source={require("../../../assets/edite1.png")}></Image>
                                                                             </TouchableOpacity>
                                                                             <TouchableOpacity
                                                                                 onPress={() => handleDeleteOrder(item.article_id)}
                                                                             >
                                                                                 <Image alt="Delete"
-                                                                                    style={{ width: 20, height: 20, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
+                                                                                    style={{ width: windowwidthe * 0.05, height: windowheight * 0.03, backgroundColor: "black" }} source={require("../../../assets/delete1.png")}></Image>
                                                                             </TouchableOpacity>
                                                                         </View>
                                                                         <View style={{
                                                                             width: "100%",
                                                                             position: "absolute",
                                                                             bottom: 0,
-                                                                            paddingRight: 5
+                                                                            paddingRight: '5%'
                                                                         }}>
                                                                             {compreInward ? compreInward.map((it) => (
                                                                                 checkOutOfStock(it, item)
@@ -670,19 +696,19 @@ cartIsEmpty
                                     </ScrollView>
                                     <View >
                                         <View nestedScrollEnabled={true} style={{ width: "100%", backgroundColor: "#FFF" }}>
-                                            <View style={{ padding: 10 }}>
+                                            <View style={{ padding: "2.5%" }}>
                                                 <TextInput
                                                     value={promoCode}
                                                     onChange={handlePromoCodeChange}
                                                     style={{
                                                         width: "100%",
-                                                        height: 56,
-                                                        borderWidth: 1, paddingVertical: 18,
-                                                        paddingLeft: 15, borderRadius: 10,
-                                                        fontSize: 18, backgroundColor: "#EEE", borderColor: "#E4E7EA"
+                                                        height: windowwidthe * 0.14,
+                                                        borderWidth: 1,
+                                                        paddingLeft: "5%", borderRadius: 10,
+                                                        fontSize: windowwidthe * 0.04, backgroundColor: "#EEE", borderColor: "#E4E7EA"
                                                     }} keyboardType="default" placeholder="Promo Code">
                                                 </TextInput>
-                                                <Pressable onPress={handleApplyPromoCode} style={{
+                                                <TouchableOpacity onPress={handleApplyPromoCode} style={{
                                                     width: "100%",
                                                     position: "absolute",
                                                     top: "30.5%",
@@ -692,12 +718,12 @@ cartIsEmpty
                                                     <Text style={{
                                                         color: "white",
                                                         backgroundColor: "#212121",
-                                                        borderRadius: 7.6, width: 100, paddingHorizontal: 18,
-                                                        paddingVertical: 9,
-                                                        fontSize: 18, fontWeight: 600,
+                                                        borderRadius: 7.6, width: windowwidthe * 0.25, paddingHorizontal:"6%",
+                                                        paddingVertical: "2.5%",
+                                                        fontSize: windowwidthe * 0.04, fontWeight: 600,
                                                         textAlign: "center"
                                                     }}>Apply</Text>
-                                                </Pressable>
+                                                </TouchableOpacity>
                                             </View>
 
                                             {/* </View> */}
@@ -719,18 +745,18 @@ cartIsEmpty
                                         backgroundColor: "#FFF",
                                         marginBottom: "2%"
                                     }}>
-                                        <Pressable onPress={handleAddMoreItems} style={{ marginRight: 10 }}>
+                                        <TouchableOpacity onPress={handleAddMoreItems} style={{ marginRight: "2.5%" }}>
                                             <Text style={{
                                                 color: "white",
                                                 backgroundColor: "#212121",
-                                                borderRadius: 7.6, width: 150, paddingHorizontal: 22,
-                                                paddingVertical: 9,
-                                                fontSize: 18, fontWeight: 600,
+                                                borderRadius: 7.6, width:  windowwidthe * 0.35,
+                                                paddingVertical: "2.4%",
+                                                fontSize: windowwidthe * 0.042, fontWeight: 600,
                                                 textAlign: "center"
                                             }}>
                                                 Add More
                                             </Text>
-                                        </Pressable>
+                                        </TouchableOpacity>
                                     </View>
                                     <View style={{
                                         display: "flex",
@@ -738,10 +764,10 @@ cartIsEmpty
                                         width: "100%",
                                         justifyContent: "flex-end",
                                         alignItems: "flex-end",
-                                        paddingRight: 12,
-                                        marginTop: 6
+                                        paddingRight: "3%",
+                                        marginTop: "2%"
                                     }}>
-                                        <Text style={{ fontSize: 12, fontWeight: 700, color: "#AAAAAA" }}>Total price</Text>
+                                        <Text style={{ fontSize: windowwidthe * 0.03, fontWeight: 700, color: "#AAAAAA" }}>Total price</Text>
                                     </View>
                                     <View style={{
                                         display: "flex",
@@ -749,7 +775,7 @@ cartIsEmpty
                                         backgroundColor: "#FFF"
                                     }}>
                                         <View style={{ width: "50%", paddingLeft: "2.8%", marginBottom: 4 }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 600, color: "#585656" }}>Total ({totalItems} item) :</Text>
+                                            <Text style={{ fontSize: windowwidthe * 0.045, fontWeight: 600, color: "#585656" }}>Total ({totalItems} item) :</Text>
                                         </View>
                                         <View style={{
                                             display: "flex",
@@ -757,32 +783,32 @@ cartIsEmpty
                                             width: "50%",
                                             justifyContent: "flex-end",
                                             alignItems: "flex-end",
-                                            paddingRight: 12,
+                                            paddingRight: windowwidthe * 0.03,
                                             // paddingLeft: "14%"
                                         }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 800, color: "#000" }}>₹{totalprice}.00</Text>
+                                            <Text style={{ fontSize:  windowwidthe * 0.045, fontWeight: 800, color: "#000" }}>₹{totalprice}.00</Text>
                                         </View>
                                     </View>
-                                    <View style={{ padding: 10 }}>
-                                        <Pressable disabled={totalPrice != 0 ? false : true} style={{ width: "100%" }} onPress={handleProceedToCheckout}>
+                                    <View style={{ padding: "2.5%" }}>
+                                        <TouchableOpacity disabled={totalPrice != 0 ? false : true} style={{ width: "100%" }} onPress={handleProceedToCheckout}>
                                             <Text style={{
                                                 color: "white",
                                                 backgroundColor: totalPrice != 0 ? "#212121" : "#212121B2",
-                                                borderRadius: 10, paddingHorizontal: 20,
-                                                paddingVertical: 15,
-                                                fontSize: 18, fontWeight: 600,
+                                                borderRadius: 10, paddingHorizontal: "5%",
+                                                paddingVertical: "4%",
+                                                fontSize: windowwidthe * 0.044, fontWeight: 600,
                                                 textAlign: "left"
                                             }}>
                                                 Proceed to Checkout
                                             </Text>
                                             <Image style={{
-                                                width: 30, height: 30,
+                                                width: windowwidthe * 0.08, height:geticondeHeighte(),
                                                 position: "absolute",
                                                 top: "20%",
                                                 left: "89%",
                                                 right: 0
                                             }} source={require("../../../assets/arrow(1).png")}></Image>
-                                        </Pressable>
+                                        </TouchableOpacity>
                                     </View>
 
                                 </View>

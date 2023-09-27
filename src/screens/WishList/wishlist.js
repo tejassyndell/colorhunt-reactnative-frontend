@@ -74,7 +74,7 @@ export default function WishList(props) {
           alignItems:"center",
           alignContent:"center",
           paddingLeft:"10%",
-          width: "100%"
+          width:parseInt(windowwidthe) >=800 ? "95%":"100%"
         }}>
           <Text style={{
             textAlign: "center",
