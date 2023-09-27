@@ -7,7 +7,7 @@ export default function MenuBackArrow(props) {
   const windowwidthe = Dimensions.get("window").width;
   const windowHighte = Dimensions.get("window").height;
   const iconewidth = () => {
-    if (parseInt(windowwidthe) >= 800) {
+    if (parseInt(windowwidthe) >= 768) {
       return windowwidthe * 0.06
     }
     else {  return windowwidthe * 0.07 }

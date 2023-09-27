@@ -34,7 +34,7 @@ const AddToCart = (props) => {
                     alignItems:"center",
                     alignContent:"center",
                     paddingLeft:"10%",
-                    width:parseInt(windowwidthe) >=800 ? "95%":"100%"
+                    width:parseInt(windowwidthe) >=768 ? "95%":"100%"
                   }}>
                     <Text style={{
                       textAlign: "center",
@@ -297,7 +297,7 @@ cartIsEmpty
     };
 
     const geticondeHeighte = ()=>{
-        if(parseInt(windowwidthe)>=800){
+        if(parseInt(windowwidthe)>=768){
             console.log("same and above 800");
            return windowheight * 0.05
     
