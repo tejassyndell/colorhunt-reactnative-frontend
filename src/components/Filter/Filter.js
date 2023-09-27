@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
-import { Text, View, StyleSheet, TouchableOpacity, Image, Animated, Easing } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { getCategories } from "../../api/api";
-import { useRef } from "react"
-
 export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     minArticleRate,
-    maxArticleRate, status }) {
+    maxArticleRate }) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
     const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
     const defaultPriceRange = [0, 700];
     const [isSliding, setIsSliding] = useState(false);
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-    const [positionY, setPositionY] = useState(Dimensions.get("window").height);
-
-
     const Screenwidth = Dimensions.get('window').width
     const sliderlenghtinPercent = 60;
     const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
@@ -76,143 +70,105 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         setSelectedCategories(Scategories)
     }, [Scategories])
 
-    useEffect(() => {
-        const slideUpAnimation = () => {
-            Animated.timing(fadeAnim, {
-                toValue: 2,
-                duration: 1000,
-                easing: Easing.ease,
-                useNativeDriver: false,
-            }).start(() => {
-                setPositionY(0); // Set positionY to 0 after animation completes
-            });
-        };
-
-        slideUpAnimation();
-    }, []);
-
-
     return (
-        <View style={[styles.container,
-        {
-            transform: [{ translateY: positionY }],
-        }]}>
-            <Animated.View
-                style={{
-                    opacity: fadeAnim,
-                    width: '100%',
-                    height: 'auto',
-                    //   backgroundColor: 'blue',
-                }}
-            >
-                {status === false ? <View style={status === false ? styles.header : styles.categoryx}>
-                    <Text style={styles.headerText}>Categories</Text>
-                    <TouchableOpacity onPress={closeFilter}>
-                        <Image
-                            source={require("../../../assets/FilterIcon/Close.png")}
-                            style={styles.closeIcon}
-                        />
-                    </TouchableOpacity>
-                </View> : ""}
-                {status === false ? <View style={styles.categoriesContainer}>
-                    {data.map((item) => (
-                        <TouchableOpacity
-                            key={item.Id}
-                            style={[
-                                styles.categoryItem,
-                                selectedCategories.includes(item.Category) && {},
-                            ]}
-                            onPress={() => handleCategorySelect(item.Category)}
-                        >
-                            <Text
-                                style={[
-                                    styles.categoryText,
-                                    selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
-                                ]}
-                            >
-                                {item.Category}
-                            </Text>
-                            <View
-                                style={[
-                                    styles.radioButton,
-                                    selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
-                                ]}
-                            >
-                                {selectedCategories.includes(item.Category) && (
-                                    <View style={styles.radioInnerCircle} />
-                                )}
-                            </View>
-
-                        </TouchableOpacity>
-                    ))}
-                </View> : ""}
-                <View style={styles.container2}>
-                    {status ?
-                        <View style={ styles.headertrue }>
-                            <Text style={styles.headerText}>Price Range </Text>
-                            <TouchableOpacity onPress={closeFilter}>
-                                <Image
-                                    source={require("../../../assets/FilterIcon/Close.png")}
-                                    style={styles.closeIcon}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        :
-                        <Text style={styles.label}>Price Range</Text>}
-
-                    <View style={styles.sliderContainer}>
-                        <Text>{minArticleRate}</Text>
-                        <MultiSlider
-                            values={selectedPriceRange}
-                            sliderLength={sliderLength}
-                            onValuesChange={onValueChange}
-                            onValuesChangeStart={onSlidingStart}
-                            onValuesChangeFinish={onSlidingComplete}
-                            min={minArticleRate}
-                            max={maxArticleRate}
-                            step={10}
-                            allowOverlap={false}
-                            snapped
-                            pressedMarkerStyle={{ backgroundColor: 'black' }}
-                            customMarker={
-                                isSliding ? CustomMarker : () => <View style={styles.tooltipContainer} />
-                            }
-                            thumbTintColor="transparent"
-                            selectedStyle={{
-                                backgroundColor: 'black',
-                            }}
-                            unselectedStyle={{
-                                backgroundColor: 'lightgray',
-                            }}
-                        />
-                        <Text>{maxArticleRate}</Text>
-                    </View>
-                </View>
-                <View style={styles.buttonsContainer}>
+        <View style={styles.container
+        }>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Categories</Text>
+                <TouchableOpacity onPress={closeFilter}>
+                    <Image
+                        source={require("../../../assets/FilterIcon/Close.png")}
+                        style={styles.closeIcon}
+                    />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.categoriesContainer}>
+                {data.map((item) => (
                     <TouchableOpacity
+                        key={item.Id}
                         style={[
-                            styles.resetButton,
-                            {
-                                backgroundColor: selectedCategories.length > 0 ? "black" : "white",
-                                color: selectedCategories.length > 0 ? "white" : "black",
-                            },
+                            styles.categoryItem,
+                            selectedCategories.includes(item.Category) && {},
                         ]}
-                        onPress={resetFilters}
+                        onPress={() => handleCategorySelect(item.Category)}
                     >
                         <Text
-                          style={{
-                            color: selectedCategories.length > 0 ? "white" : "black",
-                            fontWeight: 'bold', fontSize:18 // Add this line for bold text
-                        }}
+                            style={[
+                                styles.categoryText,
+                                selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
+                            ]}
                         >
-                            Reset
+                            {item.Category}
                         </Text>
+                        <View
+                            style={[
+                                styles.radioButton,
+                                selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
+                            ]}
+                        >
+                            {selectedCategories.includes(item.Category) && (
+                                <View style={styles.radioInnerCircle} />
+                            )}
+                        </View>
+
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
-                        <Text style={styles.buttonText}>Apply</Text>
-                    </TouchableOpacity>
+                ))}
+            </View>
+            <View style={styles.container2}>
+                <Text style={styles.label}>Price Range</Text>
+                <View style={styles.sliderContainer}>
+                    <Text>{minArticleRate}</Text>
+                    <MultiSlider
+                        values={selectedPriceRange}
+                        sliderLength={sliderLength}
+                        onValuesChange={onValueChange}
+                        onValuesChangeStart={onSlidingStart}
+                        onValuesChangeFinish={onSlidingComplete}
+                        min={minArticleRate}
+                        max={maxArticleRate}
+                        step={10}
+                        allowOverlap={false}
+                        snapped
+                        pressedMarkerStyle={{ backgroundColor: 'black' }}
+                        customMarker={
+                            isSliding ? CustomMarker : () => <View style={styles.tooltipContainer} />
+                        }
+                        thumbTintColor="transparent"
+                        selectedStyle={{
+                            backgroundColor: 'black',
+                        }}
+                        unselectedStyle={{
+                            backgroundColor: 'lightgray',
+                        }}
+                    />
+                    <Text>{maxArticleRate}</Text>
                 </View>
-            </Animated.View>
+            </View>
+            <View style={styles.buttonsContainer}>
+                <TouchableOpacity
+                    style={[
+                        styles.resetButton,
+                        {
+                            backgroundColor: selectedCategories.length > 0 ? "black" : "white",
+                            color: selectedCategories.length > 0 ? "white" : "black",
+                        },
+                    ]}
+                    onPress={resetFilters}
+                >
+                    <Text
+                        style={{
+                            color: selectedCategories.length > 0 ? "white" : "black",
+                            fontWeight: 'bold', fontSize: 18 // Add this line for bold text
+                        }}
+                    >
+                        Reset
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+                    <Text style={styles.buttonText}>Apply</Text>
+                </TouchableOpacity>
+            </View>
+
         </View>
     );
 }
@@ -233,12 +189,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-    },
-    headertrue:{
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom:15
     },
     headerText: {
         fontSize: 25,
@@ -274,14 +224,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 20, // For Android
     },
-    // categoryx:{
-    //     flex:1,
-    //     display:'flex',
-    //     flexDirection:'row',
-    //     justifyContent:'flex-end',
-    //     alignContent:'flex-end',
-    //     width:'100%',
-    // },
     radioButton: {
         width: 20,
         height: 20,

@@ -344,7 +344,7 @@ export default function AllArticle(props) {
                   borderTopRightRadius: 10,
                 }}
               >
-                <Filter status={false} onFilterChange={handleFilterChange}
+                <Filter  onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate} />
               </View>

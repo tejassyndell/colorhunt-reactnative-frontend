@@ -352,7 +352,7 @@ export default function CategorisWiseArticle(props) {
                   borderTopRightRadius: 10,
                 }}
               >
-                <Filter status={true} onFilterChange={handleFilterChange}
+                <Filter  onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate} />
               </View>
