@@ -1,4 +1,4 @@
-const { View, Text, Image, TouchableOpacity, ActivityIndicator } = require("react-native")
+const { View, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } = require("react-native")
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { Pressable } from 'react-native';
@@ -9,6 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { Calendar } from 'react-native-calendars';
 import { Modal } from 'react-native-paper';
+const { width, height } = Dimensions.get("window");
+
 const OrderHistory = (props) => {
     const { navigation } = props;
     // const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +22,6 @@ const OrderHistory = (props) => {
     const [isCalendarVisible, setCalendarVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState('DD/MM/YYYY');
     const [selectedDateIncompleted, setSelectedDateIncompleted] = useState('DD/MM/YYYY');
-
     const [completedsodata, setcompletedsodata] = useState();
     const toggleCalendar = () => {
         setCalendarVisible(!isCalendarVisible);
@@ -103,30 +104,38 @@ const OrderHistory = (props) => {
             ),
             headerTitle: () => (
                 <View style={{
-                    display: "flex",
                     flexDirection: "row",
-                    width: "100%", marginLeft: 14
+                    alignItems: "center",
+                    alignContent: "center",
+                    paddingLeft: "10%",
+                    width: parseInt(width) >= 768 ? "95%" : "100%"
                 }}>
                     <Text style={{
                         textAlign: "center",
-                        fontSize: 25, fontWeight: 700, width: "100%"
+                        fontSize: width * 0.05,
+                        fontWeight: "700",
+                        width: "100%",
                     }}>Orders History</Text>
+
                 </View>
             ),
             headerRight: () => <View />,
+            headerStyle: {
+                height: width >= 768 ? 120 : 90, // Increase the header height here
+            },
 
         });
     }, []);
 
     const getSonumber = async () => {
-        let data = await AsyncStorage.getItem("UserData");
-        data = await JSON.parse(data);
-        await getsonumber({ PartyId: data[0].Id }).then((res) => {
-            setSoNumberData(res.data)
-            setOldDateOfso(res.data)
-            setcompletedsodata(res.data);
-            setIsLoading(false);
-        })
+        // let data = await AsyncStorage.getItem("UserData");
+        // data = await JSON.parse(data);
+        // await getsonumber({ PartyId: data[0].Id }).then((res) => {
+        //     setSoNumberData(res.data)
+        //     setOldDateOfso(res.data)
+        //     setcompletedsodata(res.data);
+        setIsLoading(false);
+        // })
     }
     useEffect(() => {
         getSonumber();
@@ -153,28 +162,28 @@ const OrderHistory = (props) => {
                     <View style={styles.first_cnt}>
                         <View style={styles.pendin_complete_cnt}>
                             <View style={styles.pc_btn_cnt}>
-                                <View style={{ width: "49%" }}>
-                                    <Pressable style={toggle ? styles.pending_btn : styles.complete_btn} onPress={() => { setToggle(!toggle); setOrderstatus(true) }}>
-                                        <Text style={toggle ? styles.pending_text : styles.complete_text}>Pending</Text>
-                                    </Pressable>
-                                </View>
-                                <View style={{ width: "49%" }}>
-                                    <Pressable style={toggle ? styles.complete_btn : styles.pending_btn} onPress={() => { setToggle(!toggle); setOrderstatus(false) }}>
-                                        <Text style={toggle ? styles.complete_text : styles.pending_text}>Completed</Text>
-                                    </Pressable>
-                                </View>
+                                {/* <View style={{ width: "50%" }}> */}
+                                <Pressable style={toggle ? styles.pending_btn : styles.complete_btn} onPress={() => { setToggle(!toggle); setOrderstatus(true) }}>
+                                    <Text style={toggle ? styles.pending_text : styles.complete_text}>Pending</Text>
+                                </Pressable>
+                                {/* </View> */}
+                                {/* <View style={{ width: "50%"  }}> */}
+                                <Pressable style={toggle ? styles.complete_btn : styles.pending_btn} onPress={() => { setToggle(!toggle); setOrderstatus(false) }}>
+                                    <Text style={toggle ? styles.complete_text : styles.pending_text}>Completed</Text>
+                                </Pressable>
+                                {/* </View> */}
                             </View>
                         </View>
                         <View style={styles.calender_cnt}>
-                            <View style={{ padding: 10, paddingRight: 32 }}>
-                                <TouchableOpacity onPress={() => toggleCalendar()}>
-                                    <Image style={{ height: 20, width: 20 }} source={require("../../../assets/calaender.png")}></Image>
+                            <View style={{ padding: "2%", paddingRight: "4%" }}>
+                                <TouchableOpacity onPress={() => toggleCalendar()} style={{ height: height * 0.035, width: width * 0.035 }}>
+                                    <Image style={{ height: "100%", width: "100%", resizeMode: "contain" }} source={require("../../../assets/calaender.png")}></Image>
                                 </TouchableOpacity>
                             </View>
 
                         </View>
                     </View>
-                    {orderstatus ?
+                    {/* {orderstatus ?
                         <View style={orderstyles.order_cnt}>
                             <ScrollView nestedScrollEnabled={true}>
                                 {sonumberdata ? sonumberdata.map((item) =>
@@ -282,7 +291,7 @@ const OrderHistory = (props) => {
                             </ScrollView>
 
                         </View>
-                    }
+                    } */}
 
 
                     <Modal
@@ -297,12 +306,14 @@ const OrderHistory = (props) => {
                         <View >
                             <View style={styles.calendarModal}>
                                 <View style={{ width: "80%", height: 48.752, gap: 12, display: "flex", flexDirection: "row", paddingVertical: 13, paddingLeft: 20 }}>
-                                    <Image style={{ height: 20, width: 20, }} source={require("../../../assets/gray_calender.png")}></Image>
+                                    <View style={{ height: 25, width: 25, }}>
+                                    <Image style={{ height: "100%", width: "100%", resizeMode:"contain"}} source={require("../../../assets/gray_calender.png")}></Image>
+                                    </View>
                                     <Text style={{ fontSize: 18, fontWeight: 400, color: "#BBB" }}>{orderstatus ? selectedDate : selectedDateIncompleted}</Text>
                                 </View>
-                                <View style={{ width: "20%", justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ width: "20%", justifyContent: "center", alignItems: 'flex-end', paddingEnd: 10 }}>
                                     <TouchableOpacity onPress={() => { toggleCalendar(); setSelectedDate("DD/MM/YYYY"); setSoNumberData(oldDataOfso); }}>
-                                        <Image style={{ height: 24, width: 24 }} source={require("../../../assets/grayclose.png")}></Image>
+                                        <Image style={{ height: width >= 768 ? 35 : 24, width: width >= 768 ? 35 : 24, }} source={require("../../../assets/grayclose.png")}></Image>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -312,9 +323,9 @@ const OrderHistory = (props) => {
                                 style={{ borderRadius: 5.477, borderWidth: 0.685, borderStyle: "solid", borderColor: "#DDD" }}
                             />
                             <View style={styles.calendarModal2}>
-                                <View style={{ width: 100, justifyContent: "flex-end" }}>
-                                    <Pressable style={{ padding: 10, backgroundColor: "black", borderRadius: 3.423 }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
-                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: 16 }}>Next</Text>
+                                <View style={{ width: '100%', alignItems: "flex-end" }}>
+                                    <Pressable style={{ width:200, backgroundColor: "black", borderRadius: 3.423 , height:50,justifyContent:"center" }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
+                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: width >= 768 ? 25 : 16 }}>Next</Text>
                                     </Pressable>
                                 </View>
                             </View>
@@ -369,47 +380,55 @@ const styles = StyleSheet.create({
     },
     first_cnt: {
         width: "100%",
-        height: 100,
-        backgroundColor: "#FFF"
+        height: height * 0.13,
+        backgroundColor: "#FFF",
+        padding: "5%"
     },
     pendin_complete_cnt: {
-        width: "89%",
-        height: 50,
+        width: "100%",
+        height: width>=768 ?height * 0.075:height * 0.055,
         backgroundColor: "#212121",
+        paddingVertical: "2%",
+        paddingHorizontal: "3%",
         borderRadius: 5,
-        margin: 20,
+        // margin: 20,
         marginBottom: 0
     },
     pc_btn_cnt: {
         display: "flex",
         flexDirection: "row",
-        paddingVertical: 8,
-        paddingHorizontal: 10,
-        width: "100%",
-        gap: 6
+        //   backgroundColor: "blue",
+        // paddingVertical: "2.5%",
+        // paddingHorizontal: "3.5%",
+        // width: "100%",
+        gap: 6,
+        // justifyContent: "center",
     },
     pending_btn: {
+        width: "50%",
         backgroundColor: "#FFF",
         borderRadius: 5,
-        paddingTop: 3,
-        paddingBottom: 5
+        // paddingTop: "1.5%",
+        // paddingBottom: "2.5%"
     },
     pending_text: {
-        fontSize: 20,
+        fontSize: width * 0.05,
         fontWeight: 700,
         textAlign: "center"
     },
     complete_btn: {
+        width: "50%",
         backgroundColor: "#212121",
         borderRadius: 5,
-        paddingTop: 3,
-        paddingBottom: 5
+        // paddingTop: "1.5%",
+        // paddingBottom: "2.5%"
     },
     complete_text: {
         color: "#FFF",
-        fontSize: 20,
+        fontSize: width * 0.05,
         fontWeight: 700,
-        textAlign: "center"
+        textAlign: "center",
+        paddingBottom: "2%"
     },
     calender_cnt: {
         backgroundColor: "#FFF",

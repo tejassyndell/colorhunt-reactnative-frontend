@@ -15,7 +15,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     const [isSliding, setIsSliding] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
-
+    console.log( "{}{}{}{}{}{}{}{}{}");
 
     const Screenwidth = Dimensions.get('window').width
     const sliderlenghtinPercent = 60;
@@ -148,7 +148,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                 </View> : ""}
                 <View style={styles.container2}>
                     {status ?
-                        <View style={ styles.headertrue }>
+                        <View style={styles.headertrue}>
                             <Text style={styles.headerText}>Price Range </Text>
                             <TouchableOpacity onPress={closeFilter}>
                                 <Image
@@ -200,10 +200,10 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         onPress={resetFilters}
                     >
                         <Text
-                          style={{
-                            color: selectedCategories.length > 0 ? "white" : "black",
-                            fontWeight: 'bold', fontSize:18 // Add this line for bold text
-                        }}
+                            style={{
+                                color: selectedCategories.length > 0 ? "white" : "black",
+                                fontWeight: 'bold', fontSize: 18 // Add this line for bold text
+                            }}
                         >
                             Reset
                         </Text>
@@ -234,11 +234,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
     },
-    headertrue:{
+    headertrue: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom:15
+        marginBottom: 15
     },
     headerText: {
         fontSize: 25,
