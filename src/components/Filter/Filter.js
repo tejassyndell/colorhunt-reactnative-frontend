@@ -14,6 +14,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     const Screenwidth = Dimensions.get('window').width
     const sliderlenghtinPercent = 60;
     const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
+    console.log(Scategories,onFilterChange,onCloseFilter,minArticleRate,maxArticleRate)
 
     const getCategoriesname = async () => {
         try {

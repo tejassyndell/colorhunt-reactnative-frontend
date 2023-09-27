@@ -115,25 +115,30 @@ export default function AllArticle(props) {
 
   useEffect(() => {
     filterData();
-  }, [searchText, nameDatas])
+  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
+
 
   const filterData = () => {
-    if (searchText === '') {
-      setFinalData(nameDatas)
+    if (searchText === '' && selectedCategories.length === 0 && selectedPriceRange.length === 0) {
+      setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
       const filtered = nameDatas.filter((item) =>
-        item.ArticleNumber.toString().includes(searchText.toString()) ||
-        item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.ArticleRate.toString().includes(searchText.toString()) ||
-        item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.Subcategory.toLowerCase().includes(searchText.toLowerCase()),
-      )
-      console.log(filtered.length, "length")
-      setFinalData(filtered)
-      console.log(finalData.length, "FD")
+        (searchText === '' || // Check if searchText is empty or matches any criteria
+          item.ArticleNumber.toString().includes(searchText.toString()) ||
+          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.ArticleRate.toString().includes(searchText.toString()) ||
+          item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+          item.Subcategory.toLowerCase().includes(searchText.toLowerCase())) &&
+        (selectedCategories.length === 0 || selectedCategories.includes(item.Category)) &&
+        (selectedPriceRange.length === 0 ||
+          (item.ArticleRate >= selectedPriceRange[0] && item.ArticleRate <= selectedPriceRange[1]))
+      );
+
+      setFinalData(filtered);
       setNoArticlesFound(filtered.length === 0);
     }
   }
+
 
   const renderItem = ({ item }) => (
     <View style={{
@@ -191,13 +196,14 @@ export default function AllArticle(props) {
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ 
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{
           width: "90%",
-           height: 180,
-           flex:1,resizeMode:'contain',
-            borderRadius: 10,
-             zIndex: 1,
-              marginTop: 10 }} />
+          height: 180,
+          flex: 1, resizeMode: 'contain',
+          borderRadius: 10,
+          zIndex: 1,
+          marginTop: 10
+        }} />
       </View>
       <View style={{ width: "100%", marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 0 }}>
@@ -218,29 +224,23 @@ export default function AllArticle(props) {
     setSelectedPriceRange(priceRange);
     setSearchText(""); // Reset the search text
 
-    // Filter based on selected categories and price range
-    const filteredData = nameDatas.filter((item) =>
-      selectedCategories.includes(item.Category) &&
-      item.ArticleRate >= selectedPriceRange[0] &&
-      item.ArticleRate <= selectedPriceRange[1]
-    );
-    setFinalData(filteredData);
-    console.log("handle Filter chnage", finalData.length)
-    setNoArticlesFound(filteredData.length === 0);
+    // Trigger the filter function
+    filterData();
   };
+
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev)
   };
 
   useEffect(() => {
-    console.log(selectedCategories, "sca")
-    console.log(selectedPriceRange, "spa")
-    const abc = nameDatas.filter((item) => (!selectedCategories.length || selectedCategories.includes(item.Category)) &&
+    const abc = nameDatas.filter((item) =>
+      (!selectedCategories.length || selectedCategories.includes(item.Category)) &&
       item.ArticleRate >= selectedPriceRange[0] &&
-      item.ArticleRate <= selectedPriceRange[1]);
-    setFinalData(abc)
-    console.log("useeffect", finalData.length)
-  }, [selectedCategories], [selectedPriceRange])
+      item.ArticleRate <= selectedPriceRange[1]
+    );
+    setFinalData(abc);
+  }, [selectedCategories, selectedPriceRange]);
+
   useEffect(() => {
     const minRate = finalData.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
@@ -301,11 +301,13 @@ export default function AllArticle(props) {
               <FlatList
                 style={{ backgroundColor: "#FFF" }}
                 data={finalData}
-                keyExtractor={(item) => item.Id}
+                keyExtractor={(item) => item.Id.toString()}
                 renderItem={renderItem}
                 numColumns={2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 0 }}
+                initialNumToRender={10}
+                windowSize={10}
               />
             )}
 
@@ -344,7 +346,7 @@ export default function AllArticle(props) {
                   borderTopRightRadius: 10,
                 }}
               >
-                <Filter  onFilterChange={handleFilterChange}
+                <Filter onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate} />
               </View>
