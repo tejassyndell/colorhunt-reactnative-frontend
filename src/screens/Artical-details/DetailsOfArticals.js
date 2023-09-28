@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Pressable, ScrollView, Modal } from "react-native"
+import { View, Text, Image, TouchableHighlight, TouchableOpacity, Pressable, ScrollView, Modal,Dimensions } from "react-native"
 import { ArticleDetails, addto_cart, findfromthecart, updateCartArticale } from '../../api/api'
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
@@ -275,11 +275,11 @@ const DetailsOfArticals = (props) => {
           <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF" }}>
+        <View style={{ backgroundColor: "#FFF",flex:1 }}>
           <ScrollView nestedScrollEnabled={true}>
-            <View style={{ zIndex: 1 }}>
+            <View style={{ zIndex: 1,flex:1 }}>
               <View
-                style={{ backgroundColor: "#FFF", width: "100%", height: 400 }}
+                style={{  width: "100%", height: viewportWidth >= 720 ? '50%' : 400,flex:1 }}
               >
                 <Carousel
                   data={articlePhotos}
@@ -293,7 +293,7 @@ const DetailsOfArticals = (props) => {
               </View>
             </View>
 
-            <View style={{ zIndex: 2, position: 'absolute', top: 340, left: 0, right: 0, bottom: 0 }}>
+            <View style={{ zIndex: 2, position: 'absolute', top: viewportWidth >= 720 ? '57%' : 340, left: 0, right: 0, bottom: 0 }}>
               <Image
                 style={{ width: "100%", height: 74 }}
                 source={require("../../../assets/Rectangle_18898.png")}
@@ -429,41 +429,7 @@ const DetailsOfArticals = (props) => {
                       </View>
                     </View>
                   </View>
-                  <View style={styles.total_price_container}>
-                    <View style={styles.main_total_div}>
-                      <Text style={{ fontSize: 10, fontWeight: 400 }}>
-                        Total Price
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 600,
-                          color: "black",
-                        }}
-                      >
-                        {formatPrice(totalPrice)}
-                      </Text>
-                    </View>
-                    <View style={styles.addto_card_container}>
-                      <Pressable
-                        style={[
-                          styles.addto_cart_btn,
-                          {
-                            backgroundColor:
-                              totalQuantity === 0 ? "gray" : "black",
-                            opacity: totalQuantity === 0 ? 0.5 : 1,
-                          },
-                        ]}
-                        onPress={() => addtocart(197, id)}
-                        disabled={totalQuantity === 0}
-                      >
-                        <View style={{ flexDirection: 'row', justifyContent: "center", alignContent: "center", alignItems: 'center', width: '100%', paddingVertical: 3 }}>
-                          <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 0, marginLeft: 10 }} />
-                          <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '70%' }}>Add to cart</Text>
-                        </View>
-                      </Pressable>
-                    </View>
-                  </View>
+                 
                 </View>
               </View>
             </View>
@@ -589,6 +555,47 @@ const DetailsOfArticals = (props) => {
           </TouchableOpacity>
         </View>
       </Modal>
+      <View style={{ position: "absolute", flexDirection:"row",padding:8,paddingHorizontal:14,bottom: 0, flex: 1, backgroundColor: "#FFF" }}>
+        <View style={{ flex: 1 ,justifyContent:"center"}}>
+          <View>
+            <Text style={{ fontSize: 10, fontWeight: 400 }}>
+              Total Price
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: "black",
+              }}
+            >
+              {formatPrice(totalPrice)}
+            </Text>
+          </View>
+        </View>
+        <View style={{ flex: 1 }}>
+          <View>
+            <TouchableOpacity
+              style={[
+                styles.addto_cart_btn,
+                {
+                  backgroundColor:
+                    totalQuantity === 0 ? "gray" : "black",
+                  opacity: totalQuantity === 0 ? 0.5 : 1,
+                },
+              ]}
+              onPress={() => addtocart(197, id)}
+              disabled={totalQuantity === 0}
+            >
+              <View style={{ flexDirection: 'row', justifyContent: "center", alignContent: "center", alignItems: 'center', width: '100%', paddingVertical: 3 }}>
+                <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 0, marginLeft: 10 }} />
+                <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '70%' }}>Add to cart</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     </>
   );
 };

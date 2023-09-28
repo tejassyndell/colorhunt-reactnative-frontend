@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import { Text, View, Image, Dimensions, FlatList, TouchableOpacity } from "react-native";
 import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles";
 import { useRoute } from "@react-navigation/native";
@@ -24,6 +24,9 @@ export default function CategorisWiseArticle(props) {
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
+
+const { width, height } = Dimensions.get("window");
+
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
   const category = (item1.Category);
@@ -147,7 +150,7 @@ export default function CategorisWiseArticle(props) {
     <View style={{
       alignItems: "center",
       height: 'auto',
-      width: "44.8%",
+      width: width >= 720 ? '22%' : '44.8%',
       margin: 10,
       borderRadius: 10,
       borderColor: "gray",
@@ -266,24 +269,29 @@ export default function CategorisWiseArticle(props) {
       ) : (
         <View style={{ width: '100%', height: '100%', backgroundColor: "#FFF" }}>
           <View
-            style={{ flexDirection: "row", backgroundColor: "#FFF", alignItems: "center", width: "89%", paddingStart: 3, paddingTop: 10 }}
+            style={{ flexDirection: "row", backgroundColor: "#FFF", alignItems: "center", width: "100%", paddingStart: 3, paddingTop: 10 }}
           >
             <SearchBar searchPhrase={searchText}
               setSearchPhrase={setSearchText} />
-            <TouchableOpacity onPress={openFilter}>
+            <TouchableOpacity
+             style={{ width: "10%", alignItems: "flex-end",paddingEnd:0}}
+            onPress={openFilter}>
               <Image
                 source={require("../../../assets/filetr_icone.png")}
-                style={{ width: 40, height: 40, borderRadius: 10 }}
+                style={{ 
+                  width: width >= 720 ? 65 : 40, // Adjust the width for tablets
+                  height: width >= 720 ? 65 : 40,
+                  borderRadius: 10 }}
               />
             </TouchableOpacity>
           </View>
           <View>
             <Text
               style={{
-                fontSize: 15,
+                fontSize: width >= 720 ? 25:15,
                 fontWeight: 700,
                 paddingLeft: 15,
-                height: 20,
+                height: width >= 720 ? 30:20,
                 alignItems: "center",
                 marginTop: 10
               }}
@@ -312,7 +320,7 @@ export default function CategorisWiseArticle(props) {
               data={finalData}
               keyExtractor={(item) => item.Id}
               renderItem={renderItem}
-              numColumns={2}
+              numColumns={width >= 720 ? 4 : 2}
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: 0 }}
             />

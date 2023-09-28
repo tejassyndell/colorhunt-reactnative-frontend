@@ -2,7 +2,7 @@ const { View, Text, Image, TouchableOpacity, ActivityIndicator } = require("reac
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { Pressable } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { StyleSheet,Dimensions } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { getsonumber } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,6 +20,7 @@ const OrderHistory = (props) => {
     const [isCalendarVisible, setCalendarVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState('DD/MM/YYYY');
     const [selectedDateIncompleted, setSelectedDateIncompleted] = useState('DD/MM/YYYY');
+  const { width, height } = Dimensions.get("window");
 
     const [completedsodata, setcompletedsodata] = useState();
     const toggleCalendar = () => {
@@ -119,14 +120,14 @@ const OrderHistory = (props) => {
     }, []);
 
     const getSonumber = async () => {
-        let data = await AsyncStorage.getItem("UserData");
-        data = await JSON.parse(data);
-        await getsonumber({ PartyId: data[0].Id }).then((res) => {
-            setSoNumberData(res.data)
-            setOldDateOfso(res.data)
-            setcompletedsodata(res.data);
+        // let data = await AsyncStorage.getItem("UserData");
+        // data = await JSON.parse(data);
+        // await getsonumber({ PartyId: data[0].Id }).then((res) => {
+        //     setSoNumberData(res.data)
+        //     setOldDateOfso(res.data)
+        //     setcompletedsodata(res.data);
             setIsLoading(false);
-        })
+        // })
     }
     useEffect(() => {
         getSonumber();
@@ -300,9 +301,9 @@ const OrderHistory = (props) => {
                                     <Image style={{ height: 20, width: 20, }} source={require("../../../assets/gray_calender.png")}></Image>
                                     <Text style={{ fontSize: 18, fontWeight: 400, color: "#BBB" }}>{orderstatus ? selectedDate : selectedDateIncompleted}</Text>
                                 </View>
-                                <View style={{ width: "20%", justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ width: "20%", justifyContent: "center", alignItems:'flex-end',paddingEnd:10}}>
                                     <TouchableOpacity onPress={() => { toggleCalendar(); setSelectedDate("DD/MM/YYYY"); setSoNumberData(oldDataOfso); }}>
-                                        <Image style={{ height: 24, width: 24 }} source={require("../../../assets/grayclose.png")}></Image>
+                                        <Image style={{ height: width >= 720 ? 35 : 24, width: width >= 720 ? 35 : 24, }} source={require("../../../assets/grayclose.png")}></Image>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -313,8 +314,8 @@ const OrderHistory = (props) => {
                             />
                             <View style={styles.calendarModal2}>
                                 <View style={{ width: 100, justifyContent: "flex-end" }}>
-                                    <Pressable style={{ padding: 10, backgroundColor: "black", borderRadius: 3.423 }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
-                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: 16 }}>Next</Text>
+                                    <Pressable style={{  paddingVertical: width >= 720 ? 20 : 10,paddingHorizontal:width >= 720 ? 50 : 10,backgroundColor: "black", borderRadius: 3.423 }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
+                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: width >= 720 ? 25 : 16 }}>Next</Text>
                                     </Pressable>
                                 </View>
                             </View>
@@ -344,6 +345,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 5.477,
         borderWidth: 0.685,
+        justifyContent:'space-around',
         borderStyle: "solid",
         borderColor: "#DDD"
     },
