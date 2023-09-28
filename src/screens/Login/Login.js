@@ -4,17 +4,22 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet, Image, Dimensions, ImageBackground
+  StyleSheet,
+  Image,
+  Dimensions,
+  ImageBackground,
 } from "react-native";
 import { phoneNumberValidation } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
-import { RFPercentage,RFValue } from "react-native-responsive-fontsize";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.4;
 
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const Login = (props) => {
   const { navigation } = props;
@@ -141,7 +146,8 @@ const Login = (props) => {
       <View style={styles.imagebox}>
         <ImageBackground
           source={require("../../../assets/Login/LoginBackground.png")}
-          style={styles.backgroundImage1} resizeMode="stretch"
+          style={styles.backgroundImage1}
+          resizeMode="stretch"
         >
           <View style={styles.loginLogoContainer}>
             <Image
@@ -195,7 +201,10 @@ const Login = (props) => {
             </View>
           )}
           <View style={{ width: "100%", height: 100 }}>
-            <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleNextOrVerify}
+            >
               <Text style={styles.buttonText}>{buttonLabel}</Text>
             </TouchableOpacity>
           </View>
@@ -215,79 +224,80 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: RFValue(25),
+    fontSize: windowWidth * 0.07,
     // fontSize:RFPercentage(5),
     fontWeight: 700,
-    marginBottom: '2%',
+    marginBottom: "2%",
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
-    fontSize: RFValue(20),
+    fontSize: windowWidth * 0.04,
     // fontSize:RFPercentage(5),
     fontWeight: 700,
-    marginBottom: '10%',
+    marginBottom: 80,
   },
   input: {
     flex: 1,
-    height: "100%",
-    fontSize: 22,
+    fontSize: width >= 720 ? 35 : 20,
+    height: width >= 720 ? 80 : 50,
     paddingLeft: 5,
     backgroundColor: "white",
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
-    color: ' rgba(0, 0, 0, 0.30)'
+
+    color: " rgba(0, 0, 0, 0.30)",
   },
   otpContainer: {
     flexDirection: "row",
+    width: "50%",
+    marginBottom: "10%",
     justifyContent: "space-between",
-    width: "60%",
-    marginBottom: '10%',
   },
   otpInput: {
-    width: 47,
-    height: 50,
+    width: windowWidth * 0.1,
+    justifyContent: "space-between",
+    height: windowHeight * 0.07,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",
-    fontSize: 23,
+    fontSize: width >= 720 ? 40 : 23,
     borderRadius: 7,
     textAlign: "center",
-
   },
   button: {
     backgroundColor: "#212121",
-    width: 148,
-    height: 50,
+    width: width >= 720 ? 220 : 148,
+    height: width >= 720 ? 80 : 50,
     borderRadius: 10,
-    position: 'absolute',
+    position: "absolute",
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     bottom: 0,
-    right: 0
+    right: 0,
   },
   buttonText: {
     color: "white",
-    fontSize: 23,
+    fontSize: width >= 720 ? 40 : 23,
     fontWeight: 700,
     textAlign: "center",
   },
   phoneIcon: {
-    height: 20,
-    width: 20,
+    height: width >= 720 ? 35 : 20,
+    width: width >= 720 ? 35 : 20,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: '90%',
-    height: 50,
+    width: "90%",
+    height: width >= 720 ? 80 : 10,
     borderColor: "gray",
     borderRadius: 7,
-    marginBottom: '5%',
+    marginBottom: windowHeight * 0.046,
     justifyContent: "center",
   },
   phoneIconContainer: {
-    height: 50,
-    width: 50,
+    height: width >= 720 ? 80 : 50,
+    width: width >= 720 ? 80 : 50,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFF",
@@ -301,27 +311,26 @@ const styles = StyleSheet.create({
   },
   backgroundImage1: {
     flex: 1,
-    resizeMode: 'stretch',
-    width: '100%'
+    resizeMode: "stretch",
+    width: "100%",
   },
   loginContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loginLogoContainer: {
-    position: 'absolute',
-    top: '40%',
-    left: '50%',
+    position: "absolute",
+    top: "40%",
+    left: "50%",
     transform: [{ translateX: -logoSize / 2 }, { translateY: -logoSize / 2 }],
   },
   loginLogo: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   imagebox: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
-
 
 export default Login;

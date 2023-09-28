@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, Text, TouchableOpacity } from "react-native";
+import { View, Image, Text, TouchableOpacity, Dimensions } from "react-native";
 import PropTypes from "prop-types";
 import styles from "./styles";
 import MenuButton from "../../components/MenuButton/MenuButton";
@@ -33,6 +33,7 @@ export default function DrawerContainer(props) {
       console.error("Error clearing AsyncStorage:", error);
     }
   };
+  const { width, height } = Dimensions.get("window");
 
   return (
     <View style={styles.content}>
@@ -40,7 +41,8 @@ export default function DrawerContainer(props) {
         <View
           style={{
             width: "100%",
-            height: 50,
+            // backgroundColor: "red",
+            height: width >= 720 ? 150 : 50,
             marginTop: 20,
             marginBottom: 40,
             paddingRight: 20,
@@ -72,22 +74,28 @@ export default function DrawerContainer(props) {
               style={{
                 color: "#FFF",
                 left: 10,
-                fontSize: 16,
+                fontSize: width >= 720 ? 25 : 17,
                 height: 50,
-                paddingTop: 10,
+                paddingTop: width >= 720 ? 10 : 20,
                 fontWeight: 700,
+                width: "75%",
               }}
             >
               {name ? name : "Guest"}
             </Text>
-          </View>
-          <View style={{ marginTop: 12 }}>
-            <MenuButton
-              source={require("../../../assets/sidebaricons/menu.png")}
+            <TouchableOpacity
               onPress={() => {
                 navigation.closeDrawer();
               }}
-            />
+            >
+              <Image
+                source={require("../../../assets/sidebaricons/menu.png")}
+                style={{
+                  width: width >= 720 ? 30 : 20,
+                  height: width >= 720 ? 30 : 20,
+                }}
+              />
+            </TouchableOpacity>
           </View>
         </View>
 

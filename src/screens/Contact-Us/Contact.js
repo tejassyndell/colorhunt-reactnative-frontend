@@ -10,7 +10,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  ScrollView, // Import ScrollView
+  ScrollView,
 } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { SendMail } from "../../api/api";
@@ -151,134 +151,140 @@ export default function Contact(props) {
       fontWeight: 700,
     },
   });
+  const windowWidth = Dimensions.get("window").width;
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }} // Ensure content takes up the entire screen
-      keyboardShouldPersistTaps="handled" // Handle taps outside of TextInput
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View
-        style={{
-          alignItems: "center",
-          borderTopColor: "#828282",
-          borderTopWidth: 1,
-        }}
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
       >
-        <ResponsiveImage
-          source={require("../../../assets/ContactPagePNG/contact.png")}
-          initWidth={imageWidth.toString()}
-          initHeight={imageHeight.toString()}
-          style={{ marginTop: 15 }}
-        />
-      </View>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <View>
+        <View
+          style={{
+            alignItems: "center",
+            borderTopColor: "#828282",
+            borderTopWidth: 1,
+          }}
+        >
+          <ResponsiveImage
+            source={require("../../../assets/ContactPagePNG/contact.png")}
+            initWidth={imageWidth.toString()}
+            initHeight={imageHeight.toString()}
+            style={{ marginTop: 15 }}
+          />
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
           <View>
-            <View style={{ marginBottom: 5, height: 60 }}>
-              <TextInput
-                placeholder="User Name"
-                value={username}
-                onChangeText={setusername}
+            <View>
+              <View style={{ marginBottom: 5, height: 60 }}>
+                <TextInput
+                  placeholder="User Name"
+                  value={username}
+                  onChangeText={setusername}
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    padding: 10,
+                    margin: 5,
+                    width: inputWidth,
+                    height: inputHeight,
+                  }}
+                />
+                {showValidationErrors && !username && (
+                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                    This field is required
+                  </Text>
+                )}
+              </View>
+              <View style={{ marginBottom: 5, height: 60 }}>
+                <TextInput
+                  placeholder="Email"
+                  value={email}
+                  onChangeText={setEmail}
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    padding: 10,
+                    margin: 5,
+                    width: inputWidth,
+                    height: inputHeight,
+                  }}
+                />
+                {showValidationErrors && !email && (
+                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                    This field is required
+                  </Text>
+                )}
+              </View>
+              <View style={{ marginBottom: 5, height: 60 }}>
+                <TextInput
+                  placeholder="Subject"
+                  value={subject}
+                  onChangeText={setSubject}
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    padding: 10,
+                    margin: 5,
+                    width: inputWidth,
+                    height: inputHeight,
+                  }}
+                />
+                {showValidationErrors && !subject && (
+                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                    This field is required
+                  </Text>
+                )}
+              </View>
+              <View style={{ marginBottom: 5, height: multilineHeight }}>
+                <TextInput
+                  placeholder="Message"
+                  editable
+                  multiline
+                  numberOfLines={numberOfLines}
+                  maxLength={100}
+                  value={message}
+                  onChangeText={setMessage}
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    paddingLeft: 8,
+                    paddingBottom: 70,
+                    margin: 5,
+                    width: inputWidth,
+                    height: multilineHeight,
+                  }}
+                />
+                {showValidationErrors && !message && (
+                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                    This field is required
+                  </Text>
+                )}
+              </View>
+              <View
                 style={{
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  padding: 10,
-                  margin: 5,
-                  width: inputWidth,
-                  height: inputHeight,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 30,
                 }}
-              />
-              {showValidationErrors && !username && (
-                <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                  This field is required
-                </Text>
-              )}
-            </View>
-            <View style={{ marginBottom: 5, height: 60 }}>
-              <TextInput
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  padding: 10,
-                  margin: 5,
-                  width: inputWidth,
-                  height: inputHeight,
-                }}
-              />
-              {showValidationErrors && !email && (
-                <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                  This field is required
-                </Text>
-              )}
-            </View>
-            <View style={{ marginBottom: 5, height: 60 }}>
-              <TextInput
-                placeholder="Subject"
-                value={subject}
-                onChangeText={setSubject}
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  padding: 10,
-                  margin: 5,
-                  width: inputWidth,
-                  height: inputHeight,
-                }}
-              />
-              {showValidationErrors && !subject && (
-                <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                  This field is required
-                </Text>
-              )}
-            </View>
-            <View style={{ marginBottom: 5, height: multilineHeight }}>
-              <TextInput
-                placeholder="Message"
-                editable
-                multiline
-                numberOfLines={numberOfLines}
-                maxLength={100}
-                value={message}
-                onChangeText={setMessage}
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  paddingLeft: 8,
-                  paddingBottom: 70,
-                  margin: 5,
-                  width: inputWidth,
-                  height: multilineHeight,
-                }}
-              />
-              {showValidationErrors && !message && (
-                <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                  This field is required
-                </Text>
-              )}
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={handleSubmit}
               >
-                <Text style={styles.submitText}>Submit</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.submitText}>Submit</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
         <ButtomNavigation navigation={navigation} page="contactus" />
       </View>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

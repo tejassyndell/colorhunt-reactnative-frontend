@@ -38,12 +38,14 @@ const ButtomNavigation = (props) => {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
+  const { width, height } = Dimensions.get("window");
+
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View
         style={{
           width: "96%",
-          height: windowHeight * 0.09,
+          height: width >= 720 ? 120 : 70,
           backgroundColor: "#212121",
           flexDirection: "row",
           marginLeft: "2%",
@@ -68,7 +70,10 @@ const ButtomNavigation = (props) => {
                 ? require("../../../assets/AppFooterIcons/Home_down_nav_icone.png")
                 : require("../../../assets/deselect_home.png")
             }
-            style={{ width: windowWidth * 0.08, height: windowHeight * 0.06 }}
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -86,7 +91,10 @@ const ButtomNavigation = (props) => {
                 ? require("../../../assets/on_orderhistory.png")
                 : require("../../../assets/AppFooterIcons/order_down_nav_icone.png")
             }
-            style={{ width: windowWidth * 0.08, height: windowHeight * 0.06 }}
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -100,7 +108,10 @@ const ButtomNavigation = (props) => {
         >
           <Image
             source={require("../../../assets/AppFooterIcons/cart_down_nav_icone.png")}
-            style={{ width: windowWidth * 0.08, height: windowHeight * 0.06 }}
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -114,7 +125,10 @@ const ButtomNavigation = (props) => {
         >
           <Image
             source={require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")}
-            style={{ width: windowWidth * 0.08, height: windowHeight * 0.06 }}
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -132,7 +146,10 @@ const ButtomNavigation = (props) => {
                 ? require("../../../assets/select_profile.png")
                 : require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")
             }
-            style={{ width: windowWidth * 0.08, height: windowHeight * 0.06 }}
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
           />
         </TouchableOpacity>
       </View>

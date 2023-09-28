@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import Swiper from "react-native-swiper";
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+const { width, height } = Dimensions.get("window");
 
 const SliderScreen = (props) => {
   const { navigation } = props;
@@ -21,6 +20,10 @@ const SliderScreen = (props) => {
     navigation.navigate("Home");
   };
 
+  // Calculate the image width and height based on screen width
+  const imageWidth = width >= 720 ? 280 : 130;
+  const imageHeight = height * 0.2; // 20% of screen height
+
   return (
     <View style={styles.container}>
       <Swiper
@@ -28,7 +31,6 @@ const SliderScreen = (props) => {
         showsPagination={true}
         dotStyle={styles.paginationDot}
         activeDotStyle={styles.activePaginationDot}
-        autoplay={{ delay: 2000 }}
       >
         <ImageBackground
           source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
@@ -39,25 +41,15 @@ const SliderScreen = (props) => {
               source={require("../../../assets/SliderImage/image99.png")}
               resizeMode="contain"
               style={{
-                width: "100%", // Adjust the width as needed
-                height: "20%",
+                width: imageWidth,
+                height: imageHeight,
               }}
             />
 
-            <Text
-              style={[
-                styles.slideText1,
-                { color: "white", fontSize: windowWidth * 0.05 },
-              ]}
-            >
+            <Text style={[styles.slideText1, { color: "white" }]}>
               Smart{"\n"}Formals
             </Text>
-            <Text
-              style={[
-                styles.slideText2,
-                { color: "white", fontSize: windowWidth * 0.06 },
-              ]}
-            >
+            <Text style={[styles.slideText2, { color: "white" }]}>
               MIN {"\n"}30% OFF*
             </Text>
             <TouchableOpacity
@@ -69,6 +61,7 @@ const SliderScreen = (props) => {
           </View>
         </ImageBackground>
 
+        {/* Repeat the same structure for other slides */}
         <ImageBackground
           source={require("../../../assets/SliderImage/low-angle-little-boy-posing.png")}
           style={styles.slide}
@@ -76,6 +69,11 @@ const SliderScreen = (props) => {
           <View style={styles.contain2}>
             <Image
               source={require("../../../assets/SliderImage/image100.png")}
+              resizeMode="contain"
+              style={{
+                width: imageWidth,
+                height: imageHeight,
+              }}
             />
 
             <Text
@@ -99,6 +97,11 @@ const SliderScreen = (props) => {
           <View style={styles.contain3}>
             <Image
               source={require("../../../assets/SliderImage/image100.png")}
+              resizeMode="contain"
+              style={{
+                width: imageWidth,
+                height: imageHeight,
+              }}
             />
 
             <Text
@@ -107,7 +110,6 @@ const SliderScreen = (props) => {
                 {
                   marginTop: 20,
                   fontWeight: "500",
-                  fontSize: windowWidth * 0.06,
                 },
               ]}
             >
@@ -133,22 +135,17 @@ const SliderScreen = (props) => {
           <View style={styles.contain4}>
             <Image
               source={require("../../../assets/SliderImage/image100.png")}
+              resizeMode="contain"
+              style={{
+                width: imageWidth,
+                height: imageHeight,
+              }}
             />
 
-            <Text
-              style={[
-                styles.slideText1,
-                { marginTop: 20, fontSize: windowWidth * 0.05 },
-              ]}
-            >
+            <Text style={[styles.slideText1, { marginTop: 20 }]}>
               BEST{"\n"}PICKS
             </Text>
-            <Text
-              style={[
-                styles.slideText2,
-                { color: "black", fontSize: windowWidth * 0.07 },
-              ]}
-            >
+            <Text style={[styles.slideText2, { color: "black" }]}>
               FLAT{"\n"}50% OFF*
             </Text>
             <TouchableOpacity
@@ -173,13 +170,16 @@ const SliderScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: width >= 720 ? "100%" : "100%",
+    height: width >= 720 ? "100%" : "100%",
+    resizeMode: "cover",
   },
   slide: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%", // Ensure the image covers the entire width
-    height: "100%", // Ensure the image covers the entire height
+    width: width >= 720 ? "100%" : "100%",
+    height: width >= 720 ? "100%" : "100%",
+    // padding: width >= 720 ? "100%" : "100%",
+    resizeMode: "cover",
   },
   paginationDot: {
     backgroundColor: "rgba(255, 255, 255, 0.5)",
@@ -190,8 +190,8 @@ const styles = StyleSheet.create({
     marginBottom: -10,
   },
   button: {
-    width: windowWidth * 0.2, // Set the width as needed
-    height: windowHeight * 0.05, // Set the height as needed
+    width: width >= 720 ? 180 : 100,
+    height: width >= 720 ? 70 : 50,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "white",
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: windowWidth * 0.05,
+    fontSize: width >= 720 ? 30 : 15,
     fontWeight: "bold",
   },
   contain1: {
@@ -239,12 +239,12 @@ const styles = StyleSheet.create({
   },
   slideText1: {
     color: "black",
-    fontSize: 22,
+    fontSize: width >= 720 ? 35 : 20,
     textAlign: "center",
   },
   slideText2: {
     color: "white",
-    fontSize: 26,
+    fontSize: width >= 720 ? 40 : 23,
     textAlign: "center",
     marginTop: 20,
     fontWeight: "bold",
