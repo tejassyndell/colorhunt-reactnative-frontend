@@ -21,7 +21,7 @@ const SliderScreen = (props) => {
   };
 
   // Calculate the image width and height based on screen width
-  const imageWidth = width >= 768 ? 280 : 130;
+  const imageWidth = width >= 720 ? 280 : 130;
   const imageHeight = height * 0.2; // 20% of screen height
 
   return (
@@ -170,15 +170,15 @@ const SliderScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: width >= 768 ? "100%" : "100%",
-    height: width >= 768 ? "100%" : "100%",
+    width: width >= 720 ? "100%" : "100%",
+    height: width >= 720 ? "100%" : "100%",
     resizeMode: "cover",
   },
   slide: {
     flex: 1,
-    width: width >= 768 ? "100%" : "100%",
-    height: width >= 768 ? "100%" : "100%",
-    // padding: width >= 768 ? "100%" : "100%",
+    width: width >= 720 ? "100%" : "100%",
+    height: width >= 720 ? "100%" : "100%",
+    // padding: width >= 720 ? "100%" : "100%",
     resizeMode: "cover",
   },
   paginationDot: {
@@ -190,8 +190,8 @@ const styles = StyleSheet.create({
     marginBottom: -10,
   },
   button: {
-    width: width >= 768 ? 180 : 100,
-    height: width >= 768 ? 70 : 50,
+    width: width >= 720 ? 180 : 100,
+    height: width >= 720 ? 70 : 50,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "white",
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: width >= 768 ? 30 : 15,
+    fontSize: width >= 720 ? 30 : 15,
     fontWeight: "bold",
   },
   contain1: {
@@ -239,12 +239,12 @@ const styles = StyleSheet.create({
   },
   slideText1: {
     color: "black",
-    fontSize: width >= 768 ? 35 : 20,
+    fontSize: width >= 720 ? 35 : 20,
     textAlign: "center",
   },
   slideText2: {
     color: "white",
-    fontSize: width >= 768 ? 40 : 23,
+    fontSize: width >= 720 ? 40 : 23,
     textAlign: "center",
     marginTop: 20,
     fontWeight: "bold",

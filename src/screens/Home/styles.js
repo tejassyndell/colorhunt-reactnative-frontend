@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
   },
 
   fastconimage1: {
-    width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-    height: width >= 768 ? 280 : 190,
+    width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+    height: width >= 720 ? 280 : 190,
     borderColor: "gray",
     shadowColor: "gray",
     shadowOpacity: 0.9,
@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
 
     contener2: {
       flex: 1,
-      width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-      height: width >= 768 ? 280 : 190,
+      width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+      height: width >= 720 ? 280 : 190,
       alignItems: "center",
       marginLeft: 10,
       marginRight: 5,

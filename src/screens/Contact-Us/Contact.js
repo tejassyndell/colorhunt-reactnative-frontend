@@ -40,7 +40,7 @@ export default function Contact(props) {
     let buttonWidth = 153;
     let buttonFontSize = 18;
 
-    if (screenWidth >= 768) {
+    if (screenWidth >= 720) {
       inputWidth = screenWidth * 0.6;
       inputHeight = 60;
       buttonWidth = screenWidth * 0.4;

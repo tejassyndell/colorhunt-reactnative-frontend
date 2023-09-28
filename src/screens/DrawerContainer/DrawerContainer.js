@@ -42,7 +42,7 @@ export default function DrawerContainer(props) {
           style={{
             width: "100%",
             // backgroundColor: "red",
-            height: width >= 768 ? 150 : 50,
+            height: width >= 720 ? 150 : 50,
             marginTop: 20,
             marginBottom: 40,
             paddingRight: 20,
@@ -74,20 +74,25 @@ export default function DrawerContainer(props) {
               style={{
                 color: "#FFF",
                 left: 10,
-                fontSize: width >= 768 ? 25 : 23,
+                fontSize: width >= 720 ? 25 : 17,
                 height: 50,
-                paddingTop: 10,
+                paddingTop: width >= 720 ? 10 : 20,
                 fontWeight: 700,
                 width: "75%",
               }}
             >
               {name ? name : "Guest"}
             </Text>
-            <TouchableOpacity>
-              <MenuButton
+            <TouchableOpacity
+              onPress={() => {
+                navigation.closeDrawer();
+              }}
+            >
+              <Image
                 source={require("../../../assets/sidebaricons/menu.png")}
-                onPress={() => {
-                  navigation.closeDrawer();
+                style={{
+                  width: width >= 720 ? 30 : 20,
+                  height: width >= 720 ? 30 : 20,
                 }}
               />
             </TouchableOpacity>

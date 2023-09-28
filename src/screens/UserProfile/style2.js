@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "rgba(0, 0, 0, 0.5)",
-    fontSize: width >= 768 ? 40 : 18,
+    fontSize: width >= 720 ? 40 : 18,
     fontWeight: 600,
   },
   hello: {

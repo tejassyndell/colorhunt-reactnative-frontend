@@ -45,7 +45,7 @@ const ButtomNavigation = (props) => {
       <View
         style={{
           width: "96%",
-          height: width >= 768 ? 120 : 70,
+          height: width >= 720 ? 120 : 70,
           backgroundColor: "#212121",
           flexDirection: "row",
           marginLeft: "2%",
@@ -71,8 +71,8 @@ const ButtomNavigation = (props) => {
                 : require("../../../assets/deselect_home.png")
             }
             style={{
-              width: width >= 768 ? 80 : 40,
-              height: width >= 768 ? 80 : 40,
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
             }}
           />
         </TouchableOpacity>
@@ -92,8 +92,8 @@ const ButtomNavigation = (props) => {
                 : require("../../../assets/AppFooterIcons/order_down_nav_icone.png")
             }
             style={{
-              width: width >= 768 ? 80 : 40,
-              height: width >= 768 ? 80 : 40,
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
             }}
           />
         </TouchableOpacity>
@@ -109,8 +109,8 @@ const ButtomNavigation = (props) => {
           <Image
             source={require("../../../assets/AppFooterIcons/cart_down_nav_icone.png")}
             style={{
-              width: width >= 768 ? 80 : 40,
-              height: width >= 768 ? 80 : 40,
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
             }}
           />
         </TouchableOpacity>
@@ -126,8 +126,8 @@ const ButtomNavigation = (props) => {
           <Image
             source={require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")}
             style={{
-              width: width >= 768 ? 80 : 40,
-              height: width >= 768 ? 80 : 40,
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
             }}
           />
         </TouchableOpacity>
@@ -147,8 +147,8 @@ const ButtomNavigation = (props) => {
                 : require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")
             }
             style={{
-              width: width >= 768 ? 80 : 40,
-              height: width >= 768 ? 80 : 40,
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
             }}
           />
         </TouchableOpacity>
