@@ -315,6 +315,7 @@ const { width, height } = Dimensions.get("window");
                 numColumns={width >= 720 ? 4 : 2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 0 }}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
               />
             )}
 

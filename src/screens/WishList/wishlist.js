@@ -99,7 +99,7 @@ export default function WishList(props) {
       <View key={item.id} style={{
         alignItems: "center",
         height: 'auto',
-        width: 180,
+        width: width >= 768 ? 180 : 180,
         marginLeft: 5,
         marginRight: 20,
         marginTop: 8,
@@ -110,8 +110,8 @@ export default function WishList(props) {
 
       }}>
         <View style={{
-          width: 155,
-          height: 190,
+            width: width >= 720 ? 165 : 155, // Adjust the width for tablets
+            height: width >= 720 ? 200 : 190,
           borderColor: "gray",
           shadowColor: "#000000",
           shadowOpacity: 0.9,
@@ -199,6 +199,7 @@ export default function WishList(props) {
                 numColumns={width >= 768 ? 4 : 2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 10 }}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
               />
             </View>
 
