@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions,Image } from "react-native";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useLayoutEffect } from "react";
 import React, { useState } from 'react';
@@ -8,10 +8,12 @@ import Textarea from 'react-native-textarea';
 import { getSoArticleDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// import RNHTMLtoPDF from "react-native-html-to-pdf"
+
 const OrderDetails = (props) => {
     const { navigation } = props;
     const route = useRoute()
-    const { sonumber, CreatedDate, remarks } = route.params;
+    const { sonumber, CreatedDate, remarks, transport = null, gst = null } = route.params;
     console.log(remarks, "{}{}{}{}{}{}{}{}");
     const [newPrint, setNewPrint] = useState(false);
     const { width, height } = Dimensions.get("window");
@@ -66,34 +68,34 @@ const OrderDetails = (props) => {
     };
     const transformSodetailsToTableData = (sodetails) => {
         return sodetails.map((item, index) => {
-          // Parse ArticleSize JSON string to extract sizes
-          const sizes = JSON.parse(item.ArticleSize).map(sizeObj => sizeObj.Name).join(', ');
-      
-          // Parse ArticleColor JSON string to extract color names
-          const colors = JSON.parse(item.ArticleColor).map(colorObj => colorObj.Name);
-      
-          // Split OutwardNoPacks by commas and map to integers
-          const outwardNoPacksArray = item.OutwardNoPacks.split(',').map(value => parseInt(value, 10));
-      
-          // Calculate the total quantity from OutwardNoPacks
-          const totalQuantity = outwardNoPacksArray.reduce((accumulator, quantity) => accumulator + quantity, 0);
-      
-          // Calculate the total amount for this item
-          const totalAmount = item.ArticleRate * totalQuantity;
-      
-          return [
-            (index + 1).toString(), // SN
-            item.Title, // ARTICLE
-            item.CategoryId.toString(), // CATEGORY (You may need to map CategoryId to the actual category name)
-            sizes, // SIZE's
-            colors.join(', '), // COLORWISE QTY IN PCS (Extracted color names, joined)
-            totalQuantity.toString(), // TOTAL QTY
-            '₹' + item.ArticleRate + '.00', // RATE
-            '₹' + totalAmount.toFixed(2), // AMOUNT
-          ];
+            // Parse ArticleSize JSON string to extract sizes
+            const sizes = JSON.parse(item.ArticleSize).map(sizeObj => sizeObj.Name).join(', ');
+
+            // Parse ArticleColor JSON string to extract color names
+            const colors = JSON.parse(item.ArticleColor).map(colorObj => colorObj.Name);
+
+            // Split OutwardNoPacks by commas and map to integers
+            const outwardNoPacksArray = item.OutwardNoPacks.split(',').map(value => parseInt(value, 10));
+
+            // Calculate the total quantity from OutwardNoPacks
+            const totalQuantity = outwardNoPacksArray.reduce((accumulator, quantity) => accumulator + quantity, 0);
+
+            // Calculate the total amount for this item
+            const totalAmount = item.ArticleRate * totalQuantity;
+
+            return [
+                (index + 1).toString(), // SN
+                item.Title, // ARTICLE
+                item.CategoryId.toString(), // CATEGORY (You may need to map CategoryId to the actual category name)
+                sizes, // SIZE's
+                colors.join(', '), // COLORWISE QTY IN PCS (Extracted color names, joined)
+                totalQuantity.toString(), // TOTAL QTY
+                '₹' + item.ArticleRate + '.00', // RATE
+                '₹' + totalAmount.toFixed(2), // AMOUNT
+            ];
         });
-      };
-      
+    };
+
     const [tableData, setTableData] = useState({});
     const [totalval, setotalval] = useState(0);
     const [totalqty, settotalqty] = useState(0)
@@ -178,6 +180,9 @@ const OrderDetails = (props) => {
     }, [])
     useEffect(() => { console.log(sodetails); }, [sodetails])
 
+    const generatePDF = async () => {
+       
+    }
 
     return (
         <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%' }}>
@@ -362,8 +367,8 @@ const OrderDetails = (props) => {
                             <Text style={{
                                 fontSize: width >= 720 ? 20 : 16,
                                 fontWeight: 'bold',
-                                color: '#000000',
-                            }}>{partydata ? partydata[0].Address : ""}</Text>
+                                color: partydata ? '#000000' : "#00000080",
+                            }}>{partydata ? partydata[0].Address : "Address"}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                             <View
@@ -397,8 +402,9 @@ const OrderDetails = (props) => {
                                 <Text style={{
                                     fontSize: width >= 720 ? 20 : 16,
                                     color: '#000000',
-                                    fontWeight: 'bold'
-                                }}>Transport</Text>
+                                    fontWeight: 'bold',
+                                    color: transport !== null ? "black" : "#00000080"
+                                }}>{transport !== null ? transport : "Transport"}</Text>
                             </View>
 
 
@@ -419,8 +425,9 @@ const OrderDetails = (props) => {
                                 <Text style={{
                                     fontSize: width >= 720 ? 20 : 16,
                                     color: '#000000',
-                                    fontWeight: 'bold'
-                                }}>GST</Text>
+                                    fontWeight: 'bold',
+                                    color: gst !== null ? "black" : "#00000080"
+                                }}>{gst !== null ? gst : "GST"}</Text>
                             </View>
 
                             <View
@@ -438,8 +445,9 @@ const OrderDetails = (props) => {
                                 <Text style={{
                                     fontSize: width >= 720 ? 20 : 16,
                                     color: '#000000',
-                                    fontWeight: 'bold'
-                                }}>{remarks}</Text>
+                                    fontWeight: 'bold',
+                                    color: remarks !== "" ? "black" : "#00000080"
+                                }}>{remarks !== "" ? remarks : "Remarks"}</Text>
                             </View>
 
                         </View>
@@ -501,13 +509,22 @@ const OrderDetails = (props) => {
                         </View>
                     </View>
                     <View>
-                        <TouchableOpacity onPress={() => setNewPrint(true)} style={{ alignItems: 'flex-end', marginRight: 10 }}>
+                        <TouchableOpacity onPress={() => generatePDF()} style={{ alignItems: 'flex-end', marginRight: 10 }}>
 
-                            <Text style={{
+                            {/* <Text style={{
                                 width: width >= 720 ? 40 : 30,
                                 height: width >= 720 ? 40 : 30,
                                 backgroundColor: '#000000', color: '#FFFFFF', borderRadius: 5, textAlign: 'center', fontSize: width >= 720 ? 24 : 19, fontWeight: 'bold'
-                            }}>2</Text>
+                            }}>2</Text> */}
+                            <View style={{
+                                width: width >= 720 ? 70 : 50,
+                                height: width >= 720 ? 70 : 50,
+                                borderRadius: 5
+                            }}>
+                                <Image source={require("../../../assets/pdf.png")}  style={{ width: "100%", height: "100%", resizeMode: 'contain' }} >
+
+                                </Image>
+                            </View>
                         </TouchableOpacity>
                     </View>
                 </>)}

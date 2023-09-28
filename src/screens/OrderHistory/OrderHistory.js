@@ -2,7 +2,7 @@ const { View, Text, Image, TouchableOpacity, ActivityIndicator } = require("reac
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { Pressable } from 'react-native';
-import { StyleSheet,Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { getsonumber } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -144,7 +144,30 @@ const OrderHistory = (props) => {
         return articleRate.reduce((total, value, index) => total + (parseInt(value, 10) * parseInt(outwardNoPacks[index], 10)), 0);
     };
     const inputDate = "2021-04-15T11:39:25.000Z";
+    const totalpices = (outwardNoPacksArray) => {
+        const flattenedArray = outwardNoPacksArray
+            .flatMap(str => str.split(',').map(Number))
+            .filter(Number.isInteger); // Filter out non-integer values
 
+        // Calculate the sum of all integers in the array
+        const sum = flattenedArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        return sum;
+    }
+
+    const calculateTotalAmount = (outwardNoPacks, articleRate) => {
+        let sum = 0;
+        
+        for (let i = 0; i < outwardNoPacks.length; i++) {
+          const outwardValue = outwardNoPacks[i].split(',').map(Number);
+          const rate = parseInt(articleRate[i]);
+          
+          for (const value of outwardValue) {
+            sum += rate * value;
+          }
+        }
+        
+        return sum;
+      };
     return (
         <>
             {isloading ?
@@ -188,7 +211,7 @@ const OrderHistory = (props) => {
                             <ScrollView nestedScrollEnabled={true}>
                                 {sonumberdata ? sonumberdata.map((item) =>
                                     item.status === 0 ?
-                                        <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate,remarks:item.Remarks }) }}>
+                                        <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate, remarks: item.Remarks }) }}>
                                             <View style={{ width: "60%", paddingVertical: "2%", paddingLeft: "2%" }}>
                                                 <View style={{ gap: 8 }}>
                                                     <View style={orderstyles.text_cnt}>
@@ -199,16 +222,14 @@ const OrderHistory = (props) => {
                                                         <View style={orderstyles.text_cnt}>
                                                             <Text style={orderstyles.txt_titile}>Pieces :</Text>
                                                             <Text style={orderstyles.txt_val}>{
-                                                                item.OutwardNoPacks !== null ?
-                                                                    item.OutwardNoPacks.reduce((acc, currentValue) => {
-                                                                        return acc + parseFloat(currentValue);
-                                                                    }, 0) : "0"}</Text>
+                                                                item.OutwardNoPacks[0] !== null ?
+                                                                    totalpices(item.OutwardNoPacks) : "0"}</Text>
                                                         </View>
                                                     </View>
                                                     <View >
                                                         <View style={orderstyles.text_cnt}>
                                                             <Text style={orderstyles.txt_titile}>Order Total :</Text>
-                                                            <Text style={orderstyles.txt_val}>{calculateTotalArticleRate(item.ArticleRate, item.OutwardNoPacks)}</Text>
+                                                            <Text style={orderstyles.txt_val}>{item.OutwardNoPacks[0]!==null?calculateTotalAmount(item.OutwardNoPacks,item.ArticleRate):"0"}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
@@ -245,7 +266,8 @@ const OrderHistory = (props) => {
                             <ScrollView nestedScrollEnabled={true}>
                                 {completedsodata ? completedsodata.map((item) =>
                                     item.status === 1 ?
-                                        <View style={orderstyles.data_cnt}>
+                                    <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate, remarks: item.Remarks }) }}>
+
                                             <View style={{ width: "60%", paddingVertical: "2%", paddingLeft: "2%" }}>
                                                 <View style={{ gap: 8 }}>
                                                     <View style={orderstyles.text_cnt}>
@@ -256,16 +278,14 @@ const OrderHistory = (props) => {
                                                         <View style={orderstyles.text_cnt}>
                                                             <Text style={orderstyles.txt_titile}>Pieces :</Text>
                                                             <Text style={orderstyles.txt_val}>{
-                                                                item.OutwardNoPacks !== null ?
-                                                                    item.OutwardNoPacks.reduce((acc, currentValue) => {
-                                                                        return acc + parseFloat(currentValue);
-                                                                    }, 0) : "0"}</Text>
+                                                                item.OutwardNoPacks[0] !== null ?
+                                                                    totalpices(item.OutwardNoPacks) : "0"}</Text>
                                                         </View>
                                                     </View>
                                                     <View >
                                                         <View style={orderstyles.text_cnt}>
                                                             <Text style={orderstyles.txt_titile}>Order Total :</Text>
-                                                            <Text style={orderstyles.txt_val}>{calculateTotalArticleRate(item.ArticleRate, item.OutwardNoPacks)}</Text>
+                                                            <Text style={orderstyles.txt_val}>{item.OutwardNoPacks[0]!==null?calculateTotalAmount(item.OutwardNoPacks,item.ArticleRate):"0"}</Text>
                                                         </View>
                                                     </View>
                                                 </View>
@@ -291,7 +311,7 @@ const OrderHistory = (props) => {
                                                     </View>
                                                 </View>
                                             </View>
-                                        </View> : "") : ''}
+                                        </TouchableOpacity> : "") : ''}
                             </ScrollView>
 
                         </View>
@@ -359,7 +379,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 5.477,
         borderWidth: 0.685,
-        justifyContent:'space-around',
+        justifyContent: 'space-around',
         borderStyle: "solid",
         borderColor: "#DDD"
     },
