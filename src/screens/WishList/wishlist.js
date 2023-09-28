@@ -74,7 +74,7 @@ export default function WishList(props) {
           alignItems: "center",
           alignContent: "center",
           paddingLeft: "10%",
-          width: parseInt(width) >= 768 ? "95%" : "100%"
+          width: parseInt(width) >= 720 ? "95%" : "100%"
         }}>
           <Text style={{
             textAlign: "center",
@@ -87,7 +87,7 @@ export default function WishList(props) {
       ),
       headerRight: () => <View />,
       headerStyle: {
-        height:width >=768? 120:90, // Increase the header height here
+        height:width >=720? 120:90, // Increase the header height here
       },
     });
   }, []);
@@ -99,7 +99,7 @@ export default function WishList(props) {
       <View key={item.id} style={{
         alignItems: "center",
         height: 'auto',
-        width: width >= 768 ? 180 : 180,
+        width: width >= 720 ? 180 : 180,
         marginLeft: 5,
         marginRight: 20,
         marginTop: 8,
@@ -196,7 +196,7 @@ export default function WishList(props) {
                 initialNumToRender={10}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
-                numColumns={width >= 768 ? 4 : 2}
+                numColumns={width >= 720 ? 4 : 2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 10 }}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
