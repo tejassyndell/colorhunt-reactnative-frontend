@@ -108,7 +108,7 @@ const OrderHistory = (props) => {
                     alignItems: "center",
                     alignContent: "center",
                     paddingLeft: "10%",
-                    width: parseInt(width) >= 768 ? "95%" : "100%"
+                    width: parseInt(width) >= 720 ? "95%" : "100%"
                 }}>
                     <Text style={{
                         textAlign: "center",
@@ -121,21 +121,21 @@ const OrderHistory = (props) => {
             ),
             headerRight: () => <View />,
             headerStyle: {
-                height: width >= 768 ? 120 : 90, // Increase the header height here
+                height: width >= 720 ? 120 : 90, // Increase the header height here
             },
 
         });
     }, []);
 
     const getSonumber = async () => {
-        // let data = await AsyncStorage.getItem("UserData");
-        // data = await JSON.parse(data);
-        // await getsonumber({ PartyId: data[0].Id }).then((res) => {
-        //     setSoNumberData(res.data)
-        //     setOldDateOfso(res.data)
-        //     setcompletedsodata(res.data);
-        setIsLoading(false);
-        // })
+        let data = await AsyncStorage.getItem("UserData");
+        data = await JSON.parse(data);
+        await getsonumber({ PartyId: data[0].Id }).then((res) => {
+            setSoNumberData(res.data)
+            setOldDateOfso(res.data)
+            setcompletedsodata(res.data);
+            setIsLoading(false);
+        })
     }
     useEffect(() => {
         getSonumber();
@@ -183,13 +183,13 @@ const OrderHistory = (props) => {
 
                         </View>
                     </View>
-                    {/* {orderstatus ?
+                    {orderstatus ?
                         <View style={orderstyles.order_cnt}>
                             <ScrollView nestedScrollEnabled={true}>
                                 {sonumberdata ? sonumberdata.map((item) =>
                                     item.status === 0 ?
                                         <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate }) }}>
-                                            <View style={{ width: "62%" }}>
+                                            <View style={{ width: "60%", paddingVertical: "2%", paddingLeft: "2%" }}>
                                                 <View style={{ gap: 8 }}>
                                                     <View style={orderstyles.text_cnt}>
                                                         <Text style={orderstyles.txt_titile}>SO No  :</Text>
@@ -214,9 +214,9 @@ const OrderHistory = (props) => {
                                                 </View>
 
                                             </View>
-                                            <View style={{ width: "38%" }}>
+                                            <View style={{ width: "40%", paddingVertical: "2%", paddingRight: "2%" }}>
                                                 <View style={{ height: "53%" }}>
-                                                    <View style={orderstyles.text_cnt}>
+                                                    <View style={[orderstyles.text_cnt, { justifyContent: "flex-end" }]}>
                                                         <Text style={orderstyles.txt_titile}>Date :</Text>
                                                         <Text style={orderstyles.txt_val}>{new Date(item.SoDate).toLocaleDateString('en-GB', {
                                                             day: '2-digit',
@@ -227,8 +227,10 @@ const OrderHistory = (props) => {
                                                 </View>
                                                 <View style={orderstyles.pending_icon}>
                                                     <View style={orderstyles.pending_icon_text}>
-                                                        <Image style={{ width: 15, height: 16 }} source={require("../../../assets/timer_1.png")}></Image>
-                                                        <Text style={{ fontSize: 10.854, fontWeight: 700, color: '#FF0203' }} >Pending</Text>
+                                                        <View style={{ width: width < 720 ? 15 : 20, height: width < 720 ? 16 : 22 }}>
+                                                            <Image style={{ width: '100%', height: '100%', resizeMode: "contain" }} source={require("../../../assets/timer_1.png")}></Image>
+                                                        </View>
+                                                        <Text style={{ fontSize: width < 720 ? 10.854 : 16.854, fontWeight: 700, color: '#FF0203' }} >Pending</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -244,7 +246,7 @@ const OrderHistory = (props) => {
                                 {completedsodata ? completedsodata.map((item) =>
                                     item.status === 1 ?
                                         <View style={orderstyles.data_cnt}>
-                                            <View style={{ width: "62%" }}>
+                                            <View style={{ width: "60%", paddingVertical: "2%", paddingLeft: "2%" }}>
                                                 <View style={{ gap: 8 }}>
                                                     <View style={orderstyles.text_cnt}>
                                                         <Text style={orderstyles.txt_titile}>Outward No :</Text>
@@ -269,9 +271,9 @@ const OrderHistory = (props) => {
                                                 </View>
 
                                             </View>
-                                            <View style={{ width: "38%" }}>
+                                            <View style={{ width: "40%", paddingVertical: "2%", paddingRight: "2%" }}>
                                                 <View style={{ height: "53%" }}>
-                                                    <View style={orderstyles.text_cnt}>
+                                                    <View style={[orderstyles.text_cnt, { justifyContent: "flex-end" }]}>
                                                         <Text style={orderstyles.txt_titile}>Date :</Text>
                                                         <Text style={orderstyles.txt_val}>{new Date(inputDate).toLocaleDateString('en-GB', {
                                                             day: '2-digit',
@@ -282,8 +284,10 @@ const OrderHistory = (props) => {
                                                 </View>
                                                 <View style={orderstyles.pending_icon}>
                                                     <View style={orderstyles.complete_icon_text}>
-                                                        <Image style={{ width: 15, height: 16 }} source={require("../../../assets/Right_complete.png")}></Image>
-                                                        <Text style={{ fontSize: 10.854, fontWeight: 700, color: '#7AC848' }} >Completed</Text>
+                                                        <View style={{ width: width < 720 ? 15 : 20, height: width < 720 ? 16 : 22 }}>
+                                                            <Image style={{ width: '100%', height: '100%', resizeMode: "contain" }} source={require("../../../assets/Right_complete.png")}></Image>
+                                                        </View>
+                                                        <Text style={{ fontSize: width < 720 ? 10.854 : 16.854, fontWeight: 700, color: '#7AC848' }} >Completed</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -291,7 +295,7 @@ const OrderHistory = (props) => {
                             </ScrollView>
 
                         </View>
-                    } */}
+                    }
 
 
                     <Modal
@@ -307,13 +311,13 @@ const OrderHistory = (props) => {
                             <View style={styles.calendarModal}>
                                 <View style={{ width: "80%", height: 48.752, gap: 12, display: "flex", flexDirection: "row", paddingVertical: 13, paddingLeft: 20 }}>
                                     <View style={{ height: 25, width: 25, }}>
-                                    <Image style={{ height: "100%", width: "100%", resizeMode:"contain"}} source={require("../../../assets/gray_calender.png")}></Image>
+                                        <Image style={{ height: "100%", width: "100%", resizeMode: "contain" }} source={require("../../../assets/gray_calender.png")}></Image>
                                     </View>
                                     <Text style={{ fontSize: 18, fontWeight: 400, color: "#BBB" }}>{orderstatus ? selectedDate : selectedDateIncompleted}</Text>
                                 </View>
                                 <View style={{ width: "20%", justifyContent: "center", alignItems: 'flex-end', paddingEnd: 10 }}>
                                     <TouchableOpacity onPress={() => { toggleCalendar(); setSelectedDate("DD/MM/YYYY"); setSoNumberData(oldDataOfso); }}>
-                                        <Image style={{ height: width >= 768 ? 35 : 24, width: width >= 768 ? 35 : 24, }} source={require("../../../assets/grayclose.png")}></Image>
+                                        <Image style={{ height: width >= 720 ? 35 : 24, width: width >= 720 ? 35 : 24, }} source={require("../../../assets/grayclose.png")}></Image>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -324,8 +328,8 @@ const OrderHistory = (props) => {
                             />
                             <View style={styles.calendarModal2}>
                                 <View style={{ width: '100%', alignItems: "flex-end" }}>
-                                    <Pressable style={{ width:200, backgroundColor: "black", borderRadius: 3.423 , height:50,justifyContent:"center" }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
-                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: width >= 768 ? 25 : 16 }}>Next</Text>
+                                    <Pressable style={{ width: width >= 720 ? 200 : 100, backgroundColor: "black", borderRadius: 3.423, height: 50, justifyContent: "center" }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
+                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: width >= 720 ? 25 : 16 }}>Next</Text>
                                     </Pressable>
                                 </View>
                             </View>
@@ -380,13 +384,13 @@ const styles = StyleSheet.create({
     },
     first_cnt: {
         width: "100%",
-        height: height * 0.13,
+        height: height * 0.15,
         backgroundColor: "#FFF",
         padding: "5%"
     },
     pendin_complete_cnt: {
         width: "100%",
-        height: width>=768 ?height * 0.075:height * 0.055,
+        // height: width >= 720 ? height * 0.065 : height * 0.055,
         backgroundColor: "#212121",
         paddingVertical: "2%",
         paddingHorizontal: "3%",
@@ -412,7 +416,7 @@ const styles = StyleSheet.create({
         // paddingBottom: "2.5%"
     },
     pending_text: {
-        fontSize: width * 0.05,
+        fontSize: width < 720 ? width * 0.05 : width * 0.037,
         fontWeight: 700,
         textAlign: "center"
     },
@@ -425,7 +429,7 @@ const styles = StyleSheet.create({
     },
     complete_text: {
         color: "#FFF",
-        fontSize: width * 0.05,
+        fontSize: width < 720 ? width * 0.05 : width * 0.037,
         fontWeight: 700,
         textAlign: "center",
         paddingBottom: "2%"
@@ -448,13 +452,12 @@ const orderstyles = StyleSheet.create({
     },
     data_cnt: {
         backgroundColor: "#FFF",
-        margin: 14,
+        margin: "2%",
+        marginHorizontal: "5%",
         borderRadius: 12,
-        padding: 10,
         display: "flex",
         flexDirection: "row",
-        gap: 8,
-        height: 100,
+        height: width < 720 ? 100 : 150,
         elevation: 5
     },
     pending_icon: {
@@ -481,12 +484,12 @@ const orderstyles = StyleSheet.create({
         gap: 5
     },
     txt_titile: {
-        fontSize: 14,
+        fontSize: width < 720 ? 14 : 20,
         fontWeight: 500,
         color: "#000000B2"
     },
     txt_val: {
-        fontSize: 15,
+        fontSize: width < 720 ? 15 : 22,
         fontWeight: 700,
         color: "#000000"
     },
