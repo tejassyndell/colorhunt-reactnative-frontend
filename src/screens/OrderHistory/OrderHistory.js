@@ -1,8 +1,8 @@
-const { View, Text, Image, TouchableOpacity, ActivityIndicator, Dimensions } = require("react-native")
+const { View, Text, Image, TouchableOpacity, ActivityIndicator } = require("react-native")
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { Pressable } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { StyleSheet,Dimensions } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { getsonumber } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -359,6 +359,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 5.477,
         borderWidth: 0.685,
+        justifyContent:'space-around',
         borderStyle: "solid",
         borderColor: "#DDD"
     },

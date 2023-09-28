@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, View, Keyboard, Button, Image } from "react-native";
+import { StyleSheet, TextInput, View, Keyboard, Button, Dimensions } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
+const { width, height } = Dimensions.get("window");
 
 const SearchBar = ({ clicked, searchPhrase, setSearchPhrase }) => {
 
@@ -16,7 +17,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase }) => {
         {/* search Icon */}
         <Feather
           name="search"
-          size={20}
+          size={ width >= 720 ? 30 : 20}
           color="black"
           style={{ marginLeft: 1 }}
         />
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    width: "94%",
+    width: "85%",
 
   },
   searchBar__unclicked: {
@@ -77,15 +78,15 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     width: "100%",
-    height:20,
+    height: width >= 720 ? 40 : 20,
     backgroundColor: "#d9dbda",
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "space-evenly",
   },
   input: {
-    fontSize: 15,
-    height:20,
+    fontSize: width >= 720 ? 25 : 15,
+    height: width >= 720 ? 40 : 20,
     marginLeft: 10,
     width: "100%",
   },
