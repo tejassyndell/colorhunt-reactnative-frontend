@@ -748,6 +748,7 @@ export default function HomeScreen(props) {
               Scategories={selectedCategories}
               minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate}
+              status={false}
             />
           </View>
 
