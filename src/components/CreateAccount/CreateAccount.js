@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import { UserData } from "../../api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -35,6 +36,24 @@ const CreateAccount = (props) => {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const { navigation, onClose } = props;
+  const [token, setToken] = useState('');
+
+  useEffect(()=>{
+    const getToken = async () => {
+      try {
+        let data =await AsyncStorage.getItem('notificationstatus')  
+        data = await JSON.parse(data)
+        if (data.status === true) {
+          setToken(data.token);
+        } else {
+          console.log('Notification permission denied');
+        }
+      } catch (error) {
+        console.error('Error requesting permission:', error);
+      }
+    };
+    getToken();
+  },[])
   const handleInputChange = (fieldName, value) => {
     // Clear previous error for the field
     switch (fieldName) {
@@ -217,6 +236,7 @@ const CreateAccount = (props) => {
           country,
           pinCode,
           contactPerson,
+          token
         });
         console.log("API response:", response.data);
         setShowSuccess(true); // Show success message
