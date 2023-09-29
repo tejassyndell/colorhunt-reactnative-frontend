@@ -9,6 +9,7 @@ import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 
 import { ActivityIndicator } from "react-native";
+
 export default function AllArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([])
@@ -23,7 +24,7 @@ export default function AllArticle(props) {
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
-const { width, height } = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
 
 
   // uploard url image
@@ -108,9 +109,11 @@ const { width, height } = Dimensions.get("window");
       headerRight: () => (
         <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
           <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
-            <Image  style={{ resizeMode: "contain", 
+            <Image style={{
+              resizeMode: "contain",
               width: width >= 720 ? 45 : 38,
-              height: width >= 720 ? 45 : 38, }} source={require("../../../assets/Nevbar/Profile.png")} />
+              height: width >= 720 ? 45 : 38,
+            }} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
         </View>)
     });
@@ -196,20 +199,21 @@ const { width, height } = Dimensions.get("window");
         shadowColor: '#c0c0c0',
         borderRadius: 10
       }}>
-        <Image source={{ uri: baseImageUrl + item.Photos }} style={{ 
+        <Image source={{ uri: baseImageUrl + item.Photos }} style={{
           width: "90%",
-           height: 180,
-           flex:1,resizeMode:'contain',
-            borderRadius: 10,
-             zIndex: 1,
-              marginTop: 10 }} />
+          height: 180,
+          flex: 1, resizeMode: 'contain',
+          borderRadius: 10,
+          zIndex: 1,
+          marginTop: 10
+        }} />
       </View>
       <View style={{ width: "100%", marginBottom: 10, justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })} style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 0 }}>
           <View style={{ width: 178, alignItems: 'center', paddingTop: 10 }}>
-            <Text style={{ fontWeight: 'bold',fontSize: width >= 720 ? 18 : 12}}>{item.ArticleNumber}</Text>
-            <Text style={{fontSize: width >= 720 ? 15 : 10}}>{convertToTitleCase(item.Category)}</Text>
-            <Text style={{ fontWeight: 'bold',fontSize: width >= 720 ? 18 : 12 }}>{"₹" + item.ArticleRate + '.00'}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: width >= 720 ? 18 : 12 }}>{item.ArticleNumber}</Text>
+            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>{convertToTitleCase(item.Category)}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: width >= 720 ? 18 : 12 }}>{"₹" + item.ArticleRate + '.00'}</Text>
 
           </View>
         </TouchableOpacity>
@@ -283,19 +287,20 @@ const { width, height } = Dimensions.get("window");
                 source={require("../../../assets/filetr_icone.png")}
                 style={{
                   width: width >= 720 ? 65 : 40, // Adjust the width for tablets
-                    height: width >= 720 ? 65 : 40,
-                    resizeMode: "contain",
-                    borderRadius: 10, }}
+                  height: width >= 720 ? 65 : 40,
+                  resizeMode: "contain",
+                  borderRadius: 10,
+                }}
               />
             </TouchableOpacity>
           </View>
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 25:15,
+                fontSize: width >= 720 ? 25 : 15,
                 fontWeight: 700,
                 paddingLeft: 15,
-                height: width >= 720 ? 30:20,
+                height: width >= 720 ? 30 : 20,
                 alignItems: "center",
                 marginTop: 10
               }}
@@ -357,6 +362,9 @@ const { width, height } = Dimensions.get("window");
                 <Filter status={false} onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate} />
+                {/* <Filter2 status={false} onFilterChange={handleFilterChange}
+                  onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
+                  maxArticleRate={maxArticleRate}></Filter2> */}
               </View>
             </View>
           )}

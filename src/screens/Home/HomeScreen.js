@@ -251,7 +251,7 @@ export default function HomeScreen(props) {
             width: width >= 720 ? 45 : 38,
             height: width >= 720 ? 45 : 38,
             padding: 4,
-            marginRight:10
+            marginRight: 10
           }}
         >
           <TouchableOpacity
@@ -263,9 +263,11 @@ export default function HomeScreen(props) {
             }}
           >
             <Image
-              style={{ resizeMode: "contain", 
-              width: width >= 720 ? 45 : 38,
-              height: width >= 720 ? 45 : 38, }}
+              style={{
+                resizeMode: "contain",
+                width: width >= 720 ? 45 : 38,
+                height: width >= 720 ? 45 : 38,
+              }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
           </TouchableOpacity>
@@ -377,7 +379,7 @@ export default function HomeScreen(props) {
             marginBottom: width >= 720 ? 10 : 0,
           }}
         >
-             <View style={{ marginTop: 0 }}>
+          <View style={{ marginTop: 0 }}>
             <View
               style={{
                 height: width >= 720 ? 60 : 40,
@@ -469,8 +471,9 @@ export default function HomeScreen(props) {
               >
                 {ApplyStatushBack === true
                   ? finalData.length > 0
-                    ? finalData.map((item) => (
+                    ? finalData.map((item, key) => (
                       <TouchableOpacity
+                        key={key}
                         onPress={() => {
                           isLoggedIn
                             ? navigation.navigate("DetailsOfArticals", {
@@ -818,14 +821,18 @@ export default function HomeScreen(props) {
                           />
                         </View>
 
-                        <Text style={{ fontWeight: "bold",
-                        marginTop: 10 ,
-                        fontSize: width >= 720 ? 18 : 12}}>
+                        <Text style={{
+                          fontWeight: "bold",
+                          marginTop: 10,
+                          fontSize: width >= 720 ? 18 : 12
+                        }}>
                           {item.ArticleNumber}
                         </Text>
-                        <Text style={{fontSize: width >= 720 ? 15 : 10}}>{convertToTitleCase(item.Category)}</Text>
-                        <Text style={{ fontWeight: "bold",
-                      fontSize: width >= 720 ? 18 : 12 }}>
+                        <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>{convertToTitleCase(item.Category)}</Text>
+                        <Text style={{
+                          fontWeight: "bold",
+                          fontSize: width >= 720 ? 18 : 12
+                        }}>
                           {"₹" + item.ArticleRate + ".00"}
                         </Text>
                       </View>

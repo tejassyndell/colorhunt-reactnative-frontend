@@ -15,7 +15,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     const [isSliding, setIsSliding] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
-    console.log( "{}{}{}{}{}{}{}{}{}");
+    console.log("{}{}{}{}{}{}{}{}{}");
 
     const Screenwidth = Dimensions.get('window').width
     const sliderlenghtinPercent = 60;
@@ -162,28 +162,15 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
                     <View style={styles.sliderContainer}>
                         <Text>{minArticleRate}</Text>
-                        <MultiSlider
-                            values={selectedPriceRange}
-                            sliderLength={sliderLength}
-                            onValuesChange={onValueChange}
-                            onValuesChangeStart={onSlidingStart}
-                            onValuesChangeFinish={onSlidingComplete}
-                            min={minArticleRate}
-                            max={maxArticleRate}
-                            step={10}
-                            allowOverlap={false}
-                            snapped
-                            pressedMarkerStyle={{ backgroundColor: 'black' }}
-                            customMarker={
-                                isSliding ? CustomMarker : () => <View style={styles.tooltipContainer} />
-                            }
-                            thumbTintColor="transparent"
-                            selectedStyle={{
-                                backgroundColor: 'black',
-                            }}
-                            unselectedStyle={{
-                                backgroundColor: 'lightgray',
-                            }}
+                        <RangeSlider
+                            style={{ width: 200, height: 80 }}
+                            gravity={'center'}
+                            min={0}
+                            max={100}
+                            step={1}
+                            selectionColor="#3df"
+                            blankColor="#f618"
+                            onValueChanged={this.onValueChanged}
                         />
                         <Text>{maxArticleRate}</Text>
                     </View>
