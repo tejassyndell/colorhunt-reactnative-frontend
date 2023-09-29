@@ -120,14 +120,14 @@ const OrderHistory = (props) => {
     }, []);
 
     const getSonumber = async () => {
-        // let data = await AsyncStorage.getItem("UserData");
-        // data = await JSON.parse(data);
-        // await getsonumber({ PartyId: data[0].Id }).then((res) => {
-        //     setSoNumberData(res.data)
-        //     setOldDateOfso(res.data)
-        //     setcompletedsodata(res.data);
+        let data = await AsyncStorage.getItem("UserData");
+        data = await JSON.parse(data);
+        await getsonumber({ PartyId: data[0].Id }).then((res) => {
+            setSoNumberData(res.data)
+            setOldDateOfso(res.data)
+            setcompletedsodata(res.data);
             setIsLoading(false);
-        // })
+        })
     }
     useEffect(() => {
         getSonumber();
