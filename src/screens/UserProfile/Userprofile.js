@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, TouchableHighlight, Dimensions } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableHighlight,
+  Dimensions,
+} from "react-native";
 import styles from "./style2";
 import { Profiledata } from "../../api/api";
 import { useLayoutEffect } from "react";
@@ -11,7 +17,7 @@ export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
   const { width, height } = Dimensions.get("window");
-  const fontSize = width > 400 ? 18 : 16; // Adjust the font size based on screen width
+  // const fontSize = width > 400 ? 18 : 16; // Adjust the font size based on screen width
   const marginTop = height > 800 ? 30 : 20; // Adjust the margin top based on screen height
   useEffect(() => {
     fetchprofiledata();
@@ -31,7 +37,7 @@ export default function Userprofile(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
-        backgroundColor: 'black', // Change the background color to black
+        backgroundColor: "black", // Change the background color to black
       },
       headerLeft: () => (
         // <MenuBackArrow
@@ -39,14 +45,27 @@ export default function Userprofile(props) {
         //     navigation.goBack();
         //   }}
         // />
-        <TouchableOpacity onPress={() => { navigation.goBack() }}>
-          <View  style={{ marginLeft: 10 }}>
-            <Image source={require("../../../assets/menubar.png")} />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <View style={{ marginLeft: 10 }}>
+            <Image
+              source={require("../../../assets/menubar.png")}
+              style={{
+                width: width >= 720 ? 50 : 30,
+                height: width >= 720 ? 50 : 30,
+              }}
+            />
           </View>
         </TouchableOpacity>
-
       ),
       headerTitle: () => null, // Remove the header title
+      headerStyle: {
+        height: width >= 720 ? 120 : 70,
+        backgroundColor: "black",
+      },
     });
   }, []);
 
@@ -57,6 +76,10 @@ export default function Userprofile(props) {
           <View style={styles.Profile}>
             <Image
               source={require("../../../assets/Profileicon/Frame_1171274903.png")}
+              style={{
+                width: width >= 720 ? 200 : 100,
+                height: width >= 720 ? 200 : 100,
+              }}
             />
           </View>
         </TouchableHighlight>
@@ -64,36 +87,34 @@ export default function Userprofile(props) {
       {Profile.map((item) => (
         <View style={{ ...styles.BottomContainer, marginTop }} key={item.Id}>
           <View style={styles.hello}>
-            <Text style={{ ...styles.text, fontSize }}>{item.Name}</Text>
+            <Text style={{ ...styles.text }}>{item.Name}</Text>
           </View>
           <View style={{ ...styles.hello, marginTop }}>
-            <Text style={{ ...styles.text, fontSize }}>{item.Address}</Text>
+            <Text style={{ ...styles.text }}>{item.Address}</Text>
           </View>
           <View style={{ ...styles.hello, marginTop }}>
-            <Text style={{ ...styles.text, fontSize }}>{item.PhoneNumber}</Text>
+            <Text style={{ ...styles.text }}>{item.PhoneNumber}</Text>
           </View>
           <View style={{ ...styles.hello2, marginTop }}>
             <View style={styles.abc}>
-              <Text style={{ ...styles.text, fontSize }}>{item.City}</Text>
+              <Text style={{ ...styles.text }}>{item.City}</Text>
             </View>
             <View style={styles.abc}>
-              <Text style={{ ...styles.text, fontSize }}>{item.State}</Text>
+              <Text style={{ ...styles.text }}>{item.State}</Text>
             </View>
           </View>
           <View style={{ ...styles.hello2, marginTop }}>
             <View style={styles.abc}>
-              <Text style={{ ...styles.text, fontSize }}>{item.Country}</Text>
+              <Text style={{ ...styles.text }}>{item.Country}</Text>
             </View>
             <View style={styles.abc}>
-              <Text style={{ ...styles.text, fontSize }}>{item.PinCode}</Text>
+              <Text style={{ ...styles.text }}>{item.PinCode}</Text>
             </View>
           </View>
         </View>
       ))}
-      <View
-        style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-      >
-        <ButtomNavigation navigation={navigation} page="profile"/>
+      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+        <ButtomNavigation navigation={navigation} page="profile" />
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Text, View, Image, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import React, { useEffect, useLayoutEffect, useState, } from "react";
+import { Text, View, Image, ScrollView, FlatList, TouchableOpacity,Dimensions } from "react-native";
 import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ export default function WishList(props) {
   const [nameDatas, setNameDatas] = useState([]);
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { width, height } = Dimensions.get("window");
 
   // uploard url image
   const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
@@ -70,25 +71,24 @@ export default function WishList(props) {
       headerTitle: () => (
         <View style={{
           flexDirection: "row",
-          width: "100%"
+          alignItems: "center",
+          alignContent: "center",
+          paddingLeft: "10%",
+          width: parseInt(width) >= 768 ? "95%" : "100%"
         }}>
           <Text style={{
             textAlign: "center",
-            fontSize: 25,
-            left: 10,
+            fontSize: width * 0.05,
             fontWeight: "700",
-            width: "100%"
+            width: "100%",
           }}>Wishlist</Text>
 
         </View>
       ),
-      headerRight: () => (
-        <View style={{ marginHorizontal: 10,width: "auto", height: "auto", padding: 4 }}>
-          <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
-            {/* <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} /> */}
-          </TouchableOpacity>
-        </View>
-      ),
+      headerRight: () => <View />,
+      headerStyle: {
+        height:width >=768? 120:90, // Increase the header height here
+      },
     });
   }, []);
 
@@ -99,7 +99,7 @@ export default function WishList(props) {
       <View key={item.id} style={{
         alignItems: "center",
         height: 'auto',
-        width: 180,
+        width: width >= 768 ? 180 : 180,
         marginLeft: 5,
         marginRight: 20,
         marginTop: 8,
@@ -110,8 +110,8 @@ export default function WishList(props) {
 
       }}>
         <View style={{
-          width: 155,
-          height: 190,
+            width: width >= 720 ? 165 : 155, // Adjust the width for tablets
+            height: width >= 720 ? 200 : 190,
           borderColor: "gray",
           shadowColor: "#000000",
           shadowOpacity: 0.9,
@@ -165,23 +165,28 @@ export default function WishList(props) {
         </View>
       ) : (
         selectedprd.length === 0 ?
-          <View style={{ width: "100%", height: "100%", paddingTop: 50, alignItems: "center" }}>
-            <Text style={{ fontSize: 40, fontWeight: "bolder", top: 200, textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your WishList is {"\n"} Empty</Text>
+        <View style={{ flex: 1, backgroundColor: "#FFF", borderTopColor: "#828282", borderTopWidth: 0.5 }}>
+        <View style={{ flex: 1, justifyContent: "flex-end", alignContent: "center", alignItems: "center" }}>
+            <Text style={{ fontSize: width * 0.1, fontWeight: "bolder", textAlign: 'center', fontWeight: 700, color: "#808080" }}>Your Wishlist is {"\n"} Empty</Text>
+        </View>
+        <View style={{ flex: 1, justifyContent: "center", alignContent: "center", alignItems: "center" }}>
             <TouchableOpacity
-              style={{
-                width: 189,
-                height: 50,
-                borderRadius: 10,
-                backgroundColor: "black",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 380,
-              }}
-              onPress={() => navigation.navigate("Home")}
+                style={{
+                    width: width * 0.4,
+                    height: height * 0.06,
+                    borderRadius: 10,
+                    backgroundColor: "black",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    // marginTop: "100%",
+                }}
+                onPress={() => navigation.navigate("Home")}
             >
-              <Text style={{ color: "white" }}>Continue Shopping</Text>
+                <Text style={{ color: "white", fontSize: width * 0.035 }}>Continue Shopping</Text>
             </TouchableOpacity>
-          </View> :
+        </View>
+
+    </View> :
           <View style={{ width: '100%', height: '100%', backgroundColor: '#FFFF' }}>
             {/* <ScrollView showsHorizontalScrollIndicator={false} style={{ overflow: 'hidden' }}> */}
 
@@ -191,9 +196,10 @@ export default function WishList(props) {
                 initialNumToRender={10}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
-                numColumns={2}
+                numColumns={width >= 768 ? 4 : 2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 10 }}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
               />
             </View>
 

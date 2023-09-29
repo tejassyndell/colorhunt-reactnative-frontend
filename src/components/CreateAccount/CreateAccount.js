@@ -410,25 +410,25 @@ const CreateAccount = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 15,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: windowHeight * 0.05,
+    marginBottom: windowHeight * 0.02,
   },
   title: {
-    fontSize: windowWidth * 0.06,
+    fontSize: windowWidth * 0.05,
     fontWeight: "bold",
     textAlign: "center",
     width: "90%",
   },
   input: {
-    height: windowHeight * 0.05,
+    height: windowHeight * 0.04,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 20,
+    marginBottom: 15,
     paddingLeft: windowWidth * 0.02,
     fontSize: windowWidth * 0.03,
   },
@@ -446,13 +446,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
-    height: windowHeight * 0.06,
-    marginTop: windowHeight * 0.04,
+    height: windowHeight * 0.05,
   },
   submitButtonText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: windowWidth * 0.04,
+    fontSize: windowWidth * 0.05,
   },
   closeButton: {
     backgroundColor: "black",

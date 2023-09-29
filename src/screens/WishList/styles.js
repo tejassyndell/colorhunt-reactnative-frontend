@@ -1,5 +1,9 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { RecipeCard } from "../../AppStyles";
+
+
+const windowHeight = Dimensions.get("window").width;
+const windowWidht= Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     navBar: {
@@ -38,10 +42,9 @@ const styles = StyleSheet.create({
       },
       icon: {
         width:'100%',
-        fontSize: 20,
+        fontSize: windowWidht * 0.02,
         textAlign:'right',
         color:'red',
-       
       },
       loader:{
         flex:1,

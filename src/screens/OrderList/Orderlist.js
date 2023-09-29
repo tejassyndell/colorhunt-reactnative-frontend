@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState, useEffect } from "react";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Pressable, Modal } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, Dimensions, TextInput, Pressable, Modal } from "react-native";
 import { addso, gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,7 +13,7 @@ const Orderlist = (props) => {
     const [destinationVal, setDestinationVal] = useState("");
     const [showTransporatation, setshowTransporatation] = useState(false);
     const [transportationVal, setTransportationVal] = useState();
-    const [fillvalue,setValue]=useState(false);
+    const [fillvalue, setValue] = useState(false);
     const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 
     // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
@@ -22,7 +22,8 @@ const Orderlist = (props) => {
     const [ParsedData, setParsedData] = useState([])
     const currentDate = new Date()
     const [isModalVisible, setIsModalVisible] = useState(false);
-
+    const windowwidthe = parseInt(Dimensions.get("window").width);
+    const windowheight = parseInt(Dimensions.get("window").height);
     const AddSo = async () => {
         let Articldata = ParsedData.map(({ article_id, articleRate, ArticleColor, ArticleOpenFlag, Quantity }) => ({ article_id, articleRate, ArticleColor, ArticleOpenFlag, Quantity }))
         const data = {
@@ -47,9 +48,9 @@ const Orderlist = (props) => {
         })
     }
     const showSuccessModal = () => {
-        if(destinationVal){
+        if (destinationVal) {
             AddSo();
-        }else{
+        } else {
             setValue(true)
         }
     };
@@ -104,11 +105,11 @@ const Orderlist = (props) => {
                 <View style={{
                     display: "flex",
                     flexDirection: "row",
-                    width: "100%"
+                    width: parseInt(windowwidthe) >= 720 ? "100%" : "100%",
                 }}>
                     <Text style={{
                         textAlign: "center",
-                        fontSize: 25, fontWeight: 700, width: "100%"
+                        fontSize: windowwidthe * 0.05, fontWeight: 700, width: "100%"
                     }}>Sales order</Text>
                 </View>
             ),
@@ -118,7 +119,10 @@ const Orderlist = (props) => {
                 //     <Image  source={require('../../../assets/sidebaricons/icon.png')} style={{ width: 28, height: 28, borderRadius: 5, backgroundColor: "black" }} ></Image>
                 //     </TouchableOpacity>
                 <View />,
-               
+            headerStyle: {
+                height: windowwidthe >= 720 ? 120 : 90, // Increase the header height here
+            },
+
         });
     }, []);
 
@@ -158,40 +162,39 @@ const Orderlist = (props) => {
                     <ScrollView nestedScrollEnabled={true}>
                         <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "#828282", borderTopWidth: 1, borderStyle: "solid" }}>
                             <View style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", backgroundColor: "#FFF" }}>
-                                <View style={{ paddingHorizontal: 20, paddingVertical: 10 ,gap:5}}>
-                                    <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Date</Text>
+                                <View style={{ paddingHorizontal: "5%", paddingVertical: "2.8%", gap: 5 }}>
+                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: 500, color: "#000" }}>Date</Text>
                                     <View style={{
                                         width: "100%",
-                                        borderWidth: 1, paddingVertical: 10,
-                                        paddingLeft: 15, borderRadius: 6,
+                                        borderWidth: 1, paddingVertical: "2.5%",
+                                        paddingLeft: '3%', borderRadius: 6,
                                         borderColor: "#E4E7EA",
-                                        fontSize: 18, backgroundColor: "#EEE"
+                                        backgroundColor: "#EEE"
                                     }}
                                     // value={formattedDate}
                                     // disableFullscreenUI
-                                    ><Text style={{color:"#626262",fontSize:18,fontWeight:500}}>{new Date(currentDate).toLocaleDateString('en-GB', {
+                                    ><Text style={{ color: "#626262", fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: 500 }}>{new Date(currentDate).toLocaleDateString('en-GB', {
                                         day: '2-digit',
                                         month: '2-digit',
                                         year: 'numeric',
-                                      })}</Text></View>
+                                    })}</Text></View>
 
                                 </View>
-                                <View style={{ paddingHorizontal: 20,paddingTop:8,gap:5 }}>
-                                    <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Destination</Text>
+                                <View style={{ paddingHorizontal: "5%", paddingTop: "2.8%", gap: 5 }}>
+                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: 500, color: "#000" }}>Destination</Text>
                                     <TextInput value={destinationVal} style={{
                                         width: "100%",
-                                        borderWidth: 1, paddingVertical: 5,
-                                        paddingLeft: 15, borderRadius: 6,
+                                        borderWidth: 1, paddingVertical: "2%",
+                                        paddingLeft: '3%', borderRadius: 6,
                                         borderColor: "#E4E7EA",
-                                        color:"#626262",
-                                        fontSize: 18, backgroundColor: "#EEE"
-                                    }} onChangeText={(e) => { setDestinationVal(e); e?setValue(false):setValue(true)}}></TextInput>
+                                        fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, backgroundColor: "#EEE"
+                                    }} onChangeText={(e) => { setDestinationVal(e); e ? setValue(false) : setValue(true) }}></TextInput>
                                     <View>
-                                        <Text style={{color:"red",fontWeight:500}}>{fillvalue?"Filed cannot be empty":""}</Text>
+                                        <Text style={{ fontSize: windowwidthe * 0.03, color: "red", fontWeight: 500 }}>{fillvalue ? "Filed cannot be empty" : ""}</Text>
                                     </View>
                                 </View>
-                                <View style={{ paddingHorizontal: 20 ,paddingBottom:10,paddingTop:2,gap:5}}>
-                                    <Text style={{ fontSize: 18, fontWeight: 500, color: "#000" }}>Transportation</Text>
+                                <View style={{ paddingHorizontal: "5%", paddingBottom: "3%", paddingTop: 2, gap: 5 }}>
+                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: 500, color: "#000" }}>Transportation</Text>
 
                                     {/* <TextInput  value={transportationVal} onChangeText={(e) => filterTransportationValue(e)}   style={{
                                         width: "100%",
@@ -203,26 +206,32 @@ const Orderlist = (props) => {
                                     }} editable={false}  placeholder="Select transportation"></TextInput> */}
                                     <View style={{
                                         width: "100%",
-                                        borderWidth: 1, paddingVertical: 10,
-                                        paddingLeft: 15, borderRadius: 6,
+                                        borderWidth: 1, paddingVertical: "2.5%",
+                                        paddingLeft: "3%", borderRadius: 6,
                                         borderColor: "#E4E7EA",
-                                        fontSize: 16, backgroundColor: "#EEE",
+                                        backgroundColor: "#EEE",
                                         display: "flex",
                                         flexDirection: "row"
                                     }}>
-                                        <Text style={{color:"#626262",fontSize:18,fontWeight:500}}>{transportationVal}</Text>
-                                        <TouchableOpacity style={{
+                                        <Text style={{ color: "#626262", fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: 500 }}>{transportationVal}</Text>
+                                        <View style={{
                                             position: "absolute",
-                                            top: "64%",
-                                            left: "95%",
-                                            right: 0
-                                        }} onPress={() => { Transportation.length !== 0 ? setshowTransporatation(!showTransporatation) : "" }}>
+                                            top: windowwidthe < 720 ? "50%" : "52%",
+                                            // left: "95%",
+                                            right: "2.5%",
+                                            justifyContent: "center",
+                                        }}>
+                                            <TouchableOpacity style={{
+                                                width: windowwidthe < 720 ? windowwidthe * 0.05 : 30, height: windowwidthe < 720 ? windowwidthe * 0.05 : 30
+                                            }} onPress={() => { Transportation.length !== 0 ? setshowTransporatation(!showTransporatation) : "" }}>
 
-                                            <Image style={{
-                                                width: 20, height: 20,
-
-                                            }} source={require("../../../assets/DownArrow(1).png")}></Image>
-                                        </TouchableOpacity>
+                                                <Image style={{
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    resizeMode: "contain"
+                                                }} source={require("../../../assets/DownArrow(1).png")}></Image>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                 </View>
                                 {
@@ -232,11 +241,11 @@ const Orderlist = (props) => {
                                         maxHeight: "30%",
                                         borderWidth: 1,
                                         backgroundColor: "#EEEEEE",
-                                        marginHorizontal: 20,
+                                        marginHorizontal: '5%',
                                         borderRadius: 6,
                                         borderColor: "#E4E7EA",
-                                        paddingHorizontal: 10,
-                                        paddingBottom: 18,
+                                        paddingHorizontal: '2.5%',
+                                        paddingBottom: '4.5%',
                                         width: "90%",
                                     }} nestedScrollEnabled={true}>
 
@@ -245,8 +254,10 @@ const Orderlist = (props) => {
                                             {Transportation.map((item) =>
                                                 <TouchableOpacity key={item.Id} onPress={() => { setTransportationVal(item.Name); setshowTransporatation(!showTransporatation) }}>
                                                     <Text style={{
-                                                        fontSize: 16,
-                                                        marginVertical: 10
+                                                        fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
+                                                        marginVertical: '2.5%',
+                                                        color: "#626262",
+                                                        fontWeight: 500
                                                     }
                                                     }>{item.Name}</Text>
                                                 </TouchableOpacity>
@@ -257,7 +268,7 @@ const Orderlist = (props) => {
                                     </ScrollView>
                                 }
                             </View>
-                            <View style={{ display: "flex", flexDirection: "column", height: 380, width: "100%", backgroundColor: "#FFFFFF" }}>
+                            <View style={{ display: "flex", flexDirection: "column", height: windowheight * 0.48, width: "100%", backgroundColor: "#FFF" }}>
                                 <ScrollView nestedScrollEnabled={true} >
                                     {ParsedData && ParsedData.map((item, index) => (
                                         <View key={item.id} style={{ paddingBottom: 20 }}>
@@ -270,122 +281,108 @@ const Orderlist = (props) => {
                                                 elevation: 5,
                                                 shadowColor: 'gray',
                                                 shadowOpacity: 0.5,
-                                                marginHorizontal: 20,
-                                                marginTop: 15,
+                                                marginHorizontal: "5%",
+                                                marginTop: "5%",
                                                 borderRadius: 10,
-                                                height: 104,
-                                                paddingVertical: 5,
-                                                backgroundColor: "#FFF"
+                                                height: windowheight * 0.142,
+                                                paddingVertical: "1.5%",
+                                                backgroundColor: "#FFF",
                                             }}>
-                                                <View style={{
-                                                    width: 88,
-                                                    margin:10,
-                                                    marginTop:5,
-                                                    height: 84,
+                                                <TouchableOpacity style={{
+                                                    width: windowwidthe * 0.18,
+                                                    margin: "3.8%",
+                                                    marginTop: "1.5%",
+                                                    height: windowheight * 0.108,
                                                     display: "flex",
                                                     justifyContent: "center",
                                                     alignItems: "center",
                                                     // marginVertical: 10,
                                                     borderRadius: 10,
-                                                }}>
+                                                }} >
 
-                                                    <Image source={{ uri: baseImageUrl + item.Photos }} style={{
-                                                        flex:1,resizeMode:"contain",height:'100%',width:"100%", borderRadius: 10,
-                                                    }} ></Image>
-
-                                                </View>
+                                                    <Image style={{
+                                                        flex: 1, resizeMode: "contain", height: '100%', width: "100%",
+                                                        borderRadius: 10,
+                                                    }} source={{ uri: baseImageUrl + item.Photos.split(',')[0] }}></Image>
+                                                </TouchableOpacity>
                                                 <View style={{
                                                     width: "60%",
-                                                    marginHorizontal: 4,
-                                                    // marginVertical: 10,
+                                                    marginHorizontal: "1%",
+                                                    marginBottom: "1%",
+                                                    marginTop: "0.8%",
                                                     borderRadius: 10
                                                 }}>
-                                                    <View style={{ height: "50%" ,paddingTop:2}}>
+                                                    <View style={{ height: "50%", paddingBottom: 1 }}>
                                                         <Text style={{
-                                                            fontSize: 18,
-                                                            fontWeight: 700, color: "#000"
+                                                            fontSize: windowwidthe * 0.035,
+                                                            fontWeight: 700,
                                                         }}>{item.ArticleNumber}</Text>
                                                         <Text style={{
-                                                            fontSize: 14,
-                                                            fontWeight: 400, color: "#000"
+                                                            fontSize: windowwidthe * 0.025,
+                                                            fontWeight: 400,
                                                         }}>{item.StyleDescription}</Text>
                                                     </View>
-                                                    <View style={{ marginTop: "1%",justifyContent:"center",paddingTop:10, position: "relative", height: "50%" }}>
-                                                        {/* <Text style={{
-                                                            fontSize: 14,
-                                                            fontWeight: 400, color: "#000"
-                                                        }}>Rate</Text> */}
+                                                    <View style={{ marginTop: "2%", justifyContent: "center", paddingTop: '3%', position: "relative", height: "50%" }}>
                                                         <Text style={{
-                                                            fontSize: 17,
-                                                            fontWeight: 700, color: "#000"
+                                                            fontSize: windowwidthe * 0.035,
+                                                            fontWeight: 700,
                                                         }}>₹{item.rate}.00</Text>
                                                     </View>
                                                 </View>
-                                                {/* <View style={{
-                                                width: "15%",
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                justifyContent: "flex-end",
-                                                gap: 8,
-                                                marginLeft: 15,
-                                                marginVertical: 10,
-                                                borderRadius: 10,
-
-                                            }}>
-                                            </View> */}
                                             </View>
                                         </View>
                                     ))}
                                 </ScrollView>
                             </View>
                             <View style={{
-                                height: 250,
+                                height: "100%",
                                 // height:"auto",
                                 backgroundColor: "#FFF",
-                                paddingHorizontal:10
+                                paddingHorizontal: '2.5%',
                             }}>
                                 <View style={{
                                     width: "100%",
                                     // height:"100%",
                                     display: "flex",
                                     flexDirection: "row",
-                                    paddingTop: 30
+                                    paddingTop: '10%',
+
                                 }}>
-                                    <View style={{ width: "100%", paddingLeft: "60%" }}>
-                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
-                                            <View style={{ width: '50%', paddingTop: 2,paddingRight:4 }}>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right"}}>Rate</Text>
+                                    <View style={{ width: "100%", justifyContent: "flex-end", alignItems: "flex-end" }}>
+                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: '2.5%', width: "100%" }}>
+                                            <View style={{ width: '76%', paddingTop: 2, paddingRight: '2%' }}>
+                                                <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.035 : 22, fontWeight: 400, color: "#00000080", textAlign: "right" }}>Rate</Text>
                                             </View>
-                                            <View style={{ width: '45%' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{totalrate}.00</Text>
+                                            <View style={{ width: '24%' }}>
+                                                <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{totalrate}.00</Text>
                                             </View>
                                         </View>
-                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
-                                            <View style={{ width: '50%', paddingTop: 2 }}>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
+                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: '2.5%', width: "100%" }}>
+                                            <View style={{ width: '76%', paddingTop: 2 }}>
+                                                <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.035 : 22, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
                                             </View>
-                                            <View style={{ width: '45%' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹2.7</Text>
+                                            <View style={{ width: '24%' }}>
+                                                <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹2.7</Text>
 
                                             </View>
                                         </View>
-                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
-                                            <View style={{ width: '50%', paddingTop: 2 }}>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
+                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: '2.5%', width: "100%" }}>
+                                            <View style={{ width: '76%', paddingTop: 2 }}>
+                                                <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.035 : 22, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
                                             </View>
-                                            <View style={{ width: '45%' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹2.7</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{ width: "50%", marginLeft: "45%" }}>
-
-                                            <View style={{ borderWidth: 1 }}>
-
+                                            <View style={{ width: '24%' }}>
+                                                <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹2.7</Text>
                                             </View>
                                         </View>
-                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
-                                            <View style={{ width: '95%' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹280.40</Text>
+                                        <View style={{ width: "30%", marginLeft: "70%" }}>
+
+                                            <View style={{ borderWidth: 0.8 }}>
+
+                                            </View>
+                                        </View>
+                                        <View style={{ display: "flex", flexDirection: "row", paddingVertical: '2.5%', width: "100%" }}>
+                                            <View style={{ width: '100%' }}>
+                                                <Text style={{ fontSize:windowwidthe < 720 ? windowwidthe * 0.045:26, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹280.40</Text>
                                             </View>
                                         </View>
                                         {/* <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
@@ -397,29 +394,29 @@ const Orderlist = (props) => {
                                                 <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹28.04</Text>
                                             </View>
                                         </View> */}
-                                        <View style={{ width: "50%", marginLeft: "45%" }}>
+                                        <View style={{ width: "30%", marginLeft: "70%" }}>
 
-                                            <View style={{ borderWidth: 1 }}>
+                                            <View style={{ borderWidth: 0.8 }}>
 
                                             </View>
                                         </View>
                                     </View>
 
                                 </View>
-                                <View style={{ display: "flex", backgroundColor: "#FFF", height: "auto", flexDirection: "row" }}>
+                                <View style={{ display: "flex", backgroundColor: "#FFF", height: "auto", flexDirection: "row", marginBottom: "5%" }}>
                                     <View style={{ width: "50%" }}>
                                         <Pressable style={{
-                                            width: 165,
-                                            height: 50,
-                                            marginLeft: 5
+                                            // width: windowwidthe < 720 ? windowwidthe * 0.4:"70%",
+                                            padding:windowwidthe<720?12:20,
+                                            // padin
+                                            marginLeft: "2.5%",
+                                            backgroundColor: "#212121",
+                                            borderRadius: 7.6,
+                                            justifyContent: "center"
                                         }} onPress={showSuccessModal}>
                                             <Text style={{
                                                 color: "white",
-                                                backgroundColor: "#212121",
-                                                borderRadius: 7.6, paddingHorizontal: 33,
-                                                paddingBottom: 15,
-                                                paddingTop: 12,
-                                                fontSize: 18, fontWeight: 600,
+                                                fontSize: windowwidthe < 720 ? windowwidthe * 0.045:26, fontWeight: 600,
                                                 textAlign: "center"
                                             }}>
                                                 Place Order
@@ -434,15 +431,16 @@ const Orderlist = (props) => {
                                         // paddingTop: "2%",
                                         width: "50%",
                                         alignItems: "flex-end",
-                                        height: 50,
+                                        height: windowheight * 0.06,
                                         gap: 5,
-                                        paddingBottom: 20, paddingRight: 4
+                                        paddingBottom: 20,
+                                        backgroundColor: "#FFF",
                                     }}>
                                         <View style={{ paddingBottom: 2 }}>
-                                            <Text style={{ fontSize: 15, fontWeight: 500 }}>Total price</Text>
+                                            <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.035:22, fontWeight: 500 }}>Total price</Text>
                                         </View>
                                         <View style={{}}>
-                                            <Text style={{ fontSize: 20, fontWeight: 700 }}>₹500.00</Text>
+                                            <Text style={{ fontSize:windowwidthe < 720 ? windowwidthe * 0.045:26, fontWeight: 700 }}>₹500.00</Text>
                                         </View>
                                     </View>
                                 </View>
