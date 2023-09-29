@@ -348,7 +348,7 @@ export default function AllArticle(props) {
               >
                 <Filter onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
-                  maxArticleRate={maxArticleRate} />
+                  maxArticleRate={maxArticleRate}  status={false}/>
               </View>
             </View>
           )}

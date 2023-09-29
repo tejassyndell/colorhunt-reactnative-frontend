@@ -348,7 +348,7 @@ export default function HomeScreen(props) {
                 searchPhrase={searchText}
                 setSearchPhrase={setSearchText}
               />
-              <TouchableOpacity onPress={() => { isLoggedIn ? openFilter() : openCreateAccountModal() }}>
+              <TouchableOpacity onPress={() => { isLoggedIn ? openFilter() : openFilter() }}>
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{ width: 40, resizeMode: 'contain', height: 40, borderRadius: 10 }}
@@ -372,7 +372,7 @@ export default function HomeScreen(props) {
                   fontSize: 12,
                   fontWeight: 600,
                 }}
-                onPress={() => { isLoggedIn ? viewAllArticles() : openCreateAccountModal() }}
+                onPress={() => { isLoggedIn ? viewAllArticles() : viewAllArticles() }}
               >
                 View All
               </Text>
@@ -597,7 +597,7 @@ export default function HomeScreen(props) {
                     fontSize: 12,
                     fontWeight: 600,
                   }}
-                  onPress={() => { isLoggedIn ? viewAllArticles() : openCreateAccountModal() }}
+                  onPress={() => { isLoggedIn ? viewAllArticles() : viewAllArticles() }}
                 >
                   View All
                 </Text>

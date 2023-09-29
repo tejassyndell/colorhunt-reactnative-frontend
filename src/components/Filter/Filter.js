@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
-import { Text, View, StyleSheet, TouchableOpacity, Image, Animated, Easing } from "react-native";
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import { Text, View, StyleSheet, TouchableOpacity, Image, PanResponder, Animated, Easing } from "react-native";
 import { getCategories } from "../../api/api";
 import { useRef } from "react"
-import {PanResponder } from "react-native";
+
 export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     minArticleRate,
     maxArticleRate, status }) {
@@ -12,10 +11,8 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
     const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
     const defaultPriceRange = [0, 700];
-    const [isSliding, setIsSliding] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
-    console.log("{}{}{}{}{}{}{}{}{}");
 
     const Screenwidth = Dimensions.get('window').width
     const sliderlenghtinPercent = 60;
@@ -58,20 +55,6 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         onCloseFilter(false)
     }
 
-    const onValueChange = (newValues) => {
-        setSelectedPriceRange(newValues);
-        setIsSliding(true);
-        console.log('Selected Price Range:', newValues);
-    };
-
-    const onSlidingStart = () => {
-        setIsSliding(true);
-    };
-
-    const onSlidingComplete = () => {
-        setIsSliding(false);
-    };
-
     useEffect(() => {
         setSelectedCategories(Scategories)
     }, [Scategories])
@@ -90,46 +73,45 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
         slideUpAnimation();
     }, []);
-    const [thumb1Value, setThumb1Value] = useState(0);
-    const [thumb2Value, setThumb2Value] = useState(100);
-    const [thumb1Left, setThumb1Left] = useState(0);
-    const [thumb2Left, setThumb2Left] = useState(200);
 
-    const sliderWidth = 400; // Adjust the desired slider width
-    const minValue = 155;
-    const maxValue = 295; // Adjust the desired maximum value
+    const [leftValue, setLeftValue] = useState(0);
+    const [rightValue, setRightValue] = useState(700);
 
-    const handleMoveThumb1 = (gestureState) => {
-        const { moveX } = gestureState;
-        let newValue = (moveX / sliderWidth) * (maxValue - minValue);
-        newValue = Math.max(minValue, Math.min(newValue, thumb2Value));
-        setThumb1Value(newValue);
-        setThumb1Left(moveX);
+    const step = 100; // Change the step value as desired
+    const borderWidth = 2; // Change the border width as desired
+
+
+    const handleLeftMove = (dx) => {
+        const newLeftValue = Math.min(Math.max(leftValue + dx, 0), 700 - step);
+        const newRightValue = Math.max(rightValue, newLeftValue + step);
+        setLeftValue(Math.round(newLeftValue));
+        setRightValue(Math.round(newRightValue));
     };
 
-    const handleMoveThumb2 = (gestureState) => {
-        const { moveX } = gestureState;
-        let newValue = (moveX / sliderWidth) * (maxValue - minValue);
-        newValue = Math.max(thumb1Value, Math.min(newValue, maxValue));
-        setThumb2Value(newValue);
-        setThumb2Left(moveX);
+    const handleRightMove = (dx) => {
+        const newRightValue = Math.max(Math.min(rightValue + dx, 700), leftValue + step);
+        setRightValue(Math.round(newRightValue));
     };
 
-    const thumb1PanResponder = PanResponder.create({
+
+    const panResponderLeft = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: () => true,
-        onPanResponderMove: (evt, gestureState) => {
-            handleMoveThumb1(gestureState);
-        },
+        onPanResponderMove: (_, gestureState) => handleLeftMove(gestureState.dx),
     });
 
-    const thumb2PanResponder = PanResponder.create({
+    const panResponderRight = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onMoveShouldSetPanResponder: () => true,
-        onPanResponderMove: (evt, gestureState) => {
-            handleMoveThumb2(gestureState);
-        },
+        onPanResponderMove: (_, gestureState) => handleRightMove(gestureState.dx),
     });
+
+    console.log('Left Value:', leftValue);
+    console.log('Right Value:', rightValue);
+    useEffect(() => {
+        setSelectedPriceRange([leftValue, rightValue]);
+        console.log(selectedPriceRange, "spr in use")
+    }, [leftValue, rightValue]);
 
     return (
         <View style={[styles.container,
@@ -200,23 +182,43 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         <Text style={styles.label}>Price Range</Text>}
 
                     <View style={styles.sliderContainer}>
-                        <Text>{minArticleRate}</Text>
-                        <View style={stylesslider.container}>
-                            <View style={stylesslider.sliderTrack} />
-                            <View
-                                style={[stylesslider.thumb, { left: thumb1Left }]}
-                                {...thumb1PanResponder.panHandlers}
-                            >
-                                <Text style={stylesslider.thumbText}>{thumb1Value}</Text>
-                            </View>
-                            <View
-                                style={[stylesslider.thumb, { left: thumb2Left }]}
-                                {...thumb2PanResponder.panHandlers}
-                            >
-                                <Text style={stylesslider.thumbText}>{thumb2Value}</Text>
-                            </View>
+                        <View style={{ width: "5%" }}>
+                            <Text >{leftValue}</Text>
                         </View>
-                        <Text>{maxArticleRate}</Text>
+                        <View style={{ width: "80%" }}>
+                            <View style={styles.sliderContainer}>
+                                <View style={{ width: "100%" }}>
+                                    <View style={styleslider.sliderContainer}>
+                                        <View style={styleslider.slider}>
+                                            <View style={styleslider.border} />
+                                            <View
+                                                style={[
+                                                    styleslider.thumb,
+                                                    { left: `${(leftValue / 700) * 100}%`, borderColor: 'black' }, // Adjust the left handle's position here
+                                                ]}
+                                                {...panResponderLeft.panHandlers} // Attach the panResponderLeft here
+                                            >
+                                                <Text style={styleslider.thumbText}>{leftValue}</Text>
+                                            </View>
+                                            <View
+                                                style={[
+                                                    styleslider.thumb,
+                                                    { left: `${(rightValue / 700) * 100}%`, borderColor: 'black' },
+                                                ]}
+                                                {...panResponderRight.panHandlers}
+                                            >
+                                                <Text style={styleslider.thumbText}>{rightValue}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+
+                        </View>
+                        <View style={{ width: "15%", zIndex: -5 }}>
+                            <Text style={{ textAlign: "right" }}>{700}</Text>
+                        </View>
+
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -244,6 +246,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                     </TouchableOpacity>
                 </View>
             </Animated.View>
+
         </View>
     );
 }
@@ -356,9 +359,10 @@ const styles = StyleSheet.create({
     },
     sliderContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        // alignItems: 'center',
+        // justifyContent: 'space-between',
         width: '100%',
+
     },
     resetButton: {
         backgroundColor: 'white',
@@ -400,29 +404,50 @@ const styles = StyleSheet.create({
     },
 });
 
-const stylesslider = StyleSheet.create({
-    container: {
-        width: 200,
-        height: 40,
-        flexDirection: "row",
-        alignItems: "center",
+const styleslider = StyleSheet.create({
+    // sliderContainer: {
+    //     flex: 1,
+    //     // justifyContent: 'center',
+    //     // alignItems: 'center',
+    //     paddingHorizontal: 10,
+    // },
+    slider: {
+        flexDirection: 'row',
+        height: 20,
+        // backgroundColor: 'lightgray',
+        borderRadius: 10,
+        position: 'relative',
     },
-    sliderTrack: {
-        flex: 1,
-        height: 5,
-        backgroundColor: "lightgray",
+    border: {
+        position: 'absolute',
+        // height: '100%',
+        width: '100%',
+        top: 7.5,
+        borderWidth: 1,
+        borderColor: 'black',
+        zIndex: -1,
     },
     thumb: {
-        position: "absolute",
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: "blue",
-        alignItems: "center",
-        justifyContent: "center",
+        width: 15,
+        height: 15,
+        backgroundColor: 'black',
+        borderRadius: 10,
+        position: 'absolute',
+        borderWidth: 2,
+        borderColor: 'black',
+        zIndex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     thumbText: {
-        color: "white",
-        fontWeight: "bold",
+        // marginTop:30,
+        width: 30,
+        textAlign: "center",
+        position: "absolute",
+        top: 10,
+        color: 'black',
+        fontSize: 17,
+        fontWeight: 500
     },
+
 });
