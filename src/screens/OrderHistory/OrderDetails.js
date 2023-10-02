@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions,Image } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions,Image,Platform,ActivityIndicator } from "react-native";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useLayoutEffect } from "react";
 import React, { useState } from 'react';
@@ -16,9 +16,11 @@ const OrderDetails = (props) => {
     const { sonumber, CreatedDate, remarks, transport = null, gst = null } = route.params;
     console.log(remarks, "{}{}{}{}{}{}{}{}");
     const [newPrint, setNewPrint] = useState(false);
+    const [isloading, setIsLoading] = useState(true);
     const { width, height } = Dimensions.get("window");
     const [partydata, setpartydata] = useState();
     const [sodetails, setsodetials] = useState([]);
+    const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
 
     console.log(newPrint);
 
@@ -49,6 +51,10 @@ const OrderDetails = (props) => {
                 </View>
             ),
             headerRight: () => <View />,
+            headerStyle: {
+                height: headerHeight // Increase the header height here
+            },
+
 
         });
     }, []);
@@ -163,17 +169,25 @@ const OrderDetails = (props) => {
         await getSoArticleDetails(data).then((res) => {
             if (res.status === 200) {
                 setTableData({
-                    tableHead: ['SN', 'ARTICLE', 'CATEGORY', 'SIZE’s', 'COLORWISE QTY IN PCS', 'TOTAL QTY', 'RATE', 'AMOUNT'],
+                    tableHead: ['SN', 'ARTICLE', 'CATEGORY', 'SIZES', 'COLORWISE QTY IN PCS', 'TOTAL QTY', 'RATE', 'AMOUNT'],
                     tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
                 })
                 settotle(res.data)
                 settotalqut(res.data)
                 setsodetials(res.data)
+                setIsLoading(false)
 
                 // console.log(res.data);
             }
         })
     }
+    const calculateRowHeight = (rowData) => {
+        // You can adjust this logic based on your data and requirements
+        // For example, you can calculate the height based on the length of text in the row.
+        const textLength = rowData.someField.length; // Adjust to the actual field in your data
+        console.log(textLength * 40,'ksadksakndk');
+        return textLength * 40; // Adjust the multiplier based on your desired row height calculation
+      };
 
     useEffect(() => {
         orderdetils()
@@ -185,7 +199,18 @@ const OrderDetails = (props) => {
     }
 
     return (
-        <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%' }}>
+        <>
+        {isloading ?
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <ActivityIndicator
+                        size="large"
+                        color="black"
+                    />
+                </View> :   <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%' }}>
             {newPrint === true ? (
                 <View>
                     <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, }}>
@@ -293,7 +318,8 @@ const OrderDetails = (props) => {
                                                 data={tableData ? tableData.tableData : ""}
                                                 textStyle={{ margin: 6, textAlign: 'center', fontSize: width >= 720 ? 16 : 13 }}
                                                 style={{
-                                                    height: width >= 720 ? 50 : 40,
+                                                    height: width >= 720 ? 50 : 'auto',
+                                                    paddingHorizontal:20,
                                                     width: 'auto',
                                                 }}
                                                 widthArr={widthArr} // Apply column widths to the data rows
@@ -394,7 +420,7 @@ const OrderDetails = (props) => {
                                     width: '48%',
                                     borderWidth: 2,
                                     borderRadius: 6,
-                                    borderColor: '#808080',
+                                    borderColor: transport !== null ? "black" : '#808080',
                                     paddingStart: 10,
                                     justifyContent: "center"
                                 }}
@@ -416,7 +442,7 @@ const OrderDetails = (props) => {
                                     width: '48%',
                                     borderWidth: 2,
                                     borderRadius: 6,
-                                    borderColor: '#808080',
+                                    borderColor: gst !== null ? "black" :'#808080',
                                     paddingStart: 10,
                                     justifyContent: "center"
                                 }}
@@ -436,7 +462,7 @@ const OrderDetails = (props) => {
                                     width: '48%',
                                     borderWidth: 2,
                                     borderRadius: 6,
-                                    borderColor: '#808080',
+                                    borderColor:remarks !== "" ? "black" : '#808080',
                                     paddingStart: 10,
                                     justifyContent: 'center'
                                 }}
@@ -480,10 +506,10 @@ const OrderDetails = (props) => {
                                                     <Rows
                                                         data={tableData ? tableData.tableData : ""}
                                                         textStyle={{ margin: 6, textAlign: 'center', fontSize: width >= 720 ? 16 : 13 }}
-                                                        style={{
-                                                            height: width >= 720 ? 50 : 40,
+                                                        style={({ index }) => ({
+                                                            height: calculateRowHeight(tableData.tableData[index]), // Call a function to calculate row height based on content
                                                             width: 'auto',
-                                                        }}
+                                                          })}
                                                         widthArr={widthArr} // Apply column widths to the data rows
                                                     />
                                                 </Table>
@@ -531,7 +557,9 @@ const OrderDetails = (props) => {
 
 
 
-        </View>
+        </View>}
+        </>
+      
 
     )
 }

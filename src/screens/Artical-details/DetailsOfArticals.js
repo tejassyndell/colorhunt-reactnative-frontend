@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableHighlight, TouchableOpacity, Pressable, ScrollView, Modal,Dimensions } from "react-native"
+import { View, Text, Image, TouchableHighlight, TouchableOpacity, Pressable, ScrollView, Modal,Dimensions,Platform} from "react-native"
 import { ArticleDetails, addto_cart, findfromthecart, updateCartArticale } from '../../api/api'
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
@@ -44,6 +44,7 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
 
 
 
@@ -231,7 +232,11 @@ const DetailsOfArticals = (props) => {
         />
       ), headerTitle: () => (
         <View />
-      )
+      ),
+      headerStyle: {
+        height: headerHeight // Increase the header height here
+    },
+
     });
   }, []);
 

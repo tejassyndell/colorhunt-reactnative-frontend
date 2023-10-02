@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   Dimensions,
+  Platform
 } from "react-native";
 // import Image from 'react-native-responsive-image';
 import styles from "./styles";
@@ -45,6 +46,7 @@ export default function HomeScreen(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
   // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
   const [kidsdata, setkidsdata] = useState([])
   // const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
@@ -278,7 +280,7 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: width >= 720 ? 90 : 90,
+        height: headerHeight
         // backgroundColor: "black",
       },
     });

@@ -28,7 +28,7 @@ export default function Contact(props) {
   const [inputHeight, setInputHeight] = useState();
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
-
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
   const numberOfLines = 4;
   const lineHeight = 25;
   const multilineHeight = numberOfLines * lineHeight;
@@ -133,6 +133,10 @@ export default function Contact(props) {
           </Text>
         </View>
       ),
+      headerStyle: {
+        height: headerHeight // Increase the header height here
+    },
+
     });
   }, []);
 
