@@ -207,9 +207,19 @@ export const getsonumber = async (data) => {
 };
 
 
-export const getSoArticleDetails = async ()=>{
+export const getSoArticleDetails = async (data)=>{
+  console.log(data);
   try {
-    return await axios.post(`${url}/getsoarticledetails`, {sonumber:18});
+    return await axios.post(`${url}/getsoarticledetails`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+}
+
+export const udatepartytoken = async (data)=>{
+  console.log(data);
+  try {
+    return await axios.post(`${url}/udatepartytoken`, data);
   } catch (err) {
     console.log(err, "err in react api");
   }
