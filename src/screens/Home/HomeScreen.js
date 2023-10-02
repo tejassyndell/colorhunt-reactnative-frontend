@@ -223,7 +223,7 @@ export default function HomeScreen(props) {
         <View
           style={{
             marginLeft: 5,
-            width: width >= 720 ? 60 : 50,
+            width: 50,
             height: 100,
             display: "flex",
             justifyContent: "center",
@@ -238,9 +238,9 @@ export default function HomeScreen(props) {
             <Image
               source={require("../../../assets/sidbarOpenIcone.png")}
               style={{
-                width: width >= 720 ? 45 : 38,
-                height: width >= 720 ? 45 : 38,
-                resizeMode: "contain",
+                width: width >= 720 ? 50 : 35,
+                height: width >= 720 ? 50 : 35,
+                // resizeMode: "contain",
                 borderRadius: 5,
               }}
             ></Image>
@@ -252,10 +252,9 @@ export default function HomeScreen(props) {
         <View
           style={{
             marginHorizontal: 10,
-            width: width >= 720 ? 45 : 38,
-            height: width >= 720 ? 45 : 38,
+            width: "auto",
+            height: "auto",
             padding: 4,
-            marginRight: 10
           }}
         >
           <TouchableOpacity
@@ -268,18 +267,22 @@ export default function HomeScreen(props) {
           >
             <Image
               style={{
-                resizeMode: "contain",
-                width: width >= 720 ? 45 : 38,
-                height: width >= 720 ? 45 : 38,
+                // resizeMode: "contain",
+                width: width >= 720 ? 50 : 35,
+                height: width >= 720 ? 50 : 35,
               }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
           </TouchableOpacity>
         </View>
       ),
+      headerTitle: () => null, // Remove the header title
+      headerStyle: {
+        height: width >= 720 ? 90 : 90,
+        // backgroundColor: "black",
+      },
     });
   }, []);
-
   const handlePress = (item) => {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
@@ -496,8 +499,8 @@ export default function HomeScreen(props) {
                             alignItems: "center",
                             width: width >= 720 ? 300 : 155, // Adjust the width for tablets
                             height: width >= 720 ? 280 : 280,
-                            marginLeft: 10,
-                            marginRight: 5,
+                            marginLeft: width >= 720 ? 15 : 10,
+                          marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
                           }}
                         // style={styles.contener2}
@@ -601,8 +604,8 @@ export default function HomeScreen(props) {
                           alignItems: "center",
                           height: "auto",
                           width: width >= 720 ? 300 : 165,
-                          marginLeft: 5,
-                          marginRight: 5,
+                          marginLeft: width >= 720 ? 15 : 5,
+                          marginRight: width >= 720 ? 15 : 5,
                           marginTop: 10,
                           marginBottom: 10,
                           borderRadius: 10,
@@ -676,8 +679,8 @@ export default function HomeScreen(props) {
                         alignItems: "center",
                         justifyContent: "center",
                         width: width >= 720 ? 300 : 200,
-                        marginLeft: 5,
-                        marginRight: 5,
+                        marginLeft: width >= 720 ? 15 : 5,
+                        marginRight: width >= 720 ? 15 : 5,
                       }}
                     // style={styles.contener2}
                     >
@@ -762,9 +765,9 @@ export default function HomeScreen(props) {
                           alignItems: "center",
                           width: width >= 720 ? 300 : 155, // Adjust the width for tablets
                           height: width >= 720 ? 280 : 280,
-                          marginLeft: 10,
-                          marginRight: 5,
-                          marginBottom: 120,
+                          marginLeft: width >= 720 ? 15 : 10,
+                          marginRight: width >= 720 ? 15 : 5,
+                          marginBottom: width >= 720 ? '4%' : 120,
                           borderRadius: 10,
                         }}
                       >
