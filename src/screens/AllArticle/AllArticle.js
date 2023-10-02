@@ -179,6 +179,7 @@ export default function AllArticle(props) {
       );
 
       setFinalData(filtered);
+
       setNoArticlesFound(filtered.length === 0);
     }
   };
@@ -299,6 +300,7 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
+    console.log(priceRange,"All")
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -309,16 +311,6 @@ export default function AllArticle(props) {
     setIsFilterVisible((prev) => !prev);
   };
 
-  useEffect(() => {
-    const abc = nameDatas.filter(
-      (item) =>
-        (!selectedCategories.length ||
-          selectedCategories.includes(item.Category)) &&
-        item.ArticleRate >= selectedPriceRange[0] &&
-        item.ArticleRate <= selectedPriceRange[1]
-    );
-    setFinalData(abc);
-  }, [selectedCategories, selectedPriceRange]);
 
   useEffect(() => {
     const minRate = finalData.reduce((min, item) => {

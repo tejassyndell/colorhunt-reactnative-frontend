@@ -105,12 +105,8 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         onMoveShouldSetPanResponder: () => true,
         onPanResponderMove: (_, gestureState) => handleRightMove(gestureState.dx),
     });
-
-    console.log('Left Value:', leftValue);
-    console.log('Right Value:', rightValue);
     useEffect(() => {
         setSelectedPriceRange([leftValue, rightValue]);
-        console.log(selectedPriceRange, "spr in use")
     }, [leftValue, rightValue]);
 
     return (

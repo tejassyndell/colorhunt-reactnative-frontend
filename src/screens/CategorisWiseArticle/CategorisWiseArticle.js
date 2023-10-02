@@ -36,6 +36,7 @@ export default function CategorisWiseArticle(props) {
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
+  const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   const { width, height } = Dimensions.get("window");
 
@@ -161,23 +162,37 @@ export default function CategorisWiseArticle(props) {
 
   useEffect(() => {
     filterData();
-  }, [searchText, nameDatas]);
+  }, [searchText, nameDatas,selectedCategories,selectedPriceRange]);
 
   const filterData = () => {
-    if (searchText === "") {
-      setFinalData(nameDatas);
+    if (
+      searchText === "" &&
+      selectedCategories.length === 0 &&
+      selectedPriceRange.length === 0
+    ) {
+      setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
       const filtered = nameDatas.filter(
         (item) =>
-          item.ArticleNumber.toString().includes(searchText.toString()) ||
-          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-          item.ArticleRate.toString().includes(searchText.toString()) ||
-          item.StyleDescription.toLowerCase().includes(
-            searchText.toLowerCase()
-          ) ||
-          item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
+          (searchText === "" || // Check if searchText is empty or matches any criteria
+            item.ArticleNumber.toString().includes(searchText.toString()) ||
+            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.ArticleRate.toString().includes(searchText.toString()) ||
+            item.StyleDescription.toLowerCase().includes(
+              searchText.toLowerCase()
+            ) ||
+            item.Subcategory.toLowerCase().includes(
+              searchText.toLowerCase()
+            )) &&
+          (selectedCategories.length === 0 ||
+            selectedCategories.includes(item.Category)) &&
+          (selectedPriceRange.length === 0 ||
+            (item.ArticleRate >= selectedPriceRange[0] &&
+              item.ArticleRate <= selectedPriceRange[1]))
       );
+
       setFinalData(filtered);
+      setNoArticlesFound(filtered.length === 0);
     }
   };
 
@@ -286,37 +301,29 @@ export default function CategorisWiseArticle(props) {
       </View>
     </View>
   );
-  // const handleFilterChange = (categories, priceRange) => {
-  //   setSelectedCategories(categories);
-  //   setSelectedPriceRange(priceRange);
-  //   setSearchText(""); // Reset the search text
+  const handleFilterChange = (categories, priceRange) => {
+    setSelectedCategories(categories);
+    setSelectedPriceRange(priceRange);
+    setSearchText(""); // Reset the search text
 
-  //   // Filter based on selected categories and price range
-  //   const filteredData = nameDatas.filter((item) =>
-  //     selectedCategories.includes(item.Category) &&
-  //     item.ArticleRate >= selectedPriceRange[0] &&
-  //     item.ArticleRate <= selectedPriceRange[1]
-  //   );
-  //   setFinalData(filteredData);
-  // };
+    // Trigger the filter function
+    filterData();
+  };
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
 
-  useEffect(
-    () => {
-      const abc = nameDatas.filter(
-        (item) =>
-          (!selectedCategories.length ||
-            selectedCategories.includes(item.Category)) &&
-          item.ArticleRate >= selectedPriceRange[0] &&
-          item.ArticleRate <= selectedPriceRange[1]
-      );
-      setFinalData(abc);
-    },
-    [selectedCategories],
-    [selectedPriceRange]
-  );
+  useEffect(() => {
+    const abc = nameDatas.filter(
+      (item) =>
+        (!selectedCategories.length ||
+          selectedCategories.includes(item.Category)) &&
+        item.ArticleRate >= selectedPriceRange[0] &&
+        item.ArticleRate <= selectedPriceRange[1]
+    );
+    setFinalData(abc);
+  }, [selectedCategories, selectedPriceRange]);
+
   useEffect(() => {
     const minRate = finalData.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
