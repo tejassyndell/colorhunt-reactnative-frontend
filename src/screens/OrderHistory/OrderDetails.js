@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions,Image } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions, Image } from "react-native";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useLayoutEffect } from "react";
 import React, { useState } from 'react';
@@ -7,7 +7,6 @@ import { Table, Row, Rows } from 'react-native-table-component';
 import Textarea from 'react-native-textarea';
 import { getSoArticleDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 // import RNHTMLtoPDF from "react-native-html-to-pdf"
 
 const OrderDetails = (props) => {
@@ -70,20 +69,20 @@ const OrderDetails = (props) => {
         return sodetails.map((item, index) => {
             // Parse ArticleSize JSON string to extract sizes
             const sizes = JSON.parse(item.ArticleSize).map(sizeObj => sizeObj.Name).join(', ');
-    
+
             // Parse ArticleColor JSON string to extract color names
             const colors = JSON.parse(item.ArticleColor).map(colorObj => colorObj.Name);
-    
+
             // Split OutwardNoPacks by commas and map to integers
             const outwardNoPacksArray = item.OutwardNoPacks.split(',').map(value => parseInt(value, 10));
-    
+
             // Calculate the total quantity from OutwardNoPacks
             const totalQuantity = outwardNoPacksArray.reduce((accumulator, quantity) => accumulator + quantity, 0);
-    
+
             // Combine ArticleColor and OutwardNoPacks
             const colorPacksCombination = (
-        
-                <View style={{ flexDirection: 'row',flexWrap:"wrap",justifyContent:"center",alignContent:"center",alignItems:"center"}}>
+
+                <View style={{ flexDirection: 'row', flexWrap: "wrap", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
                     {colors.map((color, i) => (
                         <Text key={i} style={{ marginHorizontal: 2 }}>
                             <Text style={{ fontWeight: 'bold' }}>{color}:</Text>
@@ -92,10 +91,10 @@ const OrderDetails = (props) => {
                     ))}
                 </View>
             );
-    
+
             // Calculate the total amount for this item
             const totalAmount = item.ArticleRate * totalQuantity;
-    
+
             return [
                 (index + 1).toString(), // SN
                 item.Title, // ARTICLE
@@ -108,7 +107,7 @@ const OrderDetails = (props) => {
             ];
         });
     };
-    
+
 
     const [tableData, setTableData] = useState({});
     const [totalval, setotalval] = useState(0);
@@ -536,7 +535,7 @@ const OrderDetails = (props) => {
                                 height: width >= 720 ? 70 : 50,
                                 borderRadius: 5
                             }}>
-                                <Image source={require("../../../assets/pdf.png")}  style={{ width: "100%", height: "100%", resizeMode: 'contain' }} >
+                                <Image source={require("../../../assets/pdf.png")} style={{ width: "100%", height: "100%", resizeMode: 'contain' }} >
 
                                 </Image>
                             </View>
