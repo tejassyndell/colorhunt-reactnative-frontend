@@ -109,11 +109,16 @@ const { width, height } = Dimensions.get("window");
         <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
           <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
             <Image  style={{ resizeMode: "contain", 
-              width: width >= 720 ? 45 : 38,
-              height: width >= 720 ? 45 : 38, }} source={require("../../../assets/Nevbar/Profile.png")} />
+              width: width >= 720 ? 55 : 38,
+              height: width >= 720 ? 55 : 38, }} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
-        </View>)
-    });
+        </View>
+
+        ),
+        headerStyle: {
+        height: width >= 720 ? 120 : 120, // Increase the header height here
+      },
+      });
   }, []);
 
 
