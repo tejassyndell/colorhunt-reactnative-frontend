@@ -215,19 +215,19 @@ export default function CategorisWiseArticle(props) {
     </View>
 
   );
-  const handleFilterChange = (categories, priceRange) => {
-    setSelectedCategories(categories);
-    setSelectedPriceRange(priceRange);
-    setSearchText(""); // Reset the search text
+  // const handleFilterChange = (categories, priceRange) => {
+  //   setSelectedCategories(categories);
+  //   setSelectedPriceRange(priceRange);
+  //   setSearchText(""); // Reset the search text
 
-    // Filter based on selected categories and price range
-    const filteredData = nameDatas.filter((item) =>
-      selectedCategories.includes(item.Category) &&
-      item.ArticleRate >= selectedPriceRange[0] &&
-      item.ArticleRate <= selectedPriceRange[1]
-    );
-    setFinalData(filteredData);
-  };
+  //   // Filter based on selected categories and price range
+  //   const filteredData = nameDatas.filter((item) =>
+  //     selectedCategories.includes(item.Category) &&
+  //     item.ArticleRate >= selectedPriceRange[0] &&
+  //     item.ArticleRate <= selectedPriceRange[1]
+  //   );
+  //   setFinalData(filteredData);
+  // };
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev)
   };
