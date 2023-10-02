@@ -89,22 +89,21 @@ const Drawer = createDrawerNavigator();
 
 function DrawerStack() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  async function fetchData() {
+    try {
+      const userData = await AsyncStorage.getItem("UserData");
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        if (parsedUserData.length > 0) {
+          setIsLoggedIn(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
   useEffect(() => {
     // Fetch user data and update state variables accordingly
-    async function fetchData() {
-      try {
-        const userData = await AsyncStorage.getItem("UserData");
-        if (userData) {
-          const parsedUserData = JSON.parse(userData);
-          if (parsedUserData.length > 0) {
-            setIsLoggedIn(true);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    }
-
     fetchData();
   }, []);
   return (

@@ -70,31 +70,45 @@ const OrderDetails = (props) => {
         return sodetails.map((item, index) => {
             // Parse ArticleSize JSON string to extract sizes
             const sizes = JSON.parse(item.ArticleSize).map(sizeObj => sizeObj.Name).join(', ');
-
+    
             // Parse ArticleColor JSON string to extract color names
             const colors = JSON.parse(item.ArticleColor).map(colorObj => colorObj.Name);
-
+    
             // Split OutwardNoPacks by commas and map to integers
             const outwardNoPacksArray = item.OutwardNoPacks.split(',').map(value => parseInt(value, 10));
-
+    
             // Calculate the total quantity from OutwardNoPacks
             const totalQuantity = outwardNoPacksArray.reduce((accumulator, quantity) => accumulator + quantity, 0);
-
+    
+            // Combine ArticleColor and OutwardNoPacks
+            const colorPacksCombination = (
+        
+                <View style={{ flexDirection: 'row',flexWrap:"wrap",justifyContent:"center",alignContent:"center",alignItems:"center"}}>
+                    {colors.map((color, i) => (
+                        <Text key={i} style={{ marginHorizontal: 2 }}>
+                            <Text style={{ fontWeight: 'bold' }}>{color}:</Text>
+                            {String(outwardNoPacksArray[i] || 0).padStart(2, '0')}<Text>,</Text>
+                        </Text>
+                    ))}
+                </View>
+            );
+    
             // Calculate the total amount for this item
             const totalAmount = item.ArticleRate * totalQuantity;
-
+    
             return [
                 (index + 1).toString(), // SN
                 item.Title, // ARTICLE
                 item.CategoryId.toString(), // CATEGORY (You may need to map CategoryId to the actual category name)
                 sizes, // SIZE's
-                colors.join(', '), // COLORWISE QTY IN PCS (Extracted color names, joined)
+                colorPacksCombination, // COLOR:PACKS combination
                 totalQuantity.toString(), // TOTAL QTY
                 '₹' + item.ArticleRate + '.00', // RATE
                 '₹' + totalAmount.toFixed(2), // AMOUNT
             ];
         });
     };
+    
 
     const [tableData, setTableData] = useState({});
     const [totalval, setotalval] = useState(0);
@@ -166,6 +180,7 @@ const OrderDetails = (props) => {
                     tableHead: ['SN', 'ARTICLE', 'CATEGORY', 'SIZE’s', 'COLORWISE QTY IN PCS', 'TOTAL QTY', 'RATE', 'AMOUNT'],
                     tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
                 })
+
                 settotle(res.data)
                 settotalqut(res.data)
                 setsodetials(res.data)

@@ -25,18 +25,20 @@ const Orderlist = (props) => {
     const windowwidthe = parseInt(Dimensions.get("window").width);
     const windowheight = parseInt(Dimensions.get("window").height);
     const AddSo = async () => {
+        let userdata =await AsyncStorage.getItem('UserData')  
+        userdata = await JSON.parse(userdata)
         let Articldata = ParsedData.map(({ article_id, articleRate, ArticleColor, ArticleOpenFlag, Quantity }) => ({ article_id, articleRate, ArticleColor, ArticleOpenFlag, Quantity }))
         const data = {
             Date: currentDate,
             Destination: destinationVal,
             Transporter: transportationVal,
-            GSTType: "GST",
+            GSTType: userdata[0].GSTType,
             GST: "",
-            GST_Percentage: "",
-            PartyId: 197,
+            GST_Percentage: "5",
+            PartyId: userdata[0].Id,
             Remarks: "",
             SoNumberId: "Add",
-            UserId: 38,
+            UserId:  userdata[0].UserId,
             DataArticle: Articldata,
             NoPacksNew: null
         }
