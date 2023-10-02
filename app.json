@@ -6,12 +6,12 @@
     "privacy": "public",
     "version": "1.0.0",
     "orientation": "portrait",
+    "platforms": ["ios", "android"],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "notification": {
       "icon": "./assets/icon.png",
-      "color": "#007AFF",
-      "projectId": "colorhunt-c7e5d" 
+      "color": "#007AFF"
     },
     "splash": {
       "image": "./assets/splash.png",

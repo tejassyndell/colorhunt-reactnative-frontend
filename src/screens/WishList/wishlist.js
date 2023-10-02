@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
+  Platform
 } from "react-native";
 import {
   getProductName,
@@ -25,6 +26,7 @@ export default function WishList(props) {
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
@@ -104,7 +106,7 @@ export default function WishList(props) {
       ),
       headerRight: () => <View />,
       headerStyle: {
-        height: width >= 720 ? 120 : 120, // Increase the header height here
+        height: headerHeight // Increase the header height here
       },
     });
   }, []);

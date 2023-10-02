@@ -2,7 +2,7 @@ const { View, Text, Image, TouchableOpacity, ActivityIndicator } = require("reac
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { Pressable } from 'react-native';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions,Platform } from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { getsonumber } from '../../api/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,6 +23,7 @@ const OrderHistory = (props) => {
     const [selectedDate, setSelectedDate] = useState('DD/MM/YYYY');
     const [selectedDateIncompleted, setSelectedDateIncompleted] = useState('DD/MM/YYYY');
     const [completedsodata, setcompletedsodata] = useState();
+    const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
     const toggleCalendar = () => {
         setCalendarVisible(!isCalendarVisible);
     };
@@ -121,7 +122,7 @@ const OrderHistory = (props) => {
             ),
             headerRight: () => <View />,
             headerStyle: {
-                height: width >= 720 ? 120 : 90, // Increase the header height here
+                height: headerHeight // Increase the header height here
             },
 
         });

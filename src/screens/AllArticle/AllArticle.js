@@ -1,18 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  Dimensions,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import {
-  getProductName,
-  getWishlistData,
-  getAddWishlist,
-  DeleteWishlist,
-} from "../../api/api";
+import { Text, View, Image, Dimensions, FlatList, TouchableOpacity,Platform } from "react-native";
+import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
@@ -37,6 +25,7 @@ export default function AllArticle(props) {
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   const { width, height } = Dimensions.get("window");
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
@@ -116,33 +105,17 @@ export default function AllArticle(props) {
       ),
       headerTitle: () => <View />,
       headerRight: () => (
-        <View
-          style={{
-            marginHorizontal: 10,
-            width: "auto",
-            height: "auto",
-            padding: 4,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Profile");
-            }}
-          >
-            <Image
-              style={{
-                resizeMode: "contain",
-                width: width >= 720 ? 50 : 35,
-                height: width >= 720 ? 50 : 35,
-              }}
-              source={require("../../../assets/Nevbar/Profile.png")}
-            />
+        <View style={{ marginHorizontal: 10, width: "auto", height: "auto", padding: 4 }}>
+          <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
+            <Image  style={{ resizeMode: "contain", 
+              width: width >= 720 ? 55 : 32,
+              height: width >= 720 ? 55 : 32, }} source={require("../../../assets/Nevbar/Profile.png")} />
           </TouchableOpacity>
         </View>
-      ),
-      headerStyle: {
-        height: width >= 720 ? 120 : 120,
-        // backgroundColor: "black",
+
+        ),
+        headerStyle: {
+        height: headerHeight // Increase the header height here
       },
     });
   }, []);
