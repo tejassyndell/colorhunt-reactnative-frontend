@@ -313,12 +313,12 @@ export default function AllArticle(props) {
 
 
   useEffect(() => {
-    const minRate = finalData.reduce((min, item) => {
+    const minRate = nameDatas.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate < min ? articleRate : min;
     }, Infinity);
 
-    const maxRate = finalData.reduce((max, item) => {
+    const maxRate = nameDatas.reduce((max, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate > max ? articleRate : max;
     }, -Infinity);
