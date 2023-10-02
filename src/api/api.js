@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from "axios";
-const url = "http://10.0.2.2:4000";
-// const url = "http://localhost:4000";
+// const url = "http://10.0.2.2:4000";
+const url = "http://localhost:4000";
 // const url = 'https://colorhunt-mobile-backend.sincprojects.com'
 // const url = 'https://garment-backend.sincprojects.com'
 
@@ -206,21 +206,20 @@ export const getsonumber = async (data) => {
   }
 };
 
-
-export const getSoArticleDetails = async (data)=>{
+export const getSoArticleDetails = async (data) => {
   console.log(data);
   try {
     return await axios.post(`${url}/getsoarticledetails`, data);
   } catch (err) {
     console.log(err, "err in react api");
   }
-}
+};
 
-export const udatepartytoken = async (data)=>{
+export const udatepartytoken = async (data) => {
   console.log(data);
   try {
     return await axios.post(`${url}/udatepartytoken`, data);
   } catch (err) {
     console.log(err, "err in react api");
   }
-}
+};

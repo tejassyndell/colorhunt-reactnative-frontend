@@ -76,9 +76,7 @@ const SliderScreen = (props) => {
               }}
             />
 
-            <Text
-              style={[styles.slideText1, { marginTop: 30, fontWeight: "bold" }]}
-            >
+            <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
               Flat{"\n"}40-50% OFF*
             </Text>
             <TouchableOpacity
@@ -108,7 +106,6 @@ const SliderScreen = (props) => {
               style={[
                 styles.slideText1,
                 {
-                  marginTop: 20,
                   fontWeight: "500",
                 },
               ]}
@@ -142,9 +139,7 @@ const SliderScreen = (props) => {
               }}
             />
 
-            <Text style={[styles.slideText1, { marginTop: 20 }]}>
-              BEST{"\n"}PICKS
-            </Text>
+            <Text style={[styles.slideText1]}>BEST{"\n"}PICKS</Text>
             <Text style={[styles.slideText2, { color: "black" }]}>
               FLAT{"\n"}50% OFF*
             </Text>
@@ -202,7 +197,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontSize: width >= 720 ? 30 : 15,
+    fontSize: width >= 720 ? 30 : 20,
     fontWeight: "bold",
   },
   contain1: {

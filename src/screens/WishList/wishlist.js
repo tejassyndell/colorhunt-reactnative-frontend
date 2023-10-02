@@ -123,7 +123,7 @@ export default function WishList(props) {
         alignItems: "center",
         elevation: 10,
         height: "auto",
-        width: width >= 720 ? '22%' : '45%',
+        width: width >= 720 ? "22%" : "45%",
         marginHorizontal: 12,
         marginTop: 10,
         borderColor: "grey",
@@ -140,17 +140,11 @@ export default function WishList(props) {
           alignItems: "center",
           height: "auto",
           width: width >= 720 ? 180 : 180,
-          // marginLeft: 5,
-          // marginTop: 8,
-          // marginBottom: 20,
-          // borderRadius: 10,
-          borderColor: "gray",
-          // Add shadow properties for iOS
         }}
       >
         <View
           style={{
-            width: width >= 720 ? '80%' : '80%', // Adjust the width for tablets
+            width: width >= 720 ? "80%" : "80%", // Adjust the width for tablets
             height: width >= 720 ? 200 : 190,
             borderColor: "gray",
             shadowColor: "#000000",
@@ -186,7 +180,7 @@ export default function WishList(props) {
 
           <Image
             source={{ uri: baseImageUrl + item.article_photos }}
-            style={{ flex: 1, resizeMode: "contain", borderRadius: 10 }}
+            style={{ flex: 1, borderRadius: 10 }}
           />
         </View>
         <Text style={{ fontWeight: "bold", marginTop: 12 }}>

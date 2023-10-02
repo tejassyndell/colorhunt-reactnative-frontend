@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     zIndex: 2,
     right: width >= 720 ? 10 : 15,
-    top:  12,
+    top: 12,
   },
   icon: {
     width: "100%",

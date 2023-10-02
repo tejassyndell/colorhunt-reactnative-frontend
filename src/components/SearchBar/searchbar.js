@@ -1,27 +1,31 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, View, Keyboard, Button, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Keyboard,
+  Button,
+  Dimensions,
+} from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
 
 const SearchBar = ({ clicked, searchPhrase, setSearchPhrase }) => {
-
   return (
     <View style={styles.container}>
       <View
         style={
-          clicked
-            ? styles.searchBar__clicked
-            : styles.searchBar__unclicked
+          clicked ? styles.searchBar__clicked : styles.searchBar__unclicked
         }
       >
-        {/* search Icon */}
+        {/* {/ search Icon /} */}
         <Feather
           name="search"
-          size={ width >= 720 ? 30 : 20}
+          size={width >= 720 ? 30 : 20}
           color="black"
           style={{ marginLeft: 1 }}
         />
-        {/* Input field */}
+        {/* {/ Input field /} */}
         <TextInput
           style={styles.input}
           placeholder="Search"
@@ -32,14 +36,20 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase }) => {
           }}
         />
 
-        {/* cross Icon, depending on whether the search bar is clicked or not */}
+        {/* {/ cross Icon, depending on whether the search bar is clicked or not /} */}
         {clicked && (
-          <Entypo name="cross" size={20} color="black" style={{ padding: 1 }} onPress={() => {
-            setSearchPhrase("")
-          }} />
+          <Entypo
+            name="cross"
+            size={20}
+            color="black"
+            style={{ padding: 1 }}
+            onPress={() => {
+              setSearchPhrase("");
+            }}
+          />
         )}
       </View>
-      {/* cancel button, depending on whether the search bar is clicked or not */}
+      {/* {/ cancel button, depending on whether the search bar is clicked or not /} */}
       {clicked && (
         <View>
           <Button
@@ -63,8 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    width: width >= 720 ? '87%' : '85%',
-
+    width: width >= 720 ? "87%" : "85%",
   },
   searchBar__unclicked: {
     padding: 10,

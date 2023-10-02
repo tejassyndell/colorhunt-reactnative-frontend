@@ -54,8 +54,8 @@ export default function Userprofile(props) {
             <Image
               source={require("../../../assets/menubar.png")}
               style={{
-                width: width >= 720 ? 50 : 30,
-                height: width >= 720 ? 50 : 30,
+                width: width >= 720 ? 50 : 35,
+                height: width >= 720 ? 50 : 35,
               }}
             />
           </View>
@@ -63,7 +63,7 @@ export default function Userprofile(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: width >= 720 ? 120 : 70,
+        height: width >= 720 ? 120 : 120,
         backgroundColor: "black",
       },
     });
@@ -77,8 +77,8 @@ export default function Userprofile(props) {
             <Image
               source={require("../../../assets/Profileicon/Frame_1171274903.png")}
               style={{
-                width: width >= 720 ? 200 : 100,
-                height: width >= 720 ? 200 : 100,
+                width: width >= 720 ? 200 : 120,
+                height: width >= 720 ? 200 : 120,
               }}
             />
           </View>
