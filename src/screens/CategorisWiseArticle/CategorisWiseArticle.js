@@ -38,6 +38,8 @@ export default function CategorisWiseArticle(props) {
   const { item1 } = route.params;
 
   const { width, height } = Dimensions.get("window");
+  const headerHeight =
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
@@ -153,7 +155,7 @@ export default function CategorisWiseArticle(props) {
         </View>
       ),
       headerStyle: {
-        height: width >= 720 ? 120 : 120,
+        height: headerHeight,
         // backgroundColor: "black",
       },
     });

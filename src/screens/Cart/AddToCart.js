@@ -30,6 +30,8 @@ const AddToCart = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const windowwidthe = parseInt(Dimensions.get("window").width);
   const windowheight = parseInt(Dimensions.get("window").height);
+  const headerHeight =
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -65,7 +67,7 @@ const AddToCart = (props) => {
       ),
       headerRight: () => <View />,
       headerStyle: {
-        height: windowwidthe >= 720 ? 120 : 120, // Increase the header height here
+        height: headerHeight, // Increase the header height here
       },
     });
   }, []);
