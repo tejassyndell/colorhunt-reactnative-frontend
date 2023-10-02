@@ -476,6 +476,7 @@ export default function CategorisWiseArticle(props) {
                   Scategories={selectedCategories}
                   minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate}
+                  spr={selectedPriceRange}
                 />
               </View>
             </View>

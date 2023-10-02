@@ -6,11 +6,11 @@ import { useRef } from "react"
 
 export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     minArticleRate,
-    maxArticleRate, status }) {
+    maxArticleRate, status,spr }) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
     const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
-    const defaultPriceRange = [0, 700];
+    const defaultPriceRange = [minArticleRate, maxArticleRate];
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
 
@@ -49,7 +49,9 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     const resetFilters = () => {
         setSelectedCategories([]);
         setSelectedPriceRange(defaultPriceRange);
-        onFilterChange([], defaultPriceRange);
+        onFilterChange([],[minArticleRate,maxArticleRate]  );
+        setLeftValue(minArticleRate)
+        setRightValue(maxArticleRate)
     };
     const closeFilter = () => {
         onCloseFilter(false)
@@ -63,7 +65,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         const slideUpAnimation = () => {
             Animated.timing(fadeAnim, {
                 toValue: 2,
-                duration: 1000,
+                duration: 1000, 
                 easing: Easing.ease,
                 useNativeDriver: false,
             }).start(() => {
@@ -73,23 +75,27 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
         slideUpAnimation();
     }, []);
+     // Initialize leftValue and rightValue based on selectedPriceRange or default to minArticleRate and maxArticleRate
+  const [leftValue, setLeftValue] = useState(
+    spr.length > 0 ? spr[0] : minArticleRate
+  );
+  const [rightValue, setRightValue] = useState(
+    spr.length > 0 ? spr[1] : maxArticleRate
+  );
 
-    const [leftValue, setLeftValue] = useState(0);
-    const [rightValue, setRightValue] = useState(700);
-
-    const step = 100; // Change the step value as desired
+    const step = 1; // Change the step value as desired
     const borderWidth = 2; // Change the border width as desired
 
 
     const handleLeftMove = (dx) => {
-        const newLeftValue = Math.min(Math.max(leftValue + dx, 0), 700 - step);
+        const newLeftValue = Math.min(Math.max(leftValue + dx, minArticleRate), maxArticleRate - step);
         const newRightValue = Math.max(rightValue, newLeftValue + step);
         setLeftValue(Math.round(newLeftValue));
         setRightValue(Math.round(newRightValue));
     };
 
     const handleRightMove = (dx) => {
-        const newRightValue = Math.max(Math.min(rightValue + dx, 700), leftValue + step);
+        const newRightValue = Math.max(Math.min(rightValue + dx, maxArticleRate), leftValue + step);
         setRightValue(Math.round(newRightValue));
     };
 
@@ -190,7 +196,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                                             <View
                                                 style={[
                                                     styleslider.thumb,
-                                                    { left: `${(leftValue / 700) * 100}%`, borderColor: 'black' }, // Adjust the left handle's position here
+                                                    { left: `${(leftValue / maxArticleRate) * 100}%`, borderColor: 'black' }, // Adjust the left handle's position here
                                                 ]}
                                                 {...panResponderLeft.panHandlers} // Attach the panResponderLeft here
                                             >
@@ -199,7 +205,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                                             <View
                                                 style={[
                                                     styleslider.thumb,
-                                                    { left: `${(rightValue / 700) * 100}%`, borderColor: 'black' },
+                                                    { left: `${(rightValue / maxArticleRate) * 100}%`, borderColor: 'black' },
                                                 ]}
                                                 {...panResponderRight.panHandlers}
                                             >
@@ -212,7 +218,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
                         </View>
                         <View style={{ width: "15%", zIndex: -5 }}>
-                            <Text style={{ textAlign: "right" }}>{700}</Text>
+                            <Text style={{ textAlign: "right" }}>{maxArticleRate}</Text>
                         </View>
 
                     </View>
@@ -246,14 +252,6 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         </View>
     );
 }
-const CustomMarker = ({ currentValue }) => {
-    return (
-        <View style={styles.tooltipContainer}>
-            <Text style={styles.tooltipText}>{currentValue}</Text>
-        </View>
-    );
-};
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

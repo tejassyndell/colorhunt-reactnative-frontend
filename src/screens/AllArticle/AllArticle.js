@@ -452,6 +452,7 @@ export default function AllArticle(props) {
                   minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate}
                   status={false}
+                  spr={selectedPriceRange}
                 />
               </View>
             </View>

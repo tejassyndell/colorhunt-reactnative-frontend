@@ -936,6 +936,7 @@ export default function HomeScreen(props) {
               minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate}
               status={false}
+              spr={selectedPriceRange}
             />
           </View>
         </View>
