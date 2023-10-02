@@ -36,12 +36,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     // resizeMode: "contain",
     zIndex: 2,
-    right: 10,
+    right: width >= 720 ? 50 : 30,
     top: 15,
   },
   icon: {
     width: "100%",
-    fontSize: 20,
+
+    fontSize: width >= 720 ? 35 : 20,
     textAlign: "right",
     color: "red",
 
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   disabledIcon: {
     width: "100%",
     color: "black",
-    fontSize: 20,
+    fontSize: width >= 720 ? 35 : 20,
     textAlign: "right",
 
     // Add styles for disabled icon here

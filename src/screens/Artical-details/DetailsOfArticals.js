@@ -1,10 +1,25 @@
-import { View, Text, Image, TouchableHighlight, TouchableOpacity, Dimensions, Pressable, ScrollView, Modal } from "react-native"
-import { ArticleDetails, addto_cart, findfromthecart, updateCartArticale } from '../../api/api'
+import {
+  View,
+  Text,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+  Pressable,
+  ScrollView,
+  Modal,
+  Dimensions,
+} from "react-native";
+import {
+  ArticleDetails,
+  addto_cart,
+  findfromthecart,
+  updateCartArticale,
+} from "../../api/api";
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import styles from "./styles";
-import stylesRecipe from "../Recipe/styles"
+import stylesRecipe from "../Recipe/styles";
 // import { ScrollView } from "react-native-gesture-handler";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -21,7 +36,7 @@ const DetailsOfArticals = (props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
   const { id, Quantity = 0 } = route.params;
   console.log(id);
-  const handleSizeClick = (size) => { };
+  const handleSizeClick = (size) => {};
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -44,30 +59,6 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
-
-  useEffect(() => {
-    console.log(Quantity, "[][[]][]");
-    if (Quantity !== 0) {
-      let string = ',';
-      if (Quantity.includes(string)) {
-        let initialQuantities = Quantity.split(',').map((value) => parseInt(value.trim()));
-        let initialQuantitiesObj = {};
-        initialQuantities.forEach((value, index) => {
-          initialQuantitiesObj[index] = value;
-        });
-        setQuantities(initialQuantitiesObj)
-        console.log(initialQuantitiesObj, "||||||||");
-      } else {
-        let initialQuantities =[Quantity];
-
-        let initialQuantitiesObj = {};
-        initialQuantities.forEach((value, index) => {
-          initialQuantitiesObj[index] = value;
-        });
-        setQuantities(initialQuantitiesObj)
-      }
-    }
-  }, []);
 
   const ArticleDetailsData = async () => {
     let data = {
@@ -122,9 +113,26 @@ const DetailsOfArticals = (props) => {
     });
     setCombinedArray(combinedArray);
     const defaultQuantities = {};
-    combinedArray.forEach((item) => {
-      defaultQuantities[item.index] = 0;
-    });
+    if (Quantity === 0) {
+      combinedArray.forEach((item) => {
+        defaultQuantities[item.index] = 0;
+      });
+    } else {
+      if (Quantity.includes(",")) {
+        let initialQuantities = Quantity.split(",").map((value) =>
+          parseInt(value.trim())
+        );
+        combinedArray.forEach((item) => {
+          defaultQuantities[item.index] = parseInt(
+            initialQuantities[item.index]
+          );
+        });
+      } else {
+        combinedArray.forEach((item) => {
+          defaultQuantities[item.index] = parseInt(Quantity);
+        });
+      }
+    }
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
@@ -236,9 +244,8 @@ const DetailsOfArticals = (props) => {
             navigation.goBack();
           }}
         />
-      ), headerTitle: () => (
-        <View />
-      )
+      ),
+      headerTitle: () => <View />,
     });
   }, []);
 
@@ -268,6 +275,14 @@ const DetailsOfArticals = (props) => {
     setImageZoomVisible(false);
   };
 
+  // const getfontsize=(size)=>{
+  //   const screenwidth = Dimensions.get("window").width;
+  //   const fontSize =  screenwidth > 400 ? 16 : 10;
+  //   console.log(fontSize);
+  //   return fontSize;
+  // }
+
+  const windowWidth = Dimensions.get("window").width;
   return (
     <>
       {isLoading ? (
@@ -275,11 +290,15 @@ const DetailsOfArticals = (props) => {
           <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF" }}>
+        <View style={{ backgroundColor: "#FFF", flex: 1 }}>
           <ScrollView nestedScrollEnabled={true}>
-            <View style={{ zIndex: 1 }}>
+            <View style={{ zIndex: 1, flex: 1 }}>
               <View
-                style={{ backgroundColor: "#FFF", width: "100%", height: 400 }}
+                style={{
+                  width: "100%",
+                  height: viewportWidth >= 720 ? "50%" : 400,
+                  flex: 1,
+                }}
               >
                 <Carousel
                   data={articlePhotos}
@@ -293,7 +312,16 @@ const DetailsOfArticals = (props) => {
               </View>
             </View>
 
-            <View style={{ zIndex: 2, position: 'absolute', top: 340, left: 0, right: 0, bottom: 0 }}>
+            <View
+              style={{
+                zIndex: 2,
+                position: "absolute",
+                top: viewportWidth >= 720 ? "57%" : 340,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+            >
               <Image
                 style={{ width: "100%", height: 74 }}
                 source={require("../../../assets/Rectangle_18898.png")}
@@ -323,13 +351,32 @@ const DetailsOfArticals = (props) => {
             </View>
 
             <View style={{ zIndex: 2 }}>
-              <View style={{ backgroundColor: "#FFF", elevation: 12, shadowColor: "black", width: '100%', height: "100%", borderTopLeftRadius: 30, borderTopRightRadius: 30, padding: 10 }}>
+              <View
+                style={{
+                  backgroundColor: "#FFF",
+                  elevation: 12,
+                  shadowColor: "black",
+                  width: "100%",
+                  height: "100%",
+                  borderTopLeftRadius: 30,
+                  borderTopRightRadius: 30,
+                  padding: 10,
+                }}
+              >
                 <View>
-                  <View style={styles.product_detail} >
+                  <View style={styles.product_detail}>
                     <View style={styles.product_detail_sec}>
                       <Text style={styles.size_label}>Size</Text>
                       <View style={styles.size_container1}>
-                        <ScrollView horizontal={true} nestedScrollEnabled={true} style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+                        <ScrollView
+                          horizontal={true}
+                          nestedScrollEnabled={true}
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                        >
                           {articleSizeData &&
                             articleSizeData.map((item, index) => (
                               <View style={styles.size_options} key={index}>
@@ -357,111 +404,189 @@ const DetailsOfArticals = (props) => {
                       </View>
                     </View>
                   </View>
-                  <View style={{ flex: 1, marginVertical: 15, marginTop: 18, marginLeft: 2.5, marginRight: 7 }}>
-                    <View style={{ flex: 1, flexDirection: 'row', gap: 12 }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      marginVertical: 15,
+                      marginTop: 18,
+                      marginLeft: 2.5,
+                      marginRight: 7,
+                    }}
+                  >
+                    <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
                       <View style={{ flex: 1.18 }}>
-                        <Text style={{ fontSize: 15, fontWeight: 600 }}>Color</Text>
+                        <Text style={{ fontSize: 15, fontWeight: 600 }}>
+                          Color
+                        </Text>
                       </View>
                       <View style={{ flex: 1.21 }}>
-                        <Text style={{ fontSize: 15, fontWeight: 600 }}>Available in Stock</Text>
+                        <Text style={{ fontSize: 15, fontWeight: 600 }}>
+                          Available in Stock
+                        </Text>
                       </View>
                       <View style={{ flex: 1, paddingLeft: 2 }}>
-                        <Text style={{ fontSize: 15, fontWeight: 600 }}>Add Qty.</Text>
+                        <Text style={{ fontSize: 15, fontWeight: 600 }}>
+                          Add Qty.
+                        </Text>
                       </View>
                     </View>
                     {combinedArray.map((item, key) => (
-                      <View style={{ flex: 1, flexDirection: 'row', gap: 12 }}>
-
-                        <View style={{ flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 8, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
-                          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 500, color: "#626262" }}>{item.Name}</Text>
-                        </View>
-                        <View style={{ flex: 1.1, borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", paddingVertical: 8, height: 42.953, paddingHorizontal: 8, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
-                          <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 500, color: "#626262" }}>{item.available}</Text>
-                        </View>
-                        <View style={{ flex: 1, flexDirection: "row", borderRadius: 10, borderWidth: 1, borderColor: "#0000001d", marginTop: 8, justifyContent: "center", alignContent: "center", alignItems: "center", backgroundColor: "#FFF", height: 42.953, elevation: 2, shadowColor: 'gray', shadowOpacity: 0.5 }}>
-                          <Pressable onPress={() => handleDecrease(item.index)}
-                            disabled={quantities[item.index] <= 0}
+                      <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
+                        <View
+                          style={{
+                            flex: 1,
+                            borderRadius: 10,
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            marginTop: 8,
+                            justifyContent: "center",
+                            alignContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#FFF",
+                            paddingVertical: 8,
+                            height: 42.953,
+                            paddingHorizontal: 8,
+                            elevation: 2,
+                            shadowColor: "gray",
+                            shadowOpacity: 0.5,
+                          }}
+                        >
+                          <Text
                             style={{
-                              flex: 1.2, borderWidth: 1,
-                              width: "100%", height: '100%',
-                              borderColor: "#0000001d", borderRadius: 10,
-                              justifyContent: "center", alignContent: "center",
-                              alignItems: "center"
+                              textAlign: "center",
+                              fontSize: 18,
+                              fontWeight: 500,
+                              color: "#626262",
                             }}
                           >
-
-                            <Text style={{ fontSize: 24, fontWeight: 800 }}>-</Text>
-
+                            {item.Name}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flex: 1.1,
+                            borderRadius: 10,
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            marginTop: 8,
+                            justifyContent: "center",
+                            alignContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#FFF",
+                            paddingVertical: 8,
+                            height: 42.953,
+                            paddingHorizontal: 8,
+                            elevation: 2,
+                            shadowColor: "gray",
+                            shadowOpacity: 0.5,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              fontSize: 18,
+                              fontWeight: 500,
+                              color: "#626262",
+                            }}
+                          >
+                            {item.available}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            borderRadius: 10,
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            marginTop: 8,
+                            justifyContent: "center",
+                            alignContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#FFF",
+                            height: 42.953,
+                            elevation: 2,
+                            shadowColor: "gray",
+                            shadowOpacity: 0.5,
+                          }}
+                        >
+                          <Pressable
+                            onPress={() => handleDecrease(item.index)}
+                            disabled={quantities[item.index] <= 0}
+                            style={{
+                              flex: 1.2,
+                              borderWidth: 1,
+                              width: "100%",
+                              height: "100%",
+                              borderColor: "#0000001d",
+                              borderRadius: 10,
+                              justifyContent: "center",
+                              alignContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text style={{ fontSize: 24, fontWeight: 800 }}>
+                              -
+                            </Text>
                           </Pressable>
                           <View style={{ flex: 1 }}>
-                            <Text style={{ fontSize: 16, textAlign: "center", fontWeight: 600, color: '#000' }}>{quantities[item.index]}</Text>
+                            <Text
+                              style={{
+                                fontSize: 16,
+                                textAlign: "center",
+                                fontWeight: 600,
+                                color: "#000",
+                              }}
+                            >
+                              {quantities[item.index]}
+                            </Text>
                           </View>
                           <Pressable
                             onPress={() => handleIncrease(item.index)}
                             disabled={quantities[item.index] >= item.available}
                             style={{
                               flex: 1.2,
-                              justifyContent: "center", alignContent: "center", alignItems: "center",
-                              borderWidth: 1, width: "100%",
-                              height: '100%', borderColor: "#0000001d",
-                              borderRadius: 10
+                              justifyContent: "center",
+                              alignContent: "center",
+                              alignItems: "center",
+                              borderWidth: 1,
+                              width: "100%",
+                              height: "100%",
+                              borderColor: "#0000001d",
+                              borderRadius: 10,
                             }}
                           >
-                            <Text style={{ fontSize: 21, textAlign: "center", paddingBottom: 0 }}>+</Text>
+                            <Text
+                              style={{
+                                fontSize: 21,
+                                textAlign: "center",
+                                paddingBottom: 0,
+                              }}
+                            >
+                              +
+                            </Text>
                           </Pressable>
                         </View>
                       </View>
                     ))}
-
                   </View>
                   <View style={styles.article_ratio_Section}>
                     <View style={styles.article_ratio_container}>
                       <Text style={styles.articallabel}>Article Ratio</Text>
                       <View style={styles.article_content_r}>
-                        <Text style={[styles.article_ratio_content]}>{articleRatio}</Text>
+                        <Text style={[styles.article_ratio_content]}>
+                          {articleRatio}
+                        </Text>
                       </View>
                     </View>
 
                     <View style={styles.article_rate_container}>
                       <Text style={styles.articallabel1}>Article Rate</Text>
                       <View style={styles.article_content_r}>
-                        <Text style={[styles.article_rate_content]}>{articleRate / 10}</Text>
+                        <Text style={[styles.article_rate_content]}>
+                          {articleRate / 10}
+                        </Text>
                       </View>
-                    </View>
-                  </View>
-                  <View style={styles.total_price_container}>
-                    <View style={styles.main_total_div}>
-                      <Text style={{ fontSize: 10, fontWeight: 400 }}>
-                        Total Price
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 600,
-                          color: "black",
-                        }}
-                      >
-                        {formatPrice(totalPrice)}
-                      </Text>
-                    </View>
-                    <View style={styles.addto_card_container}>
-                      <Pressable
-                        style={[
-                          styles.addto_cart_btn,
-                          {
-                            backgroundColor:
-                              totalQuantity === 0 ? "gray" : "black",
-                            opacity: totalQuantity === 0 ? 0.5 : 1,
-                          },
-                        ]}
-                        onPress={() => addtocart(197, id)}
-                        disabled={totalQuantity === 0}
-                      >
-                        <View style={{ flexDirection: 'row', justifyContent: "center", alignContent: "center", alignItems: 'center', width: '100%', paddingVertical: 3 }}>
-                          <Image source={require('../../../assets/icons/icon.png')} style={{ marginRight: 0, marginLeft: 10 }} />
-                          <Text style={{ color: "white", textAlign: "center", fontWeight: 600, fontSize: 18, width: '70%' }}>Add to cart</Text>
-                        </View>
-                      </Pressable>
                     </View>
                   </View>
                 </View>
@@ -473,7 +598,9 @@ const DetailsOfArticals = (props) => {
               animationType="slide"
               onRequestClose={() => setIsModalVisible(false)}
             >
-              <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+              <TouchableWithoutFeedback
+                onPress={() => setIsModalVisible(false)}
+              >
                 <View
                   style={{
                     flex: 1,
@@ -494,20 +621,35 @@ const DetailsOfArticals = (props) => {
                   >
                     <Image
                       source={require("../../../assets/update_cart.png")}
-                      style={{ width: 100, height: 100, marginBottom: 20, marginTop: 30 }}
+                      style={{
+                        width: 100,
+                        height: 100,
+                        marginBottom: 20,
+                        marginTop: 30,
+                      }}
                     />
 
-                    <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 30, fontWeight: 500, color: "rgba(0, 0, 0, 0.70)" }}>
-                      Are you sure {"\n"} you want to update this {"\n"} artical in cart.
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        textAlign: "center",
+                        marginBottom: 30,
+                        fontWeight: 500,
+                        color: "rgba(0, 0, 0, 0.70)",
+                      }}
+                    >
+                      Are you sure {"\n"} you want to update this {"\n"} artical
+                      in cart.
                     </Text>
-                    <View style={{
-
-                      width: "100%",
-                      display: "flex",
-                      flexDirection: "row",
-                      position: "absolute",
-                      bottom: 0
-                    }}>
+                    <View
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "row",
+                        position: "absolute",
+                        bottom: 0,
+                      }}
+                    >
                       <TouchableOpacity
                         onPress={() => {
                           setIsModalVisible(false);
@@ -520,7 +662,7 @@ const DetailsOfArticals = (props) => {
                           justifyContent: "center",
                           alignItems: "center",
                           borderWidth: 1,
-                          borderColor: "white"
+                          borderColor: "white",
                         }}
                       >
                         <Text
@@ -528,7 +670,7 @@ const DetailsOfArticals = (props) => {
                             fontSize: 18,
                             fontWeight: 700,
                             color: "white",
-                            paddingHorizontal: 15
+                            paddingHorizontal: 15,
                           }}
                         >
                           No
@@ -547,7 +689,7 @@ const DetailsOfArticals = (props) => {
                           justifyContent: "center",
                           alignItems: "center",
                           borderWidth: 1,
-                          borderColor: "white"
+                          borderColor: "white",
                         }}
                       >
                         <Text
@@ -555,7 +697,7 @@ const DetailsOfArticals = (props) => {
                             fontSize: 18,
                             fontWeight: 700,
                             color: "white",
-                            paddingHorizontal: 15
+                            paddingHorizontal: 15,
                           }}
                         >
                           Yes
@@ -589,6 +731,76 @@ const DetailsOfArticals = (props) => {
           </TouchableOpacity>
         </View>
       </Modal>
+      <View
+        style={{
+          position: "absolute",
+          flexDirection: "row",
+          padding: 8,
+          paddingHorizontal: 14,
+          bottom: 0,
+          flex: 1,
+          backgroundColor: "#FFF",
+        }}
+      >
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <View>
+            <Text style={{ fontSize: 10, fontWeight: 400 }}>Total Price</Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: "black",
+              }}
+            >
+              {formatPrice(totalPrice)}
+            </Text>
+          </View>
+        </View>
+        <View style={{ flex: 1 }}>
+          <View>
+            <TouchableOpacity
+              style={[
+                styles.addto_cart_btn,
+                {
+                  backgroundColor: totalQuantity === 0 ? "gray" : "black",
+                  opacity: totalQuantity === 0 ? 0.5 : 1,
+                },
+              ]}
+              onPress={() => addtocart(197, id)}
+              disabled={totalQuantity === 0}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  paddingVertical: 3,
+                }}
+              >
+                <Image
+                  source={require("../../../assets/icons/icon.png")}
+                  style={{ marginRight: 0, marginLeft: 10 }}
+                />
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: 600,
+                    fontSize: 18,
+                    width: "70%",
+                  }}
+                >
+                  Add to cart
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     </>
   );
 };

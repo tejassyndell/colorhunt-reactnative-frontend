@@ -129,12 +129,20 @@ export default function AllArticle(props) {
             }}
           >
             <Image
-              style={styles.searchIcon}
+              style={{
+                resizeMode: "contain",
+                width: width >= 720 ? 50 : 35,
+                height: width >= 720 ? 50 : 35,
+              }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
           </TouchableOpacity>
         </View>
       ),
+      headerStyle: {
+        height: width >= 720 ? 120 : 120,
+        // backgroundColor: "black",
+      },
     });
   }, []);
 
@@ -168,7 +176,7 @@ export default function AllArticle(props) {
       style={{
         alignItems: "center",
         height: "auto",
-        width: width >= 768 ? "22%" : "44.8%",
+        width: width >= 720 ? "22%" : "44.8%",
         margin: 10,
         borderRadius: 10,
         borderColor: "gray",
@@ -259,15 +267,15 @@ export default function AllArticle(props) {
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 768 ? 18 : 12 }}
+              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{ fontSize: width >= 768 ? 15 : 10 }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
               {convertToTitleCase(item.Category)}
             </Text>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 768 ? 18 : 12 }}
+              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
             >
               {"₹" + item.ArticleRate + ".00"}
             </Text>
@@ -343,7 +351,7 @@ export default function AllArticle(props) {
               flexDirection: "row",
               backgroundColor: "#FFF",
               alignItems: "center",
-              width: "89%",
+              width: "100%",
               paddingStart: 3,
               paddingTop: 10,
             }}
@@ -352,13 +360,16 @@ export default function AllArticle(props) {
               searchPhrase={searchText}
               setSearchPhrase={setSearchText}
             />
-            <TouchableOpacity onPress={openFilter}>
+            <TouchableOpacity
+              style={{ width: "10%", alignItems: "flex-end" }}
+              onPress={openFilter}
+            >
               <Image
                 source={require("../../../assets/filetr_icone.png")}
                 style={{
-                  width: width >= 768 ? 65 : 40, // Adjust the width for tablets
-                  height: width >= 768 ? 65 : 40,
-                  marginLeft: 10,
+                  width: width >= 720 ? 65 : 40, // Adjust the width for tablets
+                  height: width >= 720 ? 65 : 40,
+                  resizeMode: "contain",
                   borderRadius: 10,
                 }}
               />
@@ -367,10 +378,10 @@ export default function AllArticle(props) {
           <View>
             <Text
               style={{
-                fontSize: width >= 768 ? 25 : 15,
+                fontSize: width >= 720 ? 25 : 15,
                 fontWeight: 700,
                 paddingLeft: 15,
-                height: width >= 768 ? 30 : 20,
+                height: width >= 720 ? 30 : 20,
                 alignItems: "center",
                 marginTop: 10,
               }}
@@ -400,13 +411,14 @@ export default function AllArticle(props) {
                 data={finalData}
                 keyExtractor={(item) => item.Id}
                 renderItem={renderItem}
-                numColumns={width >= 768 ? 4 : 2}
+                numColumns={width >= 720 ? 4 : 2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 0 }}
+                columnWrapperStyle={{ justifyContent: "space-between" }}
               />
             )}
           </View>
-          {/* </ScrollView> */}
+          {/* {/ </ScrollView> /} */}
           {isFilterVisible ? null : (
             <View
               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}

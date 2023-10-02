@@ -45,7 +45,7 @@ export default function HomeScreen(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
-  // const textStyles = width >= 768 ? styles.tabletText : styles.phoneText;
+  // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
 
   useEffect(() => {
     // Set isLoading to true initially
@@ -234,8 +234,8 @@ export default function HomeScreen(props) {
             <Image
               source={require("../../../assets/sidbarOpenIcone.png")}
               style={{
-                width: width >= 768 ? 50 : 30,
-                height: width >= 768 ? 50 : 30,
+                width: width >= 720 ? 50 : 35,
+                height: width >= 720 ? 50 : 35,
                 // resizeMode: "contain",
                 borderRadius: 5,
               }}
@@ -263,9 +263,9 @@ export default function HomeScreen(props) {
           >
             <Image
               style={{
-                resizeMode: "contain",
-                width: width >= 768 ? 50 : 30,
-                height: width >= 768 ? 50 : 30,
+                // resizeMode: "contain",
+                width: width >= 720 ? 50 : 35,
+                height: width >= 720 ? 50 : 35,
               }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
@@ -274,7 +274,7 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: width >= 768 ? 120 : 70,
+        height: width >= 720 ? 120 : 120,
         // backgroundColor: "black",
       },
     });
@@ -380,18 +380,22 @@ export default function HomeScreen(props) {
             height: "100%",
             backgroundColor: "#FFF",
             paddingStart: 5,
-            marginBottom: width >= 768 ? 10 : 0,
+            marginBottom: width >= 720 ? 10 : 0,
           }}
         >
           <View style={{ marginTop: 0 }}>
-            <View>
+            <View
+              style={{
+                height: 50,
+                justifyContent: "center",
+              }}
+            >
               <Text
                 style={{
-                  fontSize: width >= 768 ? 25 : 22,
+                  fontSize: width >= 720 ? 32 : 22,
                   fontWeight: 700,
                   paddingLeft: 8,
-                  height: 30,
-                  alignItems: "center",
+
                   // fontFamily: "Glory-Regular",
                 }}
               >
@@ -402,7 +406,7 @@ export default function HomeScreen(props) {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                width: "90%",
+                width: "100%",
               }}
             >
               <SearchBar
@@ -410,7 +414,7 @@ export default function HomeScreen(props) {
                 setSearchPhrase={setSearchText}
               />
               <TouchableOpacity
-                style={{ width: "10%", alignItems: "flex-end", paddingEnd: 10 }}
+                style={{ width: "10%", alignItems: "flex-end" }}
                 onPress={() => {
                   isLoggedIn ? openFilter() : openCreateAccountModal();
                 }}
@@ -418,9 +422,9 @@ export default function HomeScreen(props) {
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{
-                    width: width >= 768 ? 65 : 40, // Adjust the width for tablets
-                    height: width >= 768 ? 65 : 40,
-                    resizeMode: "contain",
+                    width: width >= 720 ? 65 : 40, // Adjust the width for tablets
+                    height: width >= 720 ? 65 : 40,
+                    // resizeMode: "contain",
                     borderRadius: 10,
                   }}
                 />
@@ -436,7 +440,7 @@ export default function HomeScreen(props) {
                 style={{
                   start: 10,
                   fontWeight: 700,
-                  fontSize: width >= 768 ? 25 : 18,
+                  fontSize: width >= 720 ? 25 : 18,
                 }}
               >
                 Men's
@@ -446,7 +450,7 @@ export default function HomeScreen(props) {
                   position: "absolute",
                   color: "rgba(102, 102, 102, 1)",
                   end: 10,
-                  fontSize: width >= 768 ? 20 : 12,
+                  fontSize: width >= 720 ? 20 : 12,
                   fontWeight: 600,
                 }}
                 onPress={() => {
@@ -487,8 +491,8 @@ export default function HomeScreen(props) {
                             key={item.id}
                             style={{
                               alignItems: "center",
-                              width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-                              height: width >= 768 ? 280 : 280,
+                              width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                              height: width >= 720 ? 380 : 280,
                               marginLeft: 10,
                               marginRight: 5,
                               borderRadius: 10,
@@ -497,8 +501,8 @@ export default function HomeScreen(props) {
                           >
                             <View
                               style={{
-                                width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-                                height: width >= 768 ? 280 : 190,
+                                width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                                height: width >= 720 ? 280 : 190,
                                 borderColor: "gray",
                                 shadowColor: "rgba(0, 0, 0, 0.5)",
                                 shadowOpacity: 0.9,
@@ -551,9 +555,11 @@ export default function HomeScreen(props) {
                                 <Image
                                   source={{ uri: baseImageUrl + item.Photos }}
                                   style={{
-                                    width: "100%",
-                                    resizeMode: "contain",
-                                    height: width >= 768 ? 280 : 190,
+                                    // width: "100%",
+                                    // // resizeMode: "contain",
+                                    // height: width >= 720 ? 280 : 190,
+                                    width: "90%",
+                                    height: "100%",
                                     borderRadius: 10,
                                   }}
                                   // style={styles.fastconimage}
@@ -562,8 +568,10 @@ export default function HomeScreen(props) {
                                 <Image
                                   source={require("../../../assets/demo.png")}
                                   style={{
-                                    width: "100%",
-                                    height: width >= 768 ? 280 : 190,
+                                    // width: "100%",
+                                    // height: width >= 720 ? 280 : 190,
+                                    width: "90%",
+                                    height: "100%",
                                     borderRadius: 10,
                                   }}
                                   // style={styles.fastconimage}
@@ -575,7 +583,7 @@ export default function HomeScreen(props) {
                               style={{
                                 fontWeight: "bold",
                                 marginTop: 10,
-                                fontSize: width >= 768 ? 20 : 15,
+                                fontSize: width >= 720 ? 20 : 15,
                               }}
                             >
                               {item.ArticleNumber}
@@ -593,7 +601,7 @@ export default function HomeScreen(props) {
                           style={{
                             alignItems: "center",
                             height: "auto",
-                            width: width >= 768 ? 300 : 165,
+                            width: width >= 720 ? 300 : 165,
                             marginLeft: 5,
                             marginRight: 5,
                             marginTop: 10,
@@ -611,8 +619,8 @@ export default function HomeScreen(props) {
                           >
                             <View
                               style={{
-                                width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-                                height: width >= 768 ? 280 : 190,
+                                width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                                height: width >= 720 ? 280 : 190,
                                 borderColor: "gray",
                                 shadowColor: "gray",
                                 shadowOpacity: 0.9,
@@ -629,9 +637,9 @@ export default function HomeScreen(props) {
                                 <Image
                                   source={{ uri: baseImageUrl + item.Photos }}
                                   style={{
-                                    width: "100%",
-                                    resizeMode: "contain",
-                                    height: width >= 768 ? 280 : 190,
+                                    width: "90%",
+                                    // resizeMode: "contain",
+                                    height: width >= 720 ? "100%" : "100%",
                                     borderRadius: 10,
                                   }}
                                   // style={styles.fastconimage}
@@ -640,8 +648,8 @@ export default function HomeScreen(props) {
                                 <Image
                                   source={require("../../../assets/demo.png")}
                                   style={{
-                                    width: "100%",
-                                    height: width >= 768 ? 280 : 190,
+                                    width: "90%",
+                                    height: width >= 720 ? "100%" : "100%",
                                     borderRadius: 10,
                                   }}
                                   // style={styles.fastconimage}
@@ -653,7 +661,7 @@ export default function HomeScreen(props) {
                             style={{
                               marginTop: 10,
                               fontWeight: "bold",
-                              fontSize: width >= 768 ? 30 : 14,
+                              fontSize: width >= 720 ? 30 : 14,
                               marginBottom: 10,
                               textAlign: "center",
                             }}
@@ -668,7 +676,7 @@ export default function HomeScreen(props) {
                         style={{
                           alignItems: "center",
                           justifyContent: "center",
-                          width: width >= 768 ? 300 : 200,
+                          width: width >= 720 ? 300 : 200,
                           marginLeft: 5,
                           marginRight: 5,
                         }}
@@ -684,8 +692,8 @@ export default function HomeScreen(props) {
                           <Image
                             source={require("../../../assets/demo.png")}
                             style={{
-                              width: width >= 768 ? 300 : 200, // Adjust the width for tablets
-                              height: width >= 768 ? 280 : 300,
+                              width: "100%", // Adjust the width for tablets
+                              height: width >= 720 ? "100%" : "100%",
                               borderRadius: 10,
                             }}
                             // style={styles.fastconimage}
@@ -704,8 +712,7 @@ export default function HomeScreen(props) {
                     ))}
               </ScrollView>
             </View>
-            <View></View>
-            <View style={{ marginTop: width >= 768 ? 30 : 10 }}>
+            <View style={{ marginTop: width >= 720 ? 20 : 10 }}>
               <View
                 style={{
                   width: "100%",
@@ -718,7 +725,7 @@ export default function HomeScreen(props) {
                   style={{
                     start: 10,
                     fontWeight: 700,
-                    fontSize: width >= 768 ? 25 : 18,
+                    fontSize: width >= 720 ? 25 : 18,
                   }}
                 >
                   Kid’s
@@ -728,7 +735,7 @@ export default function HomeScreen(props) {
                     position: "absolute",
                     end: 10,
                     color: "rgba(102, 102, 102, 1)",
-                    fontSize: width >= 768 ? 18 : 12,
+                    fontSize: width >= 720 ? 18 : 12,
                     fontWeight: 600,
                   }}
                   onPress={() => {
@@ -759,18 +766,19 @@ export default function HomeScreen(props) {
                           key={item.id}
                           style={{
                             alignItems: "center",
-                            width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-                            height: width >= 768 ? 280 : 280,
+                            width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                            height: width >= 720 ? 280 : 280,
                             marginLeft: 10,
                             marginRight: 5,
-                            marginBottom: 120,
+
+                            marginBottom: width >= 720 ? "4%" : 120,
                             borderRadius: 10,
                           }}
                         >
                           <View
                             style={{
-                              width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-                              height: width >= 768 ? 280 : 190,
+                              width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                              height: width >= 720 ? 280 : 190,
                               borderColor: "gray",
                               shadowColor: "rgba(0, 0, 0, 0.5)",
                               shadowOpacity: 0.9,
@@ -821,8 +829,9 @@ export default function HomeScreen(props) {
                             <Image
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
-                                flex: 1,
-                                resizeMode: "contain",
+                                width: "90%",
+                                height: "100%",
+                                // resizeMode: "contain",
                                 borderRadius: 10,
                               }}
                             />
@@ -832,18 +841,18 @@ export default function HomeScreen(props) {
                             style={{
                               fontWeight: "bold",
                               marginTop: 10,
-                              fontSize: width >= 768 ? 18 : 12,
+                              fontSize: width >= 720 ? 18 : 12,
                             }}
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text style={{ fontSize: width >= 768 ? 15 : 10 }}>
+                          <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
                             {convertToTitleCase(item.Category)}
                           </Text>
                           <Text
                             style={{
                               fontWeight: "bold",
-                              fontSize: width >= 768 ? 18 : 12,
+                              fontSize: width >= 720 ? 18 : 12,
                             }}
                           >
                             {"₹" + item.ArticleRate + ".00"}
@@ -856,8 +865,8 @@ export default function HomeScreen(props) {
                           style={{
                             alignItems: "center",
                             justifyContent: "center",
-                            width: width >= 768 ? 300 : 155, // Adjust the width for tablets
-                            height: width >= 768 ? 280 : 232,
+                            width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                            height: width >= 720 ? 280 : 232,
                             marginLeft: 5,
                             marginRight: 5,
                           }}
@@ -865,8 +874,11 @@ export default function HomeScreen(props) {
                           <Image
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
-                              flex: 1,
-                              resizeMode: width >= 768 ? "contain" : "contain",
+                              width: "90%",
+                              height: "100%",
+
+                              // flex: 1,
+                              // resizeMode: width >= 720 ? "contain" : "contain",
                               borderRadius: 10,
                             }}
                           />

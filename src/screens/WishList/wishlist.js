@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import {
   getProductName,
@@ -23,6 +24,7 @@ export default function WishList(props) {
   const [nameDatas, setNameDatas] = useState([]);
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { width, height } = Dimensions.get("window");
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
@@ -82,14 +84,16 @@ export default function WishList(props) {
         <View
           style={{
             flexDirection: "row",
-            width: "100%",
+            alignItems: "center",
+            alignContent: "center",
+            paddingLeft: "10%",
+            width: parseInt(width) >= 720 ? "95%" : "100%",
           }}
         >
           <Text
             style={{
               textAlign: "center",
-              fontSize: 25,
-              left: 10,
+              fontSize: width * 0.05,
               fontWeight: "700",
               width: "100%",
             }}
@@ -98,50 +102,50 @@ export default function WishList(props) {
           </Text>
         </View>
       ),
-      headerRight: () => (
-        <View
-          style={{
-            marginHorizontal: 10,
-            width: "auto",
-            height: "auto",
-            padding: 4,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Profile");
-            }}
-          >
-            {/* <Image style={styles.searchIcon} source={require("../../../assets/Nevbar/Profile.png")} /> */}
-          </TouchableOpacity>
-        </View>
-      ),
+      headerRight: () => <View />,
+      headerStyle: {
+        height: width >= 720 ? 120 : 120, // Increase the header height here
+      },
     });
   }, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
+      style={{
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 1,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+
+        alignItems: "center",
+        elevation: 10,
+        height: "auto",
+        width: width >= 720 ? "22%" : "45%",
+        marginHorizontal: 12,
+        marginTop: 10,
+        borderColor: "grey",
+        backgroundColor: "#FFFFFF",
+        paddingBottom: 15,
+        borderRadius: 10,
+        marginVertical: 15,
+        paddingTop: width >= 720 ? 10 : 20,
+      }}
     >
       <View
         key={item.id}
         style={{
           alignItems: "center",
           height: "auto",
-          width: 180,
-          marginLeft: 5,
-          marginRight: 20,
-          marginTop: 8,
-          marginBottom: 20,
-          borderRadius: 10,
-          borderColor: "gray",
-          // Add shadow properties for iOS
+          width: width >= 720 ? 180 : 180,
         }}
       >
         <View
           style={{
-            width: 155,
-            height: 190,
+            width: width >= 720 ? "80%" : "80%", // Adjust the width for tablets
+            height: width >= 720 ? 200 : 190,
             borderColor: "gray",
             shadowColor: "#000000",
             shadowOpacity: 0.9,
@@ -176,7 +180,7 @@ export default function WishList(props) {
 
           <Image
             source={{ uri: baseImageUrl + item.article_photos }}
-            style={{ flex: 1, resizeMode: "contain", borderRadius: 10 }}
+            style={{ flex: 1, borderRadius: 10 }}
           />
         </View>
         <Text style={{ fontWeight: "bold", marginTop: 12 }}>
@@ -199,38 +203,57 @@ export default function WishList(props) {
       ) : selectedprd.length === 0 ? (
         <View
           style={{
-            width: "100%",
-            height: "100%",
-            paddingTop: 50,
-            alignItems: "center",
+            flex: 1,
+            backgroundColor: "#FFF",
+            borderTopColor: "#828282",
+            borderTopWidth: 0.5,
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 40,
-              fontWeight: "bolder",
-              top: 200,
-              textAlign: "center",
-              fontWeight: 700,
-              color: "#808080",
-            }}
-          >
-            Your WishList is {"\n"} Empty
-          </Text>
-          <TouchableOpacity
-            style={{
-              width: 189,
-              height: 50,
-              borderRadius: 10,
-              backgroundColor: "black",
+              flex: 1,
+              justifyContent: "flex-end",
+              alignContent: "center",
               alignItems: "center",
-              justifyContent: "center",
-              marginTop: 380,
             }}
-            onPress={() => navigation.navigate("Home")}
           >
-            <Text style={{ color: "white" }}>Continue Shopping</Text>
-          </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: width * 0.1,
+                fontWeight: "bolder",
+                textAlign: "center",
+                fontWeight: 700,
+                color: "#808080",
+              }}
+            >
+              Your Wishlist is {"\n"} Empty
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                width: width * 0.4,
+                height: height * 0.06,
+                borderRadius: 10,
+                backgroundColor: "black",
+                alignItems: "center",
+                justifyContent: "center",
+                // marginTop: "100%",
+              }}
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Text style={{ color: "white", fontSize: width * 0.035 }}>
+                Continue Shopping
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <View
@@ -251,9 +274,10 @@ export default function WishList(props) {
               initialNumToRender={10}
               keyExtractor={(item) => item.id}
               renderItem={renderItem}
-              numColumns={2}
+              numColumns={width >= 720 ? 4 : 2}
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: 10 }}
+              columnWrapperStyle={{ justifyContent: "space-between" }}
             />
           </View>
 
