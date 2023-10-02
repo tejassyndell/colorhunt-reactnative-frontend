@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const { width: viewportWidth } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -51,15 +52,13 @@ const styles = StyleSheet.create({
     height: "auto",
     paddingTop: "5%",
     flexDirection: "row",
-
   },
   product_detail_sec: {
     marginRight: "5%",
     width: "50%",
-
   },
   size_label: {
-    fontSize: 15,
+    fontSize: width >= 720 ? 20 : 14,
     fontWeight: 600,
     color: "black",
     marginLeft: "2%",
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
   size_container1: {
     display: "flex",
     flexDirection: "row",
-    height: 53,
+    height: width >= 720 ? 80 : 53,
     borderColor: "#ded6d6",
     borderWidth: 1,
     borderStyle: "solid",
@@ -79,13 +78,14 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingLeft: 0,
     justifyContent: "center",
+    alignContent: "center",
     alignItems: "center",
-    width:"100%",
+    width: "100%",
     elevation: 2,
     shadowColor: "gray",
     shadowOpacity: 0.5,
     marginLeft: "1%",
-    overflow:"scroll"
+    overflow: "scroll",
   },
   size: {
     width: 40,
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     marginLeft: 8,
     padding: 4,
+    alignContent: "center",
   },
   size_a: {
     marginTop: 3,
@@ -109,26 +110,26 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   size_label1: {
-    fontSize: 15,
+    fontSize: width >= 720 ? 20 : 14,
     fontWeight: 600,
     color: "black",
-    marginLeft: "18%",
+    marginLeft: width >= 720 ? "10%" : "20%",
     marginBottom: 6,
   },
- 
+
   size_options: {
     paddingLeft: 8,
     display: "flex",
-    flexDirection:"row",
+    flexDirection: "row",
     fontSize: 18,
     fontWeight: 500,
     // width:"100%",
     // backgroundColor:'red'
   },
-  size_options2:{
+  size_options2: {
     paddingLeft: 8,
     display: "flex",
-    flexDirection:"row",
+    flexDirection: "row",
     fontSize: 18,
     fontWeight: 500,
   },
@@ -170,8 +171,9 @@ const styles = StyleSheet.create({
   },
   color_box_Text: {
     width: "31%",
-    display:"flex",
-    paddingHorizontal: 10, elevation: 2,
+    display: "flex",
+    paddingHorizontal: 10,
+    elevation: 2,
     shadowColor: "gray",
     shadowOpacity: 1,
     borderWidth: 1,
@@ -183,12 +185,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignItems: "center",
     paddingVertical: 7,
-    marginRight:10
+    marginRight: 10,
   },
   available_box_Text: {
     width: "34%",
-    display:"flex",
-    paddingHorizontal: 10, elevation: 2,
+    display: "flex",
+    paddingHorizontal: 10,
+    elevation: 2,
     shadowColor: "gray",
     shadowOpacity: 1,
     borderWidth: 1,
@@ -217,10 +220,10 @@ const styles = StyleSheet.create({
     marginRight: "5%",
     width: "50%",
   },
- 
+
   size: {
-    width: 40,
-    height: 39,
+    width: width >= 720 ? 60 : 40,
+    height: width >= 720 ? 60 : 39,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "#b3a8a8",
@@ -228,16 +231,19 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: 400,
     marginLeft: 8,
-    padding: 4,
+    padding: 6,
+    justifyContain: "center",
   },
   size_a: {
     marginTop: 3,
     textAlign: "center",
     color: "rgba(0, 0, 0, 0.60)",
     fontWeight: 600,
+    fontSize: width >= 720 ? 30 : 15,
   },
   product_detail_sec2: {
     width: "50%",
+    textAlign: "left",
   },
   size_container2: {
     borderWidth: 1,
@@ -247,21 +253,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f4f4",
     // padding: 12,
     display: "flex",
-    height: 52,
+    height: width >= 720 ? 80 : 52,
     justifyContent: "center",
-    alignContent:"center",
-    alignItems:"center",
+    alignContent: "center",
+    alignItems: "center",
     width: "80%",
     elevation: 2,
     marginStart: 32,
     shadowColor: "gray",
-    shadowOpacity: 0.5
+    shadowOpacity: 0.5,
   },
 
   size_p: {
     marginTop: 0,
     marginBottom: "1%",
-    fontSize: 18,
+    fontSize: width >= 720 ? 28 : 18,
     color: "#00000099",
     textAlign: "center",
     fontWeight: 500,
@@ -294,7 +300,7 @@ const styles = StyleSheet.create({
     width: "31%",
     textAlign: "left",
   },
-  qty_box_Text: { width: "31%", display: "flex", paddingLeft: 20  },
+  qty_box_Text: { width: "31%", display: "flex", paddingLeft: 20 },
   color_div: {
     width: "31%",
     textAlign: "left",
@@ -346,8 +352,8 @@ const styles = StyleSheet.create({
   color_box: {
     width: "100%",
     color: "rgba(0, 0, 0, 0.60)",
-    textAlign:"center",
-    fontWeight: 600
+    textAlign: "center",
+    fontWeight: 600,
   },
   available_box_div: {
     width: "100%",
@@ -384,8 +390,8 @@ const styles = StyleSheet.create({
     borderColor: "#ded6d6",
     backgroundColor: "#FFF",
     borderRadius: 10,
-    borderTopRightRadius:2,
-    borderBottomRightRadius:2
+    borderTopRightRadius: 2,
+    borderBottomRightRadius: 2,
   },
   top_row: {
     display: "flex",
@@ -416,8 +422,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     paddingBottom: 3,
     marginVertical: 0,
-    width:"100%",
-    height:'100%'
+    width: "100%",
+    height: "100%",
   },
   box1_btn_text: {
     fontSize: 25,
@@ -445,51 +451,50 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginHorizontal: 0,
     paddingBottom: 3,
-    width:"100%",
-    height:'100%'
+    width: "100%",
+    height: "100%",
   },
 
   article_ratio_Section: {
     display: "flex",
     flexDirection: "row",
     width: "98%",
-    marginHorizontal:4
+    marginHorizontal: 4,
   },
   article_ratio_container: {
     width: "45%",
     marginTop: 10,
-    height: 40,
+    height: "40%",
   },
   articallabel: {
     fontWeight: 600,
     marginLeft: 0.5,
     textAlign: "left",
+    fontSize: width >= 720 ? 20 : 13,
   },
   article_content_r: {
     width: "80.5%",
     elevation: 2,
-    shadowOpacity:0.5,
+    shadowOpacity: 0.5,
     shadowColor: "gray",
-    fontSize: 18,
-    fontWeight: 500,
     borderColor: "#ded6d6",
     borderWidth: 1,
     borderStyle: "solid",
     borderRadius: 10,
     paddingTop: 13,
-    height: 53,
+    height: width >= 720 ? 80 : 53,
     justifyContent: "center",
     paddingHorizontal: 0,
     paddingVertical: 10,
     backgroundColor: "#f4f4f4",
     color: "#626262",
-    marginTop:10
+    marginTop: 10,
   },
   article_ratio_content: {
     textAlign: "center",
-    fontSize:18,
-    fontWeight:500,
-    color:"#626262"
+    fontSize: width >= 720 ? 31 : 18,
+    fontWeight: 500,
+    color: "#626262",
   },
   article_rate_container: {
     width: "40%",
@@ -499,13 +504,14 @@ const styles = StyleSheet.create({
   },
   article_rate_content: {
     textAlign: "center",
-    fontSize:18,
-    fontWeight:500,
-    color:"#626262"
+    fontSize: width >= 720 ? 30 : 18,
+    fontWeight: 500,
+    color: "#626262",
   },
   articallabel1: {
     fontWeight: 500,
     marginLeft: 0.5,
+    fontSize: width >= 720 ? 20 : 14,
   },
   total_price_container: {
     width: "95%",
@@ -514,15 +520,14 @@ const styles = StyleSheet.create({
     marginTop: "11%",
     position: "relative",
     top: 0,
-    marginLeft:6,
+    marginLeft: 6,
     marginBottom: 5,
-  
   },
   main_total_div: {
     width: "30%",
-    display:"flex",
-    justifyContent:"flex-end",
-    alignContent:"flex-end"
+    display: "flex",
+    justifyContent: "flex-end",
+    alignContent: "flex-end",
   },
   addto_card_container: {
     width: 208,
@@ -533,7 +538,8 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     borderRadius: 10,
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: width >= 720 ? 20 : 15,
+    height: width >= 720 ? 80 : 50,
   },
   loader: {
     flex: 1,

@@ -1,5 +1,21 @@
-import { View, Text, Image, TouchableHighlight, TouchableOpacity, Pressable, ScrollView, Modal,Dimensions,Platform} from "react-native"
-import { ArticleDetails, addto_cart, findfromthecart, updateCartArticale } from '../../api/api'
+import {
+  View,
+  Text,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+  Pressable,
+  ScrollView,
+  Modal,
+  Dimensions,
+  Platform,
+} from "react-native";
+import {
+  ArticleDetails,
+  addto_cart,
+  findfromthecart,
+  updateCartArticale,
+} from "../../api/api";
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
@@ -16,6 +32,8 @@ import ImageZoom from "react-native-image-pan-zoom";
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
   const { width: viewportWidth } = Dimensions.get("window");
+  const { width } = Dimensions.get("window");
+
   const route = useRoute();
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
@@ -44,7 +62,8 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
-  const headerHeight = Platform.OS === 'android' ? viewportWidth >= 720 ? 120 : 100 : 120;
+  const headerHeight =
+    Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 100) : 120;
 
   const ArticleDetailsData = async () => {
     let data = {
@@ -171,7 +190,7 @@ const DetailsOfArticals = (props) => {
   const imageElements = articlePhotos.map((fileName, index) => (
     <Image
       source={{ uri: baseImageUrl + fileName }}
-      style={{ width: 100, height: 100 }}
+      style={{ width: "100%", height: "100%" }}
       key={index}
     />
   ));
@@ -213,9 +232,9 @@ const DetailsOfArticals = (props) => {
 
   const renderImage = ({ item, index }) => (
     <TouchableOpacity onPress={() => openImageZoom(item)}>
-      <View>
+      <View style={{ width: "100%", height: "100%" }}>
         <Image
-          style={{ width: "100%", height: 550 }}
+          style={{ width: "100%", height: width >= 720 ? 500 : 550 }}
           source={{ uri: baseImageUrl + item }}
         />
       </View>
@@ -230,13 +249,11 @@ const DetailsOfArticals = (props) => {
             navigation.goBack();
           }}
         />
-      ), headerTitle: () => (
-        <View />
       ),
+      headerTitle: () => <View />,
       headerStyle: {
-        height: headerHeight // Increase the header height here
-    },
-
+        height: headerHeight, // Increase the header height here
+      },
     });
   }, []);
 
@@ -287,7 +304,7 @@ const DetailsOfArticals = (props) => {
               <View
                 style={{
                   width: "100%",
-                  height: viewportWidth >= 720 ? "50%" : 400,
+                  height: viewportWidth >= 720 ? 500 : 400,
                   flex: 1,
                 }}
               >
@@ -307,21 +324,21 @@ const DetailsOfArticals = (props) => {
               style={{
                 zIndex: 2,
                 position: "absolute",
-                top: viewportWidth >= 720 ? "57%" : 340,
+                top: viewportWidth >= 720 ? "45%" : "48%",
                 left: 0,
                 right: 0,
                 bottom: 0,
               }}
             >
               <Image
-                style={{ width: "100%", height: 74 }}
+                style={{ width: "100%", height: width >= 720 ? "20%" : 74 }}
                 source={require("../../../assets/Rectangle_18898.png")}
               />
               <View
                 style={{
                   zIndex: 3,
                   position: "absolute",
-                  top: 20,
+                  bottom: width >= 720 ? 420 : 300,
                   left: 0,
                   right: 0,
                   justifyContent: "center",
@@ -330,7 +347,7 @@ const DetailsOfArticals = (props) => {
               >
                 <Text
                   style={{
-                    fontSize: 26,
+                    fontSize: width >= 720 ? 40 : 26,
                     textAlign: "center",
                     fontWeight: 600,
                     color: "black",
@@ -351,7 +368,7 @@ const DetailsOfArticals = (props) => {
                   height: "100%",
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
-                  padding: 10,
+                  padding: 12,
                 }}
               >
                 <View>
@@ -400,23 +417,37 @@ const DetailsOfArticals = (props) => {
                       flex: 1,
                       marginVertical: 15,
                       marginTop: 18,
-                      marginLeft: 2.5,
                       marginRight: 7,
                     }}
                   >
                     <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
                       <View style={{ flex: 1.18 }}>
-                        <Text style={{ fontSize: 15, fontWeight: 600 }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 20 : 14,
+                            fontWeight: 600,
+                          }}
+                        >
                           Color
                         </Text>
                       </View>
                       <View style={{ flex: 1.21 }}>
-                        <Text style={{ fontSize: 15, fontWeight: 600 }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 20 : 14,
+                            fontWeight: 600,
+                          }}
+                        >
                           Available in Stock
                         </Text>
                       </View>
                       <View style={{ flex: 1, paddingLeft: 2 }}>
-                        <Text style={{ fontSize: 15, fontWeight: 600 }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 20 : 14,
+                            fontWeight: 600,
+                          }}
+                        >
                           Add Qty.
                         </Text>
                       </View>
@@ -435,7 +466,7 @@ const DetailsOfArticals = (props) => {
                             alignItems: "center",
                             backgroundColor: "#FFF",
                             paddingVertical: 8,
-                            height: 42.953,
+                            height: width >= 720 ? 70 : 42,
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
@@ -445,7 +476,7 @@ const DetailsOfArticals = (props) => {
                           <Text
                             style={{
                               textAlign: "center",
-                              fontSize: 18,
+                              fontSize: width >= 720 ? 30 : 18,
                               fontWeight: 500,
                               color: "#626262",
                             }}
@@ -465,7 +496,7 @@ const DetailsOfArticals = (props) => {
                             alignItems: "center",
                             backgroundColor: "#FFF",
                             paddingVertical: 8,
-                            height: 42.953,
+                            height: width >= 720 ? 70 : 42,
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
@@ -475,7 +506,7 @@ const DetailsOfArticals = (props) => {
                           <Text
                             style={{
                               textAlign: "center",
-                              fontSize: 18,
+                              fontSize: width >= 720 ? 30 : 18,
                               fontWeight: 500,
                               color: "#626262",
                             }}
@@ -495,7 +526,7 @@ const DetailsOfArticals = (props) => {
                             alignContent: "center",
                             alignItems: "center",
                             backgroundColor: "#FFF",
-                            height: 42.953,
+                            height: width >= 720 ? 70 : 42,
                             elevation: 2,
                             shadowColor: "gray",
                             shadowOpacity: 0.5,
@@ -516,14 +547,19 @@ const DetailsOfArticals = (props) => {
                               alignItems: "center",
                             }}
                           >
-                            <Text style={{ fontSize: 24, fontWeight: 800 }}>
+                            <Text
+                              style={{
+                                fontSize: width >= 720 ? 45 : 24,
+                                fontWeight: 800,
+                              }}
+                            >
                               -
                             </Text>
                           </Pressable>
                           <View style={{ flex: 1 }}>
                             <Text
                               style={{
-                                fontSize: 16,
+                                fontSize: width >= 720 ? 30 : 21,
                                 textAlign: "center",
                                 fontWeight: 600,
                                 color: "#000",
@@ -549,7 +585,7 @@ const DetailsOfArticals = (props) => {
                           >
                             <Text
                               style={{
-                                fontSize: 21,
+                                fontSize: width >= 720 ? 40 : 21,
                                 textAlign: "center",
                                 paddingBottom: 0,
                               }}
@@ -735,12 +771,14 @@ const DetailsOfArticals = (props) => {
       >
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View>
-            <Text style={{ fontSize: 10, fontWeight: 400 }}>Total Price</Text>
+            <Text style={{ fontSize: width >= 720 ? 15 : 10, fontWeight: 400 }}>
+              Total Price
+            </Text>
           </View>
           <View>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: width >= 720 ? 27 : 16,
                 fontWeight: 600,
                 color: "black",
               }}
@@ -749,7 +787,7 @@ const DetailsOfArticals = (props) => {
             </Text>
           </View>
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginBottom: 20 }}>
           <View>
             <TouchableOpacity
               style={[
@@ -774,14 +812,19 @@ const DetailsOfArticals = (props) => {
               >
                 <Image
                   source={require("../../../assets/icons/icon.png")}
-                  style={{ marginRight: 0, marginLeft: 10 }}
+                  style={{
+                    marginRight: width >= 720 ? -10 : 10,
+
+                    width: width >= 720 ? 30 : 20,
+                    height: width >= 720 ? 30 : 20,
+                  }}
                 />
                 <Text
                   style={{
                     color: "white",
                     textAlign: "center",
                     fontWeight: 600,
-                    fontSize: 18,
+                    fontSize: width >= 720 ? 30 : 18,
                     width: "70%",
                   }}
                 >

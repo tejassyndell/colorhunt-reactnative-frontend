@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
-  Platform
+  Platform,
 } from "react-native";
 import {
   getProductName,
@@ -26,7 +26,8 @@ export default function WishList(props) {
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
-  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
+  const headerHeight =
+    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
@@ -95,7 +96,7 @@ export default function WishList(props) {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width * 0.05,
+              fontSize: width >= 720 ? 35 : 20,
               fontWeight: "700",
               width: "100%",
             }}
@@ -106,7 +107,7 @@ export default function WishList(props) {
       ),
       headerRight: () => <View />,
       headerStyle: {
-        height: headerHeight // Increase the header height here
+        height: headerHeight, // Increase the header height here
       },
     });
   }, []);
@@ -117,10 +118,10 @@ export default function WishList(props) {
       style={{
         shadowColor: "#000",
         shadowOffset: {
-          width: 1,
-          height: 2,
+          width: 0,
+          height: 0,
         },
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.1,
 
         alignItems: "center",
         elevation: 10,
@@ -151,7 +152,7 @@ export default function WishList(props) {
             borderColor: "gray",
             shadowColor: "#000000",
             shadowOpacity: 0.9,
-            shadowRadius: 4,
+            shadowRadius: 1,
             borderRadius: 10,
             elevation: 5, // For Android, use elevation
             shadowOffset: {
@@ -208,7 +209,7 @@ export default function WishList(props) {
             flex: 1,
             backgroundColor: "#FFF",
             borderTopColor: "#828282",
-            borderTopWidth: 0.5,
+            borderTopWidth: 0,
           }}
         >
           <View
