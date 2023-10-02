@@ -1,20 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
-import { Text, View, StyleSheet, TouchableOpacity, Image, PanResponder, Animated, Easing } from "react-native";
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    PanResponder,
+    Animated,
+    Easing,
+} from "react-native";
 import { getCategories } from "../../api/api";
-import { useRef } from "react"
+import { useRef } from "react";
 
-export default function Filter({ onFilterChange, onCloseFilter, Scategories,
+export default function Filter({
+    onFilterChange,
+    onCloseFilter,
+    Scategories,
     minArticleRate,
-    maxArticleRate, status,spr }) {
+    maxArticleRate,
+    status,
+    spr,
+}) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([
+        minArticleRate,
+        maxArticleRate,
+    ]);
     const defaultPriceRange = [minArticleRate, maxArticleRate];
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
 
-    const Screenwidth = Dimensions.get('window').width
+    const Screenwidth = Dimensions.get("window").width;
     const sliderlenghtinPercent = 60;
     const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
 
@@ -43,29 +61,29 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
     const applyFilters = () => {
         onFilterChange(selectedCategories, selectedPriceRange);
-        onCloseFilter(false)
+        onCloseFilter(false);
     };
 
     const resetFilters = () => {
         setSelectedCategories([]);
         setSelectedPriceRange(defaultPriceRange);
-        onFilterChange([],[minArticleRate,maxArticleRate]  );
-        setLeftValue(minArticleRate)
-        setRightValue(maxArticleRate)
+        onFilterChange([], [minArticleRate, maxArticleRate]);
+        setLeftValue(minArticleRate);
+        setRightValue(maxArticleRate);
     };
     const closeFilter = () => {
-        onCloseFilter(false)
-    }
+        onCloseFilter(false);
+    };
 
     useEffect(() => {
-        setSelectedCategories(Scategories)
-    }, [Scategories])
+        setSelectedCategories(Scategories);
+    }, [Scategories]);
 
     useEffect(() => {
         const slideUpAnimation = () => {
             Animated.timing(fadeAnim, {
                 toValue: 2,
-                duration: 1000, 
+                duration: 1000,
                 easing: Easing.ease,
                 useNativeDriver: false,
             }).start(() => {
@@ -75,30 +93,35 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
 
         slideUpAnimation();
     }, []);
-     // Initialize leftValue and rightValue based on selectedPriceRange or default to minArticleRate and maxArticleRate
-  const [leftValue, setLeftValue] = useState(
-    spr.length > 0 ? spr[0] : minArticleRate
-  );
-  const [rightValue, setRightValue] = useState(
-    spr.length > 0 ? spr[1] : maxArticleRate
-  );
+    // Initialize leftValue and rightValue based on selectedPriceRange or default to minArticleRate and maxArticleRate
+    const [leftValue, setLeftValue] = useState(
+        spr.length > 0 ? spr[0] : minArticleRate
+    );
+
+    const [rightValue, setRightValue] = useState(
+        spr.length > 0 ? spr[1] : maxArticleRate
+    );
 
     const step = 1; // Change the step value as desired
     const borderWidth = 2; // Change the border width as desired
 
-
     const handleLeftMove = (dx) => {
-        const newLeftValue = Math.min(Math.max(leftValue + dx, minArticleRate), maxArticleRate - step);
+        const newLeftValue = Math.min(
+            Math.max(leftValue + dx, minArticleRate),
+            maxArticleRate - step
+        );
         const newRightValue = Math.max(rightValue, newLeftValue + step);
         setLeftValue(Math.round(newLeftValue));
         setRightValue(Math.round(newRightValue));
     };
 
     const handleRightMove = (dx) => {
-        const newRightValue = Math.max(Math.min(rightValue + dx, maxArticleRate), leftValue + step);
+        const newRightValue = Math.max(
+            Math.min(rightValue + dx, maxArticleRate),
+            leftValue + step
+        );
         setRightValue(Math.round(newRightValue));
     };
-
 
     const panResponderLeft = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -116,61 +139,76 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     }, [leftValue, rightValue]);
 
     return (
-        <View style={[styles.container,
-        {
-            transform: [{ translateY: positionY }],
-        }]}>
+        <View
+            style={[
+                styles.container,
+                {
+                    transform: [{ translateY: positionY }],
+                },
+            ]}
+        >
             <Animated.View
                 style={{
                     opacity: fadeAnim,
-                    width: '100%',
-                    height: 'auto',
+                    width: "100%",
+                    height: "auto",
                     //   backgroundColor: 'blue',
                 }}
             >
-                {status === false ? <View style={status === false ? styles.header : styles.categoryx}>
-                    <Text style={styles.headerText}>Categories</Text>
-                    <TouchableOpacity onPress={closeFilter}>
-                        <Image
-                            source={require("../../../assets/FilterIcon/Close.png")}
-                            style={styles.closeIcon}
-                        />
-                    </TouchableOpacity>
-                </View> : ""}
-                {status === false ? <View style={styles.categoriesContainer}>
-                    {data.map((item) => (
-                        <TouchableOpacity
-                            key={item.Id}
-                            style={[
-                                styles.categoryItem,
-                                selectedCategories.includes(item.Category) && {},
-                            ]}
-                            onPress={() => handleCategorySelect(item.Category)}
-                        >
-                            <Text
-                                style={[
-                                    styles.categoryText,
-                                    selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
-                                ]}
-                            >
-                                {item.Category}
-                            </Text>
-                            <View
-                                style={[
-                                    styles.radioButton,
-                                    selectedCategories.includes(item.Category) && { backgroundColor: 'white' },
-                                ]}
-                            >
-                                {selectedCategories.includes(item.Category) && (
-                                    <View style={styles.radioInnerCircle} />
-                                )}
-                            </View>
-
+                {status === false ? (
+                    <View style={status === false ? styles.header : styles.categoryx}>
+                        <Text style={styles.headerText}>Categories</Text>
+                        <TouchableOpacity onPress={closeFilter}>
+                            <Image
+                                source={require("../../../assets/FilterIcon/Close.png")}
+                                style={styles.closeIcon}
+                            />
                         </TouchableOpacity>
-                    ))}
-                </View> : ""}
+                    </View>
+                ) : (
+                    ""
+                )}
+                {status === false ? (
+                    <View style={styles.categoriesContainer}>
+                        {data.map((item) => (
+                            <TouchableOpacity
+                                key={item.Id}
+                                style={[
+                                    styles.categoryItem,
+                                    selectedCategories.includes(item.Category) && {},
+                                ]}
+                                onPress={() => handleCategorySelect(item.Category)}
+                            >
+                                <Text
+                                    style={[
+                                        styles.categoryText,
+                                        selectedCategories.includes(item.Category) && {
+                                            backgroundColor: "white",
+                                        },
+                                    ]}
+                                >
+                                    {item.Category}
+                                </Text>
+                                <View
+                                    style={[
+                                        styles.radioButton,
+                                        selectedCategories.includes(item.Category) && {
+                                            backgroundColor: "white",
+                                        },
+                                    ]}
+                                >
+                                    {selectedCategories.includes(item.Category) && (
+                                        <View style={styles.radioInnerCircle} />
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                ) : (
+                    ""
+                )}
                 <View style={styles.container2}>
-                    {status ?
+                    {status ? (
                         <View style={styles.headertrue}>
                             <Text style={styles.headerText}>Price Range </Text>
                             <TouchableOpacity onPress={closeFilter}>
@@ -180,12 +218,13 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                                 />
                             </TouchableOpacity>
                         </View>
-                        :
-                        <Text style={styles.label}>Price Range</Text>}
+                    ) : (
+                        <Text style={styles.label}>Price Range</Text>
+                    )}
 
                     <View style={styles.sliderContainer}>
                         <View style={{ width: "5%" }}>
-                            <Text >{leftValue}</Text>
+                            <Text>{minArticleRate}</Text>
                         </View>
                         <View style={{ width: "80%" }}>
                             <View style={styles.sliderContainer}>
@@ -196,7 +235,10 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                                             <View
                                                 style={[
                                                     styleslider.thumb,
-                                                    { left: `${(leftValue / maxArticleRate) * 100}%`, borderColor: 'black' }, // Adjust the left handle's position here
+                                                    {
+                                                        left: `${(leftValue / maxArticleRate) * 100}%`,
+                                                        borderColor: "black",
+                                                    }, // Adjust the left handle's position here
                                                 ]}
                                                 {...panResponderLeft.panHandlers} // Attach the panResponderLeft here
                                             >
@@ -205,7 +247,10 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                                             <View
                                                 style={[
                                                     styleslider.thumb,
-                                                    { left: `${(rightValue / maxArticleRate) * 100}%`, borderColor: 'black' },
+                                                    {
+                                                        left: `${(rightValue / maxArticleRate) * 100}%`,
+                                                        borderColor: "black",
+                                                    },
                                                 ]}
                                                 {...panResponderRight.panHandlers}
                                             >
@@ -215,12 +260,10 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                                     </View>
                                 </View>
                             </View>
-
                         </View>
                         <View style={{ width: "15%", zIndex: -5 }}>
                             <Text style={{ textAlign: "right" }}>{maxArticleRate}</Text>
                         </View>
-
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -228,7 +271,8 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         style={[
                             styles.resetButton,
                             {
-                                backgroundColor: selectedCategories.length > 0 ? "black" : "white",
+                                backgroundColor:
+                                    selectedCategories.length > 0 ? "black" : "white",
                                 color: selectedCategories.length > 0 ? "white" : "black",
                             },
                         ]}
@@ -237,7 +281,8 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         <Text
                             style={{
                                 color: selectedCategories.length > 0 ? "white" : "black",
-                                fontWeight: 'bold', fontSize: 18 // Add this line for bold text
+                                fontWeight: "bold",
+                                fontSize: 18, // Add this line for bold text
                             }}
                         >
                             Reset
@@ -248,7 +293,6 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                     </TouchableOpacity>
                 </View>
             </Animated.View>
-
         </View>
     );
 }
@@ -266,7 +310,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 15
+        marginBottom: 15,
     },
     headerText: {
         fontSize: 25,
@@ -328,7 +372,7 @@ const styles = StyleSheet.create({
     categoryText: {
         fontSize: 12,
         marginLeft: 3,
-        fontWeight: 500
+        fontWeight: 500,
     },
     buttonsContainer: {
         flexDirection: "row",
@@ -337,14 +381,14 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: "black",
-        justifyContent: 'center',
+        justifyContent: "center",
         alignItems: "center",
         borderRadius: 8,
         width: 76,
-        height: 38
+        height: 38,
     },
     container2: {
-        marginTop: 5
+        marginTop: 5,
     },
     label: {
         fontSize: 24,
@@ -352,48 +396,47 @@ const styles = StyleSheet.create({
         fontWeight: 700,
     },
     sliderContainer: {
-        flexDirection: 'row',
+        flexDirection: "row",
         // alignItems: 'center',
         // justifyContent: 'space-between',
-        width: '100%',
-
+        width: "100%",
     },
     resetButton: {
-        backgroundColor: 'white',
-        borderColor: 'black',
+        backgroundColor: "white",
+        borderColor: "black",
         borderWidth: 1,
         borderRadius: 7.6,
         height: 38,
         fontSize: 24,
         fontWeight: 700,
         width: 76,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
     },
     applyButton: {
-        backgroundColor: 'black',
+        backgroundColor: "black",
         borderRadius: 7.6,
         height: 38,
         width: 76,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
     },
     buttonText: {
         color: "white",
         fontSize: 18,
-        fontWeight: 600
+        fontWeight: 600,
     },
     tooltipContainer: {
-        backgroundColor: 'black',
+        backgroundColor: "black",
         padding: 8,
         borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
     },
     tooltipText: {
-        position: 'absolute',
+        position: "absolute",
         top: 20,
-        color: 'black',
+        color: "black",
         fontSize: 16,
     },
 });
@@ -406,42 +449,41 @@ const styleslider = StyleSheet.create({
     //     paddingHorizontal: 10,
     // },
     slider: {
-        flexDirection: 'row',
+        flexDirection: "row",
         height: 20,
         // backgroundColor: 'lightgray',
         borderRadius: 10,
-        position: 'relative',
+        position: "relative",
     },
     border: {
-        position: 'absolute',
+        position: "absolute",
         // height: '100%',
-        width: '100%',
+        width: "100%",
         top: 7.5,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: "black",
         zIndex: -1,
     },
     thumb: {
         width: 15,
         height: 15,
-        backgroundColor: 'black',
+        backgroundColor: "black",
         borderRadius: 10,
-        position: 'absolute',
+        position: "absolute",
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: "black",
         zIndex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
     },
     thumbText: {
         // marginTop:30,
         width: 30,
         textAlign: "center",
         position: "absolute",
-        top: 10,
-        color: 'black',
-        fontSize: 17,
-        fontWeight: 500
+        top: 15,
+        color: "black",
+        fontSize: 15,
+        fontWeight: 500,
     },
-
 });
