@@ -10,7 +10,8 @@
     "userInterfaceStyle": "light",
     "notification": {
       "icon": "./assets/icon.png",
-      "color": "#007AFF"
+      "color": "#007AFF",
+      "projectId": "colorhunt-c7e5d" 
     },
     "splash": {
       "image": "./assets/splash.png",

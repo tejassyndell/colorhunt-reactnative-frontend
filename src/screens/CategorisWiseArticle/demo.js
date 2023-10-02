@@ -350,6 +350,7 @@ export default function AllArticle(props) {
           numColumns={2}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingVertical: 10 }}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
         />
       </View>
       {/* </ScrollView> */}

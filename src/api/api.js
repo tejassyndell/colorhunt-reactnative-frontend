@@ -205,3 +205,21 @@ export const getsonumber = async (data) => {
     console.log(err, "err in react api");
   }
 };
+
+export const getSoArticleDetails = async (data) => {
+  console.log(data);
+  try {
+    return await axios.post(`${url}/getsoarticledetails`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
+
+export const udatepartytoken = async (data) => {
+  console.log(data);
+  try {
+    return await axios.post(`${url}/udatepartytoken`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};

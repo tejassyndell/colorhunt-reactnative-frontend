@@ -4,17 +4,23 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet, Image, Dimensions, ImageBackground
+  StyleSheet,
+  Image,
+  Dimensions,
+  ImageBackground,
 } from "react-native";
-import { phoneNumberValidation } from "../../api/api";
+import { phoneNumberValidation, udatepartytoken } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
-import { RFPercentage,RFValue } from "react-native-responsive-fontsize";
-
-const { width, height } = Dimensions.get('window');
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import * as Notifications from 'expo-notifications';
+import { useEffect } from "react";
+const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.4;
 
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const Login = (props) => {
   const { navigation } = props;
@@ -24,7 +30,24 @@ const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
+  const [token, setToken] = useState('');
 
+  const getNotificationPermisan = async () => {
+    const { status } = await Notifications.getPermissionsAsync()
+    if (status === 'granted') {
+      const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+      // console.log('Expo Push Token:', pushToken);
+      setToken(pushToken);
+      AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: pushToken }))
+      // console.log({ status: true, token: pushToken });
+    } else {
+      AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: false, token: '' }))
+      // console.log('Notification permission denied');
+    }
+  }
+  useEffect(() => {
+    getNotificationPermisan();
+  }, [])
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
     if (pixelRatio <= 1) {
@@ -68,7 +91,7 @@ const Login = (props) => {
       if (phoneNumber.length === 10 || !phoneNumber) {
         try {
           if (!phoneNumber) {
-            console.log("{}{}{}{}{}{}{}{}{}");
+            // console.log("{}{}{}{}{}{}{}{}{}");
             getstatus(false);
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
@@ -79,17 +102,23 @@ const Login = (props) => {
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
-          }).then((res) => {
+          }).then(async (res) => {
             if (res.status === 201) {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res.status === 200) {
               // Store data in local storage
-              console.log(res.data[0].Name);
+              if (res.data[0].token == token) {
+                // console.log("{}{}{}{}{}{}{}{}{}{}{}");
+              } else {
+                // console.log("+++++++++++++++++++++++++++++++");
+                await udatepartytoken({ token: token, party_id: res.data[0].Id }).then((res) => { console.log(res.data); })
+              }
+              // console.log(res.data[0].Name);
               getstatus(true, res.data[0].Name);
               const userData = res.data; // Assuming res.data contains user data
               AsyncStorage.setItem("UserData", JSON.stringify(userData))
                 .then(() => {
-                  console.log("Data stored in local storage:", userData);
+                  // console.log("Data stored in local storage:", userData);
                 })
                 .catch((error) => {
                   console.error("Error storing data in local storage:", error);
@@ -97,7 +126,7 @@ const Login = (props) => {
 
               setShowLogin(false); // Switch to OTP view
             } else {
-              console.log("No");
+              // console.log("No");
             }
           });
         } catch (error) {
@@ -141,7 +170,8 @@ const Login = (props) => {
       <View style={styles.imagebox}>
         <ImageBackground
           source={require("../../../assets/Login/LoginBackground.png")}
-          style={styles.backgroundImage1} resizeMode="stretch"
+          style={styles.backgroundImage1}
+          resizeMode="stretch"
         >
           <View style={styles.loginLogoContainer}>
             <Image
@@ -195,7 +225,10 @@ const Login = (props) => {
             </View>
           )}
           <View style={{ width: "100%", height: 100 }}>
-            <TouchableOpacity style={styles.button} onPress={handleNextOrVerify}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleNextOrVerify}
+            >
               <Text style={styles.buttonText}>{buttonLabel}</Text>
             </TouchableOpacity>
           </View>
@@ -215,79 +248,80 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    fontSize: RFValue(25),
+    fontSize: windowWidth * 0.07,
     // fontSize:RFPercentage(5),
     fontWeight: 700,
-    marginBottom: '2%',
+    marginBottom: "2%",
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
-    fontSize: RFValue(20),
+    fontSize: windowWidth * 0.04,
     // fontSize:RFPercentage(5),
     fontWeight: 700,
-    marginBottom: '10%',
+    marginBottom: 80,
   },
   input: {
     flex: 1,
-    height: "100%",
-    fontSize: 22,
+    fontSize: width >= 720 ? 35 : 20,
+    height: width >= 720 ? 80 : 50,
     paddingLeft: 5,
     backgroundColor: "white",
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
-    color: ' rgba(0, 0, 0, 0.30)'
+
+    color: " rgba(0, 0, 0, 0.30)",
   },
   otpContainer: {
     flexDirection: "row",
+    width: "50%",
+    marginBottom: "10%",
     justifyContent: "space-between",
-    width: "60%",
-    marginBottom: '10%',
   },
   otpInput: {
-    width: 47,
-    height: 50,
+    width: windowWidth * 0.1,
+    justifyContent: "space-between",
+    height: windowHeight * 0.07,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",
-    fontSize: 23,
+    fontSize: width >= 720 ? 40 : 23,
     borderRadius: 7,
     textAlign: "center",
-
   },
   button: {
     backgroundColor: "#212121",
-    width: 148,
-    height: 50,
+    width: width >= 720 ? 220 : 148,
+    height: width >= 720 ? 70 : 50,
     borderRadius: 10,
-    position: 'absolute',
+    position: "absolute",
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     bottom: 0,
-    right: 0
+    right: 0,
   },
   buttonText: {
     color: "white",
-    fontSize: 23,
+    fontSize: width >= 720 ? 40 : 23,
     fontWeight: 700,
     textAlign: "center",
   },
   phoneIcon: {
-    height: 20,
-    width: 20,
+    height: width >= 720 ? 35 : 20,
+    width: width >= 720 ? 35 : 20,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: '90%',
-    height: 50,
+    width: "90%",
+    height: width >= 720 ? 80 : 10,
     borderColor: "gray",
     borderRadius: 7,
-    marginBottom: '5%',
+    marginBottom: windowHeight * 0.046,
     justifyContent: "center",
   },
   phoneIconContainer: {
-    height: 50,
-    width: 50,
+    height: width >= 720 ? 80 : 50,
+    width: width >= 720 ? 80 : 50,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFF",
@@ -301,27 +335,26 @@ const styles = StyleSheet.create({
   },
   backgroundImage1: {
     flex: 1,
-    resizeMode: 'stretch',
-    width: '100%'
+    resizeMode: "stretch",
+    width: "100%",
   },
   loginContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loginLogoContainer: {
-    position: 'absolute',
-    top: '40%',
-    left: '50%',
+    position: "absolute",
+    top: "40%",
+    left: "50%",
     transform: [{ translateX: -logoSize / 2 }, { translateY: -logoSize / 2 }],
   },
   loginLogo: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   imagebox: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
-
 
 export default Login;
