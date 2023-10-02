@@ -361,7 +361,7 @@ const { width, height } = Dimensions.get("window");
                   borderTopRightRadius: 10,
                 }}
               >
-                <Filter status={true} onFilterChange={handleFilterChange}
+                <Filter  onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter} Scategories={selectedCategories} minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate} />
               </View>

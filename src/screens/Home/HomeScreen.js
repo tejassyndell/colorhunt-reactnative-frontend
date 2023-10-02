@@ -46,11 +46,12 @@ export default function HomeScreen(props) {
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
   // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
+  const [kidsdata, setkidsdata] = useState([])
+  // const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
 
   useEffect(() => {
     // Set isLoading to true initially
     setIsLoading(true);
-
     // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
@@ -64,11 +65,12 @@ export default function HomeScreen(props) {
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
-  // ------- add product in wishlist start-------------
+
   const openCreateAccountModal = () => {
     console.log("done");
     setCreateAccountVisible(true);
   };
+
   const checkUserLoginforheader = async () => {
     try {
       const data = await AsyncStorage.getItem("UserData");
@@ -86,6 +88,7 @@ export default function HomeScreen(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
+
   const getWishlist = async () => {
     const data = {
       party_id: 197,
@@ -101,6 +104,7 @@ export default function HomeScreen(props) {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join("-"); // Join the words with spaces
   }
+
   const addArticleWishlist = async (i) => {
     let data = {
       user_id: 197,
@@ -191,12 +195,12 @@ export default function HomeScreen(props) {
         setNameDatas(result2.data);
         setApplyData(result2.data);
         setFilterDataSearch(result2.data);
+        setkidsdata(nameDatas.filter((item) => item.Category === 'kids'));
       }
 
       // Set isLoading to false to indicate that data loading is complete
       setIsLoading(false);
     } catch (error) {
-      // Handle any errors that might occur during the API requests.
       console.error(error);
 
       // Set isLoading to false in case of an error.
@@ -296,9 +300,11 @@ export default function HomeScreen(props) {
       setFinalData(filtered);
     }
   };
+
   useEffect(() => {
     filterData();
   }, [searchText]);
+
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
@@ -312,6 +318,7 @@ export default function HomeScreen(props) {
 
     setFinalData(filteredData);
   };
+
   useEffect(() => {
     console.log(selectedCategories, "Sc");
     console.log(selectedPriceRange, "Range");
@@ -346,6 +353,7 @@ export default function HomeScreen(props) {
     setMaxArticleRate(maxRate);
     console.log(maxArticleRate);
   }, [nameDatas]);
+
   const checkUserLogin = async () => {
     const token = await AsyncStorage.getItem("UserData");
 
@@ -874,7 +882,6 @@ export default function HomeScreen(props) {
           />
         </View>
       )}
-
       {isFilterVisible && (
         <View
           style={{
@@ -901,12 +908,12 @@ export default function HomeScreen(props) {
             }}
           >
             <Filter
-              status={false}
               onFilterChange={handleFilterChange}
               onCloseFilter={handleCloseFilter}
               Scategories={selectedCategories}
               minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate}
+              status={false}
             />
           </View>
         </View>

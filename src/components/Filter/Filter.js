@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions } from "react-native";
-import { Text, View, StyleSheet, TouchableOpacity, Image, Animated, Easing } from "react-native";
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import { Text, View, StyleSheet, TouchableOpacity, Image, PanResponder, Animated, Easing } from "react-native";
 import { getCategories } from "../../api/api";
 import { useRef } from "react"
 
@@ -12,10 +11,8 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
     const [selectedPriceRange, setSelectedPriceRange] = useState([minArticleRate, maxArticleRate]);
     const defaultPriceRange = [0, 700];
-    const [isSliding, setIsSliding] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
-    console.log( "{}{}{}{}{}{}{}{}{}");
 
     const Screenwidth = Dimensions.get('window').width
     const sliderlenghtinPercent = 60;
@@ -58,20 +55,6 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         onCloseFilter(false)
     }
 
-    const onValueChange = (newValues) => {
-        setSelectedPriceRange(newValues);
-        setIsSliding(true);
-        console.log('Selected Price Range:', newValues);
-    };
-
-    const onSlidingStart = () => {
-        setIsSliding(true);
-    };
-
-    const onSlidingComplete = () => {
-        setIsSliding(false);
-    };
-
     useEffect(() => {
         setSelectedCategories(Scategories)
     }, [Scategories])
@@ -91,6 +74,44 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
         slideUpAnimation();
     }, []);
 
+    const [leftValue, setLeftValue] = useState(0);
+    const [rightValue, setRightValue] = useState(700);
+
+    const step = 100; // Change the step value as desired
+    const borderWidth = 2; // Change the border width as desired
+
+
+    const handleLeftMove = (dx) => {
+        const newLeftValue = Math.min(Math.max(leftValue + dx, 0), 700 - step);
+        const newRightValue = Math.max(rightValue, newLeftValue + step);
+        setLeftValue(Math.round(newLeftValue));
+        setRightValue(Math.round(newRightValue));
+    };
+
+    const handleRightMove = (dx) => {
+        const newRightValue = Math.max(Math.min(rightValue + dx, 700), leftValue + step);
+        setRightValue(Math.round(newRightValue));
+    };
+
+
+    const panResponderLeft = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: () => true,
+        onPanResponderMove: (_, gestureState) => handleLeftMove(gestureState.dx),
+    });
+
+    const panResponderRight = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: () => true,
+        onPanResponderMove: (_, gestureState) => handleRightMove(gestureState.dx),
+    });
+
+    console.log('Left Value:', leftValue);
+    console.log('Right Value:', rightValue);
+    useEffect(() => {
+        setSelectedPriceRange([leftValue, rightValue]);
+        console.log(selectedPriceRange, "spr in use")
+    }, [leftValue, rightValue]);
 
     return (
         <View style={[styles.container,
@@ -161,31 +182,43 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                         <Text style={styles.label}>Price Range</Text>}
 
                     <View style={styles.sliderContainer}>
-                        <Text>{minArticleRate}</Text>
-                        <MultiSlider
-                            values={selectedPriceRange}
-                            sliderLength={sliderLength}
-                            onValuesChange={onValueChange}
-                            onValuesChangeStart={onSlidingStart}
-                            onValuesChangeFinish={onSlidingComplete}
-                            min={minArticleRate}
-                            max={maxArticleRate}
-                            step={10}
-                            allowOverlap={false}
-                            snapped
-                            pressedMarkerStyle={{ backgroundColor: 'black' }}
-                            customMarker={
-                                isSliding ? CustomMarker : () => <View style={styles.tooltipContainer} />
-                            }
-                            thumbTintColor="transparent"
-                            selectedStyle={{
-                                backgroundColor: 'black',
-                            }}
-                            unselectedStyle={{
-                                backgroundColor: 'lightgray',
-                            }}
-                        />
-                        <Text>{maxArticleRate}</Text>
+                        <View style={{ width: "5%" }}>
+                            <Text >{leftValue}</Text>
+                        </View>
+                        <View style={{ width: "80%" }}>
+                            <View style={styles.sliderContainer}>
+                                <View style={{ width: "100%" }}>
+                                    <View style={styleslider.sliderContainer}>
+                                        <View style={styleslider.slider}>
+                                            <View style={styleslider.border} />
+                                            <View
+                                                style={[
+                                                    styleslider.thumb,
+                                                    { left: `${(leftValue / 700) * 100}%`, borderColor: 'black' }, // Adjust the left handle's position here
+                                                ]}
+                                                {...panResponderLeft.panHandlers} // Attach the panResponderLeft here
+                                            >
+                                                <Text style={styleslider.thumbText}>{leftValue}</Text>
+                                            </View>
+                                            <View
+                                                style={[
+                                                    styleslider.thumb,
+                                                    { left: `${(rightValue / 700) * 100}%`, borderColor: 'black' },
+                                                ]}
+                                                {...panResponderRight.panHandlers}
+                                            >
+                                                <Text style={styleslider.thumbText}>{rightValue}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+
+                        </View>
+                        <View style={{ width: "15%", zIndex: -5 }}>
+                            <Text style={{ textAlign: "right" }}>{700}</Text>
+                        </View>
+
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -213,6 +246,7 @@ export default function Filter({ onFilterChange, onCloseFilter, Scategories,
                     </TouchableOpacity>
                 </View>
             </Animated.View>
+
         </View>
     );
 }
@@ -325,9 +359,10 @@ const styles = StyleSheet.create({
     },
     sliderContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        // alignItems: 'center',
+        // justifyContent: 'space-between',
         width: '100%',
+
     },
     resetButton: {
         backgroundColor: 'white',
@@ -367,4 +402,52 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 16,
     },
+});
+
+const styleslider = StyleSheet.create({
+    // sliderContainer: {
+    //     flex: 1,
+    //     // justifyContent: 'center',
+    //     // alignItems: 'center',
+    //     paddingHorizontal: 10,
+    // },
+    slider: {
+        flexDirection: 'row',
+        height: 20,
+        // backgroundColor: 'lightgray',
+        borderRadius: 10,
+        position: 'relative',
+    },
+    border: {
+        position: 'absolute',
+        // height: '100%',
+        width: '100%',
+        top: 7.5,
+        borderWidth: 1,
+        borderColor: 'black',
+        zIndex: -1,
+    },
+    thumb: {
+        width: 15,
+        height: 15,
+        backgroundColor: 'black',
+        borderRadius: 10,
+        position: 'absolute',
+        borderWidth: 2,
+        borderColor: 'black',
+        zIndex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    thumbText: {
+        // marginTop:30,
+        width: 30,
+        textAlign: "center",
+        position: "absolute",
+        top: 10,
+        color: 'black',
+        fontSize: 17,
+        fontWeight: 500
+    },
+
 });
