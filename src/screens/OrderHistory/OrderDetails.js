@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions,Image,Platform,ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions, Image, Platform, ActivityIndicator } from "react-native";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useLayoutEffect } from "react";
 import React, { useState } from 'react';
@@ -77,7 +77,7 @@ const OrderDetails = (props) => {
             const sizes = JSON.parse(item.ArticleSize).map(sizeObj => sizeObj.Name).join(', ');
 
             // Parse ArticleColor JSON string to extract color names
-            const colors = JSON.parse(item.ArticleColor).map(colorObj => colorObj.Name);
+            const colors = item.ArticleColor.length > 0 ? JSON.parse(item.ArticleColor).map(colorObj => colorObj.Name) : "";
 
             // Split OutwardNoPacks by commas and map to integers
             const outwardNoPacksArray = item.OutwardNoPacks.split(',').map(value => parseInt(value, 10));
@@ -89,12 +89,16 @@ const OrderDetails = (props) => {
             const colorPacksCombination = (
 
                 <View style={{ flexDirection: 'row', flexWrap: "wrap", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-                    {colors.map((color, i) => (
+                    {colors.length > 0 ? colors.map((color, i) => (
                         <Text key={i} style={{ marginHorizontal: 2 }}>
-                            <Text style={{ fontWeight: 'bold' }}>{color}:</Text>
+                            <Text style={{ fontWeight: 'bold' }}>{color ? color : "--"}:</Text>
                             {String(outwardNoPacksArray[i] || 0).padStart(2, '0')}<Text>,</Text>
                         </Text>
-                    ))}
+                    )) : outwardNoPacksArray.map((nopack, i) => (
+                        <Text key={i} style={{ marginHorizontal: 2 }}>
+                            <Text style={{ fontWeight: 'bold' }}>--:</Text>
+                            {String(nopack || 0).padStart(2, '0')}<Text>,</Text>
+                        </Text>))}
                 </View>
             );
 
@@ -181,6 +185,7 @@ const OrderDetails = (props) => {
         }
         await getSoArticleDetails(data).then((res) => {
             if (res.status === 200) {
+                console.log(res.data);
                 setTableData({
                     tableHead: ['SN', 'ARTICLE', 'CATEGORY', 'SIZES', 'COLORWISE QTY IN PCS', 'TOTAL QTY', 'RATE', 'AMOUNT'],
                     tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
@@ -199,9 +204,9 @@ const OrderDetails = (props) => {
         // You can adjust this logic based on your data and requirements
         // For example, you can calculate the height based on the length of text in the row.
         const textLength = rowData.someField.length; // Adjust to the actual field in your data
-        console.log(textLength * 40,'ksadksakndk');
+        console.log(textLength * 40, 'ksadksakndk');
         return textLength * 40; // Adjust the multiplier based on your desired row height calculation
-      };
+    };
 
     useEffect(() => {
         orderdetils()
@@ -209,12 +214,12 @@ const OrderDetails = (props) => {
     useEffect(() => { console.log(sodetails); }, [sodetails])
 
     const generatePDF = async () => {
-       
+
     }
 
     return (
         <>
-        {isloading ?
+            {isloading ?
                 <View style={{
                     flex: 1,
                     justifyContent: 'center',
@@ -224,274 +229,12 @@ const OrderDetails = (props) => {
                         size="large"
                         color="black"
                     />
-                </View> :   <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%' }}>
-            {newPrint === true ? (
-                <View>
-                    <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, }}>
-                        <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF', textAlign: 'center' }}>NRS(JHCPL)</Text>
-                    </TouchableOpacity>
-                    <ScrollView
-                        nestedScrollEnabled={true}
-                        keyboardShouldPersistTaps="handled"
-                        style={{ maxWidth: '100%', backgroundColor: '#fff' }}
-                    >
-                        <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
-                            <View style={{ paddingVertical: 10, }}>
-                                <View>
-                                    <View style={{
-                                        flex: 1,
-                                        flexDirection: 'row',
-                                        height: width >= 720 ? 50 : 40,
-                                        borderColor: '#000000',
-                                        borderWidth: 1,
-                                    }}>
-                                        <Text style={{
-                                            width: 600,
-                                            borderRightWidth: 2,
-                                            borderColor: '#000000',
-                                            fontWeight: 'bold',
-                                            paddingLeft: 3,
-                                            fontSize: width >= 720 ? 18 : 15,
-                                            paddingTop: width >= 720 ? 10 : 9,
-                                        }}>PARTY : <Text style={{ borderRightWidth: 2, fontSize: width >= 720 ? 18 : 15, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>{partydata[0].Name}</Text></Text>
-                                        {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
-                                        <Text style={{
-                                            width: 90,
-                                            borderRightWidth: 2,
-                                            borderColor: '#000000',
-                                            textAlign: 'center',
-                                            fontWeight: 'bold',
-                                            paddingTop: width >= 720 ? 10 : 9,
-                                            fontSize: width >= 720 ? 18 : 15
-                                        }}>DATE:</Text>
-                                        <Text style={{
-                                            width: 100,
-                                            textAlign: 'center',
-                                            fontWeight: 400,
-                                            paddingLeft: 5,
-                                            paddingTop: width >= 720 ? 10 : 9,
-                                            fontSize: width >= 720 ? 18 : 15
-                                        }}>15/06/2023</Text>
-                                    </View>
-                                    <View style={{
-                                        flex: 1,
-                                        flexDirection: 'row',
-                                        height: width >= 720 ? 50 : 40,
-                                        borderColor: '#000000',
-                                        borderWidth: 1,
-                                    }}>
-                                        <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>ADDRESS : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>AHMEDABAD, GUJARAT, INDIA-380001</Text></Text>
-                                        {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
-                                        <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>SO NO:</Text>
-                                        <Text style={{ width: width >= 720 ? 200 : 160, textAlign: 'center', fontWeight: 400, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>NRS(JHCPL)33/23-24</Text>
-                                    </View>
-                                    <View style={{
-                                        flex: 1,
-                                        flexDirection: 'row',
-                                        height: width >= 720 ? 50 : 40,
-                                        borderColor: '#000000',
-                                        borderWidth: 1,
-                                    }}>
-                                        <Text style={{ width: 800, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>TRANSPORT :  </Text>
-
-                                    </View>
-                                    <View style={{
-                                        flex: 1,
-                                        flexDirection: 'row',
-                                        height: width >= 720 ? 50 : 40,
-                                        borderColor: '#000000',
-                                        borderWidth: 1,
-                                    }}>
-                                        <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>GST : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}></Text></Text>
-                                        {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
-                                        <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>REMARK S</Text>
-                                        <Text style={{ width: 160, textAlign: 'center', fontWeight: 400, paddingTop: width >= 720 ? 10 : 9, }}></Text>
-                                    </View>
-                                </View>
-                                <View style={{ marginTop: 50 }}>
-                                    <Table borderStyle={{ borderWidth: 2, borderColor: '#000000', }}>
-                                        {/* Fixed Header Row */}
-                                        <Row
-                                            data={tableData ? tableData.tableHead : ""}
-                                            textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, }}
-
-                                            style={{
-                                                height: 60,
-                                                // Make sure the header row is displayed horizontally
-                                            }}
-                                            widthArr={widthArr}
-
-                                        />
-                                    </Table>
-                                </View>
-                                <View >
-                                    <ScrollView vertical={true} style={{ maxHeight: width >= 720 ? 450 : 80 }}>
-                                        <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
-                                            {/* Data Rows */}
-                                            <Rows
-                                                data={tableData ? tableData.tableData : ""}
-                                                textStyle={{ margin: 6, textAlign: 'center', fontSize: width >= 720 ? 16 : 13 }}
-                                                style={{
-                                                    height: width >= 720 ? 50 : 'auto',
-                                                    paddingHorizontal:20,
-                                                    width: 'auto',
-                                                }}
-                                                widthArr={widthArr} // Apply column widths to the data rows
-                                            />
-                                        </Table>
-                                    </ScrollView>
-                                    <ScrollView>
-                                        <View style={{
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                            height: 40,
-                                            borderColor: '#000000',
-                                            borderWidth: 2,
-
-                                        }}>
-                                            <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>TOTAL</Text>
-                                            <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>5</Text>
-                                            <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text>
-                                            <Text style={{ width: 94, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹195.00</Text>
-                                        </View>
-                                    </ScrollView>
-                                </View>
-                            </View>
-                        </ScrollView>
-                    </ScrollView>
-                </View>) : (<>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, alignItems: 'center', paddingEnd: 20 }}>
-                        <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, borderTopRightRadius: 10, borderBottomRightRadius: 10 }}>
-                            <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF' }}>NRS(JHCPL)</Text>
-                        </TouchableOpacity>
-                        <Text style={{ color: '#808080', fontSize: width >= 720 ? 25 : 20, fontWeight: 700, }}>Date: <Text style={{ color: '#000000', fontSize: width >= 720 ? 25 : 20, fontWeight: 700 }}>{new Date(CreatedDate).toLocaleDateString('en-GB', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                        })}</Text></Text>
-                    </View>
-                    <View style={{
-                        flex: 1,
-                        paddingHorizontal: 20
-                    }}>
-                        <View
-                            style={{
-                                height: width >= 720 ? 45 : 35,
-                                width: '100%',
-                                borderWidth: 2,
-                                borderRadius: 6,
-                                borderColor: '#000000',
-                                paddingStart: 10,
-                                justifyContent: 'center'
-                            }}
-                        >
-                            <Text style={{
-                                fontSize: width >= 720 ? 20 : 16,
-                                color: '#000000',
-                                fontWeight: 'bold'
-                            }}>{partydata ? partydata[0].Name : ""}</Text>
-                        </View>
-                        <View
-                            style={{
-                                textAlignVertical: 'top',
-                                height: width >= 720 ? 200 : 170,
-                                height: width >= 720 ? 120 : 80,
-                                padding: 5,
-                                borderWidth: 2,
-                                borderRadius: 6,
-                                borderColor: '#000000',
-                                marginTop: 10,
-                                backgroundColor: '#FFFFFF',
-                            }}
-                        >
-                            <Text style={{
-                                fontSize: width >= 720 ? 20 : 16,
-                                fontWeight: 'bold',
-                                color: partydata ? '#000000' : "#00000080",
-                            }}>{partydata ? partydata[0].Address : "Address"}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                            <View
-                                style={{
-                                    height: width >= 720 ? 45 : 35,
-                                    width: '48%',
-                                    borderWidth: 2,
-                                    borderRadius: 6,
-                                    borderColor: '#000000',
-                                    paddingStart: 10,
-                                    justifyContent: "center"
-                                }}
-                            >
-                                <Text style={{
-                                    fontSize: width >= 720 ? 20 : 16,
-                                    color: '#000000',
-                                    fontWeight: 'bold'
-                                }}>NRS(JHCPL)33/23-24</Text>
-                            </View>
-                            <View
-                                style={{
-                                    height: width >= 720 ? 45 : 35,
-                                    width: '48%',
-                                    borderWidth: 2,
-                                    borderRadius: 6,
-                                    borderColor: transport !== null ? "black" : '#808080',
-                                    paddingStart: 10,
-                                    justifyContent: "center"
-                                }}
-                            >
-                                <Text style={{
-                                    fontSize: width >= 720 ? 20 : 16,
-                                    color: '#000000',
-                                    fontWeight: 'bold',
-                                    color: transport !== null ? "black" : "#00000080"
-                                }}>{transport !== null ? transport : "Transport"}</Text>
-                            </View>
-
-
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                            <View
-                                style={{
-                                    height: width >= 720 ? 45 : 35,
-                                    width: '48%',
-                                    borderWidth: 2,
-                                    borderRadius: 6,
-                                    borderColor: gst !== null ? "black" :'#808080',
-                                    paddingStart: 10,
-                                    justifyContent: "center"
-                                }}
-                            // value='NIRAV SIR'
-                            >
-                                <Text style={{
-                                    fontSize: width >= 720 ? 20 : 16,
-                                    color: '#000000',
-                                    fontWeight: 'bold',
-                                    color: gst !== null ? "black" : "#00000080"
-                                }}>{gst !== null ? gst : "GST"}</Text>
-                            </View>
-
-                            <View
-                                style={{
-                                    height: width >= 720 ? 45 : 35,
-                                    width: '48%',
-                                    borderWidth: 2,
-                                    borderRadius: 6,
-                                    borderColor:remarks !== "" ? "black" : '#808080',
-                                    paddingStart: 10,
-                                    justifyContent: 'center'
-                                }}
-                            // value='NIRAV SIR'
-                            >
-                                <Text style={{
-                                    fontSize: width >= 720 ? 20 : 16,
-                                    color: '#000000',
-                                    fontWeight: 'bold',
-                                    color: remarks !== "" ? "black" : "#00000080"
-                                }}>{remarks !== "" ? remarks : "Remarks"}</Text>
-                            </View>
-
-                        </View>
+                </View> : <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%' }}>
+                    {newPrint === true ? (
                         <View>
+                            <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, }}>
+                                <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF', textAlign: 'center' }}>NRS(JHCPL)</Text>
+                            </TouchableOpacity>
                             <ScrollView
                                 nestedScrollEnabled={true}
                                 keyboardShouldPersistTaps="handled"
@@ -500,7 +243,78 @@ const OrderDetails = (props) => {
                                 <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
                                     <View style={{ paddingVertical: 10, }}>
                                         <View>
-                                            <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                height: width >= 720 ? 50 : 40,
+                                                borderColor: '#000000',
+                                                borderWidth: 1,
+                                            }}>
+                                                <Text style={{
+                                                    width: 600,
+                                                    borderRightWidth: 2,
+                                                    borderColor: '#000000',
+                                                    fontWeight: 'bold',
+                                                    paddingLeft: 3,
+                                                    fontSize: width >= 720 ? 18 : 15,
+                                                    paddingTop: width >= 720 ? 10 : 9,
+                                                }}>PARTY : <Text style={{ borderRightWidth: 2, fontSize: width >= 720 ? 18 : 15, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>{partydata[0].Name}</Text></Text>
+                                                {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
+                                                <Text style={{
+                                                    width: 90,
+                                                    borderRightWidth: 2,
+                                                    borderColor: '#000000',
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold',
+                                                    paddingTop: width >= 720 ? 10 : 9,
+                                                    fontSize: width >= 720 ? 18 : 15
+                                                }}>DATE:</Text>
+                                                <Text style={{
+                                                    width: 100,
+                                                    textAlign: 'center',
+                                                    fontWeight: 400,
+                                                    paddingLeft: 5,
+                                                    paddingTop: width >= 720 ? 10 : 9,
+                                                    fontSize: width >= 720 ? 18 : 15
+                                                }}>15/06/2023</Text>
+                                            </View>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                height: width >= 720 ? 50 : 40,
+                                                borderColor: '#000000',
+                                                borderWidth: 1,
+                                            }}>
+                                                <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>ADDRESS : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>AHMEDABAD, GUJARAT, INDIA-380001</Text></Text>
+                                                {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
+                                                <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>SO NO:</Text>
+                                                <Text style={{ width: width >= 720 ? 200 : 160, textAlign: 'center', fontWeight: 400, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>NRS(JHCPL)33/23-24</Text>
+                                            </View>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                height: width >= 720 ? 50 : 40,
+                                                borderColor: '#000000',
+                                                borderWidth: 1,
+                                            }}>
+                                                <Text style={{ width: 800, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>TRANSPORT :  </Text>
+
+                                            </View>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'row',
+                                                height: width >= 720 ? 50 : 40,
+                                                borderColor: '#000000',
+                                                borderWidth: 1,
+                                            }}>
+                                                <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>GST : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}></Text></Text>
+                                                {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
+                                                <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>REMARK S</Text>
+                                                <Text style={{ width: 160, textAlign: 'center', fontWeight: 400, paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                            </View>
+                                        </View>
+                                        <View style={{ marginTop: 50 }}>
+                                            <Table borderStyle={{ borderWidth: 2, borderColor: '#000000', }}>
                                                 {/* Fixed Header Row */}
                                                 <Row
                                                     data={tableData ? tableData.tableHead : ""}
@@ -510,20 +324,23 @@ const OrderDetails = (props) => {
                                                         height: 60,
                                                         // Make sure the header row is displayed horizontally
                                                     }}
-                                                    widthArr={widthArr} />
+                                                    widthArr={widthArr}
+
+                                                />
                                             </Table>
                                         </View>
-                                        <View>
+                                        <View >
                                             <ScrollView vertical={true} style={{ maxHeight: width >= 720 ? 450 : 80 }}>
                                                 <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
                                                     {/* Data Rows */}
                                                     <Rows
                                                         data={tableData ? tableData.tableData : ""}
                                                         textStyle={{ margin: 6, textAlign: 'center', fontSize: width >= 720 ? 16 : 13 }}
-                                                        style={({ index }) => ({
-                                                            height: calculateRowHeight(tableData.tableData[index]), // Call a function to calculate row height based on content
+                                                        style={{
+                                                            height: width >= 720 ? 50 : 'auto',
+                                                            paddingHorizontal: 20,
                                                             width: 'auto',
-                                                          })}
+                                                        }}
                                                         widthArr={widthArr} // Apply column widths to the data rows
                                                     />
                                                 </Table>
@@ -535,45 +352,233 @@ const OrderDetails = (props) => {
                                                     height: 40,
                                                     borderColor: '#000000',
                                                     borderWidth: 2,
+
                                                 }}>
                                                     <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>TOTAL</Text>
-                                                    <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>{totalqty}</Text>
+                                                    <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>5</Text>
                                                     <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text>
-                                                    <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{totalval}.00</Text>
+                                                    <Text style={{ width: 94, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹195.00</Text>
                                                 </View>
                                             </ScrollView>
                                         </View>
                                     </View>
                                 </ScrollView>
                             </ScrollView>
-                        </View>
-                    </View>
-                    <View>
-                        <TouchableOpacity onPress={() => generatePDF()} style={{ alignItems: 'flex-end', marginRight: 10 }}>
+                        </View>) : (<>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, alignItems: 'center', paddingEnd: 20 }}>
+                                <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, borderTopRightRadius: 10, borderBottomRightRadius: 10 }}>
+                                    <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF' }}>NRS(JHCPL)</Text>
+                                </TouchableOpacity>
+                                <Text style={{ color: '#808080', fontSize: width >= 720 ? 25 : 20, fontWeight: 700, }}>Date: <Text style={{ color: '#000000', fontSize: width >= 720 ? 25 : 20, fontWeight: 700 }}>{new Date(CreatedDate).toLocaleDateString('en-GB', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                })}</Text></Text>
+                            </View>
+                            <View style={{
+                                flex: 1,
+                                paddingHorizontal: 20
+                            }}>
+                                <View
+                                    style={{
+                                        height: width >= 720 ? 45 : 35,
+                                        width: '100%',
+                                        borderWidth: 2,
+                                        borderRadius: 6,
+                                        borderColor: '#000000',
+                                        paddingStart: 10,
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <Text style={{
+                                        fontSize: width >= 720 ? 20 : 16,
+                                        color: '#000000',
+                                        fontWeight: 'bold'
+                                    }}>{partydata ? partydata[0].Name : ""}</Text>
+                                </View>
+                                <View
+                                    style={{
+                                        textAlignVertical: 'top',
+                                        height: width >= 720 ? 200 : 170,
+                                        height: width >= 720 ? 120 : 80,
+                                        padding: 5,
+                                        borderWidth: 2,
+                                        borderRadius: 6,
+                                        borderColor: '#000000',
+                                        marginTop: 10,
+                                        backgroundColor: '#FFFFFF',
+                                    }}
+                                >
+                                    <Text style={{
+                                        fontSize: width >= 720 ? 20 : 16,
+                                        fontWeight: 'bold',
+                                        color: partydata ? '#000000' : "#00000080",
+                                    }}>{partydata ? partydata[0].Address : "Address"}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                                    <View
+                                        style={{
+                                            height: width >= 720 ? 45 : 35,
+                                            width: '48%',
+                                            borderWidth: 2,
+                                            borderRadius: 6,
+                                            borderColor: '#000000',
+                                            paddingStart: 10,
+                                            justifyContent: "center"
+                                        }}
+                                    >
+                                        <Text style={{
+                                            fontSize: width >= 720 ? 20 : 16,
+                                            color: '#000000',
+                                            fontWeight: 'bold'
+                                        }}>NRS(JHCPL)33/23-24</Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                            height: width >= 720 ? 45 : 35,
+                                            width: '48%',
+                                            borderWidth: 2,
+                                            borderRadius: 6,
+                                            borderColor: transport !== null ? "black" : '#808080',
+                                            paddingStart: 10,
+                                            justifyContent: "center"
+                                        }}
+                                    >
+                                        <Text style={{
+                                            fontSize: width >= 720 ? 20 : 16,
+                                            color: '#000000',
+                                            fontWeight: 'bold',
+                                            color: transport !== null ? "black" : "#00000080"
+                                        }}>{transport !== null ? transport : "Transport"}</Text>
+                                    </View>
 
-                            {/* <Text style={{
+
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                                    <View
+                                        style={{
+                                            height: width >= 720 ? 45 : 35,
+                                            width: '48%',
+                                            borderWidth: 2,
+                                            borderRadius: 6,
+                                            borderColor: gst !== null ? "black" : '#808080',
+                                            paddingStart: 10,
+                                            justifyContent: "center"
+                                        }}
+                                    // value='NIRAV SIR'
+                                    >
+                                        <Text style={{
+                                            fontSize: width >= 720 ? 20 : 16,
+                                            color: '#000000',
+                                            fontWeight: 'bold',
+                                            color: gst !== null ? "black" : "#00000080"
+                                        }}>{gst !== null ? gst : "GST"}</Text>
+                                    </View>
+
+                                    <View
+                                        style={{
+                                            height: width >= 720 ? 45 : 35,
+                                            width: '48%',
+                                            borderWidth: 2,
+                                            borderRadius: 6,
+                                            borderColor: remarks !== "" ? "black" : '#808080',
+                                            paddingStart: 10,
+                                            justifyContent: 'center'
+                                        }}
+                                    // value='NIRAV SIR'
+                                    >
+                                        <Text style={{
+                                            fontSize: width >= 720 ? 20 : 16,
+                                            color: '#000000',
+                                            fontWeight: 'bold',
+                                            color: remarks !== "" ? "black" : "#00000080"
+                                        }}>{remarks !== "" ? remarks : "Remarks"}</Text>
+                                    </View>
+
+                                </View>
+                                <View>
+                                    <ScrollView
+                                        nestedScrollEnabled={true}
+                                        keyboardShouldPersistTaps="handled"
+                                        style={{ maxWidth: '100%', backgroundColor: '#fff' }}
+                                    >
+                                        <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
+                                            <View style={{ paddingVertical: 10, }}>
+                                                <View>
+                                                    <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
+                                                        {/* Fixed Header Row */}
+                                                        <Row
+                                                            data={tableData ? tableData.tableHead : ""}
+                                                            textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, }}
+
+                                                            style={{
+                                                                height: 60,
+                                                                // Make sure the header row is displayed horizontally
+                                                            }}
+                                                            widthArr={widthArr} />
+                                                    </Table>
+                                                </View>
+                                                <View>
+                                                    <ScrollView vertical={true} style={{ maxHeight: width >= 720 ? 450 : 80 }}>
+                                                        <Table borderStyle={{ borderWidth: 2, borderColor: '#000000' }}>
+                                                            {/* Data Rows */}
+                                                            <Rows
+                                                                data={tableData ? tableData.tableData : ""}
+                                                                textStyle={{ margin: 6, textAlign: 'center', fontSize: width >= 720 ? 16 : 13 }}
+                                                                style={({ index }) => ({
+                                                                    height: calculateRowHeight(tableData.tableData[index]), // Call a function to calculate row height based on content
+                                                                    width: 'auto',
+                                                                })}
+                                                                widthArr={widthArr} // Apply column widths to the data rows
+                                                            />
+                                                        </Table>
+                                                    </ScrollView>
+                                                    <ScrollView>
+                                                        <View style={{
+                                                            flex: 1,
+                                                            flexDirection: 'row',
+                                                            height: 40,
+                                                            borderColor: '#000000',
+                                                            borderWidth: 2,
+                                                        }}>
+                                                            <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>TOTAL</Text>
+                                                            <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>{totalqty}</Text>
+                                                            <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text>
+                                                            <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{totalval}.00</Text>
+                                                        </View>
+                                                    </ScrollView>
+                                                </View>
+                                            </View>
+                                        </ScrollView>
+                                    </ScrollView>
+                                </View>
+                            </View>
+                            <View>
+                                <TouchableOpacity onPress={() => generatePDF()} style={{ alignItems: 'flex-end', marginRight: 10 }}>
+
+                                    {/* <Text style={{
                                 width: width >= 720 ? 40 : 30,
                                 height: width >= 720 ? 40 : 30,
                                 backgroundColor: '#000000', color: '#FFFFFF', borderRadius: 5, textAlign: 'center', fontSize: width >= 720 ? 24 : 19, fontWeight: 'bold'
                             }}>2</Text> */}
-                            <View style={{
-                                width: width >= 720 ? 70 : 50,
-                                height: width >= 720 ? 70 : 50,
-                                borderRadius: 5
-                            }}>
-                                <Image source={require("../../../assets/pdf.png")} style={{ width: "100%", height: "100%", resizeMode: 'contain' }} >
+                                    <View style={{
+                                        width: width >= 720 ? 70 : 50,
+                                        height: width >= 720 ? 70 : 50,
+                                        borderRadius: 5
+                                    }}>
+                                        <Image source={require("../../../assets/pdf.png")} style={{ width: "100%", height: "100%", resizeMode: 'contain' }} >
 
-                                </Image>
+                                        </Image>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
-                    </View>
-                </>)}
+                        </>)}
 
 
 
-        </View>}
+                </View>}
         </>
-      
+
 
     )
 }
