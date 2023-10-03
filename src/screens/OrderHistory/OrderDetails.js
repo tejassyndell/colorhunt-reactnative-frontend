@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const OrderDetails = (props) => {
     const { navigation } = props;
     const route = useRoute()
-    const { sonumber, CreatedDate, remarks, transport = null, gst = null } = route.params;
+    const { sonumber, CreatedDate, remarks, transport = null, gst = null,name="",endyear=0,startyear=0 ,OutwardNumber=0} = route.params;
     console.log(remarks, "{}{}{}{}{}{}{}{}");
     const [newPrint, setNewPrint] = useState(false);
     const [isloading, setIsLoading] = useState(true);
@@ -294,7 +294,7 @@ const OrderDetails = (props) => {
                                                 <Text style={{ width: 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>ADDRESS : <Text style={{ borderRightWidth: 2, borderColor: '#000000', fontWeight: 400, paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>AHMEDABAD, GUJARAT, INDIA-380001</Text></Text>
                                                 {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
                                                 <Text style={{ width: 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>SO NO:</Text>
-                                                <Text style={{ width: width >= 720 ? 200 : 160, textAlign: 'center', fontWeight: 400, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>NRS(JHCPL)33/23-24</Text>
+                                                <Text style={{ width: width >= 720 ? 200 : 160, textAlign: 'center', fontWeight: 400, fontSize: width >= 720 ? 18 : 15, paddingTop: width >= 720 ? 10 : 9, }}>{`${name}${sonumber}/${startyear}-${endyear}`}</Text>
                                             </View>
                                             <View style={{
                                                 flex: 1,
@@ -373,7 +373,7 @@ const OrderDetails = (props) => {
                         </View>) : (<>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, alignItems: 'center', paddingEnd: 20 }}>
                                 <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, borderTopRightRadius: 10, borderBottomRightRadius: 10 }}>
-                                    <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF' }}>NRS(JHCPL)</Text>
+                                    <Text style={{ fontSize: 30, fontWeight: 700, color: '#FFFFFF' }}>{name}</Text>
                                 </TouchableOpacity>
                                 <Text style={{ color: '#808080', fontSize: width >= 720 ? 25 : 20, fontWeight: 700, }}>Date: <Text style={{ color: '#000000', fontSize: width >= 720 ? 25 : 20, fontWeight: 700 }}>{new Date(CreatedDate).toLocaleDateString('en-GB', {
                                     day: '2-digit',
@@ -451,7 +451,7 @@ const OrderDetails = (props) => {
                                             fontSize: width >= 720 ? 20 : 16,
                                             color: '#000000',
                                             fontWeight: 'bold'
-                                        }}>NRS(JHCPL)33/23-24</Text>
+                                        }}adjustsFontSizeToFit={true} numberOfLines={1}>{`${name}${OutwardNumber!==0?OutwardNumber:sonumber}/${startyear}-${endyear}`}</Text>
                                     </View>
 
                                     <View
