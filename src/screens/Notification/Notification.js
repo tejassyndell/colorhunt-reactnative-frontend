@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useLayoutEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView,Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView,Platform,Dimensions } from 'react-native';
 import React, { useEffect, useState, navigation } from 'react';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow'
 import * as Notifications from 'expo-notifications';
@@ -12,6 +12,8 @@ export default function Notification(props) {
   const [title, setTitle] = useState('');
   const [bodydec, setBodydec] = useState('');
   const [notificationData, setNotificationData] = useState(null);
+  const { width, height } = Dimensions.get("window");
+
   const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
 
   const data = [{}]
