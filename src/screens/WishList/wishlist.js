@@ -18,6 +18,8 @@ import {
 import styles from "./styles.js";
 import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { ActivityIndicator } from "react-native";
 export default function WishList(props) {
   const { navigation } = props;
@@ -31,6 +33,12 @@ export default function WishList(props) {
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData")
+    partydata = await JSON.parse(partydata);
+    console.log(partydata[0].Id, "[][][[][]");
+    return partydata[0].Id;
+  }
 
   // getCategoriesname
   const getCategoriesname = async () => {
@@ -41,8 +49,9 @@ export default function WishList(props) {
   };
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
+    let id = await getpartyid()
     let data = {
-      party_id: 197,
+      party_id: id,
       article_id: i.Id,
     };
     console.log(data);
@@ -61,7 +70,7 @@ export default function WishList(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id: 197,
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);

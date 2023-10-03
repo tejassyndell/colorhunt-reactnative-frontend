@@ -216,6 +216,12 @@ const OrderDetails = (props) => {
     const generatePDF = async () => {
 
     }
+    const getgstamount = (val) => {
+        console.log(typeof val);
+        let gsttotal = val * 0.05;
+        let totalamount = val + gsttotal;
+        return parseInt(totalamount);
+    }
 
     return (
         <>
@@ -379,6 +385,9 @@ const OrderDetails = (props) => {
                                 flex: 1,
                                 paddingHorizontal: 20
                             }}>
+                                <View>
+                                    <Text style={{ fontSize: width < 720 ? width * 0.040 : 24, fontWeight: 500, color: "#808080" }}>Name:</Text>
+                                </View>
                                 <View
                                     style={{
                                         height: width >= 720 ? 45 : 35,
@@ -396,6 +405,10 @@ const OrderDetails = (props) => {
                                         fontWeight: 'bold'
                                     }}>{partydata ? partydata[0].Name : ""}</Text>
                                 </View>
+
+                                <View style={{ marginTop: 10 }}>
+                                    <Text style={{ fontSize: width < 720 ? width * 0.040 : 24, fontWeight: 500, color: "#808080" }}>Address:</Text>
+                                </View>
                                 <View
                                     style={{
                                         textAlignVertical: 'top',
@@ -405,7 +418,6 @@ const OrderDetails = (props) => {
                                         borderWidth: 2,
                                         borderRadius: 6,
                                         borderColor: '#000000',
-                                        marginTop: 10,
                                         backgroundColor: '#FFFFFF',
                                     }}
                                 >
@@ -415,7 +427,15 @@ const OrderDetails = (props) => {
                                         color: partydata ? '#000000' : "#00000080",
                                     }}>{partydata ? partydata[0].Address : "Address"}</Text>
                                 </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                                <View style={{ marginTop: 10, flexDirection: "row" }}>
+                                    <View style={{ flex: 1.1 }}>
+                                        <Text style={{ fontSize: width < 720 ? width * 0.040 : 24, fontWeight: 500, color: "#808080" }}>SoNumber:</Text>
+                                    </View>
+                                    <View style={{ flex: 1 }}>
+                                        <Text style={{ fontSize: width < 720 ? width * 0.040 : 24, fontWeight: 500, color: "#808080" }}>Transport:</Text>
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <View
                                         style={{
                                             height: width >= 720 ? 45 : 35,
@@ -433,6 +453,7 @@ const OrderDetails = (props) => {
                                             fontWeight: 'bold'
                                         }}>NRS(JHCPL)33/23-24</Text>
                                     </View>
+
                                     <View
                                         style={{
                                             height: width >= 720 ? 45 : 35,
@@ -454,28 +475,31 @@ const OrderDetails = (props) => {
 
 
                                 </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+                                <View style={{ marginTop: 10 }}>
+                                    <Text style={{ fontSize: width < 720 ? width * 0.040 : 24, fontWeight: 500, color: "#808080" }}>GST:</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexWrap: "nowrap" }}>
+
                                     <View
                                         style={{
                                             height: width >= 720 ? 45 : 35,
-                                            width: '48%',
+                                            width: '100%',
                                             borderWidth: 2,
                                             borderRadius: 6,
-                                            borderColor: gst !== null ? "black" : '#808080',
+                                            borderColor: partydata.length > 0 ? partydata[0].GSTNumber !== null ? "black" : "#00000080" : "#00000080",
                                             paddingStart: 10,
                                             justifyContent: "center"
                                         }}
-                                    // value='NIRAV SIR'
                                     >
                                         <Text style={{
                                             fontSize: width >= 720 ? 20 : 16,
                                             color: '#000000',
                                             fontWeight: 'bold',
-                                            color: gst !== null ? "black" : "#00000080"
-                                        }}>{gst !== null ? gst : "GST"}</Text>
+                                            color: partydata.length > 0 ? partydata[0].GSTNumber !== null ? "black" : "#00000080" : "#00000080"
+                                        }}>{partydata.length > 0 ? partydata[0].GSTNumber !== null ? partydata[0].GSTNumber : "GST" : "GST"}</Text>
                                     </View>
 
-                                    <View
+                                    {/* <View
                                         style={{
                                             height: width >= 720 ? 45 : 35,
                                             width: '48%',
@@ -493,7 +517,7 @@ const OrderDetails = (props) => {
                                             fontWeight: 'bold',
                                             color: remarks !== "" ? "black" : "#00000080"
                                         }}>{remarks !== "" ? remarks : "Remarks"}</Text>
-                                    </View>
+                                    </View> */}
 
                                 </View>
                                 <View>
@@ -533,13 +557,15 @@ const OrderDetails = (props) => {
                                                             />
                                                         </Table>
                                                     </ScrollView>
+
                                                     <ScrollView>
                                                         <View style={{
                                                             flex: 1,
                                                             flexDirection: 'row',
                                                             height: 40,
                                                             borderColor: '#000000',
-                                                            borderWidth: 2,
+                                                            borderWidth: 1,
+                                                            borderTopWidth: 2
                                                         }}>
                                                             <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>TOTAL</Text>
                                                             <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>{totalqty}</Text>
@@ -547,6 +573,83 @@ const OrderDetails = (props) => {
                                                             <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{totalval}.00</Text>
                                                         </View>
                                                     </ScrollView>
+                                                    {partydata.length > 0 ?
+                                                        partydata[0].GSTType === "GST" ?
+                                                            <ScrollView>
+                                                                <View style={{
+                                                                    flex: 1,
+                                                                    flexDirection: 'row',
+                                                                    height: 40,
+                                                                    borderColor: '#000000',
+                                                                    borderWidth: 1,
+                                                                    borderTopWidth: 2
+                                                                }}>
+                                                                    <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                    <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                    <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000', borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>GST 5%</Text>
+                                                                    <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{parseInt(totalval * 0.05)}.00</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    flex: 1,
+                                                                    flexDirection: 'row',
+                                                                    height: 40,
+                                                                    borderColor: '#000000',
+                                                                    borderWidth: 1,
+                                                                    borderTopWidth: 1
+                                                                }}>
+                                                                    <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>TOTAL</Text>
+                                                                    <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                    <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text>
+                                                                    <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{getgstamount(totalval)}.00</Text>
+                                                                </View>
+                                                            </ScrollView> :
+                                                            "" :
+                                                        ""
+                                                    }
+                                                    {partydata.length > 0 ?
+                                                        partydata[0].GSTType === "IGST" ?
+                                                            <ScrollView>
+                                                                <View style={{
+                                                                    flex: 1,
+                                                                    flexDirection: 'row',
+                                                                    height: 40,
+                                                                    borderColor: '#000000',
+                                                                    borderWidth: 1,
+                                                                }}>
+                                                                    <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                    <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                    <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000', borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>SGST 2.5%</Text>
+                                                                    <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{parseInt(totalval * 0.025)}.00</Text>
+                                                                </View>
+                                                                <View style={{
+                                                                    flex: 1,
+                                                                    flexDirection: 'row',
+                                                                    height: 40,
+                                                                    borderColor: '#000000',
+                                                                    borderWidth: 1,
+                                                                }}>
+                                                                    <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                    <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                    <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000', borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>CGST 2.5%</Text>
+                                                                    <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{parseInt(totalval * 0.025)}.00</Text>
+                                                                </View>
+                                                                <ScrollView>
+                                                                    <View style={{
+                                                                        flex: 1,
+                                                                        flexDirection: 'row',
+                                                                        height: 40,
+                                                                        borderColor: '#000000',
+                                                                        borderWidth: 1,
+                                                                        borderTopWidth: 1
+                                                                    }}>
+                                                                        <Text style={{ width: width >= 720 ? 650 : 600, borderRightWidth: 2, borderColor: '#000000', fontWeight: 'bold', paddingLeft: 3, paddingTop: width >= 720 ? 10 : 9, }}>TOTAL</Text>
+                                                                        <Text style={{ width: width >= 720 ? 100 : 90, borderRightWidth: 2, borderColor: '#000000', textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}></Text>
+                                                                        <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text>
+                                                                        <Text style={{ width: 98, textAlign: 'center', fontWeight: 'bold', paddingTop: width >= 720 ? 10 : 9, }}>₹{getgstamount(totalval)}.00</Text>
+                                                                    </View>
+                                                                </ScrollView>
+                                                            </ScrollView> : "" : ""}
+
                                                 </View>
                                             </View>
                                         </ScrollView>

@@ -212,7 +212,7 @@ const OrderHistory = (props) => {
                             <ScrollView nestedScrollEnabled={true}>
                                 {sonumberdata ? sonumberdata.map((item) =>
                                     item.status === 0 ?
-                                        <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate, remarks: item.Remarks }) }}>
+                                        <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate, remarks: item.Remarks,transport:item.Transporter }) }}>
                                             <View style={{ width: "60%", paddingVertical: "2%", paddingLeft: "2%" }}>
                                                 <View style={{ gap: 8 }}>
                                                     <View style={orderstyles.text_cnt}>
@@ -267,7 +267,7 @@ const OrderHistory = (props) => {
                             <ScrollView nestedScrollEnabled={true}>
                                 {completedsodata ? completedsodata.map((item) =>
                                     item.status === 1 ?
-                                    <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate, remarks: item.Remarks }) }}>
+                                    <TouchableOpacity style={orderstyles.data_cnt} onPress={() => { navigation.navigate("orderdetails", { sonumber: item.SoNumber, CreatedDate: item.CreatedDate, remarks: item.Remarks,transport:item.Transporter  }) }}>
 
                                             <View style={{ width: "60%", paddingVertical: "2%", paddingLeft: "2%" }}>
                                                 <View style={{ gap: 8 }}>
