@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState, useEffect } from "react";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
-import { View, Text, Image, ScrollView, TouchableOpacity, Dimensions, TextInput, Pressable, Modal, Platform } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, Dimensions, TextInput, Pressable, Modal, Platform, StyleSheet } from "react-native";
 import { addso, gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,7 +14,7 @@ const Orderlist = (props) => {
     const [showTransporatation, setshowTransporatation] = useState(false);
     const [transportationVal, setTransportationVal] = useState();
     const [fillvalue, setValue] = useState(false);
-    const [userdata, setUserdata] = useState([]);
+    const [userdata, setUserdata] = useState("");
     const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/'
 
     // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
@@ -23,16 +23,20 @@ const Orderlist = (props) => {
     const [ParsedData, setParsedData] = useState([])
     const currentDate = new Date()
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [hoveredItem, setHoveredItem] = useState(null);
     const windowwidthe = parseInt(Dimensions.get("window").width);
     const windowheight = parseInt(Dimensions.get("window").height);
     const { width, height } = Dimensions.get("window");
     const headerHeight = Platform.OS === 'android' ? (windowwidthe >= 720 ? 120 : 90) : 120;
 
-    useEffect(async()=>{
+    const getpartydata = async () => {
         let data = await AsyncStorage.getItem('UserData')
         data = await JSON.parse(data)
         setUserdata(data);
-    },[])
+    }
+    useEffect(() => {
+        getpartydata()
+    }, [])
     const AddSo = async () => {
         let userdata = await AsyncStorage.getItem('UserData')
         userdata = await JSON.parse(userdata)
@@ -157,6 +161,13 @@ const Orderlist = (props) => {
     }
 
 
+    const handlePressIn = (item) => {
+        setHoveredItem(item.Id);
+    };
+
+    const handlePressOut = () => {
+        setHoveredItem(null);
+    };
     return (
         <>
             {isLoading ? (
@@ -264,14 +275,33 @@ const Orderlist = (props) => {
                                         <View>
 
                                             {Transportation.map((item) =>
-                                                <TouchableOpacity key={item.Id} onPress={() => { setTransportationVal(item.Name); setshowTransporatation(!showTransporatation) }}>
-                                                    <Text style={{
-                                                        fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                                                        marginVertical: '2.5%',
-                                                        color: "#626262",
-                                                        fontWeight: 500
-                                                    }
-                                                    }>{item.Name}</Text>
+                                                <TouchableOpacity key={item.Id}
+                                                    onPress={() => { setTransportationVal(item.Name); setshowTransporatation(!showTransporatation) }}
+                                                    onPressIn={() => handlePressIn(item)}
+                                                    onPressOut={handlePressOut}
+                                                >
+                                                    <View
+                                                        style={[
+                                                            styles.item,
+                                                            {
+                                                                backgroundColor:
+                                                                    hoveredItem === item.Id ? 'black' : 'transparent',
+                                                            },
+                                                        ]}
+                                                    >
+                                                        <Text
+                                                            style={[
+
+                                                                {
+                                                                    fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
+                                                                    color: hoveredItem === item.Id ? '#fff' : '#626262',
+                                                                    fontWeight: 500,
+                                                                },
+                                                            ]}
+                                                        >
+                                                            {item.Name}
+                                                        </Text>
+                                                    </View>
                                                 </TouchableOpacity>
                                             )
                                             }
@@ -439,10 +469,10 @@ const Orderlist = (props) => {
                                         <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{totalrate}.00</Text>
                                     </View>
                                 </View>
-                                {userdata.length > 0 ? userdata[0].GSTNumber && userdata[0].GSTType === "GST" ?
+                                {userdata !== "" ? userdata[0].GSTNumber && userdata[0].GSTType === "GST" ?
                                     <View style={{ display: "flex", flexDirection: "row", paddingVertical: '1.0%', width: "100%" }}>
                                         <View style={{ width: '76%', paddingTop: 2 }}>
-                                            <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>GST {userdata.length > 0 ? userdata[0].GSTNumber ? "5%" : "0.0%" : ""}</Text>
+                                            <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>GST {userdata[0].GSTNumber ? "5%" : "0.0%"}</Text>
                                         </View>
                                         <View style={{ width: '24%' }}>
                                             <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{parseInt(totalrate * 0.05)}.00</Text>
@@ -450,12 +480,12 @@ const Orderlist = (props) => {
                                     </View> :
                                     "" : ""}
                                 {
-                                    userdata.length > 0 ?
-                                        userdata[0].GSTType === "IGST" && userdata[0].GSTNumber ?
+                                    userdata !== "" ?
+                                        userdata[0].GSTType === "IGST" && userdata[0].GSTNumber !== "" ?
                                             <>
                                                 <View style={{ display: "flex", flexDirection: "row", paddingVertical: '1.0%', width: "100%" }}>
                                                     <View style={{ width: '76%', paddingTop: 2 }}>
-                                                        <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST {userdata.length > 0 ? userdata[0].GSTNumber ? "2.5%" : "0.0%" : ""}</Text>
+                                                        <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST {userdata[0].GSTNumber ? "2.5%" : "0.0%"}</Text>
                                                     </View>
                                                     <View style={{ width: '24%' }}>
                                                         <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{parseInt(totalrate * 0.025)}.00</Text>
@@ -463,7 +493,7 @@ const Orderlist = (props) => {
                                                 </View>
                                                 <View style={{ display: "flex", flexDirection: "row", paddingVertical: '1.0%', width: "100%" }}>
                                                     <View style={{ width: '76%', paddingTop: 2 }}>
-                                                        <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>CGST {userdata.length > 0 ? userdata[0].GSTNumber ? "2.5%" : "0.0%" : ""}</Text>
+                                                        <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>CGST {userdata[0].GSTNumber ? "2.5%" : "0.0%"}</Text>
                                                     </View>
                                                     <View style={{ width: '24%' }}>
                                                         <Text style={{ fontSize: width >= 720 ? 22 : 12, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{parseInt(totalrate * 0.025)}.00</Text>
@@ -550,3 +580,10 @@ const Orderlist = (props) => {
 
 
 export default Orderlist;
+
+const styles = StyleSheet.create({
+    item: {
+        borderRadius: 6,
+        padding: 10
+    }
+});
