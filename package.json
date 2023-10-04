@@ -39,6 +39,7 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-font-loader": "^1.0.0",
     "react-native-gesture-handler": "~2.12.0",
+    "react-native-gradle-plugin": "^0.71.19",
     "react-native-html-to-pdf": "^0.12.0",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-linear-gradient": "^2.8.3",
