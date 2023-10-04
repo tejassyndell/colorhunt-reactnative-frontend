@@ -51,7 +51,7 @@ export default function Notification(props) {
         }}>
           <Text style={{
             textAlign: "center",
-            fontSize: 25, fontWeight: 700, width: "100%"
+            fontSize: 25, fontWeight: "700", width: "100%"
           }}>Notification</Text>
         </View>
       ),

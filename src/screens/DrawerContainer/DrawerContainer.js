@@ -77,7 +77,7 @@ export default function DrawerContainer(props) {
                 fontSize: width >= 720 ? 25 : 17,
                 height: 50,
                 paddingTop: width >= 720 ? 10 : 20,
-                fontWeight: 700,
+                fontWeight: "700",
                 width: "75%",
               }}
             >

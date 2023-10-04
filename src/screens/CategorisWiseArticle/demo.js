@@ -330,7 +330,7 @@ export default function AllArticle(props) {
         <Text
           style={{
             fontSize: 15,
-            fontWeight: 700,
+            fontWeight: "700",
             paddingLeft: 15,
             height: 20,
             alignItems: "center",

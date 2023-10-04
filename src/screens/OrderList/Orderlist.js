@@ -113,7 +113,7 @@ const Orderlist = (props) => {
                 }}>
                     <Text style={{
                         textAlign: "center",
-                        fontSize: windowwidthe * 0.05, fontWeight: 700, width: "100%"
+                        fontSize: windowwidthe * 0.05, fontWeight: "700", width: "100%"
                     }}>Sales order</Text>
                 </View>
             ),
@@ -167,7 +167,7 @@ const Orderlist = (props) => {
                         <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "#828282", borderTopWidth: 1, borderStyle: "solid" }}>
                             <View style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", backgroundColor: "#FFF" }}>
                                 <View style={{ paddingHorizontal: "5%", paddingVertical: "2.8%", gap: 5 }}>
-                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: 500, color: "#000" }}>Date</Text>
+                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: "500", color: "#000" }}>Date</Text>
                                     <View style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: "2.5%",
@@ -177,7 +177,7 @@ const Orderlist = (props) => {
                                     }}
                                     // value={formattedDate}
                                     // disableFullscreenUI
-                                    ><Text style={{ color: "#626262", fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: 500 }}>{new Date(currentDate).toLocaleDateString('en-GB', {
+                                    ><Text style={{ color: "#626262", fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: "500" }}>{new Date(currentDate).toLocaleDateString('en-GB', {
                                         day: '2-digit',
                                         month: '2-digit',
                                         year: 'numeric',
@@ -185,7 +185,7 @@ const Orderlist = (props) => {
 
                                 </View>
                                 <View style={{ paddingHorizontal: "5%", paddingTop: "2.8%", gap: 5 }}>
-                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: 500, color: "#000" }}>Destination</Text>
+                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: "500", color: "#000" }}>Destination</Text>
                                     <TextInput value={destinationVal} style={{
                                         width: "100%",
                                         borderWidth: 1, paddingVertical: "2%",
@@ -194,11 +194,11 @@ const Orderlist = (props) => {
                                         fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, backgroundColor: "#EEE"
                                     }} onChangeText={(e) => { setDestinationVal(e); e ? setValue(false) : setValue(true) }}></TextInput>
                                     <View>
-                                        <Text style={{ fontSize: windowwidthe * 0.03, color: "red", fontWeight: 500 }}>{fillvalue ? "Filed cannot be empty" : ""}</Text>
+                                        <Text style={{ fontSize: windowwidthe * 0.03, color: "red", fontWeight: "500" }}>{fillvalue ? "Filed cannot be empty" : ""}</Text>
                                     </View>
                                 </View>
                                 <View style={{ paddingHorizontal: "5%", paddingBottom: "3%", paddingTop: 2, gap: 5 }}>
-                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: 500, color: "#000" }}>Transportation</Text>
+                                    <Text style={{ fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24, fontWeight: "500", color: "#000" }}>Transportation</Text>
 
                                     {/* <TextInput  value={transportationVal} onChangeText={(e) => filterTransportationValue(e)}   style={{
                                         width: "100%",
@@ -217,7 +217,7 @@ const Orderlist = (props) => {
                                         display: "flex",
                                         flexDirection: "row"
                                     }}>
-                                        <Text style={{ color: "#626262", fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: 500 }}>{transportationVal}</Text>
+                                        <Text style={{ color: "#626262", fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26, fontWeight: "500" }}>{transportationVal}</Text>
                                         <View style={{
                                             position: "absolute",
                                             top: windowwidthe < 720 ? "50%" : "52%",
@@ -260,7 +260,7 @@ const Orderlist = (props) => {
                                                         fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                                                         marginVertical: '2.5%',
                                                         color: "#626262",
-                                                        fontWeight: 500
+                                                        fontWeight: "500"
                                                     }
                                                     }>{item.Name}</Text>
                                                 </TouchableOpacity>
@@ -317,17 +317,17 @@ const Orderlist = (props) => {
                                                     <View style={{ height: "50%", paddingBottom: 1 }}>
                                                         <Text style={{
                                                             fontSize: windowwidthe * 0.035,
-                                                            fontWeight: 700,
+                                                            fontWeight: "700",
                                                         }}>{item.ArticleNumber}</Text>
                                                         <Text style={{
                                                             fontSize: windowwidthe * 0.025,
-                                                            fontWeight: 400,
+                                                            fontWeight: "400",
                                                         }}>{item.StyleDescription}</Text>
                                                     </View>
                                                     <View style={{ marginTop: "2%", justifyContent: "center", paddingTop: '3%', position: "relative", height: "50%" }}>
                                                         <Text style={{
                                                             fontSize: windowwidthe * 0.035,
-                                                            fontWeight: 700,
+                                                            fontWeight: "700",
                                                         }}>₹{item.rate}.00</Text>
                                                     </View>
                                                 </View>
@@ -368,11 +368,11 @@ const Orderlist = (props) => {
                                             style={{ width: 100, height: 100, marginBottom: 20, marginTop: 30 }}
                                         />
 
-                                        <Text style={{ fontSize: 32, fontWeight: 700, marginBottom: 10 }}>
+                                        <Text style={{ fontSize: 32, fontWeight: "700", marginBottom: 10 }}>
                                             Successful!
                                         </Text>
 
-                                        <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 20, fontWeight: 500, color: "rgba(0, 0, 0, 0.70)" }}>
+                                        <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 20, fontWeight: "500", color: "rgba(0, 0, 0, 0.70)" }}>
                                             "Your Order Is {"\n"} Confirmed Successfully"
                                         </Text>
 
@@ -394,7 +394,7 @@ const Orderlist = (props) => {
                                             <Text
                                                 style={{
                                                     fontSize: 18,
-                                                    fontWeight: 700,
+                                                    fontWeight: "700",
                                                     color: "white",
                                                     paddingHorizontal: 15
                                                 }}
@@ -424,27 +424,27 @@ const Orderlist = (props) => {
                                     <View style={{ width: "100%", justifyContent: "flex-end", alignItems: "flex-end" }}>
                                         <View style={{ display: "flex", flexDirection: "row", paddingVertical: '1.0%', width: "100%" }}>
                                             <View style={{ width: '76%', paddingTop: 2, paddingRight: '2%' }}>
-                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>Rate</Text>
+                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "400", color: "#00000080", textAlign: "right" }}>Rate</Text>
                                             </View>
                                             <View style={{ width: '24%' }}>
-                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹{totalrate}.00</Text>
+                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "500", color: "#00000080", textAlign: "right" }}>₹{totalrate}.00</Text>
                                             </View>
                                         </View>
                                         <View style={{ display: "flex", flexDirection: "row", paddingVertical: '1.0%', width: "100%" }}>
                                             <View style={{ width: '76%', paddingTop: 2 }}>
-                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
+                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "400", color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
                                             </View>
                                             <View style={{ width: '24%' }}>
-                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹2.7</Text>
+                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "500", color: "#00000080", textAlign: "right" }}>₹2.7</Text>
 
                                             </View>
                                         </View>
                                         <View style={{ display: "flex", flexDirection: "row", paddingVertical: '1.0%', width: "100%" }}>
                                             <View style={{ width: '76%', paddingTop: 2 }}>
-                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 400, color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
+                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "400", color: "#00000080", textAlign: "right" }}>SGST 1%</Text>
                                             </View>
                                             <View style={{ width: '24%' }}>
-                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 500, color: "#00000080", textAlign: "right" }}>₹2.7</Text>
+                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "500", color: "#00000080", textAlign: "right" }}>₹2.7</Text>
                                             </View>
                                         </View>
                                         <View style={{ width: "30%", marginLeft: "70%" }}>
@@ -455,16 +455,16 @@ const Orderlist = (props) => {
                                         </View>
                                         <View style={{ display: "flex", flexDirection: "row", paddingVertical: '2.5%', width: "100%" }}>
                                             <View style={{ width: '100%' }}>
-                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹280.40</Text>
+                                                <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "500", color: "#212121", textAlign: "right" }}>₹280.40</Text>
                                             </View>
                                         </View>
                                         {/* <View style={{ display: "flex", flexDirection: "row", paddingVertical: 5 }}>
                                             <View style={{ width: '50%', paddingTop: 2 }}>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, color: "#00000080", textAlign: "right" }}>Discount</Text>
+                                                <Text style={{ fontSize: 14, fontWeight: "400", color: "#00000080", textAlign: "right" }}>Discount</Text>
 
                                             </View>
                                             <View style={{ width: '45%' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 500, color: "#212121", textAlign: "right" }}>₹28.04</Text>
+                                                <Text style={{ fontSize: 18, fontWeight: "500", color: "#212121", textAlign: "right" }}>₹28.04</Text>
                                             </View>
                                         </View> */}
                                         <View style={{ width: "30%", marginLeft: "70%" }}>
@@ -489,7 +489,7 @@ const Orderlist = (props) => {
                                         }} onPress={showSuccessModal}>
                                             <Text style={{
                                                 color: "white",
-                                                fontSize:width >= 720 ? 25 : 15, fontWeight: 600,
+                                                fontSize:width >= 720 ? 25 : 15, fontWeight: "600",
                                                 textAlign: "center"
                                             }}>
                                                 Place Order
@@ -510,10 +510,10 @@ const Orderlist = (props) => {
                                         backgroundColor: "#FFF",
                                     }}>
                                         <View style={{ paddingBottom: 2 }}>
-                                            <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 500 }}>Total price</Text>
+                                            <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "500" }}>Total price</Text>
                                         </View>
                                         <View style={{}}>
-                                            <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: 700 }}>₹500.00</Text>
+                                            <Text style={{ fontSize:width >= 720 ? 22 : 12, fontWeight: "700" }}>₹500.00</Text>
                                         </View>
                                     </View>
                                 </View>

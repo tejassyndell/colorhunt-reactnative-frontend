@@ -349,7 +349,7 @@ const DetailsOfArticals = (props) => {
                   style={{
                     fontSize: width >= 720 ? 40 : 26,
                     textAlign: "center",
-                    fontWeight: 600,
+                    fontWeight: "600",
                     color: "black",
                   }}
                 >
@@ -425,7 +425,7 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontWeight: 600,
+                            fontWeight: "600",
                           }}
                         >
                           Color
@@ -435,7 +435,7 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontWeight: 600,
+                            fontWeight: "600",
                           }}
                         >
                           Available in Stock
@@ -445,7 +445,7 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontWeight: 600,
+                            fontWeight: "600",
                           }}
                         >
                           Add Qty.
@@ -477,7 +477,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
-                              fontWeight: 500,
+                              fontWeight: "500",
                               color: "#626262",
                             }}
                           >
@@ -507,7 +507,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
-                              fontWeight: 500,
+                              fontWeight: "500",
                               color: "#626262",
                             }}
                           >
@@ -550,7 +550,7 @@ const DetailsOfArticals = (props) => {
                             <Text
                               style={{
                                 fontSize: width >= 720 ? 45 : 24,
-                                fontWeight: 800,
+                                fontWeight: "800",
                               }}
                             >
                               -
@@ -561,7 +561,7 @@ const DetailsOfArticals = (props) => {
                               style={{
                                 fontSize: width >= 720 ? 30 : 21,
                                 textAlign: "center",
-                                fontWeight: 600,
+                                fontWeight: "600",
                                 color: "#000",
                               }}
                             >
@@ -661,7 +661,7 @@ const DetailsOfArticals = (props) => {
                         fontSize: 24,
                         textAlign: "center",
                         marginBottom: 30,
-                        fontWeight: 500,
+                        fontWeight: "500",
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
@@ -695,7 +695,7 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: 18,
-                            fontWeight: 700,
+                            fontWeight: "700",
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -722,7 +722,7 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: 18,
-                            fontWeight: 700,
+                            fontWeight: "700",
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -771,7 +771,7 @@ const DetailsOfArticals = (props) => {
       >
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10, fontWeight: 400 }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 10, fontWeight: "400" }}>
               Total Price
             </Text>
           </View>
@@ -779,7 +779,7 @@ const DetailsOfArticals = (props) => {
             <Text
               style={{
                 fontSize: width >= 720 ? 27 : 16,
-                fontWeight: 600,
+                fontWeight: "600",
                 color: "black",
               }}
             >
@@ -823,7 +823,7 @@ const DetailsOfArticals = (props) => {
                   style={{
                     color: "white",
                     textAlign: "center",
-                    fontWeight: 600,
+                    fontWeight: "600",
                     fontSize: width >= 720 ? 30 : 18,
                     width: "70%",
                   }}

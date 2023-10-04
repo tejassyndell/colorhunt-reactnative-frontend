@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   size_label: {
     fontSize: width >= 720 ? 20 : 14,
-    fontWeight: 600,
+    fontWeight: "600",
     color: "black",
     marginLeft: "2%",
     marginBottom: 6,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     borderColor: "#b3a8a8",
     borderRadius: 100,
     color: "black",
-    fontWeight: 400,
+    fontWeight: "400",
     marginLeft: 8,
     padding: 4,
     alignContent: "center",
@@ -104,14 +104,14 @@ const styles = StyleSheet.create({
     marginTop: 3,
     textAlign: "center",
     color: "rgba(0, 0, 0, 0.60)",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   product_detail_sec2: {
     width: "50%",
   },
   size_label1: {
     fontSize: width >= 720 ? 20 : 14,
-    fontWeight: 600,
+    fontWeight: "600",
     color: "black",
     marginLeft: width >= 720 ? "10%" : "20%",
     marginBottom: 6,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: "500",
     // width:"100%",
     // backgroundColor:'red'
   },
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: "500",
   },
   size_p: {
     marginTop: 0,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "rgba(0, 0, 0, 0.60)",
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   product_detail_sec3: {
     display: "flex",
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     borderColor: "#b3a8a8",
     borderRadius: 100,
     color: "black",
-    fontWeight: 400,
+    fontWeight: "400",
     marginLeft: 8,
     padding: 6,
     justifyContain: "center",
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     textAlign: "center",
     color: "rgba(0, 0, 0, 0.60)",
-    fontWeight: 600,
+    fontWeight: "600",
     fontSize: width >= 720 ? 30 : 15,
   },
   product_detail_sec2: {
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     fontSize: width >= 720 ? 28 : 18,
     color: "#00000099",
     textAlign: "center",
-    fontWeight: 500,
+    fontWeight: "500",
   },
   product_detail_sec3: {
     display: "flex",
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   color_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: "600",
     color: "black",
   },
   available_div: {
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   available_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: "600",
     color: "black",
     marginLeft: 2,
   },
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   qty_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: "600",
     color: "black",
     marginLeft: 20,
   },
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     width: "100%",
     color: "rgba(0, 0, 0, 0.60)",
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   available_box_div: {
     width: "100%",
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   available_box: {
     width: "100%",
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   qty_box_div: {
     width: "31%",
@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
   box1_btn_text: {
     fontSize: 25,
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   box2: {
     width: "44%",
@@ -467,7 +467,7 @@ const styles = StyleSheet.create({
     height: "40%",
   },
   articallabel: {
-    fontWeight: 600,
+    fontWeight: "600",
     marginLeft: 0.5,
     textAlign: "left",
     fontSize: width >= 720 ? 20 : 13,
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
   article_ratio_content: {
     textAlign: "center",
     fontSize: width >= 720 ? 31 : 18,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#626262",
   },
   article_rate_container: {
@@ -505,11 +505,11 @@ const styles = StyleSheet.create({
   article_rate_content: {
     textAlign: "center",
     fontSize: width >= 720 ? 30 : 18,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#626262",
   },
   articallabel1: {
-    fontWeight: 500,
+    fontWeight: "500",
     marginLeft: 0.5,
     fontSize: width >= 720 ? 20 : 14,
   },

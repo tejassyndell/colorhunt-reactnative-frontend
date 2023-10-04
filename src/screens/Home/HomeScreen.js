@@ -401,7 +401,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   paddingLeft: 8,
 
                   // fontFamily: "Glory-Regular",
@@ -447,7 +447,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   start: 10,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   fontSize: width >= 720 ? 25 : 18,
                 }}
               >
@@ -459,7 +459,7 @@ export default function HomeScreen(props) {
                   color: "rgba(102, 102, 102, 1)",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
-                  fontWeight: 600,
+                  fontWeight: "600",
                 }}
                 onPress={() => {
                   isLoggedIn ? viewAllArticles() : openCreateAccountModal();
@@ -730,7 +730,7 @@ export default function HomeScreen(props) {
                 <Text
                   style={{
                     start: 10,
-                    fontWeight: 700,
+                    fontWeight: "700",
                     fontSize: width >= 720 ? 25 : 18,
                   }}
                 >
@@ -742,7 +742,7 @@ export default function HomeScreen(props) {
                     end: 10,
                     color: "rgba(102, 102, 102, 1)",
                     fontSize: width >= 720 ? 18 : 12,
-                    fontWeight: 600,
+                    fontWeight: "600",
                   }}
                   onPress={() => {
                     isLoggedIn ? viewAllArticles() : openCreateAccountModal();

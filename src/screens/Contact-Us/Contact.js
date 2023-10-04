@@ -125,7 +125,7 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: 25,
-              fontWeight: 700,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -152,7 +152,7 @@ export default function Contact(props) {
       color: "white",
       textAlign: "center",
       fontSize: buttonFontSize,
-      fontWeight: 700,
+      fontWeight: "700",
     },
   });
   const windowWidth = Dimensions.get("window").width;

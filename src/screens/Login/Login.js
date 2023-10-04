@@ -226,14 +226,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: windowWidth * 0.07,
     // fontSize:RFPercentage(5),
-    fontWeight: 700,
+    fontWeight: "700",
     marginBottom: "2%",
   },
   subtitle: {
     color: "rgba(255, 255, 255, 0.70)",
     fontSize: windowWidth * 0.04,
     // fontSize:RFPercentage(5),
-    fontWeight: 700,
+    fontWeight: "700",
     marginBottom: 80,
   },
   input: {
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 40 : 23,
-    fontWeight: 700,
+    fontWeight: "700",
     textAlign: "center",
   },
   phoneIcon: {

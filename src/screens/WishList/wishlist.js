@@ -225,7 +225,7 @@ export default function WishList(props) {
                 fontSize: width * 0.1,
                 fontWeight: "bolder",
                 textAlign: "center",
-                fontWeight: 700,
+                fontWeight: "700",
                 color: "#808080",
               }}
             >

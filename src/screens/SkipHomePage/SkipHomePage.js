@@ -258,7 +258,7 @@ export default function SkipHomeScreen(props) {
               <Text
                 style={{
                   fontSize: 25,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   paddingLeft: 20,
                   height: 30,
                   alignItems: "center",
@@ -291,7 +291,7 @@ export default function SkipHomeScreen(props) {
             style={{ overflow: "hidden" }}
           >
             <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
-              <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
+              <Text style={{ start: 10, fontWeight: "700", fontSize: 18 }}>
                 Men's
               </Text>
               <Text
@@ -300,7 +300,7 @@ export default function SkipHomeScreen(props) {
                   color: "rgba(102, 102, 102, 1)",
                   end: 10,
                   fontSize: 12,
-                  fontWeight: 600,
+                  fontWeight: "600",
                 }}
                 onPress={openCreateAccountModal}
               >
@@ -418,7 +418,7 @@ export default function SkipHomeScreen(props) {
                   marginTop: 20,
                 }}
               >
-                <Text style={{ start: 10, fontWeight: 700, fontSize: 18 }}>
+                <Text style={{ start: 10, fontWeight: "700", fontSize: 18 }}>
                   Kid’s
                 </Text>
                 <Text
@@ -427,7 +427,7 @@ export default function SkipHomeScreen(props) {
                     end: 10,
                     color: "rgba(102, 102, 102, 1)",
                     fontSize: 12,
-                    fontWeight: 600,
+                    fontWeight: "600",
                   }}
                   onPress={openCreateAccountModal}
                 >

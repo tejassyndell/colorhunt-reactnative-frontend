@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     categoryText: {
         fontSize: 12,
         marginLeft: 3,
-        fontWeight: 500,
+        fontWeight: "500",
     },
     buttonsContainer: {
         flexDirection: "row",
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 24,
         marginBottom: 10,
-        fontWeight: 700,
+        fontWeight: "700",
     },
     sliderContainer: {
         flexDirection: "row",
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
         borderRadius: 7.6,
         height: 38,
         fontSize: 24,
-        fontWeight: 700,
+        fontWeight: "700",
         width: 76,
         alignItems: "center",
         justifyContent: "center",
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "white",
         fontSize: 18,
-        fontWeight: 600,
+        fontWeight: "600",
     },
     tooltipContainer: {
         backgroundColor: "black",
@@ -484,6 +484,6 @@ const styleslider = StyleSheet.create({
         top: 15,
         color: "black",
         fontSize: 15,
-        fontWeight: 500,
+        fontWeight: "500",
     },
 });

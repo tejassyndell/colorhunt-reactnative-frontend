@@ -252,7 +252,7 @@ const OrderHistory = (props) => {
                                                         <View style={{ width: width < 720 ? 15 : 20, height: width < 720 ? 16 : 22 }}>
                                                             <Image style={{ width: '100%', height: '100%', resizeMode: "contain" }} source={require("../../../assets/timer_1.png")}></Image>
                                                         </View>
-                                                        <Text style={{ fontSize: width < 720 ? 10.854 : 16.854, fontWeight: 700, color: '#FF0203' }} >Pending</Text>
+                                                        <Text style={{ fontSize: width < 720 ? 10.854 : 16.854, fontWeight: "700", color: '#FF0203' }} >Pending</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -308,7 +308,7 @@ const OrderHistory = (props) => {
                                                         <View style={{ width: width < 720 ? 15 : 20, height: width < 720 ? 16 : 22 }}>
                                                             <Image style={{ width: '100%', height: '100%', resizeMode: "contain" }} source={require("../../../assets/Right_complete.png")}></Image>
                                                         </View>
-                                                        <Text style={{ fontSize: width < 720 ? 10.854 : 16.854, fontWeight: 700, color: '#7AC848' }} >Completed</Text>
+                                                        <Text style={{ fontSize: width < 720 ? 10.854 : 16.854, fontWeight: "700", color: '#7AC848' }} >Completed</Text>
                                                     </View>
                                                 </View>
                                             </View>
@@ -334,7 +334,7 @@ const OrderHistory = (props) => {
                                     <View style={{ height: 25, width: 25, }}>
                                         <Image style={{ height: "100%", width: "100%", resizeMode: "contain" }} source={require("../../../assets/gray_calender.png")}></Image>
                                     </View>
-                                    <Text style={{ fontSize: 18, fontWeight: 400, color: "#BBB" }}>{orderstatus ? selectedDate : selectedDateIncompleted}</Text>
+                                    <Text style={{ fontSize: 18, fontWeight: "400", color: "#BBB" }}>{orderstatus ? selectedDate : selectedDateIncompleted}</Text>
                                 </View>
                                 <View style={{ width: "20%", justifyContent: "center", alignItems: 'flex-end', paddingEnd: 10 }}>
                                     <TouchableOpacity onPress={() => { toggleCalendar(); setSelectedDate("DD/MM/YYYY"); setSoNumberData(oldDataOfso); }}>
@@ -350,7 +350,7 @@ const OrderHistory = (props) => {
                             <View style={styles.calendarModal2}>
                                 <View style={{ width: '100%', alignItems: "flex-end" }}>
                                     <Pressable style={{ width: width >= 720 ? 200 : 100, backgroundColor: "black", borderRadius: 3.423, height: 50, justifyContent: "center" }} onPress={() => { orderstatus ? filterOsDataByDate() : filterdataOfcompleted(); toggleCalendar() }}>
-                                        <Text style={{ fontWeight: 700, color: "#FFF", textAlign: "center", fontSize: width >= 720 ? 25 : 16 }}>Next</Text>
+                                        <Text style={{ fontWeight: "700", color: "#FFF", textAlign: "center", fontSize: width >= 720 ? 25 : 16 }}>Next</Text>
                                     </Pressable>
                                 </View>
                             </View>
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     },
     pending_text: {
         fontSize: width < 720 ? width * 0.05 : width * 0.037,
-        fontWeight: 700,
+        fontWeight: "700",
         textAlign: "center"
     },
     complete_btn: {
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
     complete_text: {
         color: "#FFF",
         fontSize: width < 720 ? width * 0.05 : width * 0.037,
-        fontWeight: 700,
+        fontWeight: "700",
         textAlign: "center",
         paddingBottom: "2%"
     },
@@ -507,12 +507,12 @@ const orderstyles = StyleSheet.create({
     },
     txt_titile: {
         fontSize: width < 720 ? 14 : 20,
-        fontWeight: 500,
+        fontWeight: "500",
         color: "#000000B2"
     },
     txt_val: {
         fontSize: width < 720 ? 15 : 22,
-        fontWeight: 700,
+        fontWeight: "700",
         color: "#000000"
     },
     complete_icon_text: {
