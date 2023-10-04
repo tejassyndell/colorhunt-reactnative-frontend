@@ -32,7 +32,6 @@ export default function HomeScreen(props) {
   const [ApplyStatushBack, setApplyStatushBack] = useState(true);
   const [nameData, setNameData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
-  const [applyrData, setApplyData] = useState([]);
   const [selectedprd, setSelectprd] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -147,31 +146,6 @@ export default function HomeScreen(props) {
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
-  //getCategoriesname
-  // const getCategoriesname = async () => {
-  //   try {
-  //     const result1 = await getcateGorywithphotos();
-  //     if (result1.status === 200) {
-  //       setCategoryName(result1.data);
-  //       setNameData(result1.data);
-  //       setApplyData(result1.data);
-  //     }
-
-  //     const result2 = await getProductName();
-  //     if (result2.status === 200) {
-  //       setCategoryName(result2.data);
-  //       setNameDatas(result2.data);
-  //       setApplyData(result2.data);
-  //       setFilterDataSearch(result2.data);
-  //     }
-
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     // Handle any errors that might occur during the API requests.
-  //     console.error(error);
-  //     setIsLoading(false); // Make sure to set isLoading to false in case of an error.
-  //   }
-  // };
 
   const getCategoriesname = async () => {
     try {
@@ -183,7 +157,6 @@ export default function HomeScreen(props) {
         // Update state variables with the data from the API response
         setCategoryName(result1.data);
         setNameData(result1.data);
-        setApplyData(result1.data);
       }
 
       // Make another API request to get product names
@@ -194,7 +167,6 @@ export default function HomeScreen(props) {
         // Update state variables with the data from the API response
         setCategoryName(result2.data);
         setNameDatas(result2.data);
-        setApplyData(result2.data);
         setFilterDataSearch(result2.data);
         setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
       }
@@ -289,21 +261,34 @@ export default function HomeScreen(props) {
   };
 
   const filterData = () => {
-    if (searchText === "") {
+    if (
+      searchText === "" &&
+      selectedCategories.length === 0 &&
+      selectedPriceRange.length === 0
+    ) {
+      setFinalData(nameData); // Reset to the original data when no filters are applied
     } else {
-      console.log(searchText);
-      const filtered = filterDataSearch.filter(
+      const filtered = nameDatas.filter(
         (item) =>
-          item.ArticleNumber.toString().includes(searchText.toString()) ||
-          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-          item.ArticleRate.toString().includes(searchText.toString()) ||
-          item.StyleDescription.toLowerCase().includes(
-            searchText.toLowerCase()
-          ) ||
-          item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
+          (searchText === "" || // Check if searchText is empty or matches any criteria
+            item.ArticleNumber.toString().includes(searchText.toString()) ||
+            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.ArticleRate.toString().includes(searchText.toString()) ||
+            item.StyleDescription.toLowerCase().includes(
+              searchText.toLowerCase()
+            ) ||
+            item.Subcategory.toLowerCase().includes(
+              searchText.toLowerCase()
+            )) &&
+          (selectedCategories.length === 0 ||
+            selectedCategories.includes(item.Category)) &&
+          (selectedPriceRange.length === 0 ||
+            (item.ArticleRate >= selectedPriceRange[0] &&
+              item.ArticleRate <= selectedPriceRange[1]))
       );
-      console.log(filtered.length, "search data lnegth");
+
       setFinalData(filtered);
+
     }
   };
 
@@ -315,29 +300,12 @@ export default function HomeScreen(props) {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
     setSearchText("");
-    const filteredData = nameDatas.filter(
-      (item) =>
-        selectedCategories.includes(item.Category) &&
-        item.ArticleRate >= selectedPriceRange[0] &&
-        item.ArticleRate <= selectedPriceRange[1]
-    );
-
-    setFinalData(filteredData);
+    filterData()
   };
 
   useEffect(() => {
-    console.log(selectedCategories, "Sc");
-    console.log(selectedPriceRange, "Range");
-    const abc = nameDatas.filter(
-      (item) =>
-        (!selectedCategories.length ||
-          selectedCategories.includes(item.Category)) &&
-        item.ArticleRate >= selectedPriceRange[0] &&
-        item.ArticleRate <= selectedPriceRange[1]
-    );
-    console.log(abc.length);
-    setFinalData(abc);
-  }, [selectedCategories, selectedPriceRange]);
+    filterData();
+  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
 
   const handleCloseFilter = (isClosed) => {
     setIsFilterVisible(isClosed);
@@ -355,9 +323,7 @@ export default function HomeScreen(props) {
     }, -Infinity);
 
     setMinArticleRate(minRate);
-    console.log(minArticleRate);
     setMaxArticleRate(maxRate);
-    console.log(maxArticleRate);
   }, [nameDatas]);
 
   const checkUserLogin = async () => {
@@ -483,9 +449,8 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-                {ApplyStatushBack === true
-                  ? finalData.length > 0
-                    ? finalData.map((item, key) => (
+                { 
+                     finalData.map((item, key) => (
                       <TouchableOpacity
                         key={key}
                         onPress={() => {
@@ -600,121 +565,8 @@ export default function HomeScreen(props) {
                         </View>
                       </TouchableOpacity>
                     ))
-                    : nameData.map((item) => (
-                      <View
-                        key={item.id}
-                        style={{
-                          alignItems: "center",
-                          height: "auto",
-                          width: width >= 720 ? 300 : 165,
-                          marginLeft: width >= 720 ? 15 : 5,
-                          marginRight: width >= 720 ? 15 : 5,
-                          marginTop: 10,
-                          marginBottom: 10,
-                          borderRadius: 10,
-                        }}
-                      // style={styles.contener2}
-                      >
-                        <TouchableOpacity
-                          onPress={() => {
-                            isLoggedIn
-                              ? handlePress(item)
-                              : openCreateAccountModal();
-                          }}
-                        >
-                          <View
-                            style={{
-                              width: width >= 720 ? 300 : 155, // Adjust the width for tablets
-                              height: width >= 720 ? 280 : 190,
-                              borderColor: "gray",
-                              shadowColor: "gray",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 10,
-                              elevation: 10,
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
-                            }}
-                          // style={styles.fastconimage1}
-                          >
-                            {item.Photos ? (
-                              <Image
-                                source={{ uri: baseImageUrl + item.Photos }}
-                                style={{
-                                  width: "100%",
-                                  resizeMode: "contain",
-                                  height: width >= 720 ? 280 : 190,
-                                  borderRadius: 10,
-                                }}
-                              // style={styles.fastconimage}
-                              />
-                            ) : (
-                              <Image
-                                source={require("../../../assets/demo.png")}
-                                style={{
-                                  width: "100%",
-                                  height: width >= 720 ? 280 : 190,
-                                  borderRadius: 10,
-                                }}
-                              // style={styles.fastconimage}
-                              />
-                            )}
-                          </View>
-                        </TouchableOpacity>
-                        <Text
-                          style={{
-                            marginTop: 10,
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 30 : 14,
-                            marginBottom: 10,
-                            textAlign: "center",
-                          }}
-                        >
-                          {convertToTitleCase(item.Category)}
-                        </Text>
-                      </View>
-                    ))
-                  : applyrData.map((item) => (
-                    <View
-                      key={item.id}
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: width >= 720 ? 300 : 200,
-                        marginLeft: width >= 720 ? 15 : 5,
-                        marginRight: width >= 720 ? 15 : 5,
-                      }}
-                    // style={styles.contener2}
-                    >
-                      <TouchableOpacity
-                        onPress={() => {
-                          isLoggedIn
-                            ? handlePress(item)
-                            : openCreateAccountModal();
-                        }}
-                      >
-                        <Image
-                          source={require("../../../assets/demo.png")}
-                          style={{
-                            width: width >= 720 ? 300 : 200, // Adjust the width for tablets
-                            height: width >= 720 ? 280 : 300,
-                            borderRadius: 10,
-                          }}
-                        // style={styles.fastconimage}
-                        />
-                      </TouchableOpacity>
-                      <Text
-                        style={{
-                          marginTop: 10,
-                          fontSize: 17,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {convertToTitleCase(item.Category)}
-                      </Text>
-                    </View>
-                  ))}
+                    
+                  }
               </ScrollView>
             </View>
             <View></View>
@@ -915,7 +767,7 @@ export default function HomeScreen(props) {
               maxArticleRate={maxArticleRate}
               status={false}
               spr={selectedPriceRange}
-              uniquerates={namedatas}
+              uniquerates={nameDatas}
             />
           </View>
         </View>
