@@ -116,13 +116,13 @@ const Login = (props) => {
       // Implement OTP verification logic here.
       // For simplicity, we'll just check if the OTP is "1234".
       const enteredOTP = otp.join(""); // Concatenate OTP digits
-      if (enteredOTP === "1234") {
+      // if (enteredOTP === "1234") {
         // Navigate to the Home screen or your desired destination.
         navigation.navigate("Slider");
-      } else {
+      // } else {
         // Handle invalid OTP (display an error message, etc.).
-        alert("Invalid OTP. Please try again.");
-      }
+        // alert("Invalid OTP. Please try again.");
+      // }
     }
   };
   const otpInput = [useRef(), useRef(), useRef(), useRef()];

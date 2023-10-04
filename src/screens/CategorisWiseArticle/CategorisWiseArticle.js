@@ -477,6 +477,7 @@ export default function CategorisWiseArticle(props) {
                   minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate}
                   spr={selectedPriceRange}
+                  uniquerates={nameDatas}
                 />
               </View>
             </View>

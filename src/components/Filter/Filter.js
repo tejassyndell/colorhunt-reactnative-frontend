@@ -21,6 +21,7 @@ export default function Filter({
     maxArticleRate,
     status,
     spr,
+    uniquerates
 }) {
     const [data, setData] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState(Scategories);
@@ -31,6 +32,16 @@ export default function Filter({
     const defaultPriceRange = [minArticleRate, maxArticleRate];
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
+    const unqrates = new Set()
+    uniquerates.forEach((item)=>{
+        unqrates.add(item.ArticleRate)
+    })
+    const allowedValues2 = [...unqrates]
+    const allowedValues3 = allowedValues2.map((value)=>{
+        return parseFloat(value)
+    }) 
+    const allowedValues = allowedValues3.sort((a,b)=> a-b)
+    console.log(allowedValues,"unq")
 
     const Screenwidth = Dimensions.get("window").width;
     const sliderlenghtinPercent = 60;
@@ -110,9 +121,14 @@ export default function Filter({
             Math.max(leftValue + dx, minArticleRate),
             maxArticleRate - step
         );
-        const newRightValue = Math.max(rightValue, newLeftValue + step);
-        setLeftValue(Math.round(newLeftValue));
-        setRightValue(Math.round(newRightValue));
+         // Find the nearest allowed value
+    const nearestAllowedValue = allowedValues.reduce((prev, curr) => {
+        return Math.abs(curr - newLeftValue) < Math.abs(prev - newLeftValue)
+            ? curr
+            : prev;
+    });
+        setLeftValue(nearestAllowedValue);
+        setRightValue(Math.max(rightValue, nearestAllowedValue));
     };
 
     const handleRightMove = (dx) => {
@@ -120,7 +136,17 @@ export default function Filter({
             Math.min(rightValue + dx, maxArticleRate),
             leftValue + step
         );
-        setRightValue(Math.round(newRightValue));
+        const nearestAllowedValue = allowedValues.reduce((prev, curr) => {
+            return Math.abs(curr - newRightValue) < Math.abs(prev - newRightValue)
+                ? curr
+                : prev;
+        });
+    
+        // Update the rightValue to the nearest allowed value
+        setRightValue(nearestAllowedValue);
+    
+        // Ensure that the leftValue is less than or equal to the rightValue
+        setLeftValue(Math.min(leftValue, nearestAllowedValue));
     };
 
     const panResponderLeft = PanResponder.create({

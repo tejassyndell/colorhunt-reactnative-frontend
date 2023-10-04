@@ -915,6 +915,7 @@ export default function HomeScreen(props) {
               maxArticleRate={maxArticleRate}
               status={false}
               spr={selectedPriceRange}
+              uniquerates={namedatas}
             />
           </View>
         </View>

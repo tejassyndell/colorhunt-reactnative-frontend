@@ -4,11 +4,11 @@ import { useEffect, useLayoutEffect } from "react";
 import React, { useState } from 'react';
 import { ThemeProvider, useRoute } from "@react-navigation/native";
 import { Table, Row, Rows } from 'react-native-table-component';
-import Textarea from 'react-native-textarea';
+// import Textarea from 'react-native-textarea';
 import { getSoArticleDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import RNHTMLtoPDF from "react-native-html-to-pdf"
-
+// import { printToFileAsync } from "expo-print";
+import { shareAsync } from "expo-sharing";
 const OrderDetails = (props) => {
     const { navigation } = props;
     const route = useRoute()
@@ -208,10 +208,23 @@ const OrderDetails = (props) => {
     }, [])
     useEffect(() => { console.log(sodetails); }, [sodetails])
 
+    const html = `
+    <html>
+      <body>
+        <h1>Hi </h1>
+        <p style="color: red;">Hello. Bonjour. Hola.</p>
+      </body>
+    </html>
+  `;
     const generatePDF = async () => {
-       
-    }
-
+        const file = await printToFileAsync({
+            html:html,
+            base64: false,
+        })
+        await shareAsync(file.url)
+      };
+      
+    
     return (
         <>
         {isloading ?
@@ -549,7 +562,7 @@ const OrderDetails = (props) => {
                         </View>
                     </View>
                     <View>
-                        <TouchableOpacity onPress={() => generatePDF()} style={{ alignItems: 'flex-end', marginRight: 10 }}>
+                        <TouchableOpacity onPress={generatePDF} style={{ alignItems: 'flex-end', marginRight: 10 }}>
 
                             {/* <Text style={{
                                 width: width >= 720 ? 40 : 30,

@@ -455,6 +455,7 @@ export default function AllArticle(props) {
                   maxArticleRate={maxArticleRate}
                   status={false}
                   spr={selectedPriceRange}
+                  uniquerates={nameDatas}
                 />
               </View>
             </View>
