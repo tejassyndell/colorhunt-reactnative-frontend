@@ -252,7 +252,7 @@ export default function HomeScreen(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 5,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
@@ -768,7 +768,7 @@ export default function HomeScreen(props) {
                 >
                   {kids.length === 0 ?
                     (<View style={{ width:'100%', height:'100%',justifyContent: 'center' }}>
-                      <Text style={{ fontSize: 17,textAlign:"center",color:'#808080' }}>No Kids Article Found</Text>
+                      <Text style={{ fontSize: width >= 720 ? 25 : 17,textAlign:"center",color:'#808080' }}>No Kids Article Found</Text>
                     </View>
 
                     ) : (kids.map((item) => (

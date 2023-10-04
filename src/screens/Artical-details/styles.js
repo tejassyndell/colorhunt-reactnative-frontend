@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     elevation: 50,
     shadowOffset: { width: 0, height: 0 }, // Offset the shadow upwards
     shadowColor: "#000000", // Specify a shadow color
-    shadowOpacity: 0.9, // Set the shadow opacity within the valid range (0-1)
+    shadowOpacity: 0, // Set the shadow opacity within the valid range (0-1)
     shadowRadius: 5,
   },
 
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     width: "100%",
     elevation: 2,
     shadowColor: "gray",
-    shadowOpacity: 0.5,
+    shadowOpacity: 0,
     marginLeft: "1%",
     overflow: "scroll",
   },
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     elevation: 2,
     shadowColor: "gray",
-    shadowOpacity: 1,
+    shadowOpacity: 0,
     borderWidth: 1,
     borderColor: "#ded6d6",
     backgroundColor: "white",
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     elevation: 2,
     shadowColor: "gray",
-    shadowOpacity: 1,
+    shadowOpacity: 0,
     borderWidth: 1,
     borderColor: "#ded6d6",
     backgroundColor: "white",
@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     marginLeft: 8,
     padding: 6,
-    justifyContain: "center",
   },
   size_a: {
     marginTop: 3,
@@ -261,7 +260,8 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginStart: 32,
     shadowColor: "gray",
-    shadowOpacity: 0.5,
+
+    // shadowOpacity: 0.2,
   },
 
   size_p: {
@@ -375,8 +375,8 @@ const styles = StyleSheet.create({
   // },
   qty_box: {
     width: "100%",
-    shadowColor: "gray",
-    shadowOpacity: 0.5,
+    // shadowColor: "gray",
+    // shadowOpacity: 0.5,
     elevation: 2, // Use elevation to simulate box-shadow
     justifyContent: "center", // Align content vertically
     alignItems: "center", // Center content horizontally
@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
   article_content_r: {
     width: "80.5%",
     elevation: 2,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0,
     shadowColor: "gray",
     borderColor: "#ded6d6",
     borderWidth: 1,
@@ -538,7 +538,7 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     borderRadius: 10,
     paddingHorizontal: 20,
-    paddingVertical: width >= 720 ? 20 : 15,
+    paddingVertical: width >= 720 ? 20 : 11,
     height: width >= 720 ? 80 : 50,
   },
   loader: {

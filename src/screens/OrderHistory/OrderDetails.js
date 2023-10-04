@@ -372,9 +372,10 @@ const OrderDetails = (props) => {
                     </View>
                     <View style={{
                         flex: 1,
-                        paddingHorizontal: 20
+                        
                     }}>
-                        <View
+                       <View style={{paddingHorizontal: 20}}>
+                       <View
                             style={{
                                 height: width >= 720 ? 45 : 35,
                                 width: '100%',
@@ -383,6 +384,7 @@ const OrderDetails = (props) => {
                                 borderColor: '#000000',
                                 paddingStart: 10,
                                 justifyContent: 'center'
+                                
                             }}
                         >
                             <Text style={{
@@ -491,6 +493,7 @@ const OrderDetails = (props) => {
                             </View>
 
                         </View>
+                       </View>
                         <View>
                             <ScrollView
                                 nestedScrollEnabled={true}

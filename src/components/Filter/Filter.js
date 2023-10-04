@@ -224,7 +224,7 @@ export default function Filter({
                     )}
 
                     <View style={styles.sliderContainer}>
-                        <View style={{ width: width >= 720 ?"10%":40 }}>
+                        <View style={{ width: width >= 720 ?"8%":40 }}>
                             <Text style={{textAlign: "left",fontSize:width >= 720 ?25:15,paddingRight:10,paddingBottom:5 }}>{minArticleRate}</Text>
                         </View>
                         <View style={{ width: width >= 720 ?"80%":'70%',marginTop:3 }}>
@@ -262,8 +262,8 @@ export default function Filter({
                                 </View>
                             </View>
                         </View>
-                        <View style={{ width: width >= 720 ?"10%":150 }}>
-                            <Text style={{textAlign: "left",fontSize:width >= 720 ?25:15,paddingLeft:30}}>{maxArticleRate}</Text>
+                        <View style={{ width: width >= 720 ?"11.6%":150 }}>
+                            <Text style={{textAlign:width >= 720 ?"right":"left",fontSize:width >= 720 ?25:15,paddingLeft:30}}>{maxArticleRate}</Text>
                         </View>
                     </View>
                 </View>
@@ -312,11 +312,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 15,
         width:'100%',
-        height:80,
+        height:width >= 720 ?80:40,
         justifyContent:'space-between'
     },
     headerText: {
-        fontSize: width >= 720 ?25: 22,
+        fontSize: width >= 720 ?30: 22,
         fontWeight: "bold",
     },
     closeIcon: {
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
         width:'100%',
     },
     label: {
-        fontSize: 22,
+        fontSize: width >= 720 ?30: 22,
         marginBottom: 10,
         fontWeight: 700,
         height:50,
@@ -407,10 +407,10 @@ const styles = StyleSheet.create({
         borderColor: "black",
         borderWidth: 1,
         borderRadius: 7.6,
-        height: 38,
-        fontSize: 24,
+        height: width >= 720 ?42:38,
+        width: width >= 720 ?120:76,
+        fontSize: width >= 720 ?42:24,
         fontWeight: 700,
-        width: 76,
         alignItems: "center",
         justifyContent: "center",
     },

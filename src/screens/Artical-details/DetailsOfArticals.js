@@ -298,7 +298,7 @@ const DetailsOfArticals = (props) => {
           <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF", flex: 1 }}>
+        <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>
           <ScrollView nestedScrollEnabled={true}>
             <View style={{ zIndex: 1, flex: 1 }}>
               <View
@@ -338,7 +338,7 @@ const DetailsOfArticals = (props) => {
                 style={{
                   zIndex: 3,
                   position: "absolute",
-                  bottom: width >= 720 ? 420 : 300,
+                  bottom: width >= 720 ? 420 : 310,
                   left: 0,
                   right: 0,
                   justifyContent: "center",
@@ -369,13 +369,15 @@ const DetailsOfArticals = (props) => {
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
                   padding: 12,
+                  shadowColor: "gray",
+                  shadowOpacity: 0.1,
                 }}
               >
                 <View>
                   <View style={styles.product_detail}>
                     <View style={styles.product_detail_sec}>
                       <Text style={styles.size_label}>Size</Text>
-                      <View style={styles.size_container1}>
+                      <View style={[styles.size_container1]}>
                         <ScrollView
                           horizontal={true}
                           nestedScrollEnabled={true}
@@ -470,7 +472,7 @@ const DetailsOfArticals = (props) => {
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
@@ -500,7 +502,7 @@ const DetailsOfArticals = (props) => {
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
@@ -529,7 +531,7 @@ const DetailsOfArticals = (props) => {
                             height: width >= 720 ? 70 : 42,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Pressable
@@ -813,8 +815,6 @@ const DetailsOfArticals = (props) => {
                 <Image
                   source={require("../../../assets/icons/icon.png")}
                   style={{
-                    marginRight: width >= 720 ? -10 : 10,
-
                     width: width >= 720 ? 30 : 20,
                     height: width >= 720 ? 30 : 20,
                   }}
@@ -825,7 +825,7 @@ const DetailsOfArticals = (props) => {
                     textAlign: "center",
                     fontWeight: 600,
                     fontSize: width >= 720 ? 30 : 18,
-                    width: "70%",
+                    marginLeft: width >= 720 ? 20 : 10,
                   }}
                 >
                   Add to cart

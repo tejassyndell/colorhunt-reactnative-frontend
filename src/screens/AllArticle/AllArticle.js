@@ -121,7 +121,7 @@ export default function AllArticle(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 5,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
