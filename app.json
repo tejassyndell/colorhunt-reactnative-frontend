@@ -1,13 +1,18 @@
 {
   "expo": {
-    "name": "Instafood",
-    "slug": "instafood-recipes-app",
-    "description": "React Native Recipes App Demo. Download source code for free at https://www.instamobile.io . You can also check out the Swift version at https://www.iosapptemplates.com and the Kotlin version at https://www.instakotlin.com .",
+    "name": "ColorHunt",
+    "slug": "ColorHunt-recipes-app",
+    "description": "React Native Recipes App Demo.",
     "privacy": "public",
     "version": "1.0.0",
     "orientation": "portrait",
+    "platforms": ["ios", "android"],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#007AFF"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
@@ -16,20 +21,26 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.yourappname"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "package": "com.colorhuntmobileapp.app",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "firebase": {},
+      "eas": {}
     }
   }
 }

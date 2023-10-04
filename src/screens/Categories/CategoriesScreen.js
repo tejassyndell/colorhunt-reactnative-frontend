@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { FlatList, Text, View, Image, TouchableHighlight } from "react-native";
+import { FlatList, Text, View, Image, TouchableHighlight,Platform } from "react-native";
 import styles from "./styles";
 import { categories } from "../../data/dataArrays";
 import { getNumberOfRecipes } from "../../data/MockDataAPI";
@@ -7,6 +7,7 @@ import MenuImage from "../../components/MenuImage/MenuImage";
 
 export default function CategoriesScreen(props) {
   const { navigation } = props;
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -24,6 +25,10 @@ export default function CategoriesScreen(props) {
         />
       ),
       headerRight: () => <View />,
+      headerStyle: {
+        height: headerHeight // Increase the header height here
+    },
+
     });
   }, []);
 
