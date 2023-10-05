@@ -9,12 +9,13 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import { phoneNumberValidation } from "../../api/api";
+import { phoneNumberValidation, udatepartytoken } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-
+import * as Notifications from 'expo-notifications';
+import { useEffect } from "react";
 const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.4;
 
@@ -29,7 +30,38 @@ const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
+  const [token, setToken] = useState('');
 
+
+  const getNotificationPermission = async () => {
+    try {
+      const { status } = await Notifications.requestPermissionsAsync();
+      console.log(status, 'statuss'); // Move this line here
+      if (status === 'granted') {
+        const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log('Expo Push Token:', pushToken);
+        setToken(pushToken);
+        AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: pushToken }));
+        console.log({ status: true, token: pushToken });
+      } else {
+        AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: false, token: '' }));
+        console.log('Notification permission denied');
+      }
+    } catch (error) {
+      console.error('Error getting notification permission:', error);
+    }
+  };
+  
+  useEffect(() => {
+    getNotificationPermission();
+  }, []);
+  
+  // console.log(status, 'statuss'); // Remove or comment out this line here
+  
+  
+  // useEffect(() => {
+  //   getNotificationPermisan();
+  // }, [])
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
     if (pixelRatio <= 1) {
@@ -73,7 +105,7 @@ const Login = (props) => {
       if (phoneNumber.length === 10 || !phoneNumber) {
         try {
           if (!phoneNumber) {
-            console.log("{}{}{}{}{}{}{}{}{}");
+            // console.log("{}{}{}{}{}{}{}{}{}");
             getstatus(false);
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
@@ -84,17 +116,23 @@ const Login = (props) => {
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
-          }).then((res) => {
+          }).then(async (res) => {
             if (res.status === 201) {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res.status === 200) {
               // Store data in local storage
-              console.log(res.data[0].Name);
+              if (res.data[0].token == token) {
+                // console.log("{}{}{}{}{}{}{}{}{}{}{}");
+              } else {
+                // console.log("+++++++++++++++++++++++++++++++");
+                await udatepartytoken({ token: token, party_id: res.data[0].Id }).then((res) => { console.log(res.data); })
+              }
+              // console.log(res.data[0].Name);
               getstatus(true, res.data[0].Name);
               const userData = res.data; // Assuming res.data contains user data
               AsyncStorage.setItem("UserData", JSON.stringify(userData))
                 .then(() => {
-                  console.log("Data stored in local storage:", userData);
+                  // console.log("Data stored in local storage:", userData);
                 })
                 .catch((error) => {
                   console.error("Error storing data in local storage:", error);
@@ -102,7 +140,7 @@ const Login = (props) => {
 
               setShowLogin(false); // Switch to OTP view
             } else {
-              console.log("No");
+              // console.log("No");
             }
           });
         } catch (error) {
