@@ -192,7 +192,7 @@ export default function SkipHomeScreen(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 10,
+            marginHorizontal: 5,
             width: "auto",
             height: "auto",
             padding: 4,
