@@ -224,7 +224,8 @@ const OrderDetails = (props) => {
                         size="large"
                         color="black"
                     />
-                </View> :   <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%' }}>
+                </View> :   <View style={{ flex: 1, paddingVertical: 10, backgroundColor: '#FFFFFF', height: '100%',borderTopWidth: 1,
+        borderTopColor: "#E0E0E0" }}>
             {newPrint === true ? (
                 <View>
                     <TouchableOpacity style={{ backgroundColor: '#212121', padding: 8, }}>

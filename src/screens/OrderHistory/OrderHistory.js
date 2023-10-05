@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
         height: "100%",
         backgroundColor: "#FFF",
         borderTopWidth: 1,
-        borderTopColor: "#828282"
+        borderTopColor: "#E0E0E0"
     },
     first_cnt: {
         width: "100%",

@@ -268,7 +268,7 @@ export default function Filter({
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
-                    <TouchableOpacity
+                    {status === false ? (<TouchableOpacity
                         style={[
                             styles.resetButton,
                             {
@@ -288,7 +288,21 @@ export default function Filter({
                         >
                             Reset
                         </Text>
+                    </TouchableOpacity>): (
+                        <TouchableOpacity
+                        style={[
+                           
+                        ]}
+                        onPress={resetFilters}
+                    >
+                        <Text
+                            
+                        >
+                            
+                        </Text>
                     </TouchableOpacity>
+                    ) }
+                    
                     <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
                         <Text style={styles.buttonText}>Apply</Text>
                     </TouchableOpacity>
@@ -320,12 +334,13 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     closeIcon: {
-        width: width >= 720 ?45:35,
-        height: width >= 720 ?45:35,
+        width: width >= 720 ?45:30,
+        height: width >= 720 ?45:30,
     },
     categoriesContainer: {
         marginTop: 25,
         flexDirection: "row",
+        
         flexWrap: "wrap",
         justifyContent: "space-between",
         height: "auto",
@@ -369,6 +384,11 @@ const styles = StyleSheet.create({
     categoryText: {
         fontSize: width >= 720 ?16:12,
         marginLeft: 3,
+        width:'80%',
+        height:'auto',
+        paddingVertical:5,
+        wordWrap: 'break-word',
+        justifyContent:'center',
         fontWeight: 500,
     },
     buttonsContainer: {
@@ -385,7 +405,7 @@ const styles = StyleSheet.create({
         height: 38,
     },
     container2: {
-        marginTop: 5,
+        // marginTop: 5,
         width:'100%',
     },
     label: {

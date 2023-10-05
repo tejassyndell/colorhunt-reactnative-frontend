@@ -25,7 +25,7 @@ const Orderlist = (props) => {
     const windowwidthe = parseInt(Dimensions.get("window").width);
     const windowheight = parseInt(Dimensions.get("window").height);
     const { width, height } = Dimensions.get("window");
-    const headerHeight = Platform.OS === 'android' ? (windowwidthe >= 720 ? 120 : 90) : 120;
+    const headerHeight = Platform.OS === 'android' ? (windowwidthe >= 720 ? 120 : 100) : 120;
     const AddSo = async () => {
         let userdata =await AsyncStorage.getItem('UserData')  
         userdata = await JSON.parse(userdata)
@@ -110,6 +110,7 @@ const Orderlist = (props) => {
                     display: "flex",
                     flexDirection: "row",
                     width: parseInt(windowwidthe) >= 720 ? "100%" : "100%",
+                    
                 }}>
                     <Text style={{
                         textAlign: "center",
@@ -162,7 +163,7 @@ const Orderlist = (props) => {
                     />
                 </View>
             ) : (
-                <View style={{ height: "100%", width: "100%", backgroundColor: "white" }}>
+                <View style={{ height: "100%", width: "100%", backgroundColor: "white", }}>
                     <ScrollView nestedScrollEnabled={true}>
                         <View style={{ height: "100%", width: "100%", backgroundColor: "white", borderTopColor: "#828282", borderTopWidth: 1, borderStyle: "solid" }}>
                             <View style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", backgroundColor: "#FFF" }}>

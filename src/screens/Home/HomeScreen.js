@@ -271,6 +271,7 @@ export default function HomeScreen(props) {
                 // resizeMode: "contain",
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
+                resizeMode:'contain',
               }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
@@ -505,6 +506,7 @@ export default function HomeScreen(props) {
                             marginLeft: width >= 720 ? 15 : 10,
                             marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
+                            marginTop:10
                           }}
                         // style={styles.contener2}
                         >
@@ -563,12 +565,21 @@ export default function HomeScreen(props) {
                             {item.Photos ? (
                               <Image
                                 source={{ uri: baseImageUrl + item.Photos }}
-                                style={{
-                                  width: "100%",
-                                  resizeMode: "contain",
-                                  height: width >= 720 ? 280 : 190,
-                                  borderRadius: 10,
-                                }}
+                                
+                                style={
+                                  headerHeight === 'android'
+                                      ? {
+                                            width: '100%',
+                                            resizeMode: 'contain',
+                                            height: width >= 720 ? 280 : 190,
+                                            borderRadius: 10,
+                                        }
+                                      : {
+                                            width: '100%',
+                                            height: width >= 720 ? 280 : 190,
+                                            borderRadius: 10,
+                                        }
+                              }
                               // style={styles.fastconimage}
                               />
                             ) : (
