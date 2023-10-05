@@ -185,19 +185,21 @@ const Login = (props) => {
               />
             </View>
           ) : (
-            <View style={styles.otpContainer}>
-              {otp.map((digit, index) => (
-                <TextInput
-                  key={index}
-                  style={styles.otpInput}
-                  placeholder=""
-                  keyboardType="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChangeText={(text) => handleOTPDigitChange(index, text)}
-                  ref={otpInput[index]}
-                />
-              ))}
+            <View style={{ width: "100%", alignItems: "center" }}>
+              <View style={styles.otpContainer}>
+                {otp.map((digit, index) => (
+                  <TextInput
+                    key={index}
+                    style={styles.otpInput}
+                    placeholder=""
+                    keyboardType="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChangeText={(text) => handleOTPDigitChange(index, text)}
+                    ref={otpInput[index]}
+                  />
+                ))}
+              </View>
             </View>
           )}
           <View style={{ width: "100%", height: 100 }}>
@@ -248,15 +250,16 @@ const styles = StyleSheet.create({
     color: " rgba(0, 0, 0, 0.30)",
   },
   otpContainer: {
+    height: "auto",
     flexDirection: "row",
-    width: "50%",
+    width: width >= 720 ? 400 : "60%",
     marginBottom: "10%",
     justifyContent: "space-between",
   },
   otpInput: {
-    width: windowWidth * 0.1,
+    width: width >= 720 ? 90 : 47,
     justifyContent: "space-between",
-    height: windowHeight * 0.07,
+    height: width >= 720 ? 90 : 50,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",

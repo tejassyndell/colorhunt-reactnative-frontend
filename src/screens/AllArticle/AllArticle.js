@@ -302,7 +302,7 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange,"All")
+    console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -312,7 +312,6 @@ export default function AllArticle(props) {
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
-
 
   useEffect(() => {
     const minRate = nameDatas.reduce((min, item) => {

@@ -24,48 +24,14 @@ export default function Contact(props) {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [showValidationErrors, setShowValidationErrors] = useState(false);
-  const [inputWidth, setInputWidth] = useState();
-  const [inputHeight, setInputHeight] = useState();
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
-  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
-  const numberOfLines = 4;
-  const lineHeight = 25;
+  const headerHeight =
+    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+  const { width, height } = Dimensions.get("window");
+  const numberOfLines = width >= 720 ? 5 : 4;
+  const lineHeight = width >= 720 ? 30 : 25;
   const multilineHeight = numberOfLines * lineHeight;
-
-  useEffect(() => {
-    const screenWidth = Dimensions.get("window").width;
-    let inputWidth = screenWidth * 0.9;
-    let inputHeight = 40;
-    let buttonWidth = 153;
-    let buttonFontSize = 18;
-
-    if (screenWidth >= 720) {
-      inputWidth = screenWidth * 0.6;
-      inputHeight = 60;
-      buttonWidth = screenWidth * 0.4;
-      buttonFontSize = 30;
-    }
-
-    setInputWidth(inputWidth);
-    setInputHeight(inputHeight);
-    setButtonWidth(buttonWidth);
-    setButtonFontSize(buttonFontSize);
-  }, []);
-
-  const screenWidth = Dimensions.get("window").width;
-  const screenHeight = Dimensions.get("window").height;
-  const aspectRatio = 239 / 234;
-  const maxWidth = 0.6 * screenWidth;
-  const maxHeight = 0.6 * screenHeight;
-
-  let imageWidth = maxWidth;
-  let imageHeight = maxWidth / aspectRatio;
-
-  if (imageHeight > maxHeight) {
-    imageHeight = maxHeight;
-    imageWidth = maxHeight * aspectRatio;
-  }
 
   const handleSubmit = async () => {
     console.log("Hello", username, email, subject, message);
@@ -124,7 +90,7 @@ export default function Contact(props) {
           <Text
             style={{
               textAlign: "center",
-              fontSize: 25,
+              fontSize: width >= 720 ? 35 : 25,
               fontWeight: 700,
               width: "100%",
             }}
@@ -134,9 +100,8 @@ export default function Contact(props) {
         </View>
       ),
       headerStyle: {
-        height: headerHeight // Increase the header height here
-    },
-
+        height: headerHeight, // Increase the header height here
+      },
     });
   }, []);
 
@@ -144,14 +109,14 @@ export default function Contact(props) {
     submitButton: {
       backgroundColor: "black",
       borderRadius: 6.711,
-      width: buttonWidth,
-      height: 47,
+      width: width >= 720 ? 220 : 120,
+      height: width >= 720 ? 80 : 47,
       justifyContent: "center",
     },
     submitText: {
       color: "white",
       textAlign: "center",
-      fontSize: buttonFontSize,
+      fontSize: width >= 720 ? 30 : 20,
       fontWeight: 700,
     },
   });
@@ -163,126 +128,163 @@ export default function Contact(props) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 0.7 }}
         keyboardShouldPersistTaps="handled"
+        showsHorizontalScrollIndicator={true}
       >
         <View
           style={{
             alignItems: "center",
             borderTopColor: "#828282",
-            borderTopWidth: 1,
+            width: "60%",
+            height: "30%",
+            marginLeft: "20%",
+            marginRight: "20%",
           }}
         >
-          <ResponsiveImage
+          <Image
             source={require("../../../assets/ContactPagePNG/contact.png")}
-            initWidth={imageWidth.toString()}
-            initHeight={imageHeight.toString()}
-            style={{ marginTop: 15 }}
+            style={{
+              marginTop: 15,
+              width: "100%",
+              resizeMode: "contain",
+              height: "100%",
+            }}
           />
         </View>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <View>
-            <View>
-              <View style={{ marginBottom: 5, height: 60 }}>
-                <TextInput
-                  placeholder="User Name"
-                  value={username}
-                  onChangeText={setusername}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    padding: 10,
-                    margin: 5,
-                    width: inputWidth,
-                    height: inputHeight,
-                  }}
-                />
-                {showValidationErrors && !username && (
-                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                    This field is required
-                  </Text>
-                )}
-              </View>
-              <View style={{ marginBottom: 5, height: 60 }}>
-                <TextInput
-                  placeholder="Email"
-                  value={email}
-                  onChangeText={setEmail}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    padding: 10,
-                    margin: 5,
-                    width: inputWidth,
-                    height: inputHeight,
-                  }}
-                />
-                {showValidationErrors && !email && (
-                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                    This field is required
-                  </Text>
-                )}
-              </View>
-              <View style={{ marginBottom: 5, height: 60 }}>
-                <TextInput
-                  placeholder="Subject"
-                  value={subject}
-                  onChangeText={setSubject}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    padding: 10,
-                    margin: 5,
-                    width: inputWidth,
-                    height: inputHeight,
-                  }}
-                />
-                {showValidationErrors && !subject && (
-                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                    This field is required
-                  </Text>
-                )}
-              </View>
-              <View style={{ marginBottom: 5, height: multilineHeight }}>
-                <TextInput
-                  placeholder="Message"
-                  editable
-                  multiline
-                  numberOfLines={numberOfLines}
-                  maxLength={100}
-                  value={message}
-                  onChangeText={setMessage}
-                  style={{
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    paddingLeft: 8,
-                    paddingBottom: 70,
-                    margin: 5,
-                    width: inputWidth,
-                    height: multilineHeight,
-                  }}
-                />
-                {showValidationErrors && !message && (
-                  <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
-                    This field is required
-                  </Text>
-                )}
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 30,
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.submitButton}
-                  onPress={handleSubmit}
-                >
-                  <Text style={styles.submitText}>Submit</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            width: "90%",
+            marginLeft: "5%",
+            marginRight: "5%",
+          }}
+        >
+          <View
+            style={{
+              marginBottom: 5,
+              height: width >= 720 ? 100 : 60,
+              width: "100%",
+            }}
+          >
+            <TextInput
+              placeholder="User Name"
+              value={username}
+              onChangeText={setusername}
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                padding: 10,
+                margin: 5,
+                fontSize: width >= 720 ? 30 : 15,
+
+                height: width >= 720 ? 70 : 40,
+              }}
+            />
+            {showValidationErrors && !username && (
+              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                This field is required
+              </Text>
+            )}
+          </View>
+          <View
+            style={{
+              marginBottom: 5,
+              height: width >= 720 ? 100 : 60,
+              width: "100%",
+            }}
+          >
+            <TextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                padding: 10,
+                margin: 5,
+                fontSize: width >= 720 ? 30 : 15,
+
+                height: width >= 720 ? 70 : 40,
+              }}
+            />
+            {showValidationErrors && !email && (
+              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                This field is required
+              </Text>
+            )}
+          </View>
+          <View
+            style={{
+              marginBottom: 5,
+              height: width >= 720 ? 100 : 60,
+              width: "100%",
+            }}
+          >
+            <TextInput
+              placeholder="Subject"
+              value={subject}
+              onChangeText={setSubject}
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                padding: 10,
+                margin: 5,
+                height: width >= 720 ? 70 : 40,
+                fontSize: width >= 720 ? 30 : 15,
+              }}
+            />
+            {showValidationErrors && !subject && (
+              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                This field is required
+              </Text>
+            )}
+          </View>
+          <View
+            style={{
+              marginBottom: 5,
+              height: width >= 720 ? 80 : 60,
+              width: "100%",
+            }}
+          >
+            <TextInput
+              placeholder="Message"
+              editable
+              multiline
+              numberOfLines={numberOfLines}
+              maxLength={100}
+              value={message}
+              onChangeText={setMessage}
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                paddingLeft: 8,
+                paddingBottom: 70,
+                margin: 5,
+                height: multilineHeight,
+                fontSize: width >= 720 ? 30 : 15,
+              }}
+            />
+            {showValidationErrors && !message && (
+              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+                This field is required
+              </Text>
+            )}
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: width >= 720 ? 100 : 60,
+            }}
+          >
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.submitText}>Submit</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

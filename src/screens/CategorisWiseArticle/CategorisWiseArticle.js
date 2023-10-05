@@ -162,7 +162,7 @@ export default function CategorisWiseArticle(props) {
 
   useEffect(() => {
     filterData();
-  }, [searchText, nameDatas,selectedCategories,selectedPriceRange]);
+  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
 
   const filterData = () => {
     if (
@@ -325,12 +325,12 @@ export default function CategorisWiseArticle(props) {
   }, [selectedCategories, selectedPriceRange]);
 
   useEffect(() => {
-    const minRate = finalData.reduce((min, item) => {
+    const minRate = nameDatas.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate < min ? articleRate : min;
     }, Infinity);
 
-    const maxRate = finalData.reduce((max, item) => {
+    const maxRate = nameDatas.reduce((max, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate > max ? articleRate : max;
     }, -Infinity);
@@ -338,7 +338,7 @@ export default function CategorisWiseArticle(props) {
     setMinArticleRate(minRate);
 
     setMaxArticleRate(maxRate);
-  }, [finalData]);
+  }, [nameDatas]);
   return (
     <>
       {isLoading ? (

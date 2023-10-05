@@ -31,6 +31,7 @@ const SliderScreen = (props) => {
         showsPagination={true}
         dotStyle={styles.paginationDot}
         activeDotStyle={styles.activePaginationDot}
+        autoplay={true}
       >
         <ImageBackground
           source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}

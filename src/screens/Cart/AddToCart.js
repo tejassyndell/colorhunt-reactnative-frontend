@@ -30,8 +30,9 @@ const AddToCart = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const windowwidthe = parseInt(Dimensions.get("window").width);
   const windowheight = parseInt(Dimensions.get("window").height);
+  const { width, height } = Dimensions.get("window");
   const headerHeight =
-    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 100) : 120;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -484,6 +485,10 @@ const AddToCart = (props) => {
                                     elevation: 5,
                                     shadowColor: "gray",
                                     shadowOpacity: 0.5,
+                                    shadowOffset: {
+                                      width: 1,
+                                      height: 1,
+                                    },
                                     marginHorizontal: "5%",
                                     marginTop: "5%",
                                     borderRadius: 10,
@@ -494,15 +499,21 @@ const AddToCart = (props) => {
                                 >
                                   <TouchableOpacity
                                     style={{
-                                      width: windowwidthe * 0.18,
+                                      width: width >= 720 ? 120 : 80,
                                       margin: "3.8%",
                                       marginTop: "1.5%",
-                                      height: windowheight * 0.108,
+                                      height: width >= 720 ? 130 : 100,
                                       display: "flex",
                                       justifyContent: "center",
                                       alignItems: "center",
                                       // marginVertical: 10,
                                       borderRadius: 10,
+                                      shadowColor: "gray",
+                                      shadowOpacity: 0.9,
+                                      shadowOffset: {
+                                        width: 1,
+                                        height: 1,
+                                      },
                                     }}
                                     onPress={() =>
                                       handleEditOrder(
@@ -513,11 +524,11 @@ const AddToCart = (props) => {
                                   >
                                     <Image
                                       style={{
-                                        flex: 1,
                                         resizeMode: "contain",
+
                                         height: "100%",
-                                        width: "100%",
                                         borderRadius: 10,
+                                        width: "100%",
                                       }}
                                       source={{
                                         uri:
@@ -847,8 +858,8 @@ const AddToCart = (props) => {
                                       }}
                                     >
                                       {compreInward
-                                        ? compreInward.map((it) =>
-                                            checkOutOfStock(it, item)
+                                        ? compreInward.map(
+                                            (it) => checkOutOfStock(it, item)
                                             // console.log(it.SalesNoPacks)
                                           )
                                         : ""}
@@ -1046,8 +1057,8 @@ const AddToCart = (props) => {
                                     }}
                                   >
                                     {compreInward
-                                      ? compreInward.map((it) =>
-                                          checkOutOfStock(it, item)
+                                      ? compreInward.map(
+                                          (it) => checkOutOfStock(it, item)
                                           // console.log(it.SalesNoPacks)
                                         )
                                       : ""}
@@ -1072,15 +1083,11 @@ const AddToCart = (props) => {
                         onChange={handlePromoCodeChange}
                         style={{
                           width: "100%",
-                          height:
-                            windowwidthe >= 720
-                              ? windowwidthe * 0.1
-                              : windowwidthe * 0.14,
+                          height: width >= 720 ? 90 : 60,
                           borderWidth: 1,
                           paddingLeft: "5%",
                           borderRadius: 10,
-                          fontSize:
-                            windowwidthe < 720 ? windowwidthe * 0.04 : 26,
+                          fontSize: width >= 720 ? 36 : 20,
                           backgroundColor: "#EEE",
                           borderColor: "#E4E7EA",
                         }}
@@ -1089,9 +1096,10 @@ const AddToCart = (props) => {
                       ></TextInput>
                       <View
                         style={{
-                          width: "100%",
                           position: "absolute",
-                          top: windowwidthe < 720 ? "30.5%" : "37%",
+                          width: "100%",
+                          top: width >= 720 ? 40 : 20,
+
                           justifyContent: "flex-end",
                           alignItems: "flex-end",
                         }}
@@ -1101,21 +1109,15 @@ const AddToCart = (props) => {
                           style={{
                             backgroundColor: "#212121",
                             borderRadius: 7.6,
-                            width:
-                              windowwidthe < 720
-                                ? windowwidthe * 0.25
-                                : windowwidthe * 0.2,
-                            paddingHorizontal:
-                              windowwidthe >= 720 ? "3%" : "6%",
-                            paddingVertical:
-                              windowwidthe >= 720 ? "2%" : "2.5%",
+                            justifyContent: "center",
+                            width: width >= 720 ? 160 : 100,
+                            height: width >= 720 ? 55 : 40,
                           }}
                         >
                           <Text
                             style={{
                               color: "white",
-                              fontSize:
-                                windowwidthe < 720 ? windowwidthe * 0.04 : 22,
+                              fontSize: width >= 720 ? 22 : 18,
                               fontWeight: 600,
                               textAlign: "center",
                             }}
