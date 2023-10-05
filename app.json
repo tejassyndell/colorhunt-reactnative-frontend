@@ -24,7 +24,11 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.yourappname"
+      "bundleIdentifier": "com.colorhuntmobileapp.app",
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"],
+        "NSNotificationsUsageDescription": "We need your permission to send you notifications"
+      }
     },
     "android": {
       "package": "com.colorhuntmobileapp.app",

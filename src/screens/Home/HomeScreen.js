@@ -778,7 +778,7 @@ export default function HomeScreen(props) {
                   style={{ flex: 1, overflow: "hidden" }}
                 >
                   {kids.length === 0 ?
-                    (<View style={{ width:'100%', height:'100%',justifyContent: 'center' }}>
+                    (<View style={{ width:'100%', height:'100%',justifyContent: 'center',textAlign:"center" }}>
                       <Text style={{ fontSize: width >= 720 ? 25 : 17,textAlign:"center",color:'#808080' }}>No Kids Article Found</Text>
                     </View>
 

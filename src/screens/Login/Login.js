@@ -13,6 +13,7 @@ import { phoneNumberValidation, udatepartytoken } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import * as Notifications from 'expo-notifications';
 import { useEffect } from "react";
 const { width, height } = Dimensions.get("window");
