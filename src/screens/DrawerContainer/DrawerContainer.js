@@ -75,31 +75,33 @@ export default function DrawerContainer(props) {
                 color: "#FFF",
                 left: 10,
                 fontSize: width >= 720 ? 25 : 17,
-                height: "auto",
-
+                height: 'auto',
+                
+            
                 fontWeight: 700,
                 width: "60%",
+                
               }}
             >
               {name ? name : "Guest"}
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.closeDrawer();
-            }}
-          >
-            <Image
-              source={require("../../../assets/sidebaricons/menu.png")}
-              style={{
-                position: "absolute",
-                right: 0,
-                top: width >= 720 ? 75 : 40,
-                width: width >= 720 ? 30 : 20,
-                height: width >= 720 ? 30 : 20,
+            <TouchableOpacity
+              onPress={() => {
+                navigation.closeDrawer();
               }}
-            />
-          </TouchableOpacity>
+            >
+              <Image
+                source={require("../../../assets/sidebaricons/menu.png")}
+                style={{
+                  position:'absolute',
+                  right:0,
+                  top:width >= 720 ? 75 : 30,
+                  width: width >= 720 ? 30 : 20,
+                  height: width >= 720 ? 30 : 20,
+                }}
+              />
+            </TouchableOpacity>
         </View>
 
         {isLoggedIn ? ( // If user is logged in
@@ -162,18 +164,10 @@ export default function DrawerContainer(props) {
             >
               <Image
                 source={require("../../../assets/sidebaricons/download-4.png")}
-                style={{
-                  height: width >= 720 ? 30 : 20,
-                  width: width >= 720 ? 30 : 20,
-                }}
+                style={{ height: width >= 720 ? 30:20,
+                  width: width >= 720 ? 30:20,}}
               />
-              <Text
-                style={{
-                  fontSize: width >= 720 ? 20 : 16,
-                  color: "#FFF",
-                  marginLeft: 8,
-                }}
-              >
+              <Text style={{ fontSize: width >= 720 ? 20:16, color: "#FFF", marginLeft: 8 }}>
                 Logout
               </Text>
             </TouchableOpacity>
@@ -221,17 +215,10 @@ export default function DrawerContainer(props) {
         >
           <Image
             source={require("../../../assets/sidebaricons/image_98.png")}
-            style={{
-              height: width >= 720 ? 200 : 161,
-              width: width >= 720 ? 200 : 161,
-            }}
+            style={{  height: width >= 720 ? 200:161,
+              width: width >= 720 ? 200:161, }}
           />
-          <Text
-            style={{
-              color: "rgba(255, 255, 255, 1)",
-              fontSize: width >= 720 ? 15 : 12,
-            }}
-          >
+          <Text style={{ color: "rgba(255, 255, 255, 1)", fontSize: width >= 720 ? 15:12 }}>
             Design By SYNDELL Inc.
           </Text>
         </View>

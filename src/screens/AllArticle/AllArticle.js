@@ -121,7 +121,7 @@ export default function AllArticle(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 10,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
@@ -359,8 +359,8 @@ export default function AllArticle(props) {
               <Image
                 source={require("../../../assets/filetr_icone.png")}
                 style={{
-                  width: width >= 720 ? 65 : 40, // Adjust the width for tablets
-                  height: width >= 720 ? 65 : 40,
+                  width: width >= 720 ? 65 : 42, // Adjust the width for tablets
+                  height: width >= 720 ? 65 : 42,
                   resizeMode: "contain",
                   borderRadius: 10,
                 }}
@@ -434,13 +434,13 @@ export default function AllArticle(props) {
             >
               <View
                 style={{
-                  width: "92%",
+                  width: "94%",
                   backgroundColor: "#FFF",
                   position: "absolute",
                   bottom: 0,
-                  left: 1,
+                  left: 0,
                   right: 0, // To make it span the full width
-                  marginLeft: "4%", // Margin on the left side
+                  marginLeft: "3%", // Margin on the left side
                   padding: 10,
                   borderTopLeftRadius: 10, // Adjust the radius as needed
                   borderTopRightRadius: 10,
