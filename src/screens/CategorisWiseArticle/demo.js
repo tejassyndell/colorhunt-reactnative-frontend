@@ -9,6 +9,7 @@ import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import Filter from "../../components/Filter/Filter";
 import { FontAwesome } from '@expo/vector-icons';
 import { log } from "react-native-reanimated";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AllArticle(props) {
   const { navigation } = props;
@@ -28,7 +29,11 @@ export default function AllArticle(props) {
   const [finalData, setFinalData] = useState([])
   const route = useRoute();
   const { item } = route.params;
-
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData")
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  }
   //   console.log('.............',item.Category);
   const convertToTitleCase = (str) => {
     return str
@@ -106,7 +111,7 @@ export default function AllArticle(props) {
 
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id: 197,
+      party_id:await getpartyid(),
       article_id: i.Id,
     };
     console.log("Removing item from wishlist:", i.Id);

@@ -21,7 +21,7 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
@@ -51,6 +51,11 @@ export default function CategorisWiseArticle(props) {
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData")
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  }
 
   const getproductnamess = async () => {
     try {
@@ -69,7 +74,7 @@ export default function CategorisWiseArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id: 197,
+      party_id:await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -86,7 +91,7 @@ export default function CategorisWiseArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id: 197,
+      party_id:await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);

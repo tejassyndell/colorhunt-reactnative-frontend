@@ -44,6 +44,12 @@ export default function HomeScreen(props) {
   const [kids, setkidsdata] = useState([])
   const [showarticle, setshowarticle] = useState(false)
 
+  // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData")
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  }
   useEffect(() => {
     // Set isLoading to true initially
     setIsLoading(true);
@@ -86,7 +92,7 @@ export default function HomeScreen(props) {
 
   const getWishlist = async () => {
     const data = {
-      party_id: 197,
+      party_id:await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -118,7 +124,7 @@ export default function HomeScreen(props) {
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
     let data = {
-      party_id: 197,
+      party_id:await getpartyid(),
       article_id: i.Id,
     };
     console.log(data);

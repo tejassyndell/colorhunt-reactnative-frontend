@@ -87,7 +87,9 @@ const AddToCart = (props) => {
     });
   };
   const cartDetails = async () => {
-    await cartdetails()
+    let data = await AsyncStorage.getItem("UserData")
+    data = await JSON.parse(data);
+    await cartdetails({ party_id: data[0].Id })
       .then((response) => {
         console.log("Api response :", response.data[0]);
         let arr1 = response.data.map((item) => item.article_id);
@@ -231,8 +233,10 @@ const AddToCart = (props) => {
   };
   const handleDeleteOrder = async (article_id) => {
     // console.log(article_id);
+    let partydata = await AsyncStorage.getItem("UserData")
+    partydata = await JSON.parse(partydata);
     const data = {
-      party_id: 197,
+      party_id: partydata[0].Id,
       article_id: article_id,
     };
     try {

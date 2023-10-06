@@ -140,9 +140,9 @@ export const updateCartArticale = async (data) => {
   }
 };
 
-export const cartdetails = async () => {
+export const cartdetails = async (data) => {
   try {
-    return await axios.post(`${url}/cartdetails`, { party_id: 197 });
+    return await axios.post(`${url}/cartdetails`, data);
   } catch (err) {
     console.log(err, "err in react api");
   }
