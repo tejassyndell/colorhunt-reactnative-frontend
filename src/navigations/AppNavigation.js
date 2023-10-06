@@ -27,6 +27,10 @@ import SkipSliderScreen from "../screens/SkipHomePage/SkipSlider";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import { useEffect } from "react";
 import OrderDetails from "../screens/OrderHistory/OrderDetails";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// @ts-ignore
+
 const Stack = createStackNavigator();
 let value = false;
 let name = "";

@@ -103,8 +103,12 @@ export default function HomeScreen(props) {
     return str
       .toLowerCase()
       .split("-") // Split the string at hyphens or spaces
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join("-"); // Join the words with spaces
+      .map((word, index) => (
+        <Text key={index}>
+          {word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()}
+        </Text>
+      ))
+      .reduce((prev, curr) => [prev, "-", curr]); // Join the words with hyphens and wrap them in a span element
   }
 
   const addArticleWishlist = async (i) => {
@@ -458,7 +462,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   position: "absolute",
-                  color: "rgba(102, 102, 102, 1)",
+                  color: "#666666",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
                   fontWeight: 600,
@@ -489,7 +493,7 @@ export default function HomeScreen(props) {
                   ? finalData.length > 0
                     ? finalData.map((item, key) => (
                         <TouchableOpacity
-                          key={key}
+                          key={index}
                           onPress={() => {
                             isLoggedIn
                               ? navigation.navigate("DetailsOfArticals", {
@@ -516,7 +520,7 @@ export default function HomeScreen(props) {
                                 width: width >= 720 ? 300 : 155, // Adjust the width for tablets
                                 height: width >= 720 ? 280 : 190,
                                 borderColor: "gray",
-                                shadowColor: "rgba(0, 0, 0, 0.5)",
+                                shadowColor: "#000000",
                                 shadowOpacity: 0.9,
                                 shadowRadius: 3,
                                 borderRadius: 10,
@@ -611,9 +615,9 @@ export default function HomeScreen(props) {
                           </View>
                         </TouchableOpacity>
                       ))
-                    : nameData.map((item) => (
+                    : nameData.map((item, index) => (
                         <View
-                          key={item.id}
+                          key={index}
                           style={{
                             alignItems: "center",
                             height: "auto",
@@ -696,7 +700,7 @@ export default function HomeScreen(props) {
                       ))
                   : applyrData.map((item) => (
                       <View
-                        key={item.id}
+                        key={index}
                         style={{
                           alignItems: "center",
                           justifyContent: "center",
@@ -759,7 +763,7 @@ export default function HomeScreen(props) {
                   style={{
                     position: "absolute",
                     end: 10,
-                    color: "rgba(102, 102, 102, 1)",
+                    color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
                     fontWeight: 600,
                   }}
@@ -774,7 +778,7 @@ export default function HomeScreen(props) {
               <View
                 style={{
                   position: "relative",
-                  maxWidth: "100%",
+                  width: "100%",
                   height: "auto",
                   flexDirection: "row",
                   top: 20,
@@ -783,15 +787,24 @@ export default function HomeScreen(props) {
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
-                  style={{ flex: 1, overflow: "hidden" }}
+                  style={{ overflow: "hidden" }}
                 >
                   {kids.length === 0 ? (
                     <View
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        justifyContent: "center",
-                      }}
+                      style={
+                        headerHeight === "android"
+                          ? {
+                              width: "100%",
+                              height: "100%",
+                              justifyContent: "center",
+                              textAlign: "center",
+                            }
+                          : {
+                              height: "100%",
+                              justifyContent: "center",
+                              start: width >= 720 ? "150%" : "100%",
+                            }
+                      }
                     >
                       <Text
                         style={{
@@ -804,9 +817,9 @@ export default function HomeScreen(props) {
                       </Text>
                     </View>
                   ) : (
-                    kids.map((item) => (
+                    kids.map((item, index) => (
                       <View
-                        key={item.id}
+                        key={index}
                         style={{
                           alignItems: "center",
                           width: width >= 720 ? 300 : 155, // Adjust the width for tablets
@@ -822,7 +835,7 @@ export default function HomeScreen(props) {
                             width: width >= 720 ? 300 : 155, // Adjust the width for tablets
                             height: width >= 720 ? 280 : 190,
                             borderColor: "gray",
-                            shadowColor: "rgba(0, 0, 0, 0.5)",
+                            shadowColor: "#000000",
                             shadowOpacity: 0.9,
                             shadowRadius: 3,
                             borderRadius: 10,
@@ -919,7 +932,7 @@ export default function HomeScreen(props) {
       {isFilterVisible && (
         <View
           style={{
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(0,0,0,0.5)",
             width: "100%",
             height: "100%",
             position: "absolute",
@@ -964,7 +977,7 @@ export default function HomeScreen(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: "#000000",
           }}
         >
           <View
