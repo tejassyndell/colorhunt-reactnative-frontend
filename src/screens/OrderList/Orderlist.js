@@ -498,7 +498,7 @@ const Orderlist = (props) => {
                                     </View>
                                     <View style={{
                                         display: "flex",
-                                        flexDirection: "row", gap: 5,
+                                        flexDirection: "row",
                                         // paddingLeft: 30,
                                         justifyContent: "flex-end",
                                         // paddingTop: "2%",

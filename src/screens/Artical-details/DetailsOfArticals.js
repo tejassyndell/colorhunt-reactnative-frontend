@@ -20,12 +20,11 @@ import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import styles from "./styles";
-import stylesRecipe from "../Recipe/styles";
+
 // import { ScrollView } from "react-native-gesture-handler";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { ActivityIndicator } from "react-native";
-import bagicon from "../../../assets/icons/icon.png";
 import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 

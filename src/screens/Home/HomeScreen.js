@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   Dimensions,
-  Platform
+  Platform,
 } from "react-native";
 // import Image from 'react-native-responsive-image';
 import styles from "./styles";
@@ -50,19 +50,19 @@ export default function HomeScreen(props) {
   const [kids, setkidsdata] = useState([])
   // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
 
-  useEffect(() => {
-    // Set isLoading to true initially
-    setIsLoading(true);
-    // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+  // useEffect(() => {
+  //   // Set isLoading to true initially
+  //   setIsLoading(true);
+  //   // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
+  //   const timeoutId = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 2000);
 
-    // Clear the timeout when the component unmounts to prevent memory leaks
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  //   // Clear the timeout when the component unmounts to prevent memory leaks
+  //   return () => {
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, []);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };

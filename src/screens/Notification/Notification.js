@@ -5,6 +5,7 @@ import React, { useEffect, useState, navigation } from 'react';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow'
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from 'axios';
 
 export default function Notification(props) {
   const { navigation } = props;
@@ -65,17 +66,8 @@ export default function Notification(props) {
 
   const sendNotification = async () => {
     try {
-      await fetch('http://10.0.2.2:4000/getNotification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          registrationToken: token,
-          title: title,
-          body: bodydec,
-        }),
-      });
+      await axios.post("http://10.0.2.2:4000/getNotification",bodydec).then((res)=>{console.log(res);})
+
       console.log('Notification sent successfully');
     } catch (error) {
       console.error('Error sending notification:', error);
@@ -83,17 +75,9 @@ export default function Notification(props) {
   };
   const sendAllNotification = async () => {
     try {
-      await fetch('http://10.0.2.2:4000/getNotification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          registrationToken: token,
-          title: title,
-          body: bodydec,
-        }),
-      });
+      await axios.post("http://10.0.2.2:4000/getNotification",bodydec).then((res)=>{console.log(res);})
+
+
       console.log('Notification sent successfully');
     } catch (error) {
       console.error('Error sending notification:', error);

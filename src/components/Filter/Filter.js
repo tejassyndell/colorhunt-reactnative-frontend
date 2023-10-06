@@ -337,7 +337,6 @@ const styles = StyleSheet.create({
         borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: 8,
         padding: 5,
-        height: "auto",
         maxHeight: "20%",
         justifyContent: "space-between",
         shadowColor: "rgba(0, 0, 0, 0.25)",

@@ -3,14 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "../screens/Home/HomeScreen";
-import CategoriesScreen from "../screens/Categories/CategoriesScreen";
-import RecipeScreen from "../screens/Recipe/RecipeScreen";
-import RecipesListScreen from "../screens/RecipesList/RecipesListScreen";
-// import DrawerContainer from "../../src/screens/DrawerContainer/DrawerContainer";
-import IngredientScreen from "../screens/Ingredient/IngredientScreen";
-import SearchScreen from "../screens/Search/SearchScreen";
 import AllArticleScreen from "../screens/AllArticle/AllArticle";
-import IngredientsDetailsScreen from "../screens/IngredientsDetails/IngredientsDetailsScreen";
 import Userprofile from "../screens/UserProfile/Userprofile";
 import Contact from "../screens/Contact-Us/Contact";
 import DetailsOfArticals from "../screens/Artical-details/DetailsOfArticals";
@@ -20,10 +13,8 @@ import WishList from "../screens/WishList/wishlist";
 import Orderlist from "../screens/OrderList/Orderlist";
 import Notification from "../screens/Notification/Notification";
 import Login from "../screens/Login/Login";
-import SkipHomeScreen from "../screens/SkipHomePage/SkipHomePage";
 import OrderHistory from "../screens/OrderHistory/OrderHistory";
 import SliderScreen from "../screens/SliderScreen/SliderScreen";
-import SkipSliderScreen from "../screens/SkipHomePage/SkipSlider";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import { useEffect } from "react";
 import OrderDetails from "../screens/OrderHistory/OrderDetails";
@@ -51,16 +42,8 @@ function MainNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Categories" component={CategoriesScreen} />
-      <Stack.Screen name="Recipe" component={RecipeScreen} />
-      <Stack.Screen name="RecipesList" component={RecipesListScreen} />
-      <Stack.Screen name="Ingredient" component={IngredientScreen} />
-      <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="AllArticle" component={AllArticleScreen} />
-      <Stack.Screen
-        name="IngredientsDetails"
-        component={IngredientsDetailsScreen}
-      />
+ 
       <Stack.Screen name="Profile" component={Userprofile} />
       <Stack.Screen name="Contact" component={Contact} />
       <Stack.Screen name="DetailsOfArticals" component={DetailsOfArticals} />
@@ -71,12 +54,7 @@ function MainNavigator() {
       />
       <Stack.Screen name="cart_list" component={AddToCart} />
       <Stack.Screen name="Orderlist" component={Orderlist} />
-      <Stack.Screen name="SkipHome" component={SkipHomeScreen} />
-      <Stack.Screen
-        name="SkipSlider"
-        component={SkipSliderScreen}
-        options={{ headerShown: false }}
-      />
+   
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ordershistroy" component={OrderHistory} />
       <Stack.Screen name="DrawerContainer" component={DrawerContainer} />
@@ -89,23 +67,24 @@ const Drawer = createDrawerNavigator();
 
 function DrawerStack() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  async function fetchData() {
-    try {
-      const userData = await AsyncStorage.getItem("UserData");
-      if (userData) {
-        const parsedUserData = JSON.parse(userData);
-        if (parsedUserData.length > 0) {
-          setIsLoggedIn(true);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  }
   useEffect(() => {
-    // Fetch user data and update state variables accordingly
+    async function fetchData() {
+      try {
+        const userData = await AsyncStorage.getItem("UserData");
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          if (parsedUserData.length > 0) {
+            setIsLoggedIn(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+  
     fetchData();
   }, []);
+  
   return (
     <Drawer.Navigator
       drawerPosition="left"

@@ -106,11 +106,9 @@ const AddToCart = (props) => {
       });
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      cartDetails();
-    }, [])
-  );
+  useEffect(()=>{
+    cartDetails()
+  },[])
   // useEffect(() => {
   //     cartDetails();
   // },[])
@@ -394,7 +392,6 @@ const AddToCart = (props) => {
                 fontSize: windowwidthe * 0.1,
                 fontWeight: "bolder",
                 textAlign: "center",
-                fontWeight: "700",
                 color: "#808080",
               }}
             >
@@ -489,7 +486,6 @@ const AddToCart = (props) => {
                                     borderRadius: 10,
                                     height: windowheight * 0.142,
                                     paddingVertical: "1.5%",
-                                    backgroundColor: "#FFF",
                                   }}
                                 >
                                   <TouchableOpacity
@@ -670,7 +666,6 @@ const AddToCart = (props) => {
                                     borderRadius: 10,
                                     height: windowheight * 0.142,
                                     paddingVertical: "1.5%",
-                                    backgroundColor: "#FFF",
                                   }}
                                 >
                                   <TouchableOpacity
@@ -872,7 +867,6 @@ const AddToCart = (props) => {
                                   borderRadius: 10,
                                   height: windowheight * 0.142,
                                   paddingVertical: "1.5%",
-                                  backgroundColor: "#FFF",
                                 }}
                               >
                                 <TouchableOpacity

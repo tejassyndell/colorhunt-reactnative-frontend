@@ -394,7 +394,6 @@ const OrderDetails = (props) => {
                         <View
                             style={{
                                 textAlignVertical: 'top',
-                                height: width >= 720 ? 200 : 170,
                                 height: width >= 720 ? 120 : 80,
                                 padding: 5,
                                 borderWidth: 2,
@@ -441,7 +440,6 @@ const OrderDetails = (props) => {
                             >
                                 <Text style={{
                                     fontSize: width >= 720 ? 20 : 16,
-                                    color: '#000000',
                                     fontWeight: 'bold',
                                     color: transport !== null ? "black" : "#00000080"
                                 }}>{transport !== null ? transport : "Transport"}</Text>
@@ -464,7 +462,6 @@ const OrderDetails = (props) => {
                             >
                                 <Text style={{
                                     fontSize: width >= 720 ? 20 : 16,
-                                    color: '#000000',
                                     fontWeight: 'bold',
                                     color: gst !== null ? "black" : "#00000080"
                                 }}>{gst !== null ? gst : "GST"}</Text>
@@ -484,7 +481,6 @@ const OrderDetails = (props) => {
                             >
                                 <Text style={{
                                     fontSize: width >= 720 ? 20 : 16,
-                                    color: '#000000',
                                     fontWeight: 'bold',
                                     color: remarks !== "" ? "black" : "#00000080"
                                 }}>{remarks !== "" ? remarks : "Remarks"}</Text>
@@ -561,7 +557,7 @@ const OrderDetails = (props) => {
                                 height: width >= 720 ? 70 : 50,
                                 borderRadius: 5
                             }}>
-                                <Image source={require("../../../assets/pdf.png")} style={{ width: "100%", height: "100%", resizeMode: 'contain' }} >
+                                <Image source={require("../../../assets/edite1.png")} style={{ width: "100%", height: "100%", resizeMode: 'contain' }} >
 
                                 </Image>
                             </View>

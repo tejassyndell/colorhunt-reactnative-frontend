@@ -13,11 +13,12 @@
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-firebase/app": "^18.5.0",
     "@react-native-firebase/messaging": "^18.5.0",
+    "@react-native/metro-config": "^0.73.1",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.2",
     "axios": "^1.5.0",
-    "expo": "^49.0.0",
+    "expo": "^49.0.13",
     "expo-constants": "~14.4.2",
     "expo-dev-client": "~2.4.11",
     "expo-device": "~5.4.0",
@@ -53,8 +54,7 @@
     "react-native-swiper": "^1.6.0",
     "react-native-table-component": "^1.2.2",
     "react-native-textarea": "^1.0.4",
-    "react-native-web": "~0.19.6",
-    "rn-fetch-blob": "^0.12.0"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

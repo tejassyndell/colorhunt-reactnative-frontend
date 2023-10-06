@@ -53,10 +53,7 @@ const styles = StyleSheet.create({
     paddingTop: "5%",
     flexDirection: "row",
   },
-  product_detail_sec: {
-    marginRight: "5%",
-    width: "50%",
-  },
+
   size_label: {
     fontSize: width >= 720 ? 20 : 14,
     fontWeight: "600",
@@ -87,28 +84,7 @@ const styles = StyleSheet.create({
     marginLeft: "1%",
     overflow: "scroll",
   },
-  size: {
-    width: 40,
-    height: 39,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#b3a8a8",
-    borderRadius: 100,
-    color: "black",
-    fontWeight: "400",
-    marginLeft: 8,
-    padding: 4,
-    alignContent: "center",
-  },
-  size_a: {
-    marginTop: 3,
-    textAlign: "center",
-    color: "rgba(0, 0, 0, 0.60)",
-    fontWeight: "600",
-  },
-  product_detail_sec2: {
-    width: "50%",
-  },
+
   size_label1: {
     fontSize: width >= 720 ? 20 : 14,
     fontWeight: "600",
@@ -133,14 +109,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
   },
-  size_p: {
-    marginTop: 0,
-    marginBottom: "1%",
-    fontSize: 13,
-    color: "rgba(0, 0, 0, 0.60)",
-    textAlign: "center",
-    fontWeight: "600",
-  },
   product_detail_sec3: {
     display: "flex",
     justifyContent: "center",
@@ -148,27 +116,18 @@ const styles = StyleSheet.create({
     alignContent: "center",
     width: "100%",
   },
-  container_grid: {
-    width: "100%",
-  },
+ 
   head_grid: {
     display: "flex",
     flexDirection: "row",
     width: "100%",
     height: 30,
   },
-  color_Text: {
-    width: "31%",
-    textAlign: "left",
-  },
   available_Text: {
     width: "37%",
     textAlign: "left",
   },
-  qty_Text: {
-    width: "31%",
-    textAlign: "left",
-  },
+
   color_box_Text: {
     width: "31%",
     display: "flex",
@@ -209,13 +168,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
 
-  product_detail: {
-    display: "flex",
-    width: "95%",
-    height: "auto",
-    paddingTop: 12,
-    flexDirection: "row",
-  },
   product_detail_sec: {
     marginRight: "5%",
     width: "50%",
@@ -272,39 +224,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "500",
   },
-  product_detail_sec3: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    width: "100%",
-  },
   container_grid: {
     width: "100%",
   },
-  head_grid: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    height: 30,
-  },
+
   color_Text: {
     width: "31%",
     textAlign: "left",
   },
-  available_Text: {
-    width: "37%",
-    textAlign: "left",
-  },
+
   qty_Text: {
     width: "31%",
     textAlign: "left",
   },
   qty_box_Text: { width: "31%", display: "flex", paddingLeft: 20 },
-  color_div: {
-    width: "31%",
-    textAlign: "left",
-  },
 
   color_title: {
     width: "100%",
@@ -414,7 +347,6 @@ const styles = StyleSheet.create({
   box1_btn: {
     textAlign: "left",
     borderRadius: 10,
-    paddingBottom: 0,
     backgroundColor: "white",
     borderWidth: 1,
     borderStyle: "solid",
