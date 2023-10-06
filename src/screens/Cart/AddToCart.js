@@ -390,7 +390,7 @@ const AddToCart = (props) => {
             <Text
               style={{
                 fontSize: windowwidthe * 0.1,
-                fontWeight: "bolder",
+                fontWeight: "800",
                 textAlign: "center",
                 color: "#808080",
               }}

@@ -485,9 +485,9 @@ export default function HomeScreen(props) {
               >
                 {ApplyStatushBack === true
                   ? finalData.length > 0
-                    ? finalData.map((item, key) => (
+                    ? finalData.map((item) => (
                       <TouchableOpacity
-                        key={key}
+                        key={item.Id}
                         onPress={() => {
                           isLoggedIn
                             ? navigation.navigate("DetailsOfArticals", {
@@ -497,7 +497,7 @@ export default function HomeScreen(props) {
                         }}
                       >
                         <View
-                          key={item.id}
+                          key={item.Id}
                           style={{
                             alignItems: "center",
                             width: width >= 720 ? 300 : 155, // Adjust the width for tablets
@@ -602,7 +602,7 @@ export default function HomeScreen(props) {
                     ))
                     : nameData.map((item) => (
                       <View
-                        key={item.id}
+                        key={item.Id}
                         style={{
                           alignItems: "center",
                           height: "auto",
@@ -677,7 +677,7 @@ export default function HomeScreen(props) {
                     ))
                   : applyrData.map((item) => (
                     <View
-                      key={item.id}
+                      key={item.Id}
                       style={{
                         alignItems: "center",
                         justifyContent: "center",
@@ -773,7 +773,7 @@ export default function HomeScreen(props) {
 
                     : kids.map((item) => (
                       <View
-                        key={item.id}
+                        key={item.Id}
                         style={{
                           alignItems: "center",
                           width: width >= 720 ? 300 : 155, // Adjust the width for tablets

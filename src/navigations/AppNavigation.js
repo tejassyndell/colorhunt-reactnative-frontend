@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "../screens/Home/HomeScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import AllArticleScreen from "../screens/AllArticle/AllArticle";
 import Userprofile from "../screens/UserProfile/Userprofile";
 import Contact from "../screens/Contact-Us/Contact";
@@ -43,7 +44,7 @@ function MainNavigator() {
       />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="AllArticle" component={AllArticleScreen} />
- 
+
       <Stack.Screen name="Profile" component={Userprofile} />
       <Stack.Screen name="Contact" component={Contact} />
       <Stack.Screen name="DetailsOfArticals" component={DetailsOfArticals} />
@@ -54,7 +55,7 @@ function MainNavigator() {
       />
       <Stack.Screen name="cart_list" component={AddToCart} />
       <Stack.Screen name="Orderlist" component={Orderlist} />
-   
+
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ordershistroy" component={OrderHistory} />
       <Stack.Screen name="DrawerContainer" component={DrawerContainer} />
@@ -67,7 +68,7 @@ const Drawer = createDrawerNavigator();
 
 function DrawerStack() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
+
     async function fetchData() {
       try {
         const userData = await AsyncStorage.getItem("UserData");
@@ -81,36 +82,38 @@ function DrawerStack() {
         console.error("Error fetching user data:", error);
       }
     }
-  
-    fetchData();
-  }, []);
-  
-  return (
-    <Drawer.Navigator
-      drawerPosition="left"
-      drawerStyle={{
-        width: 250,
-      }}
-      screenOptions={{ headerShown: false, unmountOnBlur: false }}
-      drawerContent={({ navigation }) => (
-        <DrawerContainer
-          navigation={navigation}
-          isLoggedIn={value}
-          name={name}
-        />
-      )}
-    >
-      <Drawer.Screen name="Main" component={MainNavigator} />
-    </Drawer.Navigator>
-  );
-}
+    useEffect(() => {
+      // Fetch user data and update state variables accordingly
+      fetchData();
+    }, []);
+
+
+    return (
+      <Drawer.Navigator
+        drawerPosition="left"
+        drawerStyle={{
+          width: 250,
+        }}
+        screenOptions={{ headerShown: false, unmountOnBlur: false }}
+        drawerContent={({ navigation }) => (
+          <DrawerContainer
+            navigation={navigation}
+            isLoggedIn={value}
+            name={name}
+          />
+        )}
+      >
+        <Drawer.Screen name="Main" component={MainNavigator} />
+      </Drawer.Navigator>
+    );
+  }
 
 export default function AppContainer() {
-  return (
-    <NavigationContainer>
-      <DrawerStack />
-    </NavigationContainer>
-  );
-}
+    return (
+      <NavigationContainer>
+        <DrawerStack />
+      </NavigationContainer>
+    );
+  }
 
-console.disableYellowBox = true;
+  console.disableYellowBox = true;

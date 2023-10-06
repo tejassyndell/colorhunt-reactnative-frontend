@@ -385,8 +385,8 @@ const DetailsOfArticals = (props) => {
                           }}
                         >
                           {articleSizeData &&
-                            articleSizeData.map((item, index) => (
-                              <View style={styles.size_options} key={index}>
+                            articleSizeData.map((item) => (
+                              <View style={styles.size_options} key={item.Id}>
                                 <View style={styles.size}>
                                   <Text
                                     href="/"
