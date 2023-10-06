@@ -9,14 +9,16 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import { phoneNumberValidation } from "../../api/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { phoneNumberValidation, udatepartytoken } from "../../api/api";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-
+import * as Notifications from "expo-notifications";
+import { useEffect } from "react";
 const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.4;
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -29,6 +31,36 @@ const Login = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
+  const [token, setToken] = useState("");
+
+  const getNotificationPermission = async () => {
+    try {
+      const { status } = await Notifications.requestPermissionsAsync();
+      console.log(status, "statuss"); // Move this line here
+      if (status === "granted") {
+        const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log("Expo Push Token:", pushToken);
+        setToken(pushToken);
+        AsyncStorage.setItem(
+          "notificationstatus",
+          JSON.stringify({ status: true, token: pushToken })
+        );
+        console.log({ status: true, token: pushToken });
+      } else {
+        AsyncStorage.setItem(
+          "notificationstatus",
+          JSON.stringify({ status: false, token: "" })
+        );
+        console.log("Notification permission denied");
+      }
+    } catch (error) {
+      console.error("Error getting notification permission:", error);
+    }
+  };
+
+  useEffect(() => {
+    getNotificationPermission();
+  }, []);
 
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
@@ -43,37 +75,28 @@ const Login = (props) => {
 
   const imageSource = getResponsiveImageSource();
 
-  // Function to clear data when the component is first loaded
-  const clearDataOnFirstLoad = useCallback(async () => {
-    try {
-      await AsyncStorage.removeItem("UserData");
-    } catch (error) {
-      console.error("Error clearing AsyncStorage:", error);
-      alert("An error occurred while clearing data.");
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      async function clearAndReset() {
+        try {
+          await AsyncStorage.removeItem("UserData");
+          setPhoneNumber("");
+          setOTP(["", "", "", ""]);
+          setShowLogin(true);
+        } catch (error) {
+          console.error("Error clearing AsyncStorage:", error);
+        }
+      }
 
-  useFocusEffect(clearDataOnFirstLoad);
-  const clearAndReset = useCallback(async () => {
-    try {
-      await AsyncStorage.removeItem("UserData");
-      setPhoneNumber("");
-      setOTP(["", "", "", ""]);
-      setShowLogin(true);
-    } catch (error) {
-      console.error("Error clearing AsyncStorage:", error);
-      alert("An error occurred while clearing data.");
-    }
-  }, []);
-
-  useFocusEffect(clearAndReset);
+      clearAndReset();
+    }, [])
+  );
   const handleNextOrVerify = async () => {
     if (showLogin) {
       // Check if phone number is valid (for simplicity, checking if it's 10 digits)
       if (phoneNumber.length === 10 || !phoneNumber) {
         try {
           if (!phoneNumber) {
-            console.log("{}{}{}{}{}{}{}{}{}");
             getstatus(false);
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
@@ -84,17 +107,26 @@ const Login = (props) => {
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
-          }).then((res) => {
+          }).then(async (res) => {
             if (res.status === 201) {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res.status === 200) {
               // Store data in local storage
-              console.log(res.data[0].Name);
+              if (res.data[0].token == token) {
+              } else {
+                await udatepartytoken({
+                  token: token,
+                  party_id: res.data[0].Id,
+                }).then((res) => {
+                  console.log(res.data);
+                });
+              }
+              // console.log(res.data[0].Name);
               getstatus(true, res.data[0].Name);
               const userData = res.data; // Assuming res.data contains user data
               AsyncStorage.setItem("UserData", JSON.stringify(userData))
                 .then(() => {
-                  console.log("Data stored in local storage:", userData);
+                  // console.log("Data stored in local storage:", userData);
                 })
                 .catch((error) => {
                   console.error("Error storing data in local storage:", error);
@@ -102,7 +134,7 @@ const Login = (props) => {
 
               setShowLogin(false); // Switch to OTP view
             } else {
-              console.log("No");
+              // console.log("No");
             }
           });
         } catch (error) {
@@ -185,19 +217,21 @@ const Login = (props) => {
               />
             </View>
           ) : (
-            <View style={styles.otpContainer}>
-              {otp.map((digit, index) => (
-                <TextInput
-                  key={index}
-                  style={styles.otpInput}
-                  placeholder=""
-                  keyboardType="numeric"
-                  maxLength={1}
-                  value={digit}
-                  onChangeText={(text) => handleOTPDigitChange(index, text)}
-                  ref={otpInput[index]}
-                />
-              ))}
+            <View style={{ width: "100%", alignItems: "center" }}>
+              <View style={styles.otpContainer}>
+                {otp.map((digit, index) => (
+                  <TextInput
+                    key={index}
+                    style={styles.otpInput}
+                    placeholder=""
+                    keyboardType="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChangeText={(text) => handleOTPDigitChange(index, text)}
+                    ref={otpInput[index]}
+                  />
+                ))}
+              </View>
             </View>
           )}
           <View style={{ width: "100%", height: 100 }}>
@@ -230,7 +264,7 @@ const styles = StyleSheet.create({
     marginBottom: "2%",
   },
   subtitle: {
-    color: "rgba(255, 255, 255, 0.70)",
+    color: "#FFFFFF",
     fontSize: windowWidth * 0.04,
     // fontSize:RFPercentage(5),
     fontWeight: 700,
@@ -245,18 +279,19 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
 
-    color: " rgba(0, 0, 0, 0.30)",
+    color: "#000000",
   },
   otpContainer: {
+    height: "auto",
     flexDirection: "row",
-    width: "50%",
+    width: width >= 720 ? 400 : "60%",
     marginBottom: "10%",
     justifyContent: "space-between",
   },
   otpInput: {
-    width: windowWidth * 0.1,
+    width: width >= 720 ? 90 : 47,
     justifyContent: "space-between",
-    height: windowHeight * 0.07,
+    height: width >= 720 ? 90 : 50,
     borderColor: "gray",
     borderWidth: 1,
     backgroundColor: "white",

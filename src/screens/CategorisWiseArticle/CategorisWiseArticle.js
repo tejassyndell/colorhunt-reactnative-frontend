@@ -137,7 +137,7 @@ export default function CategorisWiseArticle(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 10,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
@@ -167,7 +167,7 @@ export default function CategorisWiseArticle(props) {
 
   useEffect(() => {
     filterData();
-  }, [searchText, nameDatas,selectedCategories,selectedPriceRange]);
+  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
 
   const filterData = () => {
     if (
@@ -202,7 +202,10 @@ export default function CategorisWiseArticle(props) {
   };
 
   const renderItem = ({ item }) => (
-    <View
+    <TouchableOpacity
+    onPress={() =>
+      navigation.navigate("DetailsOfArticals", { id: item.Id })
+    }
       style={{
         alignItems: "center",
         height: "auto",
@@ -285,9 +288,7 @@ export default function CategorisWiseArticle(props) {
         }}
       >
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("DetailsOfArticals", { id: item.Id })
-          }
+         
           style={{
             display: "flex",
             justifyContent: "center",
@@ -304,7 +305,7 @@ export default function CategorisWiseArticle(props) {
           </View>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
@@ -330,12 +331,12 @@ export default function CategorisWiseArticle(props) {
   }, [selectedCategories, selectedPriceRange]);
 
   useEffect(() => {
-    const minRate = finalData.reduce((min, item) => {
+    const minRate = nameDatas.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate < min ? articleRate : min;
     }, Infinity);
 
-    const maxRate = finalData.reduce((max, item) => {
+    const maxRate = nameDatas.reduce((max, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate > max ? articleRate : max;
     }, -Infinity);
@@ -343,7 +344,7 @@ export default function CategorisWiseArticle(props) {
     setMinArticleRate(minRate);
 
     setMaxArticleRate(maxRate);
-  }, [finalData]);
+  }, [nameDatas]);
   return (
     <>
       {isLoading ? (

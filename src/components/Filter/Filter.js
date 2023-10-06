@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { getCategories } from "../../api/api";
 import { useRef } from "react";
+const { width, height } = Dimensions.get("window");
 
 export default function Filter({
     onFilterChange,
@@ -46,7 +47,7 @@ export default function Filter({
     const Screenwidth = Dimensions.get("window").width;
     const sliderlenghtinPercent = 60;
     const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
-
+    const { width, height } = Dimensions.get("window");
     const getCategoriesname = async () => {
         try {
             const result1 = await getCategories();
@@ -201,7 +202,7 @@ export default function Filter({
                                 key={item.Id}
                                 style={[
                                     styles.categoryItem,
-                                    selectedCategories.includes(item.Category) && {},
+                                    selectedCategories.includes(item.Category) && {backgroundColor:'black',},
                                 ]}
                                 onPress={() => handleCategorySelect(item.Category)}
                             >
@@ -209,7 +210,7 @@ export default function Filter({
                                     style={[
                                         styles.categoryText,
                                         selectedCategories.includes(item.Category) && {
-                                            backgroundColor: "white",
+                                            color:'#FFF',
                                         },
                                     ]}
                                 >
@@ -249,10 +250,10 @@ export default function Filter({
                     )}
 
                     <View style={styles.sliderContainer}>
-                        <View style={{ width: "5%" }}>
-                            <Text>{minArticleRate}</Text>
+                        <View style={{ width: width >= 720 ?"8%":40 }}>
+                            <Text style={{textAlign: "left",fontSize:width >= 720 ?25:15,paddingRight:10,paddingBottom:5 }}>{minArticleRate}</Text>
                         </View>
-                        <View style={{ width: "80%" }}>
+                        <View style={{ width: width >= 720 ?"80%":'70%',marginTop:3 }}>
                             <View style={styles.sliderContainer}>
                                 <View style={{ width: "100%" }}>
                                     <View style={styleslider.sliderContainer}>
@@ -287,13 +288,13 @@ export default function Filter({
                                 </View>
                             </View>
                         </View>
-                        <View style={{ width: "15%", zIndex: -5 }}>
-                            <Text style={{ textAlign: "right" }}>{maxArticleRate}</Text>
+                        <View style={{ width: width >= 720 ?"11.6%":150 }}>
+                            <Text style={{textAlign:width >= 720 ?"right":"left",fontSize:width >= 720 ?25:15,paddingLeft:30}}>{maxArticleRate}</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
-                    <TouchableOpacity
+                    {status === false ? (<TouchableOpacity
                         style={[
                             styles.resetButton,
                             {
@@ -313,7 +314,21 @@ export default function Filter({
                         >
                             Reset
                         </Text>
+                    </TouchableOpacity>): (
+                        <TouchableOpacity
+                        style={[
+                           
+                        ]}
+                        onPress={resetFilters}
+                    >
+                        <Text
+                            
+                        >
+                            
+                        </Text>
                     </TouchableOpacity>
+                    ) }
+                    
                     <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
                         <Text style={styles.buttonText}>Apply</Text>
                     </TouchableOpacity>
@@ -335,20 +350,23 @@ const styles = StyleSheet.create({
     headertrue: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
         marginBottom: 15,
+        width:'100%',
+        height:width >= 720 ?80:40,
+        justifyContent:'space-between'
     },
     headerText: {
-        fontSize: 25,
+        fontSize: width >= 720 ?30: 22,
         fontWeight: "bold",
     },
     closeIcon: {
-        width: 35,
-        height: 35,
+        width: width >= 720 ?45:30,
+        height: width >= 720 ?45:30,
     },
     categoriesContainer: {
         marginTop: 25,
         flexDirection: "row",
+        
         flexWrap: "wrap",
         justifyContent: "space-between",
         height: "auto",
@@ -358,7 +376,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginVertical: 5,
         width: "48%",
-        height: 150,
+        height: width >= 720 ?200:150,
         borderWidth: 1,
         borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: 8,
@@ -372,32 +390,31 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 20, // For Android
     },
-    // categoryx:{
-    //     flex:1,
-    //     display:'flex',
-    //     flexDirection:'row',
-    //     justifyContent:'flex-end',
-    //     alignContent:'flex-end',
-    //     width:'100%',
-    // },
+  
     radioButton: {
-        width: 20,
-        height: 20,
-        borderRadius: 10,
+        width: width >= 720 ?32:20,
+        height: width >= 720 ?32:20,
+        borderRadius: width >= 720 ?25:10,
         borderWidth: 2,
         justifyContent: "center",
         alignItems: "center",
         marginRight: 3,
     },
     radioInnerCircle: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        backgroundColor: "black",
+        width: width >= 720 ?20:13,
+        height: width >= 720 ?20:13,
+        borderRadius: width >= 720 ?10:6,
+        backgroundColor: "#FFF",
+        borderWidth:2,
     },
     categoryText: {
-        fontSize: 12,
+        fontSize: width >= 720 ?16:12,
         marginLeft: 3,
+        width:'80%',
+        height:'auto',
+        paddingVertical:5,
+        wordWrap: 'break-word',
+        justifyContent:'center',
         fontWeight: 500,
     },
     buttonsContainer: {
@@ -414,12 +431,16 @@ const styles = StyleSheet.create({
         height: 38,
     },
     container2: {
-        marginTop: 5,
+        // marginTop: 5,
+        width:'100%',
     },
     label: {
-        fontSize: 24,
+        fontSize: width >= 720 ?30: 22,
         marginBottom: 10,
         fontWeight: 700,
+        height:50,
+        paddingTop:10,
+        justifyContent:'center'
     },
     sliderContainer: {
         flexDirection: "row",
@@ -432,24 +453,24 @@ const styles = StyleSheet.create({
         borderColor: "black",
         borderWidth: 1,
         borderRadius: 7.6,
-        height: 38,
-        fontSize: 24,
+        height: width >= 720 ?42:38,
+        width: width >= 720 ?120:76,
+        fontSize: width >= 720 ?42:24,
         fontWeight: 700,
-        width: 76,
         alignItems: "center",
         justifyContent: "center",
     },
     applyButton: {
         backgroundColor: "black",
         borderRadius: 7.6,
-        height: 38,
-        width: 76,
+        height: width >= 720 ?42:38,
+        width: width >= 720 ?120:76,
         alignItems: "center",
         justifyContent: "center",
     },
     buttonText: {
         color: "white",
-        fontSize: 18,
+        fontSize: width >= 720 ?20:18,
         fontWeight: 600,
     },
     tooltipContainer: {
@@ -485,14 +506,14 @@ const styleslider = StyleSheet.create({
         position: "absolute",
         // height: '100%',
         width: "100%",
-        top: 7.5,
-        borderWidth: 1,
+        top: width >= 720 ?9.9:6.5,
+        borderWidth: 0.6,
         borderColor: "black",
         zIndex: -1,
     },
     thumb: {
-        width: 15,
-        height: 15,
+        width: width >= 720 ?16:13,
+        height: width >= 720 ?16:13,
         backgroundColor: "black",
         borderRadius: 10,
         position: "absolute",
@@ -504,12 +525,12 @@ const styleslider = StyleSheet.create({
     },
     thumbText: {
         // marginTop:30,
-        width: 30,
+        width: width >= 720 ?50:30,
         textAlign: "center",
         position: "absolute",
         top: 15,
         color: "black",
-        fontSize: 15,
+        fontSize: width >= 720 ?22:15,
         fontWeight: 500,
     },
 });

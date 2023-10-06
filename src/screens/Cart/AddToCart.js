@@ -31,7 +31,7 @@ const AddToCart = (props) => {
   const windowwidthe = parseInt(Dimensions.get("window").width);
   const windowheight = parseInt(Dimensions.get("window").height);
   const headerHeight =
-    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 100) : 120;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -481,68 +481,78 @@ const AddToCart = (props) => {
                                 <View
                                   key={item.id}
                                   style={{
-                                    display: "flex",
                                     flexDirection: "row",
-                                    width: "90%",
-                                    backgroundColor: "#FFF",
-                                    elevation: 5,
+                                    width: "94%",
                                     shadowColor: "gray",
                                     shadowOpacity: 0.5,
-                                    marginHorizontal: "5%",
+
+                                    elevation: 4, // For Android, use elevation
+                                    shadowOffset: {
+                                      width: 1,
+                                      height: 1,
+                                    },
+                                    marginHorizontal: "3%",
                                     marginTop: "5%",
                                     borderRadius: 10,
-                                    height: windowheight * 0.142,
                                     paddingVertical: "1.5%",
                                     backgroundColor: "#FFF",
                                   }}
                                 >
-                                  <TouchableOpacity
-                                    style={{
-                                      width: windowwidthe * 0.18,
-                                      margin: "3.8%",
-                                      marginTop: "1.5%",
-                                      height: windowheight * 0.108,
-                                      display: "flex",
-                                      justifyContent: "center",
-                                      alignItems: "center",
-                                      // marginVertical: 10,
-                                      borderRadius: 10,
-                                    }}
-                                    onPress={() =>
-                                      handleEditOrder(
-                                        item.article_id,
-                                        item.Quantity
-                                      )
-                                    }
-                                  >
-                                    <Image
-                                      style={{
-                                        flex: 1,
-                                        resizeMode: "contain",
-                                        height: "100%",
-                                        width: "100%",
-                                        borderRadius: 10,
-                                      }}
-                                      source={{
-                                        uri:
-                                          baseImageUrl +
-                                          item.Photos.split(",")[0],
-                                      }}
-                                    ></Image>
-                                  </TouchableOpacity>
                                   <View
                                     style={{
-                                      width: "40%",
-                                      marginHorizontal: "1%",
-                                      marginBottom: "1%",
-                                      marginTop: "0.8%",
+                                      width:
+                                        windowwidthe >= 720 ? "21%" : "31%",
+                                      paddingHorizontal:
+                                        windowwidthe >= 720 ? "2%" : "1%",
+                                      paddingVertical: "1%",
+                                    }}
+                                  >
+                                    <TouchableOpacity
+                                      style={{
+                                        width: windowwidthe >= 720 ? 120 : 100,
+                                        height: windowwidthe >= 720 ? 140 : 100,
+                                        borderRadius: 10,
+                                        shadowOpacity: 0.4,
+
+                                        elevation: 4, // For Android, use elevation
+                                        shadowOffset: {
+                                          width: 0,
+                                          height: 0,
+                                        },
+                                      }}
+                                      onPress={() =>
+                                        handleEditOrder(
+                                          item.article_id,
+                                          item.Quantity
+                                        )
+                                      }
+                                    >
+                                      <Image
+                                        style={{
+                                          flex: 1,
+                                          resizeMode: "contain",
+                                          height: "100%",
+                                          width: "100%",
+                                          borderRadius: 10,
+                                        }}
+                                        source={{
+                                          uri:
+                                            baseImageUrl +
+                                            item.Photos.split(",")[0],
+                                        }}
+                                      ></Image>
+                                    </TouchableOpacity>
+                                  </View>
+                                  <View
+                                    style={{
+                                      width:
+                                        windowwidthe >= 720 ? "60%" : "50%",
                                       borderRadius: 10,
                                     }}
                                   >
                                     <View
                                       style={{
-                                        height: "50%",
-                                        paddingBottom: 1,
+                                        paddingVertical: 10,
                                       }}
                                     >
                                       <Text
@@ -568,7 +578,7 @@ const AddToCart = (props) => {
                                         justifyContent: "center",
                                         paddingTop: "2.5%",
                                         position: "relative",
-                                        height: "50%",
+                                        height: "45%",
                                       }}
                                     >
                                       <Text
@@ -595,7 +605,7 @@ const AddToCart = (props) => {
                                   </View>
                                   <View
                                     style={{
-                                      width: "28%",
+                                      width: "15%",
                                       display: "flex",
                                       flexDirection: "column",
                                       height: "100%",
@@ -851,8 +861,8 @@ const AddToCart = (props) => {
                                       }}
                                     >
                                       {compreInward
-                                        ? compreInward.map((it) =>
-                                            checkOutOfStock(it, item)
+                                        ? compreInward.map(
+                                            (it) => checkOutOfStock(it, item)
                                             // console.log(it.SalesNoPacks)
                                           )
                                         : ""}
@@ -1050,8 +1060,8 @@ const AddToCart = (props) => {
                                     }}
                                   >
                                     {compreInward
-                                      ? compreInward.map((it) =>
-                                          checkOutOfStock(it, item)
+                                      ? compreInward.map(
+                                          (it) => checkOutOfStock(it, item)
                                           // console.log(it.SalesNoPacks)
                                         )
                                       : ""}

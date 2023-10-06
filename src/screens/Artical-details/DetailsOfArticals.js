@@ -74,7 +74,7 @@ const DetailsOfArticals = (props) => {
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
-      PartyId:await getpartyid(),
+      PartyId: await getpartyid(),
     };
     try {
       const res = await ArticleDetails(data);
@@ -162,7 +162,7 @@ const DetailsOfArticals = (props) => {
     console.log("cqty to string ", colorwiseQuantitiesTOstring);
     console.log(totalPrice);
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: ArticleId,
       Quantity: colorwiseQuantitiesTOstring,
       rate: totalPrice,
@@ -299,6 +299,8 @@ const DetailsOfArticals = (props) => {
   // }
 
   const windowWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get("window").width;
+  const isFirstContainerFullWidth = screenWidth >= 720;
   return (
     <>
       {isLoading ? (
@@ -306,7 +308,7 @@ const DetailsOfArticals = (props) => {
           <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF", flex: 1 }}>
+        <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>
           <ScrollView nestedScrollEnabled={true}>
             <View style={{ zIndex: 1, flex: 1 }}>
               <View
@@ -325,44 +327,43 @@ const DetailsOfArticals = (props) => {
                   autoplay={true}
                   autoplayInterval={3000}
                 ></Carousel>
-              </View>
-            </View>
-
-            <View
-              style={{
-                zIndex: 2,
-                position: "absolute",
-                top: viewportWidth >= 720 ? "45%" : "48%",
-                left: 0,
-                right: 0,
-                bottom: 0,
-              }}
-            >
-              <Image
-                style={{ width: "100%", height: width >= 720 ? "20%" : 74 }}
-                source={require("../../../assets/Rectangle_18898.png")}
-              />
-              <View
-                style={{
-                  zIndex: 3,
-                  position: "absolute",
-                  bottom: width >= 720 ? 420 : 300,
-                  left: 0,
-                  right: 0,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
+                <View
                   style={{
-                    fontSize: width >= 720 ? 40 : 26,
-                    textAlign: "center",
-                    fontWeight: 600,
-                    color: "black",
+                    zIndex: 2,
+                    position: "absolute",
+                    top: viewportWidth >= 720 ? "88%" : "86%",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                   }}
                 >
-                  Article No: {articleNumber}
-                </Text>
+                  <Image
+                    style={{ width: "100%" }}
+                    source={require("../../../assets/Rectangle_18898.png")}
+                  />
+                  <View
+                    style={{
+                      zIndex: 3,
+                      position: "absolute",
+                      top: width >= 720 ? "10%" : "30%",
+                      left: 0,
+                      right: 0,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: width >= 720 ? 40 : 26,
+                        textAlign: "center",
+                        fontWeight: 600,
+                        color: "black",
+                      }}
+                    >
+                      Article No: {articleNumber}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
 
@@ -372,54 +373,171 @@ const DetailsOfArticals = (props) => {
                   backgroundColor: "#FFF",
                   elevation: 12,
                   shadowColor: "black",
+                  borderColor: "#b3a8a8",
                   width: "100%",
                   height: "100%",
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
                   padding: 12,
+                  shadowColor: "gray",
+                  shadowOpacity: 0.1,
                 }}
               >
                 <View>
-                  <View style={styles.product_detail}>
-                    <View style={styles.product_detail_sec}>
-                      <Text style={styles.size_label}>Size</Text>
-                      <View style={styles.size_container1}>
-                        <ScrollView
-                          horizontal={true}
-                          nestedScrollEnabled={true}
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                      alignItems: "stretch",
+                      // padding: 20,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: "100%",
+                        flexDirection:
+                          articleSizeData.length > 3 ? "column" : "row",
+                        alignItems:
+                          articleSizeData.length > 3
+                            ? "flex-Start"
+                            : "flex-start",
+                        marginBottom: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          marginRight: articleSizeData.length > 3 ? 0 : 30,
+                          width: articleSizeData.length > 3 ? "auto" : "50%",
+                          marginBottom: articleSizeData.length > 3 ? 10 : 0,
+                        }}
+                      >
+                        <Text
                           style={{
+                            marginBottom: 5,
+                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 20 : 14,
+                          }}
+                        >
+                          Size
+                        </Text>
+                        <View
+                          style={{
+                            paddingHorizontal:
+                              articleSizeData.length > 3 ? "6%" : 0,
                             width: "100%",
-                            display: "flex",
+                            height: width >= 720 ? 100 : 60,
                             flexDirection: "row",
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            borderRadius: 10,
+                            padding: 10,
+                            alignItems: "center",
+                            justifyContent:
+                              articleSizeData.length > 3
+                                ? "flex-start"
+                                : "center",
+                            ...Platform.select({
+                              ios: {
+                                shadowColor: "black",
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 2,
+                              },
+                              android: {
+                                elevation: 0,
+                                shadowColor: "black",
+                                shadowOpacity: 1,
+                              },
+                            }),
                           }}
                         >
                           {articleSizeData &&
                             articleSizeData.map((item, index) => (
-                              <View style={styles.size_options} key={index}>
-                                <View style={styles.size}>
-                                  <Text
-                                    href="/"
-                                    style={styles.size_a}
-                                    onPress={() => handleSizeClick(item.Name)}
-                                  >
-                                    {item.Name}
-                                  </Text>
-                                </View>
+                              <View
+                                style={[
+                                  styles.size_options,
+                                  {
+                                    paddingHorizontal:
+                                      articleSizeData.length > 3 ? "1%" : 0,
+                                  },
+                                ]}
+                                key={index}
+                              >
+                                <TouchableOpacity
+                                  onPress={() => handleSizeClick(item.Name)}
+                                >
+                                  <View style={styles.size}>
+                                    <Text href="/" style={styles.size_a}>
+                                      {item.Name}
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
                               </View>
                             ))}
-                        </ScrollView>
+                        </View>
                       </View>
-                    </View>
-                    <View></View>
-                    <View style={styles.product_detail_sec2}>
-                      <Text style={styles.size_label1}>Category</Text>
-                      <View style={styles.size_container2}>
-                        <View style={styles.size_options2}>
-                          <Text style={styles.size_p}>{subcategory}</Text>
+                      <View
+                        style={{
+                          // width: "40%",
+                          width: articleSizeData.length > 3 ? "auto" : "40%",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginBottom: 5,
+                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 20 : 14,
+                          }}
+                        >
+                          Subcategory
+                        </Text>
+                        <View
+                          style={{
+                            width: "100%",
+                            height: width >= 720 ? 100 : 60,
+                            flexDirection: "row",
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            borderRadius: 10,
+                            padding: 10,
+                            alignContent: "center",
+                            justifyContent:
+                              articleSizeData.length > 3
+                                ? "flex-start"
+                                : "center",
+
+                            alignItems: "center",
+                            ...Platform.select({
+                              ios: {
+                                shadowColor: "black",
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 2,
+                              },
+                              android: {
+                                elevation: 0,
+                              },
+                            }),
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: width >= 720 ? 35 : 20,
+                              paddingHorizontal:
+                                articleSizeData.length > 3 ? "10%" : 0,
+                              fontWeight: 400,
+                              textAlign: "center",
+                              color: "#000000",
+                            }}
+                            adjustsFontSizeToFit={true}
+                          >
+                            {subcategory}
+                          </Text>
                         </View>
                       </View>
                     </View>
                   </View>
+
                   <View
                     style={{
                       flex: 1,
@@ -478,7 +596,7 @@ const DetailsOfArticals = (props) => {
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
@@ -508,7 +626,7 @@ const DetailsOfArticals = (props) => {
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
@@ -537,7 +655,7 @@ const DetailsOfArticals = (props) => {
                             height: width >= 720 ? 70 : 42,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Pressable
@@ -821,8 +939,6 @@ const DetailsOfArticals = (props) => {
                 <Image
                   source={require("../../../assets/icons/icon.png")}
                   style={{
-                    marginRight: width >= 720 ? -10 : 10,
-
                     width: width >= 720 ? 30 : 20,
                     height: width >= 720 ? 30 : 20,
                   }}
@@ -833,7 +949,7 @@ const DetailsOfArticals = (props) => {
                     textAlign: "center",
                     fontWeight: 600,
                     fontSize: width >= 720 ? 30 : 18,
-                    width: "70%",
+                    marginLeft: width >= 720 ? 20 : 10,
                   }}
                 >
                   Add to cart

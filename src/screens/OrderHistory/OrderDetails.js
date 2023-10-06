@@ -391,8 +391,8 @@ const OrderDetails = (props) => {
                             </View>
                             <View style={{
                                 flex: 1,
-                                paddingHorizontal: 20
                             }}>
+                                <View style={{paddingHorizontal:20}}>
                                 <View>
                                     <Text style={{ fontSize: width < 720 ? width * 0.040 : 24, fontWeight: 500, color: "#808080" }}>Name:</Text>
                                 </View>
@@ -527,6 +527,7 @@ const OrderDetails = (props) => {
                                         }}>{remarks !== "" ? remarks : "Remarks"}</Text>
                                     </View> */}
 
+                                </View>
                                 </View>
                                 <View>
                                     <ScrollView

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   Dimensions,
-  Platform
+  Platform,
 } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -92,7 +92,7 @@ export default function HomeScreen(props) {
 
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -102,8 +102,12 @@ export default function HomeScreen(props) {
     return str
       .toLowerCase()
       .split("-") // Split the string at hyphens or spaces
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join("-"); // Join the words with spaces
+      .map((word, index) => (
+        <Text key={index}>
+          {word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()}
+        </Text>
+      ))
+      .reduce((prev, curr) => [prev, "-", curr]); // Join the words with hyphens and wrap them in a span element
   }
 
   const addArticleWishlist = async (i) => {
@@ -124,7 +128,7 @@ export default function HomeScreen(props) {
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
     let data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: i.Id,
     };
     console.log(data);
@@ -207,7 +211,7 @@ export default function HomeScreen(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 10,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
@@ -226,6 +230,7 @@ export default function HomeScreen(props) {
                 // resizeMode: "contain",
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
+                resizeMode: "contain",
               }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
@@ -234,7 +239,7 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight
+        height: headerHeight,
         // backgroundColor: "black",
       },
     });
@@ -403,7 +408,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   position: "absolute",
-                  color: "rgba(102, 102, 102, 1)",
+                  color: "#666666",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
                   fontWeight: 600,
@@ -431,9 +436,9 @@ export default function HomeScreen(props) {
                 style={{ flex: 1, overflow: "hidden" }}
               >{console.log(setshowarticle, "setshwo")}
                 {showarticle ? (finalData.length > 0 ?
-                  finalData.map((item, key) => (
+                  finalData.map((item, index) => (
                     <TouchableOpacity
-                      key={key}
+                      key={index}
                       onPress={() => {
                         isLoggedIn
                           ? navigation.navigate("DetailsOfArticals", {
@@ -443,7 +448,7 @@ export default function HomeScreen(props) {
                       }}
                     >
                       <View
-                        key={item.id}
+                        key={index}
                         style={{
                           alignItems: "center",
                           width: width >= 720 ? 300 : 155,
@@ -540,10 +545,28 @@ export default function HomeScreen(props) {
                       </View>
                     </TouchableOpacity>
                   )) :
-                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 17 }}>No Mens Article Found</Text>
-                  </View>
-                ) : (nameData.map((item, key) => (
+                  <View
+                  style={
+                    {
+                      width: "100%",
+                      height: "80%",
+                      justifyContent: "center",
+                      textAlign: "center",
+                    }
+
+                  }
+                >
+                  <Text
+                    style={{
+                      fontSize: width >= 720 ? 25 : 17,
+                      textAlign: "center",
+                      color: "#808080",
+                    }}
+                  >
+                    No Mens Article Found
+                  </Text>
+                </View>
+                ) : (nameData.map((item, index) => (
                   <View
                     key={item.id}
                     style={{
@@ -641,7 +664,7 @@ export default function HomeScreen(props) {
                   style={{
                     position: "absolute",
                     end: 10,
-                    color: "rgba(102, 102, 102, 1)",
+                    color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
                     fontWeight: 600,
                   }}
@@ -656,7 +679,7 @@ export default function HomeScreen(props) {
               <View
                 style={{
                   position: "relative",
-                  maxWidth: "100%",
+                  width: "100%",
                   height: "auto",
                   flexDirection: "row",
                   top: 20,
@@ -665,16 +688,34 @@ export default function HomeScreen(props) {
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
-                  style={{ flex: 1, overflow: "hidden" }}
+                  style={{ overflow: "hidden" }}
                 >
-                  {kids.length === 0 ?
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ fontSize: 17 }}>No Kids Article Found</Text>
-                    </View>
+                  {kids.length === 0 ? (
+                    <View
+                      style={
+                        {
+                          width: "100%",
+                          height: "100%",
+                          justifyContent: "center",
+                          textAlign: "center",
+                        }
 
-                    : kids.map((item) => (
+                      }
+                    >
+                      <Text
+                        style={{
+                          fontSize: width >= 720 ? 25 : 17,
+                          textAlign: "center",
+                          color: "#808080",
+                        }}
+                      >
+                        No Kids Article Found
+                      </Text>
+                    </View>
+                  ) : (
+                    kids.map((item, index) => (
                       <View
-                        key={item.id}
+                        key={index}
                         style={{
                           alignItems: "center",
                           width: width >= 720 ? 300 : 155,
@@ -690,7 +731,7 @@ export default function HomeScreen(props) {
                             width: width >= 720 ? 300 : 155,
                             height: width >= 720 ? 280 : 190,
                             borderColor: "gray",
-                            shadowColor: "rgba(0, 0, 0, 0.5)",
+                            shadowColor: "#000000",
                             shadowOpacity: 0.9,
                             shadowRadius: 3,
                             borderRadius: 10,
@@ -738,7 +779,7 @@ export default function HomeScreen(props) {
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               flex: 1,
-                              resizeMode: "contain",
+                              // resizeMode: "contain",
                               borderRadius: 10,
                             }}
                           />
@@ -765,7 +806,8 @@ export default function HomeScreen(props) {
                           {"₹" + item.ArticleRate + ".00"}
                         </Text>
                       </View>
-                    ))}
+                    ))
+                  )}
                 </ScrollView>
               </View>
             </View>
@@ -784,7 +826,7 @@ export default function HomeScreen(props) {
       {isFilterVisible && (
         <View
           style={{
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(0,0,0,0.5)",
             width: "100%",
             height: "100%",
             position: "absolute",
@@ -830,7 +872,7 @@ export default function HomeScreen(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: "#000000",
           }}
         >
           <View
