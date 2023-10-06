@@ -535,7 +535,7 @@ export default function HomeScreen(props) {
                     </TouchableOpacity>
                   )) :
                   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 17 }}>No Kids Article Found</Text>
+                    <Text style={{ fontSize: 17 }}>No Mens Article Found</Text>
                   </View>
                 ) : (nameData.map((item, key) => (
                   <View
