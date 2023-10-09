@@ -42,7 +42,6 @@ export default function CategorisWiseArticle(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
 
-
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   useEffect(() => {
@@ -61,7 +60,7 @@ export default function CategorisWiseArticle(props) {
   }, []);
 
   const CheckUser = async () => {
-    const user = await AsyncStorage.getItem("Userdata");
+    const user = await AsyncStorage.getItem("UserData");
     if (user) {
       setIsLoggedIn(true);
     } else {
@@ -338,10 +337,24 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
-            <Text style={{ fontWeight: "bold", fontFamily: isFontLoaded ? 'Glory' : undefined, }}>{item.ArticleNumber}</Text>
-            <Text style={{ fontFamily: isFontLoaded ? 'Glory' : undefined,}}>{convertToTitleCase(item.Category)}</Text>
-            <Text style={{ fontWeight: "bold" , fontFamily: isFontLoaded ? 'Glory' : undefined,}}>
-              {"₹" + item.ArticleRate + ".00"}
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
+            >
+              {item.ArticleNumber}
+            </Text>
+            <Text style={{ fontFamily: isFontLoaded ? "Glory" : undefined }}>
+              {convertToTitleCase(item.Category)}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
+            >
+              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
             </Text>
           </View>
         </TouchableOpacity>
@@ -430,7 +443,7 @@ export default function CategorisWiseArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
                 fontWeight: 700,
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
@@ -464,7 +477,7 @@ export default function CategorisWiseArticle(props) {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontSize: 20,
                     }}
                   >

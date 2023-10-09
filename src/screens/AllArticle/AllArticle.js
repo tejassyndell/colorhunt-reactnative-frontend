@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  Modal,
 } from "react-native";
 import {
   getProductName,
@@ -23,6 +24,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ActivityIndicator } from "react-native";
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 
 export default function AllArticle(props) {
   const { navigation } = props;
@@ -37,7 +39,33 @@ export default function AllArticle(props) {
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [noArticlesFound, setNoArticlesFound] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+
+  const userChecked = async () => {
+    const token = await AsyncStorage.getItem("UserData");
+
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    userChecked();
+  });
+
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
+
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
 
@@ -48,10 +76,10 @@ export default function AllArticle(props) {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
-  }
+  };
   const getCategoriesname = async () => {
     const res = await getProductName();
     if (res.status === 200) {
@@ -63,7 +91,7 @@ export default function AllArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -80,7 +108,7 @@ export default function AllArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -192,9 +220,11 @@ export default function AllArticle(props) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("DetailsOfArticals", { id: item.Id })
-    }
+      onPress={() =>
+        isLoggedIn
+          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
+          : openCreateAccountModal()
+      }
       style={{
         alignItems: "center",
         height: "auto",
@@ -277,7 +307,6 @@ export default function AllArticle(props) {
         }}
       >
         <TouchableOpacity
-         
           style={{
             display: "flex",
             justifyContent: "center",
@@ -466,6 +495,34 @@ export default function AllArticle(props) {
           )}
         </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
