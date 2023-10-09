@@ -803,7 +803,7 @@ const DetailsOfArticals = (props) => {
                       width: 360,
                       height: 320,
                       backgroundColor: "white",
-                      borderRadius: 25,
+                      borderRadius: 15,
                       alignItems: "center",
                       // padding: 5
                     }}
@@ -811,8 +811,8 @@ const DetailsOfArticals = (props) => {
                     <Image
                       source={require("../../../assets/update_cart.png")}
                       style={{
-                        width: 100,
-                        height: 100,
+                        width: 70,
+                        height: 70,
                         marginBottom: 20,
                         marginTop: 30,
                       }}
@@ -823,21 +823,20 @@ const DetailsOfArticals = (props) => {
                         fontSize: 24,
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                         textAlign: "center",
-                        marginBottom: 30,
+                        marginBottom: 10,
                         fontWeight: 500,
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
-                      Are you sure {"\n"} you want to update this {"\n"} artical
-                      in cart.
+                      Are you sure that want {"\n"}to update in cart
                     </Text>
                     <View
                       style={{
-                        width: "100%",
+                        width: "90%",
                         display: "flex",
                         flexDirection: "row",
                         position: "absolute",
-                        bottom: 0,
+                        bottom: 20,
                       }}
                     >
                       <TouchableOpacity
@@ -845,14 +844,13 @@ const DetailsOfArticals = (props) => {
                           setIsModalVisible(false);
                         }}
                         style={{
-                          backgroundColor: "black",
-                          width: "50%",
+                          width: "47.5%",
+                          borderWidth: 1,
                           height: 50,
-                          borderBottomLeftRadius: 25,
                           justifyContent: "center",
                           alignItems: "center",
-                          borderWidth: 1,
-                          borderColor: "white",
+                          borderRadius: 10,
+                          borderColor: "grey",
                         }}
                       >
                         <Text
@@ -860,7 +858,7 @@ const DetailsOfArticals = (props) => {
                             fontSize: 18,
                             fontFamily: isFontLoaded ? 'Glory' : undefined,
                             fontWeight: 700,
-                            color: "white",
+                            color: "grey",
                             paddingHorizontal: 15,
                           }}
                         >
@@ -874,12 +872,13 @@ const DetailsOfArticals = (props) => {
                         }}
                         style={{
                           backgroundColor: "black",
-                          width: "50%",
+                          width: "47.5%",
                           height: 50,
-                          borderBottomRightRadius: 25,
                           justifyContent: "center",
                           alignItems: "center",
                           borderWidth: 1,
+                          borderRadius: 10,
+                          marginLeft: "5%",
                           borderColor: "white",
                         }}
                       >

@@ -87,7 +87,7 @@ const AddToCart = (props) => {
     });
   };
   const cartDetails = async () => {
-    let data = await AsyncStorage.getItem("UserData")
+    let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     await cartdetails({ party_id: data[0].Id })
       .then((response) => {
@@ -201,7 +201,7 @@ const AddToCart = (props) => {
           }
         } else {
           if (
-            parseInt(it.SalesNoPacks) > parseInt(item.Quantity) &&
+            parseInt(it.SalesNoPacks) >= parseInt(item.Quantity) &&
             it.ArticleId === item.article_id
           ) {
             listOfOutOfProduct.push(item.article_id);
@@ -233,7 +233,7 @@ const AddToCart = (props) => {
   };
   const handleDeleteOrder = async (article_id) => {
     // console.log(article_id);
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     const data = {
       party_id: partydata[0].Id,
