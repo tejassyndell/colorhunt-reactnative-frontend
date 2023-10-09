@@ -201,7 +201,6 @@ export default function HomeScreen(props) {
               style={{
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
-                // resizeMode: "contain",
                 borderRadius: 5,
               }}
             ></Image>
@@ -228,10 +227,8 @@ export default function HomeScreen(props) {
           >
             <Image
               style={{
-                // resizeMode: "contain",
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
-                resizeMode: "contain",
               }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
@@ -442,11 +439,9 @@ export default function HomeScreen(props) {
                       <TouchableOpacity
                         key={index}
                         onPress={() => {
-                          isLoggedIn
-                            ? navigation.navigate("DetailsOfArticals", {
-                                id: item.Id,
-                              })
-                            : openCreateAccountModal();
+                          navigation.navigate("DetailsOfArticals", {
+                            id: item.Id,
+                          });
                         }}
                       >
                         <View
@@ -480,9 +475,7 @@ export default function HomeScreen(props) {
                               {selectedprd.some((i) => i.Id === item.Id) ? (
                                 <TouchableOpacity
                                   onPress={() => {
-                                    isLoggedIn
-                                      ? rmvProductWishlist(item)
-                                      : openCreateAccountModal();
+                                    rmvProductWishlist(item);
                                   }}
                                 >
                                   <FontAwesome
@@ -510,7 +503,6 @@ export default function HomeScreen(props) {
                                 source={{ uri: baseImageUrl + item.Photos }}
                                 style={{
                                   width: "100%",
-                                  resizeMode: "contain",
                                   height: width >= 720 ? 280 : 190,
                                   borderRadius: 10,
                                 }}
@@ -603,7 +595,6 @@ export default function HomeScreen(props) {
                               source={{ uri: baseImageUrl + item.Photos }}
                               style={{
                                 width: "100%",
-                                resizeMode: "contain",
                                 height: width >= 720 ? 280 : 190,
                                 borderRadius: 10,
                               }}
@@ -738,9 +729,7 @@ export default function HomeScreen(props) {
                             {selectedprd.some((i) => i.Id === item.Id) ? (
                               <TouchableOpacity
                                 onPress={() => {
-                                  isLoggedIn
-                                    ? rmvProductWishlist(item)
-                                    : openCreateAccountModal();
+                                  rmvProductWishlist(item);
                                 }}
                               >
                                 <FontAwesome
@@ -767,7 +756,6 @@ export default function HomeScreen(props) {
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               flex: 1,
-                              // resizeMode: "contain",
                               borderRadius: 10,
                             }}
                           />

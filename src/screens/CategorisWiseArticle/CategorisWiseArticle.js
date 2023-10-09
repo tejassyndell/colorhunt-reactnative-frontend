@@ -229,7 +229,11 @@ export default function CategorisWiseArticle(props) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
+      onPress={() =>
+        isLoggedIn
+          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
+          : openCreateAccountModal()
+      }
       style={{
         alignItems: "center",
         height: "auto",
@@ -269,13 +273,7 @@ export default function CategorisWiseArticle(props) {
               addArticleWishlist(item);
             }}
           >
-            <FontAwesome
-              name="heart-o"
-              style={[
-                styles.disabledIcon,
-                // isLoggedin === false ? styles.disabledIcon : null,
-              ]}
-            />
+            <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
           </TouchableOpacity>
         )}
       </View>
@@ -323,7 +321,7 @@ export default function CategorisWiseArticle(props) {
             <Text style={{ fontWeight: "bold" }}>{item.ArticleNumber}</Text>
             <Text>{convertToTitleCase(item.Category)}</Text>
             <Text style={{ fontWeight: "bold" }}>
-              {"₹" + item.ArticleRate + ".00"}
+              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
             </Text>
           </View>
         </TouchableOpacity>
@@ -394,7 +392,9 @@ export default function CategorisWiseArticle(props) {
             />
             <TouchableOpacity
               style={{ width: "10%", alignItems: "flex-end", paddingEnd: 0 }}
-              onPress={openFilter}
+              onPress={() => {
+                isLoggedIn ? openFilter() : "";
+              }}
             >
               <Image
                 source={require("../../../assets/filetr_icone.png")}

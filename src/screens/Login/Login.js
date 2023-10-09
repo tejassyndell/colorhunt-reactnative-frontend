@@ -4,10 +4,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   Image,
   Dimensions,
   ImageBackground,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -16,12 +16,10 @@ import { PixelRatio } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
+import LoginStyles from "./styles.js";
 const { width, height } = Dimensions.get("window");
-const logoSize = Math.min(width, height) * 0.4;
+const logoSize = Math.min(width, height) * 0.6;
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
 
 const Login = (props) => {
   const { navigation } = props;
@@ -32,6 +30,7 @@ const Login = (props) => {
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
+  const styles = LoginStyles();
 
   const getNotificationPermission = async () => {
     try {
@@ -172,198 +171,86 @@ const Login = (props) => {
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
   return (
-    <View style={styles.container1}>
-      <View style={styles.imagebox}>
-        <ImageBackground
-          source={require("../../../assets/Login/LoginBackground.png")}
-          style={styles.backgroundImage1}
-          resizeMode="stretch"
-        >
-          <View style={styles.loginLogoContainer}>
-            <Image
-              source={imageSource}
-              style={[styles.loginLogo, { height: logoSize, width: logoSize }]}
-            />
-          </View>
-        </ImageBackground>
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>Welcome!</Text>
-          <Text style={styles.subtitle}>
-            {showLogin
-              ? "Please Login To Continue"
-              : "Please Login To Continue"}
-          </Text>
-          {showLogin ? (
-            <View style={styles.inputContainer}>
-              <View style={styles.phoneIconContainer}>
-                <Image
-                  source={require("../../../assets/Login/phone.png")}
-                  style={styles.phoneIcon}
-                />
-              </View>
-              <TextInput
-                style={[styles.input, { color: "black" }]}
-                placeholder="Phone Number"
-                placeholderTextColor="#0000004D"
-                keyboardType="numeric"
-                maxLength={10}
-                value={phoneNumber}
-                onChangeText={(text) => {
-                  const numericText = text.replace(/[^0-9]/g, "");
-                  setPhoneNumber(numericText);
-                }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }} // You might need to adjust the style as per your layout
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={styles.container1}>
+        <View style={styles.imagebox}>
+          <ImageBackground
+            source={require("../../../assets/Login/LoginBackground.png")}
+            style={styles.backgroundImage1}
+            resizeMode="stretch"
+          >
+            <View style={styles.loginLogoContainer}>
+              <Image
+                source={imageSource}
+                style={[
+                  styles.loginLogo,
+                  { height: logoSize, width: logoSize },
+                ]}
               />
             </View>
-          ) : (
-            <View style={{ width: "100%", alignItems: "center" }}>
-              <View style={styles.otpContainer}>
-                {otp.map((digit, index) => (
-                  <TextInput
-                    key={index}
-                    style={styles.otpInput}
-                    placeholder=""
-                    keyboardType="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChangeText={(text) => handleOTPDigitChange(index, text)}
-                    ref={otpInput[index]}
+          </ImageBackground>
+          <View style={styles.contentContainer}>
+            <Text style={styles.title}>Welcome!</Text>
+            <Text style={styles.subtitle}>
+              {showLogin
+                ? "Please Login To Continue"
+                : "Please Login To Continue"}
+            </Text>
+            {showLogin ? (
+              <View style={styles.inputContainer}>
+                <View style={styles.phoneIconContainer}>
+                  <Image
+                    source={require("../../../assets/Login/phone.png")}
+                    style={styles.phoneIcon}
                   />
-                ))}
+                </View>
+                <TextInput
+                  style={[styles.input, { color: "black" }]}
+                  placeholder="Phone Number"
+                  placeholderTextColor="#0000004D"
+                  keyboardType="numeric"
+                  maxLength={10}
+                  value={phoneNumber}
+                  onChangeText={(text) => {
+                    const numericText = text.replace(/[^0-9]/g, "");
+                    setPhoneNumber(numericText);
+                  }}
+                />
               </View>
+            ) : (
+              <View style={{ width: "100%", alignItems: "center" }}>
+                <View style={styles.otpContainer}>
+                  {otp.map((digit, index) => (
+                    <TextInput
+                      key={index}
+                      style={styles.otpInput}
+                      placeholder=""
+                      keyboardType="numeric"
+                      maxLength={1}
+                      value={digit}
+                      onChangeText={(text) => handleOTPDigitChange(index, text)}
+                      ref={otpInput[index]}
+                    />
+                  ))}
+                </View>
+              </View>
+            )}
+            <View style={{ width: "100%", height: 100 }}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleNextOrVerify}
+              >
+                <Text style={styles.buttonText}>{buttonLabel}</Text>
+              </TouchableOpacity>
             </View>
-          )}
-          <View style={{ width: "100%", height: 100 }}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleNextOrVerify}
-            >
-              <Text style={styles.buttonText}>{buttonLabel}</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 0,
-  },
-  title: {
-    color: "white",
-    fontSize: windowWidth * 0.07,
-    // fontSize:RFPercentage(5),
-    fontWeight: 700,
-    marginBottom: "2%",
-  },
-  subtitle: {
-    color: "#FFFFFF",
-    fontSize: windowWidth * 0.04,
-    // fontSize:RFPercentage(5),
-    fontWeight: 700,
-    marginBottom: 80,
-  },
-  input: {
-    flex: 1,
-    fontSize: width >= 720 ? 35 : 20,
-    height: width >= 720 ? 80 : 50,
-    paddingLeft: 5,
-    backgroundColor: "white",
-    borderTopRightRadius: 7,
-    borderBottomRightRadius: 7,
-
-    color: "#000000",
-  },
-  otpContainer: {
-    height: "auto",
-    flexDirection: "row",
-    width: width >= 720 ? 400 : "60%",
-    marginBottom: "10%",
-    justifyContent: "space-between",
-  },
-  otpInput: {
-    width: width >= 720 ? 90 : 47,
-    justifyContent: "space-between",
-    height: width >= 720 ? 90 : 50,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "white",
-    fontSize: width >= 720 ? 40 : 23,
-    borderRadius: 7,
-    textAlign: "center",
-  },
-  button: {
-    backgroundColor: "#212121",
-    width: width >= 720 ? 220 : 148,
-    height: width >= 720 ? 70 : 50,
-    borderRadius: 10,
-    position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
-    bottom: 0,
-    right: 0,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: width >= 720 ? 40 : 23,
-    fontWeight: 700,
-    textAlign: "center",
-  },
-  phoneIcon: {
-    height: width >= 720 ? 35 : 20,
-    width: width >= 720 ? 35 : 20,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "90%",
-    height: width >= 720 ? 80 : 10,
-    borderColor: "gray",
-    borderRadius: 7,
-    marginBottom: windowHeight * 0.046,
-    justifyContent: "center",
-  },
-  phoneIconContainer: {
-    height: width >= 720 ? 80 : 50,
-    width: width >= 720 ? 80 : 50,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 7,
-    borderRightWidth: 3,
-    borderColor: "#212121",
-  },
-  container1: {
-    flex: 1,
-    padding: 20,
-  },
-  backgroundImage1: {
-    flex: 1,
-    resizeMode: "stretch",
-    width: "100%",
-  },
-  loginContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loginLogoContainer: {
-    position: "absolute",
-    top: "40%",
-    left: "50%",
-    transform: [{ translateX: -logoSize / 2 }, { translateY: -logoSize / 2 }],
-  },
-  loginLogo: {
-    resizeMode: "contain",
-  },
-  imagebox: {
-    flex: 1,
-  },
-});
 
 export default Login;

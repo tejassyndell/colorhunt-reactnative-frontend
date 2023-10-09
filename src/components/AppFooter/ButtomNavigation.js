@@ -27,7 +27,7 @@ const ButtomNavigation = (props) => {
   };
 
   const NotificationPage = () => {
-    isLoggedIn ? navigation.navigate("") : "";
+    isLoggedIn ? navigation.navigate("Notification") : "";
     // navigation.navigate("")
   };
 
