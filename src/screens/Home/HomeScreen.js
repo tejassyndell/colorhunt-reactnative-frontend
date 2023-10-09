@@ -414,7 +414,7 @@ export default function HomeScreen(props) {
                   fontWeight: 600,
                 }}
                 onPress={() => {
-                  isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                   viewAllArticles() 
                 }}
               >
                 View All
@@ -669,7 +669,7 @@ export default function HomeScreen(props) {
                     fontWeight: 600,
                   }}
                   onPress={() => {
-                    isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                     viewAllArticles();
                   }}
                 >
                   View All
@@ -709,7 +709,7 @@ export default function HomeScreen(props) {
                           color: "#808080",
                         }}
                       >
-                        No Kids Article Found
+                        No Article Found
                       </Text>
                     </View>
                   ) : (

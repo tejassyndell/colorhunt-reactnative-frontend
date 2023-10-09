@@ -20,7 +20,6 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ActivityIndicator } from "react-native";
 
@@ -37,6 +36,7 @@ export default function AllArticle(props) {
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [noArticlesFound, setNoArticlesFound] = useState(false);
+
   const { width, height } = Dimensions.get("window");
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
@@ -47,11 +47,7 @@ export default function AllArticle(props) {
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
-  const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
-    partydata = await JSON.parse(partydata);
-    return partydata[0].Id;
-  }
+
   const getCategoriesname = async () => {
     const res = await getProductName();
     if (res.status === 200) {
@@ -63,7 +59,7 @@ export default function AllArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id:await getpartyid(),
+      party_id: 197,
       article_id: i.Id,
     };
     try {
@@ -80,7 +76,7 @@ export default function AllArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: 197,
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -191,10 +187,7 @@ export default function AllArticle(props) {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("DetailsOfArticals", { id: item.Id })
-    }
+    <View
       style={{
         alignItems: "center",
         height: "auto",
@@ -277,7 +270,9 @@ export default function AllArticle(props) {
         }}
       >
         <TouchableOpacity
-         
+          onPress={() =>
+            navigation.navigate("DetailsOfArticals", { id: item.Id })
+          }
           style={{
             display: "flex",
             justifyContent: "center",
@@ -302,12 +297,12 @@ export default function AllArticle(props) {
           </View>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All");
+    console.log(priceRange,"All")
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -317,6 +312,7 @@ export default function AllArticle(props) {
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
+
 
   useEffect(() => {
     const minRate = nameDatas.reduce((min, item) => {
@@ -459,7 +455,6 @@ export default function AllArticle(props) {
                   maxArticleRate={maxArticleRate}
                   status={false}
                   spr={selectedPriceRange}
-                  uniquerates={nameDatas}
                 />
               </View>
             </View>

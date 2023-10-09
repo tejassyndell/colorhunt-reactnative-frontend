@@ -28,7 +28,6 @@ import { ActivityIndicator } from "react-native";
 import bagicon from "../../../assets/icons/icon.png";
 import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
@@ -40,7 +39,7 @@ const DetailsOfArticals = (props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
   const { id, Quantity = 0 } = route.params;
   console.log(id);
-  const handleSizeClick = (size) => { };
+  const handleSizeClick = (size) => {};
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -63,18 +62,13 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
-  const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
-    partydata = await JSON.parse(partydata);
-    return partydata[0].Id;
-  }
   const headerHeight =
     Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 100) : 120;
 
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
-      PartyId: await getpartyid(),
+      PartyId: 197,
     };
     try {
       const res = await ArticleDetails(data);
@@ -147,9 +141,7 @@ const DetailsOfArticals = (props) => {
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
-
-  const addtocart = async (ArticleId) => {
-
+  const addtocart = async (PartyId, ArticleId) => {
     if (!combinedArray) {
       console.log("undefined");
       return;
@@ -162,7 +154,7 @@ const DetailsOfArticals = (props) => {
     console.log("cqty to string ", colorwiseQuantitiesTOstring);
     console.log(totalPrice);
     const data = {
-      party_id: await getpartyid(),
+      party_id: PartyId,
       article_id: ArticleId,
       Quantity: colorwiseQuantitiesTOstring,
       rate: totalPrice,
@@ -379,8 +371,8 @@ const DetailsOfArticals = (props) => {
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
                   padding: 12,
-                  shadowColor: "gray",
-                  shadowOpacity: 0.1,
+                  shadowColor: "#000000",
+                  shadowOpacity: 1,
                 }}
               >
                 <View>
@@ -432,6 +424,7 @@ const DetailsOfArticals = (props) => {
                             borderRadius: 10,
                             padding: 10,
                             alignItems: "center",
+
                             justifyContent:
                               articleSizeData.length > 3
                                 ? "flex-start"
@@ -442,11 +435,13 @@ const DetailsOfArticals = (props) => {
                                 shadowOffset: { width: 0, height: 2 },
                                 shadowOpacity: 0.2,
                                 shadowRadius: 2,
+                            backgroundColor:'#f4f4f4',
+
                               },
                               android: {
                                 elevation: 0,
-                                shadowColor: "black",
-                                shadowOpacity: 1,
+                            backgroundColor:'#f4f4f4',
+
                               },
                             }),
                           }}
@@ -494,6 +489,7 @@ const DetailsOfArticals = (props) => {
                         <View
                           style={{
                             width: "100%",
+                            height: "100%",
                             height: width >= 720 ? 100 : 60,
                             flexDirection: "row",
                             borderWidth: 1,
@@ -513,23 +509,26 @@ const DetailsOfArticals = (props) => {
                                 shadowOffset: { width: 0, height: 2 },
                                 shadowOpacity: 0.2,
                                 shadowRadius: 2,
+                            backgroundColor:'#f4f4f4',
+
                               },
                               android: {
                                 elevation: 0,
+                            backgroundColor:'#f4f4f4',
+
                               },
                             }),
                           }}
                         >
                           <Text
                             style={{
-                              fontSize: width >= 720 ? 35 : 20,
+                              fontSize: width >= 720 ? 35 : 16,
                               paddingHorizontal:
                                 articleSizeData.length > 3 ? "10%" : 0,
                               fontWeight: 400,
                               textAlign: "center",
                               color: "#000000",
                             }}
-                            adjustsFontSizeToFit={true}
                           >
                             {subcategory}
                           </Text>
@@ -587,6 +586,7 @@ const DetailsOfArticals = (props) => {
                             borderWidth: 1,
                             borderColor: "#0000001d",
                             marginTop: 8,
+                            
                             justifyContent: "center",
                             alignContent: "center",
                             alignItems: "center",
@@ -645,17 +645,21 @@ const DetailsOfArticals = (props) => {
                             flex: 1,
                             flexDirection: "row",
                             borderRadius: 10,
-                            borderWidth: 1,
+                            borderWidth: 0.8,
                             borderColor: "#0000001d",
                             marginTop: 8,
                             justifyContent: "center",
                             alignContent: "center",
+                            borderRightColor:'#FFF',
+                            borderLeftWidth:0,
+                            borderRightWidth:0,
                             alignItems: "center",
                             backgroundColor: "#FFF",
                             height: width >= 720 ? 70 : 42,
                             elevation: 2,
                             shadowColor: "gray",
                             shadowOpacity: 0,
+
                           }}
                         >
                           <Pressable
@@ -664,7 +668,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               flex: 1.2,
                               borderWidth: 1,
-                              width: "100%",
+                              width: "95%",
                               height: "100%",
                               borderColor: "#0000001d",
                               borderRadius: 10,
@@ -685,7 +689,7 @@ const DetailsOfArticals = (props) => {
                           <View style={{ flex: 1 }}>
                             <Text
                               style={{
-                                fontSize: width >= 720 ? 30 : 21,
+                                fontSize: width >= 720 ? 30 : 18,
                                 textAlign: "center",
                                 fontWeight: 600,
                                 color: "#000",
@@ -888,14 +892,13 @@ const DetailsOfArticals = (props) => {
         style={{
           position: "absolute",
           flexDirection: "row",
-          padding: 8,
           paddingHorizontal: 14,
           bottom: 0,
           flex: 1,
           backgroundColor: "#FFF",
         }}
       >
-        <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={{ flex: 1, justifyContent: "center",paddingBottom:15, }}>
           <View>
             <Text style={{ fontSize: width >= 720 ? 15 : 10, fontWeight: 400 }}>
               Total Price
@@ -923,7 +926,7 @@ const DetailsOfArticals = (props) => {
                   opacity: totalQuantity === 0 ? 0.5 : 1,
                 },
               ]}
-              onPress={() => addtocart(id)}
+              onPress={() => addtocart(197, id)}
               disabled={totalQuantity === 0}
             >
               <View

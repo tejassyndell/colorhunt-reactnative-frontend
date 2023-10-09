@@ -17,8 +17,10 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
 const { width, height } = Dimensions.get("window");
-const logoSize = Math.min(width, height) * 0.4;
+const logoSize = Math.min(width, height) * 0.6;
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from 'expo-font';
+
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -33,6 +35,25 @@ const Login = (props) => {
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
 
+
+  useEffect(() => {
+    async function loadCustomFonts() {
+      try {
+        await Font.loadAsync({
+          'Glory-Regular': require('../../../assets/Fonts/Glory-Regular.otf'),
+          // Add more fonts if needed
+        });
+        console.log("Custom font loaded successfully");
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    }
+  
+    loadCustomFonts();
+  }, []);
+  
+  
+  
   const getNotificationPermission = async () => {
     try {
       const { status } = await Notifications.requestPermissionsAsync();
@@ -258,13 +279,15 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
+    fontFamily: 'Glory-Regular' ,
     fontSize: windowWidth * 0.07,
     // fontSize:RFPercentage(5),
     fontWeight: 700,
     marginBottom: "2%",
   },
   subtitle: {
-    color: "#FFFFFF",
+    color: "#BCBCBC",
+    fontFamily: 'Glory-Regular' ,
     fontSize: windowWidth * 0.04,
     // fontSize:RFPercentage(5),
     fontWeight: 700,
@@ -272,7 +295,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: width >= 720 ? 35 : 20,
+    fontSize: width >= 720 ? 35 : 25,
+    fontFamily: 'Glory-Regular' ,
     height: width >= 720 ? 80 : 50,
     paddingLeft: 5,
     backgroundColor: "white",
@@ -296,6 +320,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: "white",
     fontSize: width >= 720 ? 40 : 23,
+    fontFamily: 'Glory-Regular' ,
     borderRadius: 7,
     textAlign: "center",
   },
@@ -313,6 +338,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 40 : 23,
+    fontFamily: 'Glory-Regular' ,
     fontWeight: 700,
     textAlign: "center",
   },

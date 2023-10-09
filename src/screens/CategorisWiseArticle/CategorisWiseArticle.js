@@ -21,7 +21,7 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { ActivityIndicator } from "react-native";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
@@ -51,11 +51,6 @@ export default function CategorisWiseArticle(props) {
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
-  const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
-    partydata = await JSON.parse(partydata);
-    return partydata[0].Id;
-  }
 
   const getproductnamess = async () => {
     try {
@@ -74,7 +69,7 @@ export default function CategorisWiseArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id:await getpartyid(),
+      party_id: 197,
       article_id: i.Id,
     };
     try {
@@ -91,7 +86,7 @@ export default function CategorisWiseArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: 197,
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -167,7 +162,7 @@ export default function CategorisWiseArticle(props) {
 
   useEffect(() => {
     filterData();
-  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
+  }, [searchText, nameDatas,selectedCategories,selectedPriceRange]);
 
   const filterData = () => {
     if (
@@ -202,10 +197,7 @@ export default function CategorisWiseArticle(props) {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("DetailsOfArticals", { id: item.Id })
-    }
+    <View
       style={{
         alignItems: "center",
         height: "auto",
@@ -288,7 +280,9 @@ export default function CategorisWiseArticle(props) {
         }}
       >
         <TouchableOpacity
-         
+          onPress={() =>
+            navigation.navigate("DetailsOfArticals", { id: item.Id })
+          }
           style={{
             display: "flex",
             justifyContent: "center",
@@ -305,7 +299,7 @@ export default function CategorisWiseArticle(props) {
           </View>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
@@ -331,12 +325,12 @@ export default function CategorisWiseArticle(props) {
   }, [selectedCategories, selectedPriceRange]);
 
   useEffect(() => {
-    const minRate = nameDatas.reduce((min, item) => {
+    const minRate = finalData.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate < min ? articleRate : min;
     }, Infinity);
 
-    const maxRate = nameDatas.reduce((max, item) => {
+    const maxRate = finalData.reduce((max, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate > max ? articleRate : max;
     }, -Infinity);
@@ -344,7 +338,7 @@ export default function CategorisWiseArticle(props) {
     setMinArticleRate(minRate);
 
     setMaxArticleRate(maxRate);
-  }, [nameDatas]);
+  }, [finalData]);
   return (
     <>
       {isLoading ? (
@@ -483,7 +477,6 @@ export default function CategorisWiseArticle(props) {
                   minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate}
                   spr={selectedPriceRange}
-                  uniquerates={nameDatas}
                 />
               </View>
             </View>
