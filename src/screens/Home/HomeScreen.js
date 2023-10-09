@@ -42,6 +42,22 @@ export default function HomeScreen(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
   const [kids, setkidsdata] = useState([]);
@@ -537,6 +553,7 @@ export default function HomeScreen(props) {
                               fontWeight: "bold",
                               marginTop: 10,
                               fontSize: width >= 720 ? 20 : 15,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
                             }}
                           >
                             {item.ArticleNumber}
@@ -560,6 +577,7 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                           textAlign: "center",
                           color: "#808080",
                         }}
@@ -630,6 +648,7 @@ export default function HomeScreen(props) {
                           marginTop: 10,
                           fontWeight: "bold",
                           fontSize: width >= 720 ? 30 : 14,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                           marginBottom: 10,
                           textAlign: "center",
                         }}

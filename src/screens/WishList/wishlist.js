@@ -21,6 +21,8 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
+
 export default function WishList(props) {
   const { navigation } = props;
 
@@ -30,7 +32,20 @@ export default function WishList(props) {
   const { width, height } = Dimensions.get("window");
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
-
+    useEffect(() => {
+      const loadCustomFont = async () => {
+        try {
+          await Font.loadAsync({
+            Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          });
+          setIsFontLoaded(true);
+        } catch (error) {
+          console.error("Error loading custom font:", error);
+        }
+      };
+  
+      loadCustomFont();
+    }, []);
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
   const getpartyid = async () => {
@@ -106,6 +121,7 @@ export default function WishList(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 20,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -232,6 +248,7 @@ export default function WishList(props) {
             <Text
               style={{
                 fontSize: width * 0.1,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 fontWeight: "bolder",
                 textAlign: "center",
                 fontWeight: 700,
@@ -261,7 +278,7 @@ export default function WishList(props) {
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text style={{ color: "white", fontSize: width * 0.035 }}>
+              <Text style={{ color: "white", fontSize: width * 0.035,fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
                 Continue Shopping
               </Text>
             </TouchableOpacity>

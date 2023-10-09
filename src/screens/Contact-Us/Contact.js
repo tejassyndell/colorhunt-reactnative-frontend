@@ -16,6 +16,7 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { SendMail } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import ResponsiveImage from "react-native-responsive-image";
+import * as Font from "expo-font";
 
 export default function Contact(props) {
   const { navigation } = props;
@@ -32,6 +33,23 @@ export default function Contact(props) {
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
   const multilineHeight = numberOfLines * lineHeight;
+
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
 
   const handleSubmit = async () => {
     console.log("Hello", username, email, subject, message);
@@ -91,6 +109,7 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: 700,
               width: "100%",
             }}
@@ -117,6 +136,7 @@ export default function Contact(props) {
       color: "white",
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
+      fontFamily: isFontLoaded ? 'Glory' : undefined,
       fontWeight: 700,
     },
   });
@@ -178,12 +198,13 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
 
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !username && (
-              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
                 This field is required
               </Text>
             )}
@@ -205,12 +226,12 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !email && (
-              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
                 This field is required
               </Text>
             )}
@@ -233,10 +254,11 @@ export default function Contact(props) {
                 margin: 5,
                 height: width >= 720 ? 70 : 40,
                 fontSize: width >= 720 ? 30 : 15,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
               }}
             />
             {showValidationErrors && !subject && (
-              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
                 This field is required
               </Text>
             )}
@@ -264,10 +286,11 @@ export default function Contact(props) {
                 margin: 5,
                 height: multilineHeight,
                 fontSize: width >= 720 ? 30 : 15,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
               }}
             />
             {showValidationErrors && !message && (
-              <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
                 This field is required
               </Text>
             )}

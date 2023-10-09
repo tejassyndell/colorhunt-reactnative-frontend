@@ -19,7 +19,7 @@ import {
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import styles from "./styles";
+import detailsOfArtStyles from "./styles";
 import stylesRecipe from "../Recipe/styles";
 // import { ScrollView } from "react-native-gesture-handler";
 import { useLayoutEffect } from "react";
@@ -40,6 +40,7 @@ const DetailsOfArticals = (props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
   const { id, Quantity = 0 } = route.params;
   console.log(id);
+  const styles = detailsOfArtStyles();
   const handleSizeClick = (size) => {};
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
@@ -369,7 +370,7 @@ const DetailsOfArticals = (props) => {
                         fontSize: width >= 720 ? 40 : 26,
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                         textAlign: "center",
-                        fontWeight: 600,
+                        fontWeight: 'bold',
                         color: "black",
                       }}
                     >
@@ -575,7 +576,7 @@ const DetailsOfArticals = (props) => {
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
                             fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 600,
+                            fontWeight: 'bold',
                           }}
                         >
                           Color
@@ -586,7 +587,7 @@ const DetailsOfArticals = (props) => {
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
                             fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 600,
+                            fontWeight: 'bold',
                           }}
                         >
                           Available in Stock
@@ -597,7 +598,7 @@ const DetailsOfArticals = (props) => {
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
                             fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 600,
+                            fontWeight: 'bold',
                           }}
                         >
                           Add Qty.
@@ -722,7 +723,7 @@ const DetailsOfArticals = (props) => {
                                 fontSize: width >= 720 ? 30 : 18,
                                 fontFamily: isFontLoaded ? 'Glory' : undefined,
                                 textAlign: "center",
-                                fontWeight: 600,
+                                fontWeight: 'bold',
                                 color: "#000",
                               }}
                             >
@@ -943,7 +944,7 @@ const DetailsOfArticals = (props) => {
               style={{
                 fontSize: width >= 720 ? 27 : 16,
                 fontFamily: isFontLoaded ? 'Glory' : undefined,
-                fontWeight: 600,
+                fontWeight: 'bold',
                 color: "black",
               }}
             >
@@ -985,7 +986,7 @@ const DetailsOfArticals = (props) => {
                   style={{
                     color: "white",
                     textAlign: "center",
-                    fontWeight: 600,
+                    fontWeight: 'bold',
                     fontSize: width >= 720 ? 30 : 18,
                     marginLeft: width >= 720 ? 20 : 10,
                   }}

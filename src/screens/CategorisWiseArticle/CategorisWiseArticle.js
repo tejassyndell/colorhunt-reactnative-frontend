@@ -24,6 +24,8 @@ import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
+
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
@@ -39,6 +41,24 @@ export default function CategorisWiseArticle(props) {
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
+
+
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
 
   const CheckUser = async () => {
     const user = await AsyncStorage.getItem("Userdata");
@@ -320,9 +340,9 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
-            <Text style={{ fontWeight: "bold" }}>{item.ArticleNumber}</Text>
-            <Text>{convertToTitleCase(item.Category)}</Text>
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", fontFamily: isFontLoaded ? 'Glory' : undefined, }}>{item.ArticleNumber}</Text>
+            <Text style={{ fontFamily: isFontLoaded ? 'Glory' : undefined,}}>{convertToTitleCase(item.Category)}</Text>
+            <Text style={{ fontWeight: "bold" , fontFamily: isFontLoaded ? 'Glory' : undefined,}}>
               {"₹" + item.ArticleRate + ".00"}
             </Text>
           </View>
@@ -410,6 +430,7 @@ export default function CategorisWiseArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 fontWeight: 700,
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
@@ -443,6 +464,7 @@ export default function CategorisWiseArticle(props) {
                   <Text
                     style={{
                       textAlign: "center",
+                      fontFamily: isFontLoaded ? 'Glory' : undefined,
                       fontSize: 20,
                     }}
                   >
