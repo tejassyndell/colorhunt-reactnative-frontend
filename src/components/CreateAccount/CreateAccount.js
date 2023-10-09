@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: width >= 720 ? 30 : 10,
+    marginBottom: width >= 720 ? 30 : 30,
   },
   title: {
     fontSize: windowWidth * 0.05,
@@ -449,13 +449,13 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   input: {
-    height: width >= 720 ? 60 : 40,
+    height: width >= 720 ? 60 : 50,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
     paddingLeft: windowWidth * 0.02,
-    fontSize: windowWidth * 0.03,
+    fontSize: windowWidth * 0.04,
   },
   inputError: {
     borderColor: "red",

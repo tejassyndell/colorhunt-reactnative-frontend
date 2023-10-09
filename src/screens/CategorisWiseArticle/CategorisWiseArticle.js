@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  Modal,
 } from "react-native";
 import {
   getProductName,
@@ -23,6 +24,7 @@ import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
@@ -35,6 +37,30 @@ export default function CategorisWiseArticle(props) {
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
+
+  const CheckUser = async () => {
+    const user = await AsyncStorage.getItem("Userdata");
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+  useEffect(() => {
+    CheckUser();
+  }, []);
+
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
+
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
   const headerHeight =
@@ -52,10 +78,10 @@ export default function CategorisWiseArticle(props) {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
-  }
+  };
 
   const getproductnamess = async () => {
     try {
@@ -74,7 +100,7 @@ export default function CategorisWiseArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -91,7 +117,7 @@ export default function CategorisWiseArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -145,7 +171,7 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile");
+              isLoggedIn ? navigation.navigate("Profile") : "";
             }}
           >
             <Image
@@ -203,9 +229,7 @@ export default function CategorisWiseArticle(props) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("DetailsOfArticals", { id: item.Id })
-    }
+      onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
       style={{
         alignItems: "center",
         height: "auto",
@@ -288,7 +312,6 @@ export default function CategorisWiseArticle(props) {
         }}
       >
         <TouchableOpacity
-         
           style={{
             display: "flex",
             justifyContent: "center",
@@ -490,6 +513,34 @@ export default function CategorisWiseArticle(props) {
           )}
         </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }

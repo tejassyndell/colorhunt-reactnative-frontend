@@ -40,7 +40,7 @@ const DetailsOfArticals = (props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
   const { id, Quantity = 0 } = route.params;
   console.log(id);
-  const handleSizeClick = (size) => { };
+  const handleSizeClick = (size) => {};
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -64,10 +64,10 @@ const DetailsOfArticals = (props) => {
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
-  }
+  };
   const headerHeight =
     Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 100) : 120;
 
@@ -147,9 +147,7 @@ const DetailsOfArticals = (props) => {
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
-
   const addtocart = async (ArticleId) => {
-
     if (!combinedArray) {
       console.log("undefined");
       return;
@@ -767,7 +765,7 @@ const DetailsOfArticals = (props) => {
                       width: 360,
                       height: 320,
                       backgroundColor: "white",
-                      borderRadius: 25,
+                      borderRadius: 15,
                       alignItems: "center",
                       // padding: 5
                     }}
@@ -775,8 +773,8 @@ const DetailsOfArticals = (props) => {
                     <Image
                       source={require("../../../assets/update_cart.png")}
                       style={{
-                        width: 100,
-                        height: 100,
+                        width: 70,
+                        height: 70,
                         marginBottom: 20,
                         marginTop: 30,
                       }}
@@ -786,21 +784,20 @@ const DetailsOfArticals = (props) => {
                       style={{
                         fontSize: 24,
                         textAlign: "center",
-                        marginBottom: 30,
+                        marginBottom: 10,
                         fontWeight: 500,
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
-                      Are you sure {"\n"} you want to update this {"\n"} artical
-                      in cart.
+                      Are you sure that want {"\n"}to update in cart
                     </Text>
                     <View
                       style={{
-                        width: "100%",
+                        width: "90%",
                         display: "flex",
                         flexDirection: "row",
                         position: "absolute",
-                        bottom: 0,
+                        bottom: 20,
                       }}
                     >
                       <TouchableOpacity
@@ -808,21 +805,20 @@ const DetailsOfArticals = (props) => {
                           setIsModalVisible(false);
                         }}
                         style={{
-                          backgroundColor: "black",
-                          width: "50%",
+                          width: "47.5%",
+                          borderWidth: 1,
                           height: 50,
-                          borderBottomLeftRadius: 25,
                           justifyContent: "center",
                           alignItems: "center",
-                          borderWidth: 1,
-                          borderColor: "white",
+                          borderRadius: 10,
+                          borderColor: "grey",
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
                             fontWeight: 700,
-                            color: "white",
+                            color: "grey",
                             paddingHorizontal: 15,
                           }}
                         >
@@ -836,12 +832,13 @@ const DetailsOfArticals = (props) => {
                         }}
                         style={{
                           backgroundColor: "black",
-                          width: "50%",
+                          width: "47.5%",
                           height: 50,
-                          borderBottomRightRadius: 25,
                           justifyContent: "center",
                           alignItems: "center",
                           borderWidth: 1,
+                          borderRadius: 10,
+                          marginLeft: "5%",
                           borderColor: "white",
                         }}
                       >
