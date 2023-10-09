@@ -385,8 +385,8 @@ const DetailsOfArticals = (props) => {
                           }}
                         >
                           {articleSizeData &&
-                            articleSizeData.map((item) => (
-                              <View style={styles.size_options} key={item.Id}>
+                            articleSizeData.map((item,index) => (
+                              <View style={styles.size_options} key={index}>
                                 <View style={styles.size}>
                                   <Text
                                     href="/"
@@ -451,8 +451,8 @@ const DetailsOfArticals = (props) => {
                         </Text>
                       </View>
                     </View>
-                    {combinedArray.map((item, key) => (
-                      <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
+                    {combinedArray.map((item, index) => (
+                      <View key={index} style={{ flex: 1, flexDirection: "row", gap: 12 }}>
                         <View
                           style={{
                             flex: 1,

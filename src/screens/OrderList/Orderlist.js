@@ -254,8 +254,8 @@ const Orderlist = (props) => {
 
                                         <View>
 
-                                            {Transportation.map((item) =>
-                                                <TouchableOpacity key={item.Id} onPress={() => { setTransportationVal(item.Name); setshowTransporatation(!showTransporatation) }}>
+                                            {Transportation.map((item,index) =>
+                                                <TouchableOpacity key={index} onPress={() => { setTransportationVal(item.Name); setshowTransporatation(!showTransporatation) }}>
                                                     <Text style={{
                                                         fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                                                         marginVertical: '2.5%',
@@ -274,7 +274,7 @@ const Orderlist = (props) => {
                             <View style={{ display: "flex", flexDirection: "column", height: windowheight * 0.20, width: "100%",}}>
                                 <ScrollView nestedScrollEnabled={true} >
                                     {ParsedData && ParsedData.map((item, index) => (
-                                        <View key={item.id} style={{ paddingBottom: 20 }}>
+                                        <View key={index} style={{ paddingBottom: 20 }}>
 
                                             <View style={{
                                                 display: "flex",

@@ -89,10 +89,10 @@ const OrderDetails = (props) => {
             const colorPacksCombination = (
 
                 <View style={{ flexDirection: 'row', flexWrap: "wrap", justifyContent: "center", alignContent: "center", alignItems: "center" }}>
-                    {colors.map((color, i) => (
-                        <Text key={i} style={{ marginHorizontal: 2 }}>
+                    {colors.map((color, index) => (
+                        <Text key={index} style={{ marginHorizontal: 2 }}>
                             <Text style={{ fontWeight: 'bold' }}>{color}:</Text>
-                            {String(outwardNoPacksArray[i] || 0).padStart(2, '0')}<Text>,</Text>
+                            {String(outwardNoPacksArray[index] || 0).padStart(2, '0')}<Text>,</Text>
                         </Text>
                     ))}
                 </View>
@@ -313,13 +313,14 @@ const OrderDetails = (props) => {
                                         {/* Fixed Header Row */}
                                         <Row
                                             data={tableData ? tableData.tableHead : ""}
-                                            textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, }}
+                                            // textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, }}
 
-                                            style={{
-                                                height: 60,
-                                                // Make sure the header row is displayed horizontally
-                                            }}
-                                            widthArr={widthArr}
+                                            // style={{
+                                            //     height: 60,
+                                            //     // Make sure the header row is displayed horizontally
+                                            // }}
+                                            
+                                            // widthArr={widthArr}
 
                                         />
                                     </Table>
@@ -500,13 +501,14 @@ const OrderDetails = (props) => {
                                                 {/* Fixed Header Row */}
                                                 <Row
                                                     data={tableData ? tableData.tableHead : ""}
-                                                    textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, }}
+                                                    // textStyle={{ textAlign: 'center', fontWeight: 'bold', fontSize: width >= 720 ? 18 : 15, }}
 
-                                                    style={{
-                                                        height: 60,
-                                                        // Make sure the header row is displayed horizontally
-                                                    }}
-                                                    widthArr={widthArr} />
+                                                    // style={{
+                                                    //     height: 60,
+                                                    //     // Make sure the header row is displayed horizontally
+                                                    // }}
+                                                    // widthArr={widthArr} 
+                                                    />
                                             </Table>
                                         </View>
                                         <View>

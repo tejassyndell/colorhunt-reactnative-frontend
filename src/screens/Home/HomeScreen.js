@@ -485,19 +485,19 @@ export default function HomeScreen(props) {
               >
                 {ApplyStatushBack === true
                   ? finalData.length > 0
-                    ? finalData.map((item) => (
+                    ? finalData.map((fitem,index) => (
                       <TouchableOpacity
-                        key={item.Id}
+                        key={index}
                         onPress={() => {
                           isLoggedIn
                             ? navigation.navigate("DetailsOfArticals", {
-                              id: item.Id,
+                              id: fitem.Id,
                             })
                             : openCreateAccountModal();
                         }}
                       >
                         <View
-                          key={item.Id}
+                         
                           style={{
                             alignItems: "center",
                             width: width >= 720 ? 300 : 155, // Adjust the width for tablets
@@ -525,12 +525,12 @@ export default function HomeScreen(props) {
                             }}
                           // style={styles.fastconimage1}
                           >
-                            <View id={item.id} style={styles.producticones}>
-                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                            <View id={fitem.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === fitem.Id) ? (
                                 <TouchableOpacity
                                   onPress={() => {
                                     isLoggedIn
-                                      ? rmvProductWishlist(item)
+                                      ? rmvProductWishlist(fitem)
                                       : openCreateAccountModal();
                                   }}
                                 >
@@ -546,7 +546,7 @@ export default function HomeScreen(props) {
                                 <TouchableOpacity
                                   onPress={() => {
                                     isLoggedIn
-                                      ? addArticleWishlist(item)
+                                      ? addArticleWishlist(fitem)
                                       : openCreateAccountModal();
                                   }}
                                 >
@@ -560,9 +560,9 @@ export default function HomeScreen(props) {
                                 </TouchableOpacity>
                               )}
                             </View>
-                            {item.Photos ? (
+                            {fitem.Photos ? (
                               <Image
-                                source={{ uri: baseImageUrl + item.Photos }}
+                                source={{ uri: baseImageUrl + fitem.Photos }}
                                 style={{
                                   width: "100%",
                                   resizeMode: "contain",
@@ -591,18 +591,18 @@ export default function HomeScreen(props) {
                               fontSize: width >= 720 ? 20 : 15,
                             }}
                           >
-                            {item.ArticleNumber}
+                            {fitem.ArticleNumber}
                           </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
+                          <Text>{convertToTitleCase(fitem.Category)}</Text>
                           <Text style={{ fontWeight: "bold" }}>
-                            {"₹" + item.ArticleRate + ".00"}
+                            {"₹" + fitem.ArticleRate + ".00"}
                           </Text>
                         </View>
                       </TouchableOpacity>
                     ))
-                    : nameData.map((item) => (
+                    : nameData.map((nitem,index) => (
                       <View
-                        key={item.Id}
+                        key={index}
                         style={{
                           alignItems: "center",
                           height: "auto",
@@ -618,7 +618,7 @@ export default function HomeScreen(props) {
                         <TouchableOpacity
                           onPress={() => {
                             isLoggedIn
-                              ? handlePress(item)
+                              ? handlePress(nitem)
                               : openCreateAccountModal();
                           }}
                         >
@@ -638,9 +638,9 @@ export default function HomeScreen(props) {
                             }}
                           // style={styles.fastconimage1}
                           >
-                            {item.Photos ? (
+                            {nitem.Photos ? (
                               <Image
-                                source={{ uri: baseImageUrl + item.Photos }}
+                                source={{ uri: baseImageUrl + nitem.Photos }}
                                 style={{
                                   width: "100%",
                                   resizeMode: "contain",
@@ -671,13 +671,13 @@ export default function HomeScreen(props) {
                             textAlign: "center",
                           }}
                         >
-                          {convertToTitleCase(item.Category)}
+                          {convertToTitleCase(nitem.Category)}
                         </Text>
                       </View>
                     ))
-                  : applyrData.map((item) => (
+                  : applyrData.map((aitem,index) => (
                     <View
-                      key={item.Id}
+                      key={index}
                       style={{
                         alignItems: "center",
                         justifyContent: "center",
@@ -690,7 +690,7 @@ export default function HomeScreen(props) {
                       <TouchableOpacity
                         onPress={() => {
                           isLoggedIn
-                            ? handlePress(item)
+                            ? handlePress(aitem)
                             : openCreateAccountModal();
                         }}
                       >
@@ -711,7 +711,7 @@ export default function HomeScreen(props) {
                           fontWeight: "bold",
                         }}
                       >
-                        {convertToTitleCase(item.Category)}
+                        {convertToTitleCase(aitem.Category)}
                       </Text>
                     </View>
                   ))}
@@ -771,9 +771,9 @@ export default function HomeScreen(props) {
                       <Text style={{ fontSize: 17 }}>No Kids Article Found</Text>
                     </View>
 
-                    : kids.map((item) => (
+                    : kids.map((kitem,index) => (
                       <View
-                        key={item.Id}
+                        key={index}
                         style={{
                           alignItems: "center",
                           width: width >= 720 ? 300 : 155, // Adjust the width for tablets
@@ -800,12 +800,12 @@ export default function HomeScreen(props) {
                             },
                           }}
                         >
-                          <View id={item.id} style={styles.producticones}>
-                            {selectedprd.some((i) => i.Id === item.Id) ? (
+                          <View id={kitem.id} style={styles.producticones}>
+                            {selectedprd.some((i) => i.Id === kitem.Id) ? (
                               <TouchableOpacity
                                 onPress={() => {
                                   isLoggedIn
-                                    ? rmvProductWishlist(item)
+                                    ? rmvProductWishlist(kitem)
                                     : openCreateAccountModal();
                                 }}
                               >
@@ -821,7 +821,7 @@ export default function HomeScreen(props) {
                               <TouchableOpacity
                                 onPress={() => {
                                   isLoggedIn
-                                    ? addArticleWishlist(item)
+                                    ? addArticleWishlist(kitem)
                                     : openCreateAccountModal();
                                 }}
                               >
@@ -836,7 +836,7 @@ export default function HomeScreen(props) {
                             )}
                           </View>
                           <Image
-                            source={{ uri: baseImageUrl + item.Photos }}
+                            source={{ uri: baseImageUrl + kitem.Photos }}
                             style={{
                               flex: 1,
                               resizeMode: "contain",
@@ -852,10 +852,10 @@ export default function HomeScreen(props) {
                             fontSize: width >= 720 ? 18 : 12,
                           }}
                         >
-                          {item.ArticleNumber}
+                          {kitem.ArticleNumber}
                         </Text>
                         <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
-                          {convertToTitleCase(item.Category)}
+                          {convertToTitleCase(kitem.Category)}
                         </Text>
                         <Text
                           style={{
@@ -863,7 +863,7 @@ export default function HomeScreen(props) {
                             fontSize: width >= 720 ? 18 : 12,
                           }}
                         >
-                          {"₹" + item.ArticleRate + ".00"}
+                          {"₹" + kitem.ArticleRate + ".00"}
                         </Text>
                       </View>
                     ))}

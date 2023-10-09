@@ -14,13 +14,12 @@ import { phoneNumberValidation, udatepartytoken } from "../../api/api";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-import * as Notifications from "expo-notifications";
+// import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
 const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.4;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import loginStyles from "./loginStyles";
-
 const Login = (props) => {
   const { navigation } = props;
   const route = useRoute();
@@ -31,34 +30,34 @@ const Login = (props) => {
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
 
-  const getNotificationPermission = async () => {
-    try {
-      const { status } = await Notifications.requestPermissionsAsync();
-      console.log(status, "statuss"); // Move this line here
-      if (status === "granted") {
-        const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
-        console.log("Expo Push Token:", pushToken);
-        setToken(pushToken);
-        AsyncStorage.setItem(
-          "notificationstatus",
-          JSON.stringify({ status: true, token: pushToken })
-        );
-        console.log({ status: true, token: pushToken });
-      } else {
-        AsyncStorage.setItem(
-          "notificationstatus",
-          JSON.stringify({ status: false, token: "" })
-        );
-        console.log("Notification permission denied");
-      }
-    } catch (error) {
-      console.error("Error getting notification permission:", error);
-    }
-  };
+  // const getNotificationPermission = async () => {
+  //   try {
+  //     const { status } = await Notifications.requestPermissionsAsync()
+  //     console.log(status, "statuss"); // Move this line here
+  //     if (status === "granted") {
+  //       const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+  //       console.log("Expo Push Token:", pushToken);
+  //       setToken(pushToken);
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: true, token: pushToken })
+  //       );
+  //       console.log({ status: true, token: pushToken });
+  //     } else {
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: false, token: "" })
+  //       );
+  //       console.log("Notification permission denied");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error getting notification permission:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getNotificationPermission();
-  }, []);
+  // useEffect(() => {
+  //   getNotificationPermission();
+  // }, []);
 
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();

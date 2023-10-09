@@ -138,7 +138,6 @@ export default function WishList(props) {
       }}
     >
       <View
-        key={item.id}
         style={{
           alignItems: "center",
           height: "auto",
@@ -274,7 +273,7 @@ export default function WishList(props) {
             <FlatList
               data={selectedprd}
               initialNumToRender={10}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.Id}
               renderItem={renderItem}
               numColumns={width >= 720 ? 4 : 2}
               showsHorizontalScrollIndicator={false}

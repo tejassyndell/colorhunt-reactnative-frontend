@@ -155,7 +155,8 @@ export default function Contact(props) {
       fontWeight: "700",
     },
   });
-  const windowWidth = Dimensions.get("window").width;
+  const width = Dimensions.get("window").width;
+
 
   return (
     <KeyboardAvoidingView

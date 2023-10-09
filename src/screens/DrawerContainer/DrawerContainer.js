@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, Text, TouchableOpacity, Dimensions } from "react-native";
-// import PropTypes from "prop-types";
 import styles from "./styles";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export default function DrawerContainer(props) {
   const { navigation, isLoggedIn, name } = props;
   const [userName, setUserName] = useState("");
@@ -220,9 +218,3 @@ export default function DrawerContainer(props) {
   );
 }
 
-// DrawerContainer.propTypes = {
-//   navigation: PropTypes.shape({
-//     navigate: PropTypes.func.isRequired,
-//   }),
-//   isLoggedIn: PropTypes.bool.isRequired, // Add prop type for isLoggedIn
-// };

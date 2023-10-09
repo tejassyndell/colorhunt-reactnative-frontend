@@ -197,7 +197,7 @@ const AddToCart = (props) => {
           }
         } else {
           if (
-            parseInt(it.SalesNoPacks) > parseInt(item.Quantity) &&
+            parseInt(it.SalesNoPacks) >= parseInt(item.Quantity) &&
             it.ArticleId === item.article_id
           ) {
             listOfOutOfProduct.push(item.article_id);
@@ -467,12 +467,12 @@ const AddToCart = (props) => {
                         }}
                       >
                         <View style={{ paddingBottom: 20 }}>
-                          {orderItems.map((item) =>
+                          {orderItems.map((item,index) =>
                             array_1.length > 0 ? (
                               array_1.includes(item.article_id) ? (
                                 // id === item.article_id ?
                                 <View
-                                  key={item.id}
+                                  key={index}
                                   style={{
                                     display: "flex",
                                     flexDirection: "row",
@@ -1040,7 +1040,7 @@ const AddToCart = (props) => {
                                     }}
                                   >
                                     {compreInward
-                                      ? compreInward.map((it) =>
+                                      ? compreInward.map((it,index) =>
                                           checkOutOfStock(it, item)
                                           // console.log(it.SalesNoPacks)
                                         )
