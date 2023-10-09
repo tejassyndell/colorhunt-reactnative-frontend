@@ -3,7 +3,7 @@ import { Text, View, Image, ScrollView, FlatList, Pressable, TouchableOpacity } 
 import { getProductName, getWishlistData, getAddWishlist, DeleteWishlist } from "../../api/api";
 import styles from "./styles";
 import SearchBar from "../../components/SearchBar/searchbar";
-import { useRoute } from "@react-navigation/native";
+import { useRoute  } from "@react-navigation/native";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import Filter from "../../components/Filter/Filter";

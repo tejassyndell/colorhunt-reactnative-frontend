@@ -20,8 +20,7 @@ import {
   deletecartitem,
 } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
-import { ImageZoomProps } from "react-native-image-pan-zoom";
+
 
 const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
 

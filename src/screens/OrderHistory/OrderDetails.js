@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, TextInput, ScrollView, Dimensions,Image,P
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import { useEffect, useLayoutEffect } from "react";
 import React, { useState } from 'react';
-import { ThemeProvider, useRoute } from "@react-navigation/native";
+import { useRoute} from "@react-navigation/native";
 import { Table, Row, Rows } from 'react-native-table-component';
 import Textarea from 'react-native-textarea';
 import { getSoArticleDetails } from "../../api/api";
