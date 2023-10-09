@@ -20,8 +20,8 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
-
 import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
 
 export default function AllArticle(props) {
   const { navigation } = props;
@@ -36,6 +36,22 @@ export default function AllArticle(props) {
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [noArticlesFound, setNoArticlesFound] = useState(false);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
 
   const { width, height } = Dimensions.get("window");
   const headerHeight =
@@ -282,15 +298,15 @@ export default function AllArticle(props) {
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{ fontWeight: "bold",fontFamily: isFontLoaded ? 'Glory' : undefined, fontSize: width >= 720 ? 18 : 12 }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 10,fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
               {convertToTitleCase(item.Category)}
             </Text>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 ,fontFamily: isFontLoaded ? 'Glory' : undefined,}}
             >
               {"₹" + item.ArticleRate + ".00"}
             </Text>
@@ -372,6 +388,7 @@ export default function AllArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 fontWeight: 700,
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
@@ -394,7 +411,7 @@ export default function AllArticle(props) {
           >
             {noArticlesFound ? (
               <Text
-                style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}
+                style={{ textAlign: "center", fontSize: 16,fontFamily: isFontLoaded ? 'Glory' : undefined, marginTop: 20 }}
               >
                 NO ARTICLES FOUND
               </Text>

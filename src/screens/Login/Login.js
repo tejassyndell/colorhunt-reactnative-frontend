@@ -1,14 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Dimensions,
-  ImageBackground,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, Dimensions, ImageBackground, KeyboardAvoidingView } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
@@ -16,14 +7,13 @@ import { PixelRatio } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
+import  LoginStyles  from "./styles";
 const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.6;
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Font from 'expo-font';
 
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+
 
 const Login = (props) => {
   const { navigation } = props;
@@ -34,26 +24,14 @@ const Login = (props) => {
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
+  const styles = LoginStyles(); 
+  
 
 
-  useEffect(() => {
-    async function loadCustomFonts() {
-      try {
-        await Font.loadAsync({
-          'Glory-Regular': require('../../../assets/Fonts/Glory-Regular.otf'),
-          // Add more fonts if needed
-        });
-        console.log("Custom font loaded successfully");
-      } catch (error) {
-        console.error("Error loading custom font:", error);
-      }
-    }
-  
-    loadCustomFonts();
-  }, []);
-  
-  
-  
+ 
+
+  // console.log(isFontLoaded,'jnsajdjsad');
+
   const getNotificationPermission = async () => {
     try {
       const { status } = await Notifications.requestPermissionsAsync();
@@ -195,6 +173,10 @@ const Login = (props) => {
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
   return (
+    <KeyboardAvoidingView
+    style={{ flex: 1 }} // You might need to adjust the style as per your layout
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+  >
     <View style={styles.container1}>
       <View style={styles.imagebox}>
         <ImageBackground
@@ -266,132 +248,10 @@ const Login = (props) => {
         </View>
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 
-const styles = StyleSheet.create({
-  contentContainer: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 0,
-  },
-  title: {
-    color: "white",
-    fontFamily: 'Glory-Regular' ,
-    fontSize: windowWidth * 0.07,
-    // fontSize:RFPercentage(5),
-    fontWeight: 700,
-    marginBottom: "2%",
-  },
-  subtitle: {
-    color: "#BCBCBC",
-    fontFamily: 'Glory-Regular' ,
-    fontSize: windowWidth * 0.04,
-    // fontSize:RFPercentage(5),
-    fontWeight: 700,
-    marginBottom: 80,
-  },
-  input: {
-    flex: 1,
-    fontSize: width >= 720 ? 35 : 25,
-    fontFamily: 'Glory-Regular' ,
-    height: width >= 720 ? 80 : 50,
-    paddingLeft: 5,
-    backgroundColor: "white",
-    borderTopRightRadius: 7,
-    borderBottomRightRadius: 7,
 
-    color: "#000000",
-  },
-  otpContainer: {
-    height: "auto",
-    flexDirection: "row",
-    width: width >= 720 ? 400 : "60%",
-    marginBottom: "10%",
-    justifyContent: "space-between",
-  },
-  otpInput: {
-    width: width >= 720 ? 90 : 47,
-    justifyContent: "space-between",
-    height: width >= 720 ? 90 : 50,
-    borderColor: "gray",
-    borderWidth: 1,
-    backgroundColor: "white",
-    fontSize: width >= 720 ? 40 : 23,
-    fontFamily: 'Glory-Regular' ,
-    borderRadius: 7,
-    textAlign: "center",
-  },
-  button: {
-    backgroundColor: "#212121",
-    width: width >= 720 ? 220 : 148,
-    height: width >= 720 ? 70 : 50,
-    borderRadius: 10,
-    position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
-    bottom: 0,
-    right: 0,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: width >= 720 ? 40 : 23,
-    fontFamily: 'Glory-Regular' ,
-    fontWeight: 700,
-    textAlign: "center",
-  },
-  phoneIcon: {
-    height: width >= 720 ? 35 : 20,
-    width: width >= 720 ? 35 : 20,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "90%",
-    height: width >= 720 ? 80 : 10,
-    borderColor: "gray",
-    borderRadius: 7,
-    marginBottom: windowHeight * 0.046,
-    justifyContent: "center",
-  },
-  phoneIconContainer: {
-    height: width >= 720 ? 80 : 50,
-    width: width >= 720 ? 80 : 50,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    borderRadius: 7,
-    borderRightWidth: 3,
-    borderColor: "#212121",
-  },
-  container1: {
-    flex: 1,
-    padding: 20,
-  },
-  backgroundImage1: {
-    flex: 1,
-    resizeMode: "stretch",
-    width: "100%",
-  },
-  loginContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loginLogoContainer: {
-    position: "absolute",
-    top: "40%",
-    left: "50%",
-    transform: [{ translateX: -logoSize / 2 }, { translateY: -logoSize / 2 }],
-  },
-  loginLogo: {
-    resizeMode: "contain",
-  },
-  imagebox: {
-    flex: 1,
-  },
-});
 
 export default Login;
