@@ -59,7 +59,7 @@ export default function HomeScreen(props) {
     loadCustomFont();
   }, []);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 

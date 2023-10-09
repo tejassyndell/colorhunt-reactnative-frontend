@@ -41,7 +41,7 @@ const Orderlist = (props) => {
   const windowwidthe = parseInt(Dimensions.get("window").width);
   const windowheight = parseInt(Dimensions.get("window").height);
   const { width, height } = Dimensions.get("window");
-
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
   useEffect(() => {
     const loadCustomFont = async () => {
       try {

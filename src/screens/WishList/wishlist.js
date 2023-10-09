@@ -30,8 +30,9 @@ export default function WishList(props) {
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
     useEffect(() => {
       const loadCustomFont = async () => {
         try {

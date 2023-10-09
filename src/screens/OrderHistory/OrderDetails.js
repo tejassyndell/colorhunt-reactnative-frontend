@@ -57,7 +57,7 @@ const OrderDetails = (props) => {
   const [partydata, setpartydata] = useState();
   const [sodetails, setsodetials] = useState([]);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
 
   console.log(newPrint);
 
