@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet,Dimensions, } from "react-native";
 import * as Font from "expo-font";
+
 
 const LoginStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
@@ -20,9 +21,9 @@ const LoginStyles = () => {
     loadCustomFont();
   }, []);
 
-  const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
       flex: 1,
       width: width >= 720 ? "100%" : "100%",
@@ -37,22 +38,22 @@ const LoginStyles = () => {
       resizeMode: "cover",
     },
     paginationDot: {
-      width: 15, // Adjust the width as needed
-      height: 15, // Adjust the height as needed
-      borderRadius: 8, // Make it half of the width to create a circle
-      backgroundColor: "#FFF", // Background color for inactive dots
-      borderWidth: 2, // Border width
-      borderColor: "white", // Border color
-    },
+        width: 15, // Adjust the width as needed
+        height: 15, // Adjust the height as needed
+        borderRadius: 8, // Make it half of the width to create a circle
+        backgroundColor: "#FFF", // Background color for inactive dots
+        borderWidth: 2, // Border width
+        borderColor: "black", // Border color
+      },
 
-    activePaginationDot: {
-      width: 15, // Adjust the width as needed
-      height: 15, // Adjust the height as needed
-      borderRadius: 8, // Make it half of the width to create a circle
-      backgroundColor: "#00000", // Background color for active dot
-      borderWidth: 2, // Border width
-      borderColor: "black", // Border color
-    },
+   activePaginationDot: {
+    width: 15, // Adjust the width as needed
+    height: 15, // Adjust the height as needed
+    borderRadius: 8, // Make it half of the width to create a circle
+    backgroundColor: "#00000", // Background color for active dot
+    borderWidth: 2, // Border width
+    borderColor: "black", // Border color
+  },
     button: {
       width: width >= 720 ? 180 : 100,
       height: width >= 720 ? 70 : 50,
@@ -68,7 +69,7 @@ const LoginStyles = () => {
       color: "white",
       fontSize: width >= 720 ? 30 : 20,
       fontWeight: "bold",
-      //   fontFamily: "Glory",
+      fontFamily: isFontLoaded ? 'Glory' : undefined,
     },
     contain1: {
       position: "absolute",
@@ -105,13 +106,13 @@ const LoginStyles = () => {
     slideText1: {
       color: "black",
       fontSize: width >= 720 ? 35 : 20,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily: isFontLoaded ? 'Glory' : undefined,
       textAlign: "center",
     },
     slideText2: {
       color: "white",
       fontSize: width >= 720 ? 40 : 23,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily: isFontLoaded ? 'Glory' : undefined,
       textAlign: "center",
       marginTop: 20,
       fontWeight: "bold",

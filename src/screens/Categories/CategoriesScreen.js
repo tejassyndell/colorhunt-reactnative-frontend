@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import { FlatList, Text, View, Image, TouchableHighlight,Platform } from "react-native";
-import styles from "./styles";
+import Categoriesstyle from "./styles";
 import { categories } from "../../data/dataArrays";
 import { getNumberOfRecipes } from "../../data/MockDataAPI";
 import MenuImage from "../../components/MenuImage/MenuImage";
@@ -8,7 +8,7 @@ import MenuImage from "../../components/MenuImage/MenuImage";
 export default function CategoriesScreen(props) {
   const { navigation } = props;
   const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
-
+   const styles = Categoriesstyle();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitleStyle: {

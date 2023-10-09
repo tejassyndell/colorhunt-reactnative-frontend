@@ -24,6 +24,8 @@ import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from "expo-font";
+
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -40,6 +42,22 @@ export default function HomeScreen(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
   const [kids, setkidsdata] = useState([]);
@@ -353,6 +371,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
                   fontWeight: 700,
                   paddingLeft: 8,
                 }}
@@ -398,6 +417,7 @@ export default function HomeScreen(props) {
                   start: 10,
                   fontWeight: 700,
                   fontSize: width >= 720 ? 25 : 18,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
                 }}
               >
                 Men's
@@ -408,10 +428,11 @@ export default function HomeScreen(props) {
                   color: "#666666",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
                   fontWeight: 600,
                 }}
                 onPress={() => {
-                  viewAllArticles();
+                   viewAllArticles() 
                 }}
               >
                 View All
@@ -524,6 +545,7 @@ export default function HomeScreen(props) {
                               fontWeight: "bold",
                               marginTop: 10,
                               fontSize: width >= 720 ? 20 : 15,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
                             }}
                           >
                             {item.ArticleNumber}
@@ -547,6 +569,7 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                           textAlign: "center",
                           color: "#808080",
                         }}
@@ -616,6 +639,7 @@ export default function HomeScreen(props) {
                           marginTop: 10,
                           fontWeight: "bold",
                           fontSize: width >= 720 ? 30 : 14,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                           marginBottom: 10,
                           textAlign: "center",
                         }}
@@ -642,6 +666,7 @@ export default function HomeScreen(props) {
                     start: 10,
                     fontWeight: 700,
                     fontSize: width >= 720 ? 25 : 18,
+                    fontFamily: isFontLoaded ? 'Glory' : undefined,
                   }}
                 >
                   Kid’s
@@ -652,10 +677,11 @@ export default function HomeScreen(props) {
                     end: 10,
                     color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
+                    fontFamily: isFontLoaded ? 'Glory' : undefined,
                     fontWeight: 600,
                   }}
                   onPress={() => {
-                    viewAllArticles();
+                     viewAllArticles();
                   }}
                 >
                   View All
@@ -688,11 +714,12 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                           textAlign: "center",
                           color: "#808080",
                         }}
                       >
-                        No Kids Article Found
+                        No Article Found
                       </Text>
                     </View>
                   ) : (
@@ -766,17 +793,19 @@ export default function HomeScreen(props) {
                             fontWeight: "bold",
                             marginTop: 10,
                             fontSize: width >= 720 ? 18 : 12,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
                           }}
                         >
                           {item.ArticleNumber}
                         </Text>
-                        <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+                        <Text style={{ fontSize: width >= 720 ? 15 : 10, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
                           {convertToTitleCase(item.Category)}
                         </Text>
                         <Text
                           style={{
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 12,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
                           }}
                         >
                           {"₹" + item.ArticleRate + ".00"}

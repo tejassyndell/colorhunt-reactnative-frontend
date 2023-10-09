@@ -21,10 +21,9 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { ActivityIndicator } from "react-native";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
+import * as Font from "expo-font";
 
 export default function AllArticle(props) {
   const { navigation } = props;
@@ -41,6 +40,22 @@ export default function AllArticle(props) {
   const [noArticlesFound, setNoArticlesFound] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setIsCreateAccountVisible] = useState(false);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
 
   const { width, height } = Dimensions.get("window");
 
@@ -75,6 +90,7 @@ export default function AllArticle(props) {
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   };
+
   const getCategoriesname = async () => {
     const res = await getProductName();
     if (res.status === 200) {
@@ -87,6 +103,7 @@ export default function AllArticle(props) {
   const rmvProductWishlist = async (i) => {
     let data = {
       party_id: await getpartyid(),
+      party_id: 197,
       article_id: i.Id,
     };
     try {
@@ -104,6 +121,7 @@ export default function AllArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      party_id: 197,
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -311,27 +329,27 @@ export default function AllArticle(props) {
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{ fontWeight: "bold",fontFamily: isFontLoaded ? 'Glory' : undefined, fontSize: width >= 720 ? 18 : 12 }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 10,fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
               {convertToTitleCase(item.Category)}
             </Text>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 ,fontFamily: isFontLoaded ? 'Glory' : undefined,}}
             >
               {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All");
+    console.log(priceRange,"All")
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -341,6 +359,7 @@ export default function AllArticle(props) {
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
+
 
   useEffect(() => {
     const minRate = nameDatas.reduce((min, item) => {
@@ -400,6 +419,7 @@ export default function AllArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 fontWeight: 700,
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
@@ -422,7 +442,7 @@ export default function AllArticle(props) {
           >
             {noArticlesFound ? (
               <Text
-                style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}
+                style={{ textAlign: "center", fontSize: 16,fontFamily: isFontLoaded ? 'Glory' : undefined, marginTop: 20 }}
               >
                 NO ARTICLES FOUND
               </Text>
@@ -483,7 +503,6 @@ export default function AllArticle(props) {
                   maxArticleRate={maxArticleRate}
                   status={false}
                   spr={selectedPriceRange}
-                  uniquerates={nameDatas}
                 />
               </View>
             </View>

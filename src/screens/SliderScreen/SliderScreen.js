@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import Swiper from "react-native-swiper";
-import SliderStyles from "./styles.js";
+import  SliderStyles  from "./styles";
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,7 +20,7 @@ const SliderScreen = (props) => {
   const Shopping = () => {
     navigation.navigate("Home");
   };
-  const styles = SliderStyles();
+  const styles = SliderStyles(); 
   // Calculate the image width and height based on screen width
   const imageWidth = width >= 720 ? 280 : 130;
   const imageHeight = height * 0.2; // 20% of screen height
@@ -163,5 +163,7 @@ const SliderScreen = (props) => {
     </View>
   );
 };
+
+
 
 export default SliderScreen;

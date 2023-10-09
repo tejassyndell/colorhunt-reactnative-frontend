@@ -1,7 +1,28 @@
-import { StyleSheet, Dimensions } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet,Dimensions, } from "react-native";
+import * as Font from "expo-font";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const { width, height } = Dimensions.get("window");
+
+
+const detailsOfArtStyles = () => {
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
 
 const styles = StyleSheet.create({
   container: {
@@ -151,8 +172,9 @@ const styles = StyleSheet.create({
     marginTop: 3,
     textAlign: "center",
     color: "b3a8a8",
-    fontWeight: 600,
+    fontWeight: 'bold',
     fontSize: width >= 720 ? 30 : 15,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   product_detail_sec2: {
     width: "50%",
@@ -181,6 +203,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: "1%",
     fontSize: width >= 720 ? 28 : 18,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     color: "#000000",
     textAlign: "center",
     fontWeight: 500,
@@ -222,7 +245,8 @@ const styles = StyleSheet.create({
   color_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: 600,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 'bold',
     color: "#000000",
   },
   available_div: {
@@ -232,7 +256,8 @@ const styles = StyleSheet.create({
   available_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: 600,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 'bold',
     color: "black",
     marginLeft: 2,
   },
@@ -243,7 +268,8 @@ const styles = StyleSheet.create({
   qty_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: 600,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 'bold',
     color: "black",
     marginLeft: 20,
   },
@@ -266,7 +292,7 @@ const styles = StyleSheet.create({
     width: "100%",
     color: "rgba(0, 0, 0, 0.60)",
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: 'bold',
   },
   available_box_div: {
     width: "100%",
@@ -274,7 +300,7 @@ const styles = StyleSheet.create({
   available_box: {
     width: "100%",
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: 'bold',
   },
   qty_box_div: {
     width: "31%",
@@ -340,8 +366,9 @@ const styles = StyleSheet.create({
   },
   box1_btn_text: {
     fontSize: 25,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     textAlign: "center",
-    fontWeight: 600,
+    fontWeight: 'bold',
   },
   box2: {
     width: "44%",
@@ -380,10 +407,11 @@ const styles = StyleSheet.create({
     height: "40%",
   },
   articallabel: {
-    fontWeight: 600,
+    fontWeight: 'bold',
     marginLeft: 0.5,
     textAlign: "left",
     fontSize: width >= 720 ? 20 : 13,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   article_content_r: {
     width: "80.5%",
@@ -406,6 +434,7 @@ const styles = StyleSheet.create({
   article_ratio_content: {
     textAlign: "center",
     fontSize: width >= 720 ? 31 : 18,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     fontWeight: 500,
     color: "#626262",
   },
@@ -418,6 +447,7 @@ const styles = StyleSheet.create({
   article_rate_content: {
     textAlign: "center",
     fontSize: width >= 720 ? 30 : 18,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     fontWeight: 500,
     color: "#626262",
   },
@@ -425,6 +455,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     marginLeft: 0.5,
     fontSize: width >= 720 ? 20 : 14,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   total_price_container: {
     width: "95%",
@@ -486,8 +517,11 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: "white",
     fontSize: 24,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     fontWeight: "bold",
   },
 });
+return styles;
+};
 
-export default styles;
+export default detailsOfArtStyles;
