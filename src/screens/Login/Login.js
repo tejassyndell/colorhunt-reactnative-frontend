@@ -120,13 +120,10 @@ const Login = (props) => {
                   console.log(res.data);
                 });
               }
-              // console.log(res.data[0].Name);
               getstatus(true, res.data[0].Name);
-              const userData = res.data; // Assuming res.data contains user data
+              const userData = res.data;
               AsyncStorage.setItem("UserData", JSON.stringify(userData))
-                .then(() => {
-                  // console.log("Data stored in local storage:", userData);
-                })
+                .then(() => {})
                 .catch((error) => {
                   console.error("Error storing data in local storage:", error);
                 });
@@ -144,9 +141,8 @@ const Login = (props) => {
         alert("Invalid Phone Number. Please enter a 10-digit phone number.");
       }
     } else {
-      // Implement OTP verification logic here.
       // For simplicity, we'll just check if the OTP is "1234".
-      const enteredOTP = otp.join(""); // Concatenate OTP digits
+      const enteredOTP = otp.join("");
       if (enteredOTP === "1234") {
         navigation.navigate("Slider");
       } else {
@@ -173,7 +169,7 @@ const Login = (props) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }} // You might need to adjust the style as per your layout
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={styles.container1}>
         <View style={styles.imagebox}>

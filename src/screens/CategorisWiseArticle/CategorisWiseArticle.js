@@ -82,11 +82,16 @@ export default function CategorisWiseArticle(props) {
 
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
+  const { width, height } = Dimensions.get("screen");
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : width >= 420
+      ? 120
+      : 80;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
-
-  const { width, height } = Dimensions.get("window");
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";

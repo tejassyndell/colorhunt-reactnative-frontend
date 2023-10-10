@@ -67,7 +67,13 @@ export default function AllArticle(props) {
   };
 
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : width >= 420
+      ? 120
+      : 80;
 
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";

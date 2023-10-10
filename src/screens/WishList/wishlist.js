@@ -32,29 +32,35 @@ export default function WishList(props) {
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
-    useEffect(() => {
-      const loadCustomFont = async () => {
-        try {
-          await Font.loadAsync({
-            Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
-          });
-          setIsFontLoaded(true);
-        } catch (error) {
-          console.error("Error loading custom font:", error);
-        }
-      };
-  
-      loadCustomFont();
-    }, []);
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : width >= 420
+      ? 120
+      : 80;
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     console.log(partydata[0].Id, "[][][[][]");
     return partydata[0].Id;
-  }
+  };
 
   // getCategoriesname
   const getCategoriesname = async () => {
@@ -65,7 +71,7 @@ export default function WishList(props) {
   };
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
-    let id = await getpartyid()
+    let id = await getpartyid();
     let data = {
       party_id: id,
       article_id: i.Id,
@@ -122,7 +128,7 @@ export default function WishList(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 20,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -249,7 +255,7 @@ export default function WishList(props) {
             <Text
               style={{
                 fontSize: width * 0.1,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
                 fontWeight: "bolder",
                 textAlign: "center",
                 fontWeight: 700,
@@ -279,7 +285,13 @@ export default function WishList(props) {
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text style={{ color: "white", fontSize: width * 0.035,fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: width * 0.035,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                }}
+              >
                 Continue Shopping
               </Text>
             </TouchableOpacity>

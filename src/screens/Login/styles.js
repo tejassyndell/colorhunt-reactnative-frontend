@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet,Dimensions, } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import * as Font from "expo-font";
-
 
 const SliderStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
@@ -21,12 +20,12 @@ const SliderStyles = () => {
     loadCustomFont();
   }, []);
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
-const { width, height } = Dimensions.get("window");
-const logoSize = Math.min(width, height) * 0.6;
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
+  const { width, height } = Dimensions.get("window");
+  const logoSize = Math.min(width, height) * 0.6;
 
-  const styles  = StyleSheet.create({
+  const styles = StyleSheet.create({
     contentContainer: {
       width: "100%",
       alignItems: "center",
@@ -35,23 +34,23 @@ const logoSize = Math.min(width, height) * 0.6;
       bottom: 0,
     },
     title: {
-       fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       color: "white",
       fontSize: windowWidth * 0.07,
-  
+
       fontWeight: 700,
       marginBottom: "2%",
     },
     subtitle: {
-       fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       color: "#BCBCBC",
       fontSize: windowWidth * 0.04,
-  
+
       fontWeight: 700,
       marginBottom: 80,
     },
     input: {
-       fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       flex: 1,
       fontSize: width >= 720 ? 35 : 20,
       height: width >= 720 ? 80 : 50,
@@ -59,7 +58,7 @@ const logoSize = Math.min(width, height) * 0.6;
       backgroundColor: "white",
       borderTopRightRadius: 7,
       borderBottomRightRadius: 7,
-  
+
       color: "#000000",
     },
     otpContainer: {
@@ -70,7 +69,7 @@ const logoSize = Math.min(width, height) * 0.6;
       justifyContent: "space-between",
     },
     otpInput: {
-       fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       width: width >= 720 ? 90 : 47,
       justifyContent: "space-between",
       height: width >= 720 ? 90 : 50,
@@ -93,7 +92,7 @@ const logoSize = Math.min(width, height) * 0.6;
       right: 0,
     },
     buttonText: {
-      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       color: "white",
       fontSize: width >= 720 ? 40 : 23,
       fontWeight: 700,

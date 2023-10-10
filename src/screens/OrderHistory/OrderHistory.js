@@ -31,7 +31,13 @@ const OrderHistory = (props) => {
     useState("DD/MM/YYYY");
   const [completedsodata, setcompletedsodata] = useState();
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : width >= 420
+      ? 120
+      : 80;
   const toggleCalendar = () => {
     setCalendarVisible(!isCalendarVisible);
   };
@@ -209,7 +215,6 @@ const OrderHistory = (props) => {
           <View style={styles.first_cnt}>
             <View style={styles.pendin_complete_cnt}>
               <View style={styles.pc_btn_cnt}>
-                {/* <View style={{ width: "50%" }}> */}
                 <Pressable
                   style={toggle ? styles.pending_btn : styles.complete_btn}
                   onPress={() => {
@@ -674,6 +679,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
+
     backgroundColor: "#FFF",
     borderTopWidth: 1,
     borderTopColor: "#E0E0E0",
