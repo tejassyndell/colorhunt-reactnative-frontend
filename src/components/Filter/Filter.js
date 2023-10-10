@@ -31,6 +31,7 @@ export default function Filter({
         maxArticleRate,
     ]);
     const defaultPriceRange = [minArticleRate, maxArticleRate];
+    
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [positionY, setPositionY] = useState(Dimensions.get("window").height);
     const unqrates = new Set()
@@ -79,7 +80,7 @@ export default function Filter({
     const resetFilters = () => {
         setSelectedCategories([]);
         setSelectedPriceRange(defaultPriceRange);
-        onFilterChange([], [minArticleRate, maxArticleRate]);
+        // onFilterChange([], [minArticleRate, maxArticleRate]);
         setLeftValue(minArticleRate);
         setRightValue(maxArticleRate);
     };
@@ -164,7 +165,6 @@ export default function Filter({
     useEffect(() => {
         setSelectedPriceRange([leftValue, rightValue]);
     }, [leftValue, rightValue]);
-
     return (
         <View
             style={[

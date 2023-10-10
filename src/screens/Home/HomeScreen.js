@@ -172,10 +172,23 @@ export default function HomeScreen(props) {
   useEffect(() => {
     getCategoriesname();
   }, []);
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
+  const viewAllArticles = async () => {
+    navigation.navigate("AllArticle");
 
-  const viewAllArticles = () => {
-    navigation.navigate("AllArticle", { finalData });
+
+    try {
+      const serializedCategories = JSON.stringify(selectedCategories);
+      const serrializedPriceRange = JSON.stringify(selectedPriceRange)
+      await AsyncStorage.setItem(key, serializedCategories);
+      await AsyncStorage.setItem(key2, serrializedPriceRange)
+      console.log('Data stored successfully.');
+    } catch (error) {
+      console.error('Error storing data:', error);
+    }
   };
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -248,10 +261,12 @@ export default function HomeScreen(props) {
   const handlePress = (item) => {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
+  
   const filterData = () => {
+    console.log(searchText,selectedCategories,selectedPriceRange,"in filter ")
     if (
       searchText === "" &&
-      selectedCategories.length === 0 &&
+      selectedCategories.length === 0 ||
       selectedPriceRange.length === 0
     ) {
       setshowarticle(false)
@@ -546,26 +561,26 @@ export default function HomeScreen(props) {
                     </TouchableOpacity>
                   )) :
                   <View
-                  style={
-                    {
-                      width: "100%",
-                      height: "80%",
-                      justifyContent: "center",
-                      textAlign: "center",
-                    }
+                    style={
+                      {
+                        width: "100%",
+                        height: "80%",
+                        justifyContent: "center",
+                        textAlign: "center",
+                      }
 
-                  }
-                >
-                  <Text
-                    style={{
-                      fontSize: width >= 720 ? 25 : 17,
-                      textAlign: "center",
-                      color: "#808080",
-                    }}
+                    }
                   >
-                    No Mens Article Found
-                  </Text>
-                </View>
+                    <Text
+                      style={{
+                        fontSize: width >= 720 ? 25 : 17,
+                        textAlign: "center",
+                        color: "#808080",
+                      }}
+                    >
+                      No Mens Article Found
+                    </Text>
+                  </View>
                 ) : (nameData.map((item, index) => (
                   <View
                     key={item.id}

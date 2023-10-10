@@ -22,9 +22,28 @@ import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 import { ActivityIndicator } from "react-native";
 
 export default function AllArticle(props) {
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
+  const retrieveStoredCategories = async () => {
+    try {
+      const serializedCategories = await AsyncStorage.getItem(key);
+      const serrializedPriceRange = await AsyncStorage.getItem(key2)
+      if (serializedCategories !== null || selectedPriceRange !== null) {
+        const categories = JSON.parse(serializedCategories);
+        const priceRange = JSON.parse(serrializedPriceRange)
+        setSelectedCategories(categories);
+        setSelectedPriceRange(priceRange)
+      } else {
+        console.log('No data found with the key.');
+      }
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+    }
+  };
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
@@ -41,7 +60,6 @@ export default function AllArticle(props) {
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
 
-  // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
 
   const openFilter = () => {
@@ -53,9 +71,9 @@ export default function AllArticle(props) {
     return partydata[0].Id;
   }
   const getCategoriesname = async () => {
+    retrieveStoredCategories();
     const res = await getProductName();
     if (res.status === 200) {
-      // console.log(res.data);
       setNameDatas(res.data);
       setFinalData(res.data);
       setIsLoading(false);
@@ -63,7 +81,7 @@ export default function AllArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -77,10 +95,9 @@ export default function AllArticle(props) {
     }
   };
 
-  // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -153,10 +170,6 @@ export default function AllArticle(props) {
     });
   }, []);
 
-  useEffect(() => {
-    filterData();
-  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
-
   const filterData = () => {
     if (
       searchText === "" &&
@@ -183,18 +196,21 @@ export default function AllArticle(props) {
             (item.ArticleRate >= selectedPriceRange[0] &&
               item.ArticleRate <= selectedPriceRange[1]))
       );
-
       setFinalData(filtered);
-
       setNoArticlesFound(filtered.length === 0);
     }
   };
 
+  useEffect(() => {
+    filterData();
+  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
+
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("DetailsOfArticals", { id: item.Id })
-    }
+      onPress={() =>
+        navigation.navigate("DetailsOfArticals", { id: item.Id })
+      }
       style={{
         alignItems: "center",
         height: "auto",
@@ -277,7 +293,7 @@ export default function AllArticle(props) {
         }}
       >
         <TouchableOpacity
-         
+
           style={{
             display: "flex",
             justifyContent: "center",
@@ -309,8 +325,6 @@ export default function AllArticle(props) {
     setSelectedPriceRange(priceRange);
     console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
-
-    // Trigger the filter function
     filterData();
   };
 
