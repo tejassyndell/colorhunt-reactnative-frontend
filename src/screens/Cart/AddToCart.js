@@ -24,7 +24,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { ImageZoomProps } from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
 
-const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
 const AddToCart = (props) => {
   const { navigation } = props;

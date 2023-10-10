@@ -16,7 +16,7 @@ import {
 import { addso, gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 import { TouchableWithoutFeedback } from "react-native";
 import * as Font from "expo-font";
 
@@ -29,7 +29,7 @@ const Orderlist = (props) => {
   const [transportationVal, setTransportationVal] = useState();
   const [fillvalue, setValue] = useState(false);
   const [userdata, setUserdata] = useState("");
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
   const [Transportation, setTransportation] = useState([]);

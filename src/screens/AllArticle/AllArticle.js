@@ -70,7 +70,7 @@ export default function AllArticle(props) {
     Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
 
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
@@ -285,7 +285,19 @@ export default function AllArticle(props) {
           borderRadius: 10,
         }}
       >
-        <Image
+          { item.Photos?
+          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
+          source={require("../../../assets/demo.png")}
+          style={{
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
+            zIndex: 1,
+            marginTop: 10,
+          }}
+        />: <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
             width: "90%",
@@ -296,7 +308,7 @@ export default function AllArticle(props) {
             zIndex: 1,
             marginTop: 10,
           }}
-        />
+        />:""}
       </View>
       <View
         style={{

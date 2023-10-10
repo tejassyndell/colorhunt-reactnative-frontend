@@ -168,7 +168,7 @@ export default function HomeScreen(props) {
     getWishlist();
   }, []);
 
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const getCategoriesname = async () => {
     try {

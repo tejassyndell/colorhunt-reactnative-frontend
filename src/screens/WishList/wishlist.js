@@ -48,7 +48,7 @@ export default function WishList(props) {
       loadCustomFont();
     }, []);
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData")
     partydata = await JSON.parse(partydata);

@@ -89,7 +89,7 @@ export default function CategorisWiseArticle(props) {
   const { width, height } = Dimensions.get("window");
 
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
   console.log(category);
@@ -307,7 +307,19 @@ export default function CategorisWiseArticle(props) {
           borderRadius: 10,
         }}
       >
-        <Image
+        { item.Photos?
+          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
+          source={require("../../../assets/demo.png")}
+          style={{
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
+            zIndex: 1,
+            marginTop: 10,
+          }}
+        />: <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
             width: "90%",
@@ -318,7 +330,19 @@ export default function CategorisWiseArticle(props) {
             zIndex: 1,
             marginTop: 10,
           }}
-        />
+        />:""}
+        {/* <Image
+          source={{ uri: baseImageUrl + item.Photos }}
+          style={{
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
+            zIndex: 1,
+            marginTop: 10,
+          }}
+        /> */}
       </View>
       <View
         style={{

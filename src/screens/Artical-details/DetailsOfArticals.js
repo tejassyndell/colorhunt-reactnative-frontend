@@ -211,7 +211,7 @@ const DetailsOfArticals = (props) => {
     return `₹${value.toFixed(2)}`;
   };
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const imageElements = articlePhotos.map((fileName, index) => (
     <Image
       source={{ uri: baseImageUrl + fileName }}

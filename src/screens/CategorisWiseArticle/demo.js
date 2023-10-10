@@ -53,7 +53,7 @@ export default function AllArticle(props) {
   }, []);
 
   // uploard url image
-  const baseImageUrl = 'https://colorhunt.in/colorHuntApi/public/uploads/';
+  const baseImageUrl = 'https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/';
 
   const getproductnamess = async () => {
     try {
