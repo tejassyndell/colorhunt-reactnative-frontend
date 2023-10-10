@@ -30,6 +30,7 @@ const OrderHistory = (props) => {
   const [selectedDateIncompleted, setSelectedDateIncompleted] =
     useState("DD/MM/YYYY");
   const [completedsodata, setcompletedsodata] = useState();
+
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
@@ -215,6 +216,7 @@ const OrderHistory = (props) => {
           <View style={styles.first_cnt}>
             <View style={styles.pendin_complete_cnt}>
               <View style={styles.pc_btn_cnt}>
+                {/* <View style={{ width: "50%" }}> */}
                 <Pressable
                   style={toggle ? styles.pending_btn : styles.complete_btn}
                   onPress={() => {
@@ -292,13 +294,13 @@ const OrderHistory = (props) => {
                               paddingLeft: "2%",
                             }}
                           >
-                            <View style={{ gap: 8 }}>
+                            <View style={{ gap: 14 }}>
                               <View style={orderstyles.text_cnt}>
                                 <Text style={orderstyles.txt_titile}>
                                   SO No :
                                 </Text>
                                 <Text style={orderstyles.txt_val}>
-                                  {item.SoNumber}
+                                  {`${item.UserName}${item.SoNumber}/${item.StartYear}-${item.EndYear}`}
                                 </Text>
                               </View>
                               <View>
@@ -363,8 +365,8 @@ const OrderHistory = (props) => {
                               <View style={orderstyles.pending_icon_text}>
                                 <View
                                   style={{
-                                    width: width < 720 ? 15 : 20,
-                                    height: width < 720 ? 16 : 22,
+                                    width: width >= 720 ? 20 : 15,
+                                    height: width >= 720 ? 22 : 16,
                                   }}
                                 >
                                   <Image
@@ -378,8 +380,8 @@ const OrderHistory = (props) => {
                                 </View>
                                 <Text
                                   style={{
-                                    fontSize: width < 720 ? 10.854 : 16.854,
-                                    fontWeight: 700,
+                                    fontSize: width >= 720 ? 16 : 12,
+                                    fontWeight: "700",
                                     color: "#FF0203",
                                   }}
                                 >
@@ -430,7 +432,7 @@ const OrderHistory = (props) => {
                                   Outward No :
                                 </Text>
                                 <Text style={orderstyles.txt_val}>
-                                  {item.OutwardNumber}
+                                  {`${item.UserName}${item.OutwardNumber}/${item.StartYear}-${item.EndYear}`}
                                 </Text>
                               </View>
                               <View>
@@ -511,7 +513,7 @@ const OrderHistory = (props) => {
                                 <Text
                                   style={{
                                     fontSize: width < 720 ? 10.854 : 16.854,
-                                    fontWeight: 700,
+                                    fontWeight: "700",
                                     color: "#7AC848",
                                   }}
                                 >
@@ -563,7 +565,7 @@ const OrderHistory = (props) => {
                     ></Image>
                   </View>
                   <Text
-                    style={{ fontSize: 18, fontWeight: 400, color: "#BBB" }}
+                    style={{ fontSize: 18, fontWeight: "400", color: "#BBB" }}
                   >
                     {orderstatus ? selectedDate : selectedDateIncompleted}
                   </Text>
@@ -626,7 +628,7 @@ const OrderHistory = (props) => {
                   >
                     <Text
                       style={{
-                        fontWeight: 700,
+                        fontWeight: "700",
                         color: "#FFF",
                         textAlign: "center",
                         fontSize: width >= 720 ? 25 : 16,
@@ -679,16 +681,15 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-
     backgroundColor: "#FFF",
     borderTopWidth: 1,
     borderTopColor: "#E0E0E0",
   },
   first_cnt: {
     width: "100%",
-    height: "12%",
-    backgroundColor: "#FFF",
-    padding: "5%",
+    height: "auto",
+    paddingHorizontal: "5%",
+    paddingTop: "5%",
   },
   pendin_complete_cnt: {
     width: "100%",
@@ -719,7 +720,7 @@ const styles = StyleSheet.create({
   },
   pending_text: {
     fontSize: width < 720 ? width * 0.05 : width * 0.037,
-    fontWeight: 700,
+    fontWeight: "700",
     textAlign: "center",
   },
   complete_btn: {
@@ -732,7 +733,7 @@ const styles = StyleSheet.create({
   complete_text: {
     color: "#FFF",
     fontSize: width < 720 ? width * 0.05 : width * 0.037,
-    fontWeight: 700,
+    fontWeight: "700",
     textAlign: "center",
     paddingBottom: "2%",
   },
@@ -767,7 +768,7 @@ const orderstyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    height: "45%",
+    height: "40%",
     paddingVertical: 2,
   },
   pending_icon_text: {
@@ -777,7 +778,7 @@ const orderstyles = StyleSheet.create({
     paddingBottom: 6.34,
     borderRadius: 5.268,
     borderColor: "#FF0203",
-    width: "65%",
+    width: width >= 720 ? "50%" : "65%",
     marginRight: 8,
     display: "flex",
     flexDirection: "row",
@@ -789,16 +790,16 @@ const orderstyles = StyleSheet.create({
   text_cnt: {
     display: "flex",
     flexDirection: "row",
-    gap: 5,
+    gap: 3,
   },
   txt_titile: {
     fontSize: width < 720 ? 14 : 20,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#000000B2",
   },
   txt_val: {
-    fontSize: width < 720 ? 15 : 22,
-    fontWeight: 700,
+    fontSize: width < 720 ? 12 : 22,
+    fontWeight: "700",
     color: "#000000",
   },
   complete_icon_text: {

@@ -1,1016 +1,813 @@
-import {
+const {
   View,
   Text,
   Image,
-  TouchableHighlight,
   TouchableOpacity,
-  Pressable,
-  ScrollView,
-  Modal,
-  Dimensions,
-  Platform,
-} from "react-native";
-import {
-  ArticleDetails,
-  addto_cart,
-  findfromthecart,
-  updateCartArticale,
-} from "../../api/api";
-import Carousel from "react-native-snap-carousel";
-import { useEffect, useState } from "react";
-import { useRoute } from "@react-navigation/native";
-import detailsOfArtStyles from "./styles";
-import stylesRecipe from "../Recipe/styles";
-// import { ScrollView } from "react-native-gesture-handler";
-import { useLayoutEffect } from "react";
+  ActivityIndicator,
+} = require("react-native");
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
-import { ActivityIndicator } from "react-native";
-import { TouchableWithoutFeedback } from "react-native";
-import ImageZoom from "react-native-image-pan-zoom";
-import * as Font from "expo-font";
+import { useState, useLayoutEffect, useEffect } from "react";
+import { Pressable } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { getsonumber } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
+import { Calendar } from "react-native-calendars";
+import { Modal } from "react-native-paper";
+const { width, height } = Dimensions.get("window");
 
-const DetailsOfArticals = (props) => {
+const OrderHistory = (props) => {
   const { navigation } = props;
-  const { width: viewportWidth } = Dimensions.get("window");
-  const { width } = Dimensions.get("window");
-
-  const route = useRoute();
-  const [isImageZoomVisible, setImageZoomVisible] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState("");
-  const { id, Quantity = 0 } = route.params;
-  console.log(id);
-  const styles = detailsOfArtStyles();
-  const handleSizeClick = (size) => {};
-  // const { id } = useParams()//Use this with navigate
-  useEffect(() => {
-    ArticleDetailsData();
-  }, []);
-  const [availableStock, setAvailableStock] = useState([]);
-  const [quantities, setQuantities] = useState({});
-  const [articlePhotos, setArticlePhotos] = useState([]);
-  const [articleCategory, setArticleCategory] = useState();
-  const [articleRatio, setArticleRatio] = useState();
-  const [articleRate, setArticleRate] = useState();
-  const [articleSizeData, setArticleSizeData] = useState();
-  const [articleColorver, setArticleColorver] = useState([]);
-  const [articleNumber, setArticlenumber] = useState();
-  const [salesnopacks, setSalesnopacks] = useState("");
-  const [nopacks, setNopacks] = useState(0);
-  const [combinedArray, setCombinedArray] = useState([]);
-  const [subcategory, setSubcategory] = useState();
-  const [isZoomed, setIsZoomed] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [updateCart, setUpdateCart] = useState(false);
-  const [articalCartId, setArticalCartId] = useState();
-
-  const [isFontLoaded, setIsFontLoaded] = useState(false);
-
-  useEffect(() => {
-    const loadCustomFont = async () => {
-      try {
-        await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
-        });
-        setIsFontLoaded(true);
-      } catch (error) {
-        console.error("Error loading custom font:", error);
-      }
-    };
-
-    loadCustomFont();
-  }, []);
-  const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData");
-    partydata = await JSON.parse(partydata);
-    return partydata[0].Id;
-  };
-
+  // const [isLoading, setIsLoading] = useState(true);
+  const [toggle, setToggle] = useState(true);
+  const [orderstatus, setOrderstatus] = useState(true);
+  const [sonumberdata, setSoNumberData] = useState([]);
+  const [oldDataOfso, setOldDateOfso] = useState([]);
+  const [isloading, setIsLoading] = useState(true);
+  const [isCalendarVisible, setCalendarVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("DD/MM/YYYY");
+  const [selectedDateIncompleted, setSelectedDateIncompleted] =
+    useState("DD/MM/YYYY");
+  const [completedsodata, setcompletedsodata] = useState();
   const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 120
-        : 100
-      : width >= 420
-      ? 120
-      : 80;
-
-  const ArticleDetailsData = async () => {
-    let data = {
-      ArticleId: id,
-      PartyId: await getpartyid(),
-    };
-    try {
-      const res = await ArticleDetails(data);
-      console.log(res.data);
-      console.log("dd", res.data.photos);
-      setArticlePhotos(res.data.photos);
-      setArticleCategory(res.data.calculatedData[0].Category);
-      setSubcategory(res.data.calculatedData[0].subcategory);
-      setArticleRatio(res.data.calculatedData[0].ArticleRatio);
-      setArticleRate(res.data.calculatedData[0].ArticleRate);
-      setArticleSizeData(JSON.parse(res.data.calculatedData[0].ArticleSize));
-      setArticleColorver(JSON.parse(res.data.calculatedData[0].ArticleColor));
-      setArticlenumber(res.data.calculatedData[0].ArticleNumber);
-      setSalesnopacks(res.data.calculatedData[0].SalesNoPacks);
-      setNopacks(res.data.calculatedData[0].NoPacks);
-      console.log(nopacks);
-      const salesnopackstoArray =
-        res.data.calculatedData[0].SalesNoPacks.split(",");
-      // const salesnopackstoArray = [1, 2, 3, 4]
-      // const salesnopackstoArray = [nopacks]
-      setAvailableStock(salesnopackstoArray.map((stock) => parseInt(stock)));
-      console.log(availableStock);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+  const toggleCalendar = () => {
+    setCalendarVisible(!isCalendarVisible);
   };
-  useEffect(() => {
-    const colorwithindex = articleColorver.map((element, index) => ({
-      ...element,
-      index: index,
-    }));
-    const stockswithindex = availableStock.map((element, index) => ({
-      value: element,
-      index: index,
-    }));
-    const combinedArray = colorwithindex.map((coloritem) => {
-      const stockitem = stockswithindex.find(
-        (stockitem) => stockitem.index === coloritem.index
-      );
-      return {
-        ...coloritem,
-        available: stockitem ? stockitem.value : 0,
-        Rate: articleRate,
-      };
-    });
-    setCombinedArray(combinedArray);
-    const defaultQuantities = {};
-    if (Quantity === 0) {
-      combinedArray.forEach((item) => {
-        defaultQuantities[item.index] = 0;
-      });
-    } else {
-      if (Quantity.includes(",")) {
-        let initialQuantities = Quantity.split(",").map((value) =>
-          parseInt(value.trim())
-        );
-        combinedArray.forEach((item) => {
-          defaultQuantities[item.index] = parseInt(
-            initialQuantities[item.index]
-          );
-        });
-      } else {
-        combinedArray.forEach((item) => {
-          defaultQuantities[item.index] = parseInt(Quantity);
-        });
-      }
-    }
-    setQuantities(defaultQuantities);
-  }, [articleColorver, availableStock, articleRate]);
 
-  const addtocart = async (ArticleId) => {
-    if (!combinedArray) {
-      console.log("undefined");
-      return;
-    }
-    const colorwiseQuantities = combinedArray.map(
-      (coloritem) => quantities[coloritem.index]
-    );
-    console.log("colorwise quantity :", colorwiseQuantities);
-    const colorwiseQuantitiesTOstring = colorwiseQuantities.join(",");
-    console.log("cqty to string ", colorwiseQuantitiesTOstring);
-    console.log(totalPrice);
-    const data = {
-      party_id: await getpartyid(),
-      article_id: ArticleId,
-      Quantity: colorwiseQuantitiesTOstring,
-      rate: totalPrice,
-    };
-    try {
-      console.log(data);
-      await findfromthecart(data).then(async (res) => {
-        if (res.data.id == -1) {
-          await addto_cart(data);
-          navigation.navigate("cart_list", { totalPrice });
-        } else {
-          setIsModalVisible(true);
-
-          setArticalCartId(res.data[0].id);
+  const filterOsDataByDate = () => {
+    if (selectedDate !== "DD/MM/YYYY") {
+      let data = sonumberdata;
+      let filterdata = data.filter((item) => {
+        let val = new Date(item.SoDate).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+        if (item.SoDate) {
+          if (
+            new Date(item.SoDate).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }) === selectedDate
+          ) {
+            // console.log(val, "{}{}{}{}{}", date);
+            return item;
+          }
         }
       });
-    } catch (error) {
-      console.log("Error Adding to Cart:", error);
-    }
-    // navigate('/cart_list', { state: { totalPrice } })
-  };
-
-  const totalPrice = Object.keys(quantities).reduce(
-    (total, colorIndex) =>
-      total + quantities[colorIndex] * (combinedArray[colorIndex].Rate / 10),
-    0
-  );
-  const formatPrice = (value) => {
-    return `₹${value.toFixed(2)}`;
-  };
-  // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
-  const imageElements = articlePhotos.map((fileName, index) => (
-    <Image
-      source={{ uri: baseImageUrl + fileName }}
-      style={{ width: "100%", height: "100%" }}
-      key={index}
-    />
-  ));
-  const handleIncrease = (colorIndex) => {
-    if (!combinedArray || !combinedArray[colorIndex]) {
-      return;
-    }
-    console.log(quantities[colorIndex]);
-    console.log(combinedArray[colorIndex].available);
-    if (quantities[colorIndex] < nopacks) {
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [colorIndex]: prevQuantities[colorIndex] + 1,
-      }));
+      setSoNumberData(filterdata);
     }
   };
-  const handleDecrease = (colorIndex) => {
-    if (!combinedArray || !combinedArray[colorIndex]) {
-      return;
+  const filterdataOfcompleted = () => {
+    if (selectedDate !== "DD/MM/YYYY") {
+      let data = completedsodata;
+      let filterdata = data.filter((item) => {
+        let val = new Date(item.SoDate).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+        if (item.SoDate) {
+          if (
+            new Date(item.SoDate).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }) === selectedDate
+          ) {
+            // console.log(val, "{}{}{}{}{}", date);
+            return item;
+          }
+        }
+      });
+      setcompletedsodata(filterdata);
     }
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [colorIndex]: Math.max(prevQuantities[colorIndex] - 1, 0),
-    }));
-  };
-  const totalQuantity = Object.values(quantities).reduce(
-    (total, quantity) => total + quantity,
-    0
-  );
-  console.log(totalQuantity);
-
-  // const [magnifyStatus, setMagnifyStatus] = useState(false);
-  // const [prdImage, setPrdImage] = useState();
-  const openImageZoom = (index) => {
-    console.log(index);
-    setSelectedImageIndex(index);
-    setImageZoomVisible(true);
   };
 
-  const renderImage = ({ item, index }) => (
-    <TouchableOpacity onPress={() => openImageZoom(item)}>
-      <View style={{ width: "100%", height: "100%" }}>
-        <Image
-          style={{ width: "100%", height: width >= 720 ? 500 : 550 }}
-          source={{ uri: baseImageUrl + item }}
-        />
-      </View>
-    </TouchableOpacity>
-  );
-
+  const handleDateSelect = (day) => {
+    let date = new Date(day.dateString).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    setSelectedDate(date);
+  };
+  const handleDateSelectOfCompleted = (day) => {
+    let date = new Date(day.dateString).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    setSelectedDateIncompleted(date);
+  };
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <MenuBackArrow
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
+        <View style={{ marginTop: 2 }}>
+          <MenuBackArrow
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+          />
+        </View>
       ),
-      headerTitle: () => <View />,
+      headerTitle: () => (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            alignContent: "center",
+            paddingLeft: "10%",
+            width: parseInt(width) >= 720 ? "95%" : "100%",
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: width * 0.05,
+              fontWeight: "700",
+              width: "100%",
+            }}
+          >
+            Orders History
+          </Text>
+        </View>
+      ),
+      headerRight: () => <View />,
       headerStyle: {
         height: headerHeight, // Increase the header height here
       },
     });
   }, []);
 
-  const updateArticalInCart = async () => {
-    if (!combinedArray) {
-      console.log("undefined");
-      return;
-    }
-    const colorwiseQuantities = combinedArray.map(
-      (coloritem) => quantities[coloritem.index]
-    );
-    console.log("colorwise quantity :", colorwiseQuantities);
-    const colorwiseQuantitiesTOstring = colorwiseQuantities.join(",");
-    console.log("cqty to string ", colorwiseQuantitiesTOstring);
-    console.log(totalPrice);
-    const data = {
-      id: articalCartId,
-      Quantity: colorwiseQuantitiesTOstring,
-      rate: totalPrice,
-    };
-    await updateCartArticale(data).then((res) => {
+  const getSonumber = async () => {
+    let data = await AsyncStorage.getItem("UserData");
+    data = await JSON.parse(data);
+    await getsonumber({ PartyId: data[0].Id }).then((res) => {
       console.log(res.data);
-      navigation.navigate("cart_list", { totalPrice });
+      setSoNumberData(res.data);
+      setOldDateOfso(res.data);
+      setcompletedsodata(res.data);
+      setIsLoading(false);
     });
   };
-  const closeModal = () => {
-    setImageZoomVisible(false);
+  useEffect(() => {
+    getSonumber();
+  }, []);
+  const calculateTotalArticleRate = (articleRate, outwardNoPacks) => {
+    return articleRate.reduce(
+      (total, value, index) =>
+        total + parseInt(value, 10) * parseInt(outwardNoPacks[index], 10),
+      0
+    );
+  };
+  const inputDate = "2021-04-15T11:39:25.000Z";
+  const totalpices = (outwardNoPacksArray) => {
+    const flattenedArray = outwardNoPacksArray
+      .flatMap((str) => str.split(",").map(Number))
+      .filter(Number.isInteger); // Filter out non-integer values
+
+    // Calculate the sum of all integers in the array
+    const sum = flattenedArray.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    return sum;
   };
 
-  // const getfontsize=(size)=>{
-  //   const screenwidth = Dimensions.get("window").width;
-  //   const fontSize =  screenwidth > 400 ? 16 : 10;
-  //   console.log(fontSize);
-  //   return fontSize;
-  // }
+  const calculateTotalAmount = (outwardNoPacks, articleRate) => {
+    let sum = 0;
 
-  const windowWidth = Dimensions.get("window").width;
-  const screenWidth = Dimensions.get("window").width;
-  const isFirstContainerFullWidth = screenWidth >= 720;
+    for (let i = 0; i < outwardNoPacks.length; i++) {
+      const outwardValue = outwardNoPacks[i].split(",").map(Number);
+      const rate = parseInt(articleRate[i]);
+
+      for (const value of outwardValue) {
+        sum += rate * value;
+      }
+    }
+
+    return sum;
+  };
   return (
     <>
-      {isLoading ? (
-        <View style={styles.loader}>
+      {isloading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>
-          <ScrollView nestedScrollEnabled={true}>
-            <View style={{ zIndex: 1, flex: 1 }}>
-              <View
-                style={{
-                  width: "100%",
-                  height: viewportWidth >= 720 ? 500 : 400,
-                  flex: 1,
-                }}
-              >
-                <Carousel
-                  data={articlePhotos}
-                  renderItem={renderImage}
-                  sliderWidth={viewportWidth}
-                  itemWidth={viewportWidth}
-                  loop={true}
-                  autoplay={true}
-                  autoplayInterval={3000}
-                ></Carousel>
-                <View
-                  style={{
-                    zIndex: 2,
-                    position: "absolute",
-                    top: viewportWidth >= 720 ? "88%" : "86%",
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
+        <View style={styles.container}>
+          <View style={styles.first_cnt}>
+            <View style={styles.pendin_complete_cnt}>
+              <View style={styles.pc_btn_cnt}>
+                {/* <View style={{ width: "50%" }}> */}
+                <Pressable
+                  style={toggle ? styles.pending_btn : styles.complete_btn}
+                  onPress={() => {
+                    setToggle(!toggle);
+                    setOrderstatus(true);
                   }}
+                >
+                  <Text
+                    style={toggle ? styles.pending_text : styles.complete_text}
+                  >
+                    Pending
+                  </Text>
+                </Pressable>
+                {/* </View> */}
+                {/* <View style={{ width: "50%"  }}> */}
+                <Pressable
+                  style={toggle ? styles.complete_btn : styles.pending_btn}
+                  onPress={() => {
+                    setToggle(!toggle);
+                    setOrderstatus(false);
+                  }}
+                >
+                  <Text
+                    style={toggle ? styles.complete_text : styles.pending_text}
+                  >
+                    Completed
+                  </Text>
+                </Pressable>
+                {/* </View> */}
+              </View>
+            </View>
+            <View style={styles.calender_cnt}>
+              <View style={{ paddingRight: "4%" }}>
+                <TouchableOpacity
+                  onPress={() => toggleCalendar()}
+                  style={{ height: height * 0.035, width: width * 0.035 }}
                 >
                   <Image
-                    style={{ width: "100%" }}
-                    source={require("../../../assets/Rectangle_18898.png")}
-                  />
-                  <View
                     style={{
-                      zIndex: 3,
-                      position: "absolute",
-                      top: width >= 720 ? "10%" : "30%",
-                      left: 0,
-                      right: 0,
-                      justifyContent: "center",
-                      alignItems: "center",
+                      height: "100%",
+                      width: "100%",
+                      resizeMode: "contain",
                     }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: width >= 720 ? 40 : 26,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        color: "black",
-                      }}
-                    >
-                      Article No: {articleNumber}
-                    </Text>
-                  </View>
-                </View>
+                    source={require("../../../assets/calaender.png")}
+                  ></Image>
+                </TouchableOpacity>
               </View>
             </View>
-
-            <View style={{ zIndex: 2 }}>
-              <View
-                style={{
-                  backgroundColor: "#FFF",
-                  elevation: 12,
-                  shadowColor: "black",
-                  borderColor: "#b3a8a8",
-                  width: "100%",
-                  height: "100%",
-                  borderTopLeftRadius: 30,
-                  borderTopRightRadius: 30,
-                  padding: 12,
-                  shadowColor: "#000000",
-                  shadowOpacity: 1,
-                }}
-              >
-                <View>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "stretch",
-                      // padding: 20,
-                    }}
-                  >
-                    <View
-                      style={{
-                        width: "100%",
-                        flexDirection:
-                          articleSizeData.length > 3 ? "column" : "row",
-                        alignItems:
-                          articleSizeData.length > 3
-                            ? "flex-Start"
-                            : "flex-start",
-                        marginBottom: 10,
-                      }}
-                    >
-                      <View
-                        style={{
-                          marginRight: articleSizeData.length > 3 ? 0 : 30,
-                          width: articleSizeData.length > 3 ? "auto" : "50%",
-                          marginBottom: articleSizeData.length > 3 ? 10 : 0,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            marginBottom: 5,
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
+          </View>
+          {orderstatus ? (
+            <View style={orderstyles.order_cnt}>
+              <ScrollView nestedScrollEnabled={true}>
+                {sonumberdata
+                  ? sonumberdata.map((item) =>
+                      item.status === 0 ? (
+                        <TouchableOpacity
+                          style={orderstyles.data_cnt}
+                          onPress={() => {
+                            navigation.navigate("orderdetails", {
+                              sonumber: item.SoNumber,
+                              CreatedDate: item.CreatedDate,
+                              remarks: item.Remarks,
+                              transport: item.Transporter,
+                              name: item.UserName,
+                              startyear: item.StartYear,
+                              endyear: item.EndYear,
+                            });
                           }}
                         >
-                          Size
-                        </Text>
-                        <View
-                          style={{
-                            paddingHorizontal:
-                              articleSizeData.length > 3 ? "6%" : 0,
-                            width: "100%",
-                            height: width >= 720 ? 100 : 60,
-                            flexDirection: "row",
-                            borderWidth: 1,
-                            borderColor: "#0000001d",
-                            borderRadius: 10,
-                            padding: 10,
-                            alignItems: "center",
+                          <View
+                            style={{
+                              width: "60%",
+                              paddingVertical: "2%",
 
-                            justifyContent:
-                              articleSizeData.length > 3
-                                ? "flex-start"
-                                : "center",
-                            ...Platform.select({
-                              ios: {
-                                shadowColor: "black",
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.2,
-                                shadowRadius: 2,
-                                backgroundColor: "#f4f4f4",
-                              },
-                              android: {
-                                elevation: 0,
-                                backgroundColor: "#f4f4f4",
-                              },
-                            }),
-                          }}
-                        >
-                          {articleSizeData &&
-                            articleSizeData.map((item, index) => (
+                              paddingLeft: "2%",
+                            }}
+                          >
+                            <View style={{ gap: 8 }}>
+                              <View style={orderstyles.text_cnt}>
+                                <Text style={orderstyles.txt_titile}>
+                                  SO No :
+                                </Text>
+                                <Text style={orderstyles.txt_val}>
+                                  {`${item.UserName}${item.SoNumber}/${item.StartYear}-${item.EndYear}`}
+                                </Text>
+                              </View>
+                              <View>
+                                <View style={orderstyles.text_cnt}>
+                                  <Text style={orderstyles.txt_titile}>
+                                    Pieces :
+                                  </Text>
+                                  <Text style={orderstyles.txt_val}>
+                                    {item.OutwardNoPacks[0] !== null
+                                      ? totalpices(item.OutwardNoPacks)
+                                      : "0"}
+                                  </Text>
+                                </View>
+                              </View>
+                              <View>
+                                <View style={orderstyles.text_cnt}>
+                                  <Text style={orderstyles.txt_titile}>
+                                    Order Total :
+                                  </Text>
+                                  <Text style={orderstyles.txt_val}>
+                                    {item.OutwardNoPacks[0] !== null
+                                      ? calculateTotalAmount(
+                                          item.OutwardNoPacks,
+                                          item.ArticleRate
+                                        )
+                                      : "0"}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                          <View
+                            style={{
+                              width: "40%",
+                              paddingVertical: "2%",
+                              paddingRight: "2%",
+                            }}
+                          >
+                            <View style={{ height: "53%" }}>
                               <View
                                 style={[
-                                  styles.size_options,
-                                  {
-                                    paddingHorizontal:
-                                      articleSizeData.length > 3 ? "1%" : 0,
-                                  },
+                                  orderstyles.text_cnt,
+                                  { justifyContent: "flex-end" },
                                 ]}
-                                key={index}
                               >
-                                <TouchableOpacity
-                                  onPress={() => handleSizeClick(item.Name)}
-                                >
-                                  <View style={styles.size}>
-                                    <Text href="/" style={styles.size_a}>
-                                      {item.Name}
-                                    </Text>
-                                  </View>
-                                </TouchableOpacity>
+                                <Text style={orderstyles.txt_titile}>
+                                  Date :
+                                </Text>
+                                <Text style={orderstyles.txt_val}>
+                                  {new Date(item.SoDate).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                      day: "2-digit",
+                                      month: "2-digit",
+                                      year: "numeric",
+                                    }
+                                  )}
+                                </Text>
                               </View>
-                            ))}
-                        </View>
-                      </View>
-                      <View
-                        style={{
-                          // width: "40%",
-                          width: articleSizeData.length > 3 ? "auto" : "40%",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            marginBottom: 5,
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >
-                          Subcategory
-                        </Text>
-                        <View
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            height: width >= 720 ? 100 : 60,
-                            flexDirection: "row",
-                            borderWidth: 1,
-                            borderColor: "#0000001d",
-                            borderRadius: 10,
-                            padding: 10,
-                            alignContent: "center",
-                            justifyContent:
-                              articleSizeData.length > 3
-                                ? "flex-start"
-                                : "center",
-
-                            alignItems: "center",
-                            ...Platform.select({
-                              ios: {
-                                shadowColor: "black",
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.2,
-                                shadowRadius: 2,
-                                backgroundColor: "#f4f4f4",
-                              },
-                              android: {
-                                elevation: 0,
-                                backgroundColor: "#f4f4f4",
-                              },
-                            }),
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: width >= 720 ? 35 : 16,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              paddingHorizontal:
-                                articleSizeData.length > 3 ? "10%" : 0,
-                              fontWeight: 400,
-                              textAlign: "center",
-                              color: "#000000",
-                            }}
-                          >
-                            {subcategory}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      marginVertical: 15,
-                      marginTop: 18,
-                      marginRight: 7,
-                    }}
-                  >
-                    <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
-                      <View style={{ flex: 1.18 }}>
-                        <Text
-                          style={{
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Color
-                        </Text>
-                      </View>
-                      <View style={{ flex: 1.21 }}>
-                        <Text
-                          style={{
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Available in Stock
-                        </Text>
-                      </View>
-                      <View style={{ flex: 1, paddingLeft: 2 }}>
-                        <Text
-                          style={{
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Add Qty.
-                        </Text>
-                      </View>
-                    </View>
-                    {combinedArray.map((item, key) => (
-                      <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
-                        <View
-                          style={{
-                            flex: 1,
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            borderColor: "#0000001d",
-                            marginTop: 8,
-
-                            justifyContent: "center",
-                            alignContent: "center",
-                            alignItems: "center",
-                            backgroundColor: "#FFF",
-                            paddingVertical: 8,
-                            height: width >= 720 ? 70 : 42,
-                            paddingHorizontal: 8,
-                            elevation: 2,
-                            shadowColor: "gray",
-                            shadowOpacity: 0,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              textAlign: "center",
-                              fontSize: width >= 720 ? 30 : 18,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: 500,
-                              color: "#626262",
-                            }}
-                          >
-                            {item.Name}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            flex: 1.1,
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            borderColor: "#0000001d",
-                            marginTop: 8,
-                            justifyContent: "center",
-                            alignContent: "center",
-                            alignItems: "center",
-                            backgroundColor: "#FFF",
-                            paddingVertical: 8,
-                            height: width >= 720 ? 70 : 42,
-                            paddingHorizontal: 8,
-                            elevation: 2,
-                            shadowColor: "gray",
-                            shadowOpacity: 0,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              textAlign: "center",
-                              fontSize: width >= 720 ? 30 : 18,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: 500,
-                              color: "#626262",
-                            }}
-                          >
-                            {item.available}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            borderRadius: 10,
-                            borderWidth: 0.8,
-                            borderColor: "#0000001d",
-                            marginTop: 8,
-                            justifyContent: "center",
-                            alignContent: "center",
-                            borderRightColor: "#FFF",
-                            borderLeftWidth: 0,
-                            borderRightWidth: 0,
-                            alignItems: "center",
-                            backgroundColor: "#FFF",
-                            height: width >= 720 ? 70 : 42,
-                            elevation: 2,
-                            shadowColor: "gray",
-                            shadowOpacity: 0,
-                          }}
-                        >
-                          <Pressable
-                            onPress={() => handleDecrease(item.index)}
-                            disabled={quantities[item.index] <= 0}
-                            style={{
-                              flex: 1.2,
-                              borderWidth: 1,
-                              width: "95%",
-                              height: "100%",
-                              borderColor: "#0000001d",
-                              borderRadius: 10,
-                              justifyContent: "center",
-                              alignContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Text
-                              style={{
-                                fontSize: width >= 720 ? 45 : 24,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
-                                fontWeight: 800,
-                              }}
-                            >
-                              -
-                            </Text>
-                          </Pressable>
-                          <View style={{ flex: 1 }}>
-                            <Text
-                              style={{
-                                fontSize: width >= 720 ? 30 : 18,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                color: "#000",
-                              }}
-                            >
-                              {quantities[item.index]}
-                            </Text>
+                            </View>
+                            <View style={orderstyles.pending_icon}>
+                              <View style={orderstyles.pending_icon_text}>
+                                <View
+                                  style={{
+                                    width: width < 720 ? 15 : 20,
+                                    height: width < 720 ? 16 : 22,
+                                  }}
+                                >
+                                  <Image
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      resizeMode: "contain",
+                                    }}
+                                    source={require("../../../assets/timer_1.png")}
+                                  ></Image>
+                                </View>
+                                <Text
+                                  style={{
+                                    fontSize: width < 720 ? 10.854 : 16.854,
+                                    fontWeight: "700",
+                                    color: "#FF0203",
+                                  }}
+                                >
+                                  Pending
+                                </Text>
+                              </View>
+                            </View>
                           </View>
-                          <Pressable
-                            onPress={() => handleIncrease(item.index)}
-                            disabled={quantities[item.index] >= item.available}
+                        </TouchableOpacity>
+                      ) : (
+                        ""
+                      )
+                    )
+                  : ""}
+              </ScrollView>
+            </View>
+          ) : (
+            <View style={orderstyles.order_cnt}>
+              <ScrollView nestedScrollEnabled={true}>
+                {completedsodata
+                  ? completedsodata.map((item) =>
+                      item.status === 1 ? (
+                        <TouchableOpacity
+                          style={orderstyles.data_cnt}
+                          onPress={() => {
+                            navigation.navigate("orderdetails", {
+                              sonumber: item.SoNumber,
+                              CreatedDate: item.CreatedDate,
+                              remarks: item.Remarks,
+                              transport: item.Transporter,
+                              name: item.UserName,
+                              OutwardNumber: item.OutwardNumber,
+                              startyear: item.StartYear,
+                              endyear: item.EndYear,
+                            });
+                          }}
+                        >
+                          <View
                             style={{
-                              flex: 1.2,
-                              justifyContent: "center",
-                              alignContent: "center",
-                              alignItems: "center",
-                              borderWidth: 1,
-                              width: "100%",
-                              height: "100%",
-                              borderColor: "#0000001d",
-                              borderRadius: 10,
+                              width: "60%",
+                              paddingVertical: "2%",
+                              paddingLeft: "2%",
                             }}
                           >
-                            <Text
-                              style={{
-                                fontSize: width >= 720 ? 40 : 21,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
-                                textAlign: "center",
-                                paddingBottom: 0,
-                              }}
-                            >
-                              +
-                            </Text>
-                          </Pressable>
-                        </View>
-                      </View>
-                    ))}
-                  </View>
-                  <View style={styles.article_ratio_Section}>
-                    <View style={styles.article_ratio_container}>
-                      <Text style={styles.articallabel}>Article Ratio</Text>
-                      <View style={styles.article_content_r}>
-                        <Text style={[styles.article_ratio_content]}>
-                          {articleRatio}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <View style={styles.article_rate_container}>
-                      <Text style={styles.articallabel1}>Article Rate</Text>
-                      <View style={styles.article_content_r}>
-                        <Text style={[styles.article_rate_content]}>
-                          {articleRate / 10}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
+                            <View style={{ gap: 8 }}>
+                              <View style={orderstyles.text_cnt}>
+                                <Text style={orderstyles.txt_titile}>
+                                  Outward No :
+                                </Text>
+                                <Text style={orderstyles.txt_val}>
+                                  {`${item.UserName}${item.OutwardNumber}/${item.StartYear}-${item.EndYear}`}
+                                </Text>
+                              </View>
+                              <View>
+                                <View style={orderstyles.text_cnt}>
+                                  <Text style={orderstyles.txt_titile}>
+                                    Pieces :
+                                  </Text>
+                                  <Text style={orderstyles.txt_val}>
+                                    {item.OutwardNoPacks[0] !== null
+                                      ? totalpices(item.OutwardNoPacks)
+                                      : "0"}
+                                  </Text>
+                                </View>
+                              </View>
+                              <View>
+                                <View style={orderstyles.text_cnt}>
+                                  <Text style={orderstyles.txt_titile}>
+                                    Order Total :
+                                  </Text>
+                                  <Text style={orderstyles.txt_val}>
+                                    {item.OutwardNoPacks[0] !== null
+                                      ? calculateTotalAmount(
+                                          item.OutwardNoPacks,
+                                          item.ArticleRate
+                                        )
+                                      : "0"}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                          <View
+                            style={{
+                              width: "40%",
+                              paddingVertical: "2%",
+                              paddingRight: "2%",
+                            }}
+                          >
+                            <View style={{ height: "53%" }}>
+                              <View
+                                style={[
+                                  orderstyles.text_cnt,
+                                  { justifyContent: "flex-end" },
+                                ]}
+                              >
+                                <Text style={orderstyles.txt_titile}>
+                                  Date :
+                                </Text>
+                                <Text style={orderstyles.txt_val}>
+                                  {new Date(inputDate).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                      day: "2-digit",
+                                      month: "2-digit",
+                                      year: "numeric",
+                                    }
+                                  )}
+                                </Text>
+                              </View>
+                            </View>
+                            <View style={orderstyles.pending_icon}>
+                              <View style={orderstyles.complete_icon_text}>
+                                <View
+                                  style={{
+                                    width: width < 720 ? 15 : 20,
+                                    height: width < 720 ? 16 : 22,
+                                  }}
+                                >
+                                  <Image
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      resizeMode: "contain",
+                                    }}
+                                    source={require("../../../assets/Right_complete.png")}
+                                  ></Image>
+                                </View>
+                                <Text
+                                  style={{
+                                    fontSize: width < 720 ? 10.854 : 16.854,
+                                    fontWeight: "700",
+                                    color: "#7AC848",
+                                  }}
+                                >
+                                  Completed
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      ) : (
+                        ""
+                      )
+                    )
+                  : ""}
+              </ScrollView>
             </View>
-            <Modal
-              visible={isModalVisible}
-              transparent={true}
-              animationType="slide"
-              onRequestClose={() => setIsModalVisible(false)}
-            >
-              <TouchableWithoutFeedback
-                onPress={() => setIsModalVisible(false)}
-              >
+          )}
+
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={isCalendarVisible}
+            onRequestClose={() => {
+              setCalendarVisible(!isCalendarVisible);
+            }}
+            style={{ margin: 20 }}
+          >
+            <View>
+              <View style={styles.calendarModal}>
                 <View
                   style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    width: "80%",
+                    height: 48.752,
+                    gap: 12,
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingVertical: 13,
+                    paddingLeft: 20,
                   }}
                 >
-                  <View
-                    style={{
-                      width: 360,
-                      height: 320,
-                      backgroundColor: "white",
-                      borderRadius: 15,
-                      alignItems: "center",
-                      // padding: 5
+                  <View style={{ height: 25, width: 25 }}>
+                    <Image
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        resizeMode: "contain",
+                      }}
+                      source={require("../../../assets/gray_calender.png")}
+                    ></Image>
+                  </View>
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "400", color: "#BBB" }}
+                  >
+                    {orderstatus ? selectedDate : selectedDateIncompleted}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: "20%",
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                    paddingEnd: 10,
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      toggleCalendar();
+                      setSelectedDate("DD/MM/YYYY");
+                      setSoNumberData(oldDataOfso);
                     }}
                   >
                     <Image
-                      source={require("../../../assets/update_cart.png")}
                       style={{
-                        width: 70,
-                        height: 70,
-                        marginBottom: 20,
-                        marginTop: 30,
+                        height: width >= 720 ? 35 : 24,
+                        width: width >= 720 ? 35 : 24,
                       }}
-                    />
-
+                      source={require("../../../assets/grayclose.png")}
+                    ></Image>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Calendar
+                // Customize calendar properties here
+                onDayPress={(day) => {
+                  orderstatus
+                    ? handleDateSelect(day)
+                    : handleDateSelectOfCompleted(day);
+                }}
+                style={{
+                  borderRadius: 5.477,
+                  borderWidth: 0.685,
+                  borderStyle: "solid",
+                  borderColor: "#DDD",
+                }}
+              />
+              <View style={styles.calendarModal2}>
+                <View style={{ width: "100%", alignItems: "flex-end" }}>
+                  <Pressable
+                    style={{
+                      width: width >= 720 ? 200 : 100,
+                      backgroundColor: "black",
+                      borderRadius: 3.423,
+                      height: 50,
+                      justifyContent: "center",
+                    }}
+                    onPress={() => {
+                      orderstatus
+                        ? filterOsDataByDate()
+                        : filterdataOfcompleted();
+                      toggleCalendar();
+                    }}
+                  >
                     <Text
                       style={{
-                        fontSize: 24,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "700",
+                        color: "#FFF",
                         textAlign: "center",
-                        marginBottom: 10,
-                        fontWeight: 500,
-                        color: "rgba(0, 0, 0, 0.70)",
+                        fontSize: width >= 720 ? 25 : 16,
                       }}
                     >
-                      Are you sure that want {"\n"}to update in cart
+                      Next
                     </Text>
-                    <View
-                      style={{
-                        width: "90%",
-                        display: "flex",
-                        flexDirection: "row",
-                        position: "absolute",
-                        bottom: 20,
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => {
-                          setIsModalVisible(false);
-                        }}
-                        style={{
-                          width: "47.5%",
-                          borderWidth: 1,
-                          height: 50,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: 10,
-                          borderColor: "grey",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: 700,
-                            color: "grey",
-                            paddingHorizontal: 15,
-                          }}
-                        >
-                          No
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setIsModalVisible(false);
-                          updateArticalInCart();
-                        }}
-                        style={{
-                          backgroundColor: "black",
-                          width: "47.5%",
-                          height: 50,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderWidth: 1,
-                          borderRadius: 10,
-                          marginLeft: "5%",
-                          borderColor: "white",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: 700,
-                            color: "white",
-                            paddingHorizontal: 15,
-                          }}
-                        >
-                          Yes
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                  </Pressable>
                 </View>
-              </TouchableWithoutFeedback>
-            </Modal>
-          </ScrollView>
+              </View>
+            </View>
+          </Modal>
+          <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+            <ButtomNavigation navigation={navigation} page="orderhistory" />
+          </View>
         </View>
       )}
-      <Modal visible={isImageZoomVisible} transparent={true}>
-        <View style={styles.modalContainer} onPress={closeModal}>
-          <ImageZoom
-            style={[styles.ZoomImage, ,]}
-            cropWidth={Dimensions.get("window").width}
-            cropHeight={Dimensions.get("window").height}
-            imageWidth={Dimensions.get("window").width}
-            imageHeight={Dimensions.get("window").height}
-          >
-            <Image
-              style={[styles.modalImage]}
-              source={{ uri: baseImageUrl + selectedImageIndex }}
-              resizeMode="contain"
-            />
-          </ImageZoom>
-          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Text style={styles.closeButtonText}>X</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-      <View
-        style={{
-          position: "absolute",
-          flexDirection: "row",
-          paddingHorizontal: 14,
-          bottom: 0,
-          flex: 1,
-          backgroundColor: "#FFF",
-        }}
-      >
-        <View style={{ flex: 1, justifyContent: "center", paddingBottom: 15 }}>
-          <View>
-            <Text
-              style={{
-                fontSize: width >= 720 ? 15 : 10,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: 400,
-              }}
-            >
-              Total Price
-            </Text>
-          </View>
-          <View>
-            <Text
-              style={{
-                fontSize: width >= 720 ? 27 : 16,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: "bold",
-                color: "black",
-              }}
-            >
-              {formatPrice(totalPrice)}
-            </Text>
-          </View>
-        </View>
-        <View style={{ flex: 1, marginBottom: 20 }}>
-          <View>
-            <TouchableOpacity
-              style={[
-                styles.addto_cart_btn,
-                {
-                  backgroundColor: totalQuantity === 0 ? "gray" : "black",
-                  opacity: totalQuantity === 0 ? 0.5 : 1,
-                },
-              ]}
-              onPress={() => addtocart(id)}
-              disabled={totalQuantity === 0}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  paddingVertical: 3,
-                }}
-              >
-                <Image
-                  source={require("../../../assets/icons/icon.png")}
-                  style={{
-                    width: width >= 720 ? 30 : 20,
-                    height: width >= 720 ? 30 : 20,
-                  }}
-                />
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: width >= 720 ? 30 : 18,
-                    marginLeft: width >= 720 ? 20 : 10,
-                  }}
-                >
-                  Add to cart
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
     </>
   );
 };
 
-export default DetailsOfArticals;
+export default OrderHistory;
+
+const styles = StyleSheet.create({
+  calendarModal: {
+    width: "100%",
+    backgroundColor: "#FFF",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    borderRadius: 5.477,
+    borderWidth: 0.685,
+    justifyContent: "space-around",
+    borderStyle: "solid",
+    borderColor: "#DDD",
+  },
+  calendarModal2: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 20,
+  },
+  calendar: {
+    color: "#FFF",
+    borderRadius: 5.477, // Apply your desired border radius
+    width: 300, // Apply your desired width
+    height: "auto", // Apply your desired height
+  },
+  container: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#FFF",
+    borderTopWidth: 1,
+    borderTopColor: "#E0E0E0",
+  },
+  first_cnt: {
+    width: "100%",
+    height: "12%",
+    backgroundColor: "#FFF",
+    padding: "5%",
+  },
+  pendin_complete_cnt: {
+    width: "100%",
+    // height: width >= 720 ? height * 0.065 : height * 0.055,
+    backgroundColor: "#212121",
+    paddingVertical: "2%",
+    paddingHorizontal: "3%",
+    borderRadius: 5,
+    // margin: 20,
+    marginBottom: 0,
+  },
+  pc_btn_cnt: {
+    display: "flex",
+    flexDirection: "row",
+    //   backgroundColor: "blue",
+    // paddingVertical: "2.5%",
+    // paddingHorizontal: "3.5%",
+    // width: "100%",
+    gap: 6,
+    // justifyContent: "center",
+  },
+  pending_btn: {
+    width: "50%",
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    // paddingTop: "1.5%",
+    // paddingBottom: "2.5%"
+  },
+  pending_text: {
+    fontSize: width < 720 ? width * 0.05 : width * 0.037,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  complete_btn: {
+    width: "50%",
+    backgroundColor: "#212121",
+    borderRadius: 5,
+    // paddingTop: "1.5%",
+    // paddingBottom: "2.5%"
+  },
+  complete_text: {
+    color: "#FFF",
+    fontSize: width < 720 ? width * 0.05 : width * 0.037,
+    fontWeight: "700",
+    textAlign: "center",
+    paddingBottom: "2%",
+  },
+  calender_cnt: {
+    backgroundColor: "#FFF",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+});
+
+const orderstyles = StyleSheet.create({
+  order_cnt: {
+    height: "100%",
+    width: "100%",
+
+    backgroundColor: "#FFF",
+  },
+  data_cnt: {
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.1)",
+    marginHorizontal: "5%",
+    borderRadius: 12,
+    flexDirection: "row",
+    height: width < 720 ? 100 : 150,
+    // elevation: 5,
+  },
+  pending_icon: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    height: "45%",
+    paddingVertical: 2,
+  },
+  pending_icon_text: {
+    backgroundColor: "#FFD1D1",
+    borderWidth: 0.659,
+    paddingTop: 6,
+    paddingBottom: 6.34,
+    borderRadius: 5.268,
+    borderColor: "#FF0203",
+    width: "65%",
+    marginRight: 8,
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "center",
+    alignContent: "center",
+    // margin:2,
+  },
+  text_cnt: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 5,
+  },
+  txt_titile: {
+    fontSize: width < 720 ? 14 : 20,
+    fontWeight: "500",
+    color: "#000000B2",
+  },
+  txt_val: {
+    fontSize: width < 720 ? 15 : 22,
+    fontWeight: "700",
+    color: "#000000",
+  },
+  complete_icon_text: {
+    backgroundColor: "#E1FFD3",
+    borderWidth: 0.659,
+    paddingTop: 6,
+    paddingBottom: 6.34,
+    borderRadius: 5.268,
+    borderColor: "#81CD60",
+    width: "68%",
+    marginRight: 8,
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "center",
+    alignContent: "center",
+  },
+});
