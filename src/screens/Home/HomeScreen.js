@@ -137,7 +137,7 @@ export default function HomeScreen(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     console.log("............111", data);
