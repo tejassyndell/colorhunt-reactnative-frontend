@@ -14,6 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+const { width, height } = Dimensions.get("window");
 
 const CreateAccount = (props) => {
   const [name, setName] = useState("");
@@ -36,24 +37,24 @@ const CreateAccount = (props) => {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const { navigation, onClose } = props;
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     const getToken = async () => {
       try {
-        let data =await AsyncStorage.getItem('notificationstatus')  
-        data = await JSON.parse(data)
+        let data = await AsyncStorage.getItem("notificationstatus");
+        data = await JSON.parse(data);
         if (data.status === true) {
           setToken(data.token);
         } else {
-          console.log('Notification permission denied');
+          console.log("Notification permission denied");
         }
       } catch (error) {
-        console.error('Error requesting permission:', error);
+        console.error("Error requesting permission:", error);
       }
     };
     getToken();
-  },[])
+  }, []);
   const handleInputChange = (fieldName, value) => {
     // Clear previous error for the field
     switch (fieldName) {
@@ -236,7 +237,7 @@ const CreateAccount = (props) => {
           country,
           pinCode,
           contactPerson,
-          token
+          token,
         });
         console.log("API response:", response.data);
         setShowSuccess(true); // Show success message
@@ -300,7 +301,7 @@ const CreateAccount = (props) => {
             maxLength={500}
             style={[
               styles.input,
-              { height: 90 },
+              { height: width >= 720 ? 130 : 90 },
               addressError && styles.inputError,
             ]}
             placeholder="Address"
@@ -430,12 +431,16 @@ const CreateAccount = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    width: "100%",
+    alignItem: "center",
+    paddingHorizontal: width >= 720 ? 40 : 15,
+    paddingVertical: width >= 720 ? 60 : 15,
+    justifyContent: "center",
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: windowHeight * 0.02,
+    marginBottom: width >= 720 ? 30 : 30,
   },
   title: {
     fontSize: windowWidth * 0.05,
@@ -444,13 +449,13 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   input: {
-    height: windowHeight * 0.04,
+    height: width >= 720 ? 60 : 50,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 15,
+    marginBottom: 20,
     paddingLeft: windowWidth * 0.02,
-    fontSize: windowWidth * 0.03,
+    fontSize: windowWidth * 0.04,
   },
   inputError: {
     borderColor: "red",
@@ -461,29 +466,31 @@ const styles = StyleSheet.create({
     left: 10,
   },
   submitButton: {
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.25,
     backgroundColor: "black",
     borderRadius: 5,
+    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
-    height: windowHeight * 0.05,
+    height: windowHeight * 0.06,
   },
   submitButtonText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: windowWidth * 0.05,
+    fontFamily: "Glory",
+    fontSize: windowWidth * 0.04,
   },
   closeButton: {
     backgroundColor: "black",
-    borderRadius: 20,
-    width: 40,
-    height: 40,
+    borderRadius: 50,
+    width: width >= 720 ? 60 : 35,
+    height: width >= 720 ? 60 : 35,
     alignItems: "center",
     justifyContent: "center",
   },
   closeText: {
     color: "white",
-    fontSize: 20,
+    fontSize: width >= 720 ? 30 : 20,
     fontWeight: "bold",
   },
   rowContainer: {

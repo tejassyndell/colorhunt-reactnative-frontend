@@ -18,7 +18,11 @@ import {
 import styles from "./styles.js";
 import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
+
 export default function WishList(props) {
   const { navigation } = props;
 
@@ -26,11 +30,31 @@ export default function WishList(props) {
   const [selectedprd, setSelectprd] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
-
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    useEffect(() => {
+      const loadCustomFont = async () => {
+        try {
+          await Font.loadAsync({
+            Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          });
+          setIsFontLoaded(true);
+        } catch (error) {
+          console.error("Error loading custom font:", error);
+        }
+      };
+  
+      loadCustomFont();
+    }, []);
   // uploard url image
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData")
+    partydata = await JSON.parse(partydata);
+    console.log(partydata[0].Id, "[][][[][]");
+    return partydata[0].Id;
+  }
 
   // getCategoriesname
   const getCategoriesname = async () => {
@@ -41,8 +65,9 @@ export default function WishList(props) {
   };
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
+    let id = await getpartyid()
     let data = {
-      party_id: 197,
+      party_id: id,
       article_id: i.Id,
     };
     console.log(data);
@@ -61,7 +86,7 @@ export default function WishList(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id: 197,
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -97,6 +122,7 @@ export default function WishList(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 20,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -138,6 +164,7 @@ export default function WishList(props) {
       }}
     >
       <View
+        key={item.id}
         style={{
           alignItems: "center",
           height: "auto",
@@ -222,8 +249,10 @@ export default function WishList(props) {
             <Text
               style={{
                 fontSize: width * 0.1,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 fontWeight: "bolder",
                 textAlign: "center",
+                fontWeight: 700,
                 color: "#808080",
               }}
             >
@@ -250,7 +279,7 @@ export default function WishList(props) {
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text style={{ color: "white", fontSize: width * 0.035 }}>
+              <Text style={{ color: "white", fontSize: width * 0.035,fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
                 Continue Shopping
               </Text>
             </TouchableOpacity>
@@ -273,7 +302,7 @@ export default function WishList(props) {
             <FlatList
               data={selectedprd}
               initialNumToRender={10}
-              keyExtractor={(item) => item.Id}
+              keyExtractor={(item) => item.id}
               renderItem={renderItem}
               numColumns={width >= 720 ? 4 : 2}
               showsHorizontalScrollIndicator={false}

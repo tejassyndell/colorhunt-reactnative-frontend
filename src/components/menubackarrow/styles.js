@@ -1,29 +1,30 @@
-import { StyleSheet } from 'react-native';
-import { color } from 'react-native-reanimated';
+import { StyleSheet, Dimensions } from "react-native";
+import { color } from "react-native-reanimated";
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   btnClickContain: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 5,
-    marginTop: 5,
-    marginBottom: 5
+    marginTop: width >= 720 ? 10 : 5,
+    marginBottom: width >= 720 ? 10 : 5,
   },
   btnContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    height:30
-    
+    flexDirection: "row",
+    alignItems: "center",
+    height: 30,
   },
   btnIcon: {
-    height: 20,
-    width: 20
+    height: width >= 720 ? 30 : 20,
+    width: width >= 720 ? 30 : 20,
+    resizeMode: "contain",
   },
   btnText: {
-    fontSize: 16,
+    fontSize: width >= 720 ? 20 : 16,
     marginLeft: 10,
-    color:'#fff'
-  }
+    color: "#fff",
+  },
 });
 
 export default styles;

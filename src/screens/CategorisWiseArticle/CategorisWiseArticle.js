@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  Modal,
 } from "react-native";
 import {
   getProductName,
@@ -21,8 +22,11 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
+
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
@@ -35,10 +39,51 @@ export default function CategorisWiseArticle(props) {
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
+
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
+
+  const CheckUser = async () => {
+    const user = await AsyncStorage.getItem("UserData");
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+  useEffect(() => {
+    CheckUser();
+  }, []);
+
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
+
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   const { width, height } = Dimensions.get("window");
@@ -50,6 +95,11 @@ export default function CategorisWiseArticle(props) {
   console.log(category);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
+  };
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData");
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
   };
 
   const getproductnamess = async () => {
@@ -69,7 +119,7 @@ export default function CategorisWiseArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id: 197,
+      party_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -86,7 +136,7 @@ export default function CategorisWiseArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id: 197,
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -95,7 +145,7 @@ export default function CategorisWiseArticle(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -132,7 +182,7 @@ export default function CategorisWiseArticle(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 10,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
@@ -140,7 +190,7 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile");
+              isLoggedIn ? navigation.navigate("Profile") : "";
             }}
           >
             <Image
@@ -162,7 +212,7 @@ export default function CategorisWiseArticle(props) {
 
   useEffect(() => {
     filterData();
-  }, [searchText, nameDatas,selectedCategories,selectedPriceRange]);
+  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
 
   const filterData = () => {
     if (
@@ -197,7 +247,12 @@ export default function CategorisWiseArticle(props) {
   };
 
   const renderItem = ({ item }) => (
-    <View
+    <TouchableOpacity
+      onPress={() =>
+        isLoggedIn
+          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
+          : openCreateAccountModal()
+      }
       style={{
         alignItems: "center",
         height: "auto",
@@ -237,13 +292,7 @@ export default function CategorisWiseArticle(props) {
               addArticleWishlist(item);
             }}
           >
-            <FontAwesome
-              name="heart-o"
-              style={[
-                styles.disabledIcon,
-                // isLoggedin === false ? styles.disabledIcon : null,
-              ]}
-            />
+            <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
           </TouchableOpacity>
         )}
       </View>
@@ -280,9 +329,6 @@ export default function CategorisWiseArticle(props) {
         }}
       >
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("DetailsOfArticals", { id: item.Id })
-          }
           style={{
             display: "flex",
             justifyContent: "center",
@@ -291,15 +337,29 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
-            <Text style={{ fontWeight: "bold" }}>{item.ArticleNumber}</Text>
-            <Text>{convertToTitleCase(item.Category)}</Text>
-            <Text style={{ fontWeight: "bold" }}>
-              {"₹" + item.ArticleRate + ".00"}
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
+            >
+              {item.ArticleNumber}
+            </Text>
+            <Text style={{ fontFamily: isFontLoaded ? "Glory" : undefined }}>
+              {convertToTitleCase(item.Category)}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
+            >
+              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
@@ -325,12 +385,12 @@ export default function CategorisWiseArticle(props) {
   }, [selectedCategories, selectedPriceRange]);
 
   useEffect(() => {
-    const minRate = finalData.reduce((min, item) => {
+    const minRate = nameDatas.reduce((min, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate < min ? articleRate : min;
     }, Infinity);
 
-    const maxRate = finalData.reduce((max, item) => {
+    const maxRate = nameDatas.reduce((max, item) => {
       const articleRate = parseFloat(item.ArticleRate); // Convert the article rate to a number
       return articleRate > max ? articleRate : max;
     }, -Infinity);
@@ -338,7 +398,7 @@ export default function CategorisWiseArticle(props) {
     setMinArticleRate(minRate);
 
     setMaxArticleRate(maxRate);
-  }, [finalData]);
+  }, [nameDatas]);
   return (
     <>
       {isLoading ? (
@@ -365,7 +425,9 @@ export default function CategorisWiseArticle(props) {
             />
             <TouchableOpacity
               style={{ width: "10%", alignItems: "flex-end", paddingEnd: 0 }}
-              onPress={openFilter}
+              onPress={() => {
+                isLoggedIn ? openFilter() : "";
+              }}
             >
               <Image
                 source={require("../../../assets/filetr_icone.png")}
@@ -381,7 +443,8 @@ export default function CategorisWiseArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
-                fontWeight: "700",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontWeight: 700,
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
@@ -414,6 +477,7 @@ export default function CategorisWiseArticle(props) {
                   <Text
                     style={{
                       textAlign: "center",
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontSize: 20,
                     }}
                   >
@@ -477,12 +541,41 @@ export default function CategorisWiseArticle(props) {
                   minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate}
                   spr={selectedPriceRange}
+                  uniquerates={nameDatas}
                 />
               </View>
             </View>
           )}
         </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }

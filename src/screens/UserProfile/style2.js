@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
   BottomContainer: {
     marginTop: 20,
     marginHorizontal: 10,
-    fontWeight: "600",
+    fontWeight: 600,
   },
   text: {
     color: "rgba(0, 0, 0, 0.5)",
     fontSize: width >= 720 ? 30 : 18,
-    fontWeight: "600",
+    fontWeight: 600,
   },
   hello: {
     borderBottomWidth: 1,

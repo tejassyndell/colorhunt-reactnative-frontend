@@ -1,7 +1,28 @@
-import { StyleSheet, Dimensions } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet,Dimensions, } from "react-native";
+import * as Font from "expo-font";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const { width, height } = Dimensions.get("window");
+
+
+const detailsOfArtStyles = () => {
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
 
 const styles = StyleSheet.create({
   container: {
@@ -42,73 +63,10 @@ const styles = StyleSheet.create({
     elevation: 50,
     shadowOffset: { width: 0, height: 0 }, // Offset the shadow upwards
     shadowColor: "#000000", // Specify a shadow color
-    shadowOpacity: 0.9, // Set the shadow opacity within the valid range (0-1)
+    shadowOpacity: 0, // Set the shadow opacity within the valid range (0-1)
     shadowRadius: 5,
   },
 
-  product_detail: {
-    display: "flex",
-    width: "95%",
-    height: "auto",
-    paddingTop: "5%",
-    flexDirection: "row",
-  },
-
-  size_label: {
-    fontSize: width >= 720 ? 20 : 14,
-    fontWeight: "600",
-    color: "black",
-    marginLeft: "2%",
-    marginBottom: 6,
-  },
-  size_container1: {
-    display: "flex",
-    flexDirection: "row",
-    height: width >= 720 ? 80 : 53,
-    borderColor: "#ded6d6",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderRadius: 12,
-    backgroundColor: "#f4f4f4",
-    paddingTop: 6,
-    paddingRight: 11,
-    paddingBottom: 4,
-    paddingLeft: 0,
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
-    width: "100%",
-    elevation: 2,
-    shadowColor: "gray",
-    shadowOpacity: 0.5,
-    marginLeft: "1%",
-    overflow: "scroll",
-  },
-
-  size_label1: {
-    fontSize: width >= 720 ? 20 : 14,
-    fontWeight: "600",
-    color: "black",
-    marginLeft: width >= 720 ? "10%" : "20%",
-    marginBottom: 6,
-  },
-
-  size_options: {
-    paddingLeft: 8,
-    display: "flex",
-    flexDirection: "row",
-    fontSize: 18,
-    fontWeight: "500",
-    // width:"100%",
-    // backgroundColor:'red'
-  },
-  size_options2: {
-    paddingLeft: 8,
-    display: "flex",
-    flexDirection: "row",
-    fontSize: 18,
-    fontWeight: "500",
-  },
   product_detail_sec3: {
     display: "flex",
     justifyContent: "center",
@@ -116,25 +74,34 @@ const styles = StyleSheet.create({
     alignContent: "center",
     width: "100%",
   },
- 
+  container_grid: {
+    width: "100%",
+  },
   head_grid: {
     display: "flex",
     flexDirection: "row",
     width: "100%",
     height: 30,
   },
+  color_Text: {
+    width: "31%",
+    textAlign: "left",
+  },
   available_Text: {
     width: "37%",
     textAlign: "left",
   },
-
+  qty_Text: {
+    width: "31%",
+    textAlign: "left",
+  },
   color_box_Text: {
     width: "31%",
     display: "flex",
     paddingHorizontal: 10,
     elevation: 2,
     shadowColor: "gray",
-    shadowOpacity: 1,
+    shadowOpacity: 0,
     borderWidth: 1,
     borderColor: "#ded6d6",
     backgroundColor: "white",
@@ -152,7 +119,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     elevation: 2,
     shadowColor: "gray",
-    shadowOpacity: 1,
+    shadowOpacity: 0,
     borderWidth: 1,
     borderColor: "#ded6d6",
     backgroundColor: "white",
@@ -168,30 +135,46 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
 
+  product_detail: {
+    // display: "flex",
+    // width: "95%",
+    // height: "auto",
+    // paddingTop: 12,
+    // flexDirection: "row",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+    padding: 0,
+    backgroundColor: "red",
+  },
   product_detail_sec: {
-    marginRight: "5%",
-    width: "50%",
+    // marginRight: "5%",
+    // width: "50%",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+    backgroundColor: "yellow",
   },
 
   size: {
-    width: width >= 720 ? 60 : 40,
-    height: width >= 720 ? 60 : 39,
+    width: width >= 720 ? 70 : 40,
+    height: width >= 720 ? 70 : 39,
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "#b3a8a8",
     borderRadius: 100,
-    color: "black",
-    fontWeight: "400",
+    color: "#000000",
+    fontWeight: 400,
     marginLeft: 8,
-    padding: 6,
-    justifyContain: "center",
+    padding: width >= 720 ? 9 : 6,
   },
   size_a: {
     marginTop: 3,
     textAlign: "center",
-    color: "rgba(0, 0, 0, 0.60)",
-    fontWeight: "600",
+    color: "b3a8a8",
+    fontWeight: 'bold',
     fontSize: width >= 720 ? 30 : 15,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   product_detail_sec2: {
     width: "50%",
@@ -213,37 +196,58 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginStart: 32,
     shadowColor: "gray",
-    shadowOpacity: 0.5,
+    // shadowOpacity: 0.2,
   },
 
   size_p: {
     marginTop: 0,
     marginBottom: "1%",
     fontSize: width >= 720 ? 28 : 18,
-    color: "#00000099",
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    color: "#000000",
     textAlign: "center",
-    fontWeight: "500",
+    fontWeight: 500,
+  },
+  product_detail_sec3: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    width: "100%",
   },
   container_grid: {
     width: "100%",
   },
-
+  head_grid: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    height: 30,
+  },
   color_Text: {
     width: "31%",
     textAlign: "left",
   },
-
+  available_Text: {
+    width: "37%",
+    textAlign: "left",
+  },
   qty_Text: {
     width: "31%",
     textAlign: "left",
   },
   qty_box_Text: { width: "31%", display: "flex", paddingLeft: 20 },
+  color_div: {
+    width: "31%",
+    textAlign: "left",
+  },
 
   color_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: "600",
-    color: "black",
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 'bold',
+    color: "#000000",
   },
   available_div: {
     width: "37%",
@@ -252,7 +256,8 @@ const styles = StyleSheet.create({
   available_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: "600",
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 'bold',
     color: "black",
     marginLeft: 2,
   },
@@ -263,7 +268,8 @@ const styles = StyleSheet.create({
   qty_title: {
     width: "100%",
     fontSize: 15,
-    fontWeight: "600",
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 'bold',
     color: "black",
     marginLeft: 20,
   },
@@ -286,7 +292,7 @@ const styles = StyleSheet.create({
     width: "100%",
     color: "rgba(0, 0, 0, 0.60)",
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: 'bold',
   },
   available_box_div: {
     width: "100%",
@@ -294,7 +300,7 @@ const styles = StyleSheet.create({
   available_box: {
     width: "100%",
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: 'bold',
   },
   qty_box_div: {
     width: "31%",
@@ -308,8 +314,8 @@ const styles = StyleSheet.create({
   // },
   qty_box: {
     width: "100%",
-    shadowColor: "gray",
-    shadowOpacity: 0.5,
+    // shadowColor: "gray",
+    // shadowOpacity: 0.5,
     elevation: 2, // Use elevation to simulate box-shadow
     justifyContent: "center", // Align content vertically
     alignItems: "center", // Center content horizontally
@@ -347,6 +353,7 @@ const styles = StyleSheet.create({
   box1_btn: {
     textAlign: "left",
     borderRadius: 10,
+    paddingBottom: 0,
     backgroundColor: "white",
     borderWidth: 1,
     borderStyle: "solid",
@@ -359,8 +366,9 @@ const styles = StyleSheet.create({
   },
   box1_btn_text: {
     fontSize: 25,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: 'bold',
   },
   box2: {
     width: "44%",
@@ -399,15 +407,16 @@ const styles = StyleSheet.create({
     height: "40%",
   },
   articallabel: {
-    fontWeight: "600",
+    fontWeight: 'bold',
     marginLeft: 0.5,
     textAlign: "left",
     fontSize: width >= 720 ? 20 : 13,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   article_content_r: {
     width: "80.5%",
     elevation: 2,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0,
     shadowColor: "gray",
     borderColor: "#ded6d6",
     borderWidth: 1,
@@ -425,7 +434,8 @@ const styles = StyleSheet.create({
   article_ratio_content: {
     textAlign: "center",
     fontSize: width >= 720 ? 31 : 18,
-    fontWeight: "500",
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 500,
     color: "#626262",
   },
   article_rate_container: {
@@ -437,13 +447,15 @@ const styles = StyleSheet.create({
   article_rate_content: {
     textAlign: "center",
     fontSize: width >= 720 ? 30 : 18,
-    fontWeight: "500",
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
+    fontWeight: 500,
     color: "#626262",
   },
   articallabel1: {
-    fontWeight: "500",
+    fontWeight: 500,
     marginLeft: 0.5,
     fontSize: width >= 720 ? 20 : 14,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   total_price_container: {
     width: "95%",
@@ -470,7 +482,7 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     borderRadius: 10,
     paddingHorizontal: 20,
-    paddingVertical: width >= 720 ? 20 : 15,
+    paddingVertical: width >= 720 ? 20 : 11,
     height: width >= 720 ? 80 : 50,
   },
   loader: {
@@ -505,8 +517,11 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: "white",
     fontSize: 24,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     fontWeight: "bold",
   },
 });
+return styles;
+};
 
-export default styles;
+export default detailsOfArtStyles;

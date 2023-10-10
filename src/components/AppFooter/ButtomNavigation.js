@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 import React from "react";
-
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ButtomNavigation = (props) => {
-
+  const route = useRoute();
   const {} = props;
   // const {navigation , page , isLoggedIn} = props;
   const { navigation, page, isLoggedIn = true } = props;
@@ -27,7 +27,7 @@ const ButtomNavigation = (props) => {
   };
 
   const NotificationPage = () => {
-    isLoggedIn ? navigation.navigate("") : "";
+    isLoggedIn ? navigation.navigate("Notification") : "";
     // navigation.navigate("")
   };
 

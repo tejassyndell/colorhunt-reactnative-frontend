@@ -12,6 +12,7 @@ export const loginAuth = async (user) => {
     // console.log(err, 'err in react api')
   }
 };
+``;
 
 //---------------------new change 28-----------------------
 export const getProductName = async () => {
@@ -140,9 +141,9 @@ export const updateCartArticale = async (data) => {
   }
 };
 
-export const cartdetails = async () => {
+export const cartdetails = async (data) => {
   try {
-    return await axios.post(`${url}/cartdetails`, { party_id: 197 });
+    return await axios.post(`${url}/cartdetails`, data);
   } catch (err) {
     console.log(err, "err in react api");
   }
@@ -223,3 +224,14 @@ export const udatepartytoken = async (data) => {
     console.log(err, "err in react api");
   }
 };
+
+
+export const getNotification = async (data) => {
+  console.log(data);
+  try {
+    return await axios.post(`${url}/getNotification`, data);
+  } catch (err) {
+    console.log(err, "err in react api");
+  }
+};
+

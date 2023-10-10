@@ -1,6 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { RecipeCard } from "../../AppStyles";
-
 const { height, width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   navBar: {

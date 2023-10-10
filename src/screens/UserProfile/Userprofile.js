@@ -38,6 +38,9 @@ export default function Userprofile(props) {
   };
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerStyle: {
+        backgroundColor: "black", // Change the background color to black
+      },
       headerLeft: () => (
         // <MenuBackArrow
         //   onPress={() => {
