@@ -28,6 +28,7 @@ import { ActivityIndicator } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
@@ -80,7 +81,11 @@ const DetailsOfArticals = (props) => {
 
     loadCustomFont();
   }, []);
-
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData");
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  };
 
   const headerHeight =
     Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 100) : 120;
@@ -88,7 +93,7 @@ const DetailsOfArticals = (props) => {
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
-      PartyId: 197,
+      PartyId: await getpartyid(),
     };
     try {
       const res = await ArticleDetails(data);
@@ -161,7 +166,7 @@ const DetailsOfArticals = (props) => {
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
-  const addtocart = async (PartyId, ArticleId) => {
+  const addtocart = async ( ArticleId) => {
     if (!combinedArray) {
       console.log("undefined");
       return;
@@ -174,7 +179,7 @@ const DetailsOfArticals = (props) => {
     console.log("cqty to string ", colorwiseQuantitiesTOstring);
     console.log(totalPrice);
     const data = {
-      party_id: PartyId,
+      party_id: await getpartyid(),
       article_id: ArticleId,
       Quantity: colorwiseQuantitiesTOstring,
       rate: totalPrice,
@@ -961,7 +966,7 @@ const DetailsOfArticals = (props) => {
                   opacity: totalQuantity === 0 ? 0.5 : 1,
                 },
               ]}
-              onPress={() => addtocart(197, id)}
+              onPress={() => addtocart(id)}
               disabled={totalQuantity === 0}
             >
               <View
