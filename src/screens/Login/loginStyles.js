@@ -25,13 +25,13 @@ const loginStyles = {
   title: {
     color: "white",
     fontSize: windowWidth * 0.07,
-    fontWeight: 700,
+    fontWeight: "700",
     marginBottom: "2%",
   },
   subtitle: {
     color: "#FFFFFF",
     fontSize: windowWidth * 0.04,
-    fontWeight: 700,
+    fontWeight: "700",
     marginBottom: 80,
   },
   input: {
@@ -76,7 +76,7 @@ const loginStyles = {
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 40 : 23,
-    fontWeight: 700,
+    fontWeight: "700",
     textAlign: "center",
   },
   phoneIcon: {

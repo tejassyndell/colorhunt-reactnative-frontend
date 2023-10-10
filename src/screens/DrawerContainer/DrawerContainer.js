@@ -95,7 +95,7 @@ export default function DrawerContainer(props) {
                 fontFamily: isFontLoaded ? "Glory" : undefined,
                 height: "auto",
 
-                fontWeight: 700,
+                fontWeight: "700",
                 width: "60%",
               }}
             >

@@ -180,7 +180,7 @@ const Orderlist = (props) => {
               textAlign: "center",
               fontSize: windowwidthe * 0.05,
               fontFamily: isFontLoaded ? 'Glory' : undefined,
-              fontWeight: 700,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -270,7 +270,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: 500,
+                      fontWeight: "500",
                       fontFamily: isFontLoaded ? 'Glory' : undefined,
                       color: "#000",
                     }}
@@ -296,7 +296,7 @@ const Orderlist = (props) => {
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: 500,
+                        fontWeight: "500",
                       }}
                     >
                       {new Date(currentDate).toLocaleDateString("en-GB", {
@@ -317,7 +317,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: 500,
+                      fontWeight: "500",
                       fontFamily: isFontLoaded ? 'Glory' : undefined,
                       color: "#000",
                     }}
@@ -348,7 +348,7 @@ const Orderlist = (props) => {
                         fontSize: windowwidthe * 0.03,
                         color: "red",
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 500,
+                        fontWeight: "500",
                       }}
                     >
                       {fillvalue ? "Filed cannot be empty" : ""}
@@ -366,7 +366,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: 500,
+                      fontWeight: "500",
                       fontFamily: isFontLoaded ? 'Glory' : undefined,
                       color: "#000",
                     }}
@@ -395,7 +395,7 @@ const Orderlist = (props) => {
                         color: "#626262",
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: 500,
+                        fontWeight: "500",
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                       }}
                     >
@@ -485,7 +485,7 @@ const Orderlist = (props) => {
                                     hoveredItem === item.Id
                                       ? "#fff"
                                       : "#626262",
-                                  fontWeight: 500,
+                                  fontWeight: "500",
                                 },
                               ]}
                             >
@@ -571,7 +571,7 @@ const Orderlist = (props) => {
                                 style={{
                                   fontSize: windowwidthe * 0.035,
                                   fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                  fontWeight: 700,
+                                  fontWeight: "700",
                                 }}
                               >
                                 {item.ArticleNumber}
@@ -580,7 +580,7 @@ const Orderlist = (props) => {
                                 style={{
                                   fontSize: windowwidthe * 0.025,
                                   fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                  fontWeight: 400,
+                                  fontWeight: "400",
                                 }}
                               >
                                 {item.StyleDescription}
@@ -599,7 +599,7 @@ const Orderlist = (props) => {
                                 style={{
                                   fontSize: windowwidthe * 0.035,
                                   fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                  fontWeight: 700,
+                                  fontWeight: "700",
                                 }}
                               >
                                 ₹{item.rate}.00
@@ -653,7 +653,7 @@ const Orderlist = (props) => {
                       style={{
                         fontSize: 32,
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 700,
+                        fontWeight: "700",
                         marginBottom: 10,
                       }}
                     >
@@ -666,7 +666,7 @@ const Orderlist = (props) => {
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                         textAlign: "center",
                         marginBottom: 20,
-                        fontWeight: 500,
+                        fontWeight: "500",
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
@@ -692,7 +692,7 @@ const Orderlist = (props) => {
                         style={{
                           fontSize: 18,
                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                          fontWeight: 700,
+                          fontWeight: "700",
                           color: "white",
                           paddingHorizontal: 15,
                         }}
@@ -744,7 +744,7 @@ const Orderlist = (props) => {
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 400,
+                        fontWeight: "400",
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -757,7 +757,7 @@ const Orderlist = (props) => {
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
                         fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 500,
+                        fontWeight: "500",
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -781,7 +781,7 @@ const Orderlist = (props) => {
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
                             fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 400,
+                            fontWeight: "400",
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -794,7 +794,7 @@ const Orderlist = (props) => {
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
                             fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 500,
+                            fontWeight: "500",
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -826,7 +826,7 @@ const Orderlist = (props) => {
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
                               fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 400,
+                              fontWeight: "400",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -839,7 +839,7 @@ const Orderlist = (props) => {
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
                               fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 500,
+                              fontWeight: "500",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -861,7 +861,7 @@ const Orderlist = (props) => {
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
                               fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 400,
+                              fontWeight: "400",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -874,7 +874,7 @@ const Orderlist = (props) => {
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
                               fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 500,
+                              fontWeight: "500",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -929,7 +929,7 @@ const Orderlist = (props) => {
                       color: "white",
                       fontSize: width >= 720 ? 25 : 15,
                       fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 600,
+                      fontWeight: "600",
                       textAlign: "center",
                     }}
                   >
@@ -958,7 +958,7 @@ const Orderlist = (props) => {
                     style={{
                       fontSize: width >= 720 ? 22 : 12,
                       fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 500,
+                      fontWeight: "500",
                     }}
                   >
                     Total Price
@@ -969,7 +969,7 @@ const Orderlist = (props) => {
                     style={{
                       fontSize: width >= 720 ? 22 : 12,
                       fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 700,
+                      fontWeight: "700",
                     }}
                   >
                     ₹{parseInt(totalrate + gstamount)}.00

@@ -444,7 +444,7 @@ export default function CategorisWiseArticle(props) {
               style={{
                 fontSize: width >= 720 ? 25 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: 700,
+                fontWeight: "700",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",

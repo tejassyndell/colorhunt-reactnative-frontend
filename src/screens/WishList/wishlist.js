@@ -250,9 +250,8 @@ export default function WishList(props) {
               style={{
                 fontSize: width * 0.1,
                 fontFamily: isFontLoaded ? 'Glory' : undefined,
-                fontWeight: "bolder",
                 textAlign: "center",
-                fontWeight: 700,
+                fontWeight: "700",
                 color: "#808080",
               }}
             >

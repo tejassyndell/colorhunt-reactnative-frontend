@@ -372,7 +372,7 @@ export default function HomeScreen(props) {
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
                   fontFamily: isFontLoaded ? 'Glory' : undefined,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   paddingLeft: 8,
                 }}
               >
@@ -415,7 +415,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   start: 10,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   fontSize: width >= 720 ? 25 : 18,
                   fontFamily: isFontLoaded ? 'Glory' : undefined,
                 }}
@@ -429,7 +429,7 @@ export default function HomeScreen(props) {
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
                   fontFamily: isFontLoaded ? 'Glory' : undefined,
-                  fontWeight: 600,
+                  fontWeight: "600",
                 }}
                 onPress={() => {
                    viewAllArticles() 
@@ -664,7 +664,7 @@ export default function HomeScreen(props) {
                 <Text
                   style={{
                     start: 10,
-                    fontWeight: 700,
+                    fontWeight: "700",
                     fontSize: width >= 720 ? 25 : 18,
                     fontFamily: isFontLoaded ? 'Glory' : undefined,
                   }}
@@ -678,7 +678,7 @@ export default function HomeScreen(props) {
                     color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
                     fontFamily: isFontLoaded ? 'Glory' : undefined,
-                    fontWeight: 600,
+                    fontWeight: "600",
                   }}
                   onPress={() => {
                      viewAllArticles();

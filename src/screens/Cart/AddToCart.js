@@ -310,7 +310,7 @@ const AddToCart = (props) => {
             style={{
               fontSize: windowwidthe * 0.035,
               fontFamily: isFontLoaded ? 'Glory' : undefined,
-              fontWeight: 500,
+              fontWeight: "500",
               color: "red",
               textAlign: "right",
             }}
@@ -331,7 +331,7 @@ const AddToCart = (props) => {
             style={{
               fontSize: windowwidthe * 0.035,
               fontFamily: isFontLoaded ? 'Glory' : undefined,
-              fontWeight: 400,
+              fontWeight: "400",
               color: "red",
             }}
           >
@@ -420,7 +420,7 @@ const AddToCart = (props) => {
                 fontFamily: isFontLoaded ? 'Glory' : undefined,
                 fontWeight: "bolder",
                 textAlign: "center",
-                fontWeight: 700,
+                fontWeight: "700",
                 color: "#808080",
               }}
             >
@@ -581,7 +581,7 @@ const AddToCart = (props) => {
                                         style={{
                                           fontSize: windowwidthe * 0.035,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                          fontWeight: 700,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         {item.ArticleNumber}
@@ -590,7 +590,7 @@ const AddToCart = (props) => {
                                         style={{
                                           fontSize: windowwidthe * 0.025,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                          fontWeight: 400,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         {item.StyleDescription}
@@ -609,7 +609,7 @@ const AddToCart = (props) => {
                                         style={{
                                           fontSize: windowwidthe * 0.025,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                          fontWeight: 400,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         Rate
@@ -618,7 +618,7 @@ const AddToCart = (props) => {
                                         style={{
                                           fontSize: windowwidthe * 0.035,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                          fontWeight: 700,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         ₹{item.rate}.00
@@ -768,7 +768,7 @@ const AddToCart = (props) => {
                                           fontSize: windowwidthe * 0.035,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 700,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         {item.ArticleNumber}
@@ -778,7 +778,7 @@ const AddToCart = (props) => {
                                           fontSize: windowwidthe * 0.025,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 400,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         {item.StyleDescription}
@@ -798,7 +798,7 @@ const AddToCart = (props) => {
                                           fontSize: windowwidthe * 0.025,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 400,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         Rate
@@ -808,7 +808,7 @@ const AddToCart = (props) => {
                                           fontSize: windowwidthe * 0.035,
                                           fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 700,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         ₹{item.rate}.00
@@ -971,7 +971,7 @@ const AddToCart = (props) => {
                                         fontSize: windowwidthe * 0.035,
                                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 700,
+                                        fontWeight: "700",
                                       }}
                                     >
                                       {item.ArticleNumber}
@@ -981,7 +981,7 @@ const AddToCart = (props) => {
                                         fontSize: windowwidthe * 0.025,
                                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 400,
+                                        fontWeight: "400",
                                       }}
                                     >
                                       {item.StyleDescription}
@@ -1001,7 +1001,7 @@ const AddToCart = (props) => {
                                         fontSize: windowwidthe * 0.025,
                                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 400,
+                                        fontWeight: "400",
                                       }}
                                     >
                                       Rate
@@ -1011,7 +1011,7 @@ const AddToCart = (props) => {
                                         fontSize: windowwidthe * 0.035,
                                         fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 700,
+                                        fontWeight: "700",
                                       }}
                                     >
                                       ₹{item.rate}.00
@@ -1166,7 +1166,7 @@ const AddToCart = (props) => {
                               fontSize:
                                 windowwidthe < 720 ? windowwidthe * 0.04 : 22,
                                 fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 600,
+                              fontWeight: "600",
                               textAlign: "center",
                             }}
                           >
@@ -1214,7 +1214,7 @@ const AddToCart = (props) => {
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.042 : 26,
                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 600,
+                        fontWeight: "600",
                         textAlign: "center",
                       }}
                     >
@@ -1238,7 +1238,7 @@ const AddToCart = (props) => {
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.035 : 22,
                       fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 700,
+                      fontWeight: "700",
                       color: "#AAAAAA",
                     }}
                   >
@@ -1264,7 +1264,7 @@ const AddToCart = (props) => {
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 28,
                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 600,
+                        fontWeight: "600",
                         color: "#585656",
                       }}
                     >
@@ -1288,7 +1288,7 @@ const AddToCart = (props) => {
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 28,
                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 800,
+                        fontWeight: "800",
                         color: "#000",
                       }}
                     >
@@ -1315,7 +1315,7 @@ const AddToCart = (props) => {
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.044 : 28,
                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 600,
+                        fontWeight: "600",
                         textAlign: "left",
                       }}
                     >

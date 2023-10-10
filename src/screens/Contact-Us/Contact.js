@@ -110,7 +110,7 @@ export default function Contact(props) {
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
               fontFamily: isFontLoaded ? 'Glory' : undefined,
-              fontWeight: 700,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -137,7 +137,7 @@ export default function Contact(props) {
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
       fontFamily: isFontLoaded ? 'Glory' : undefined,
-      fontWeight: 700,
+      fontWeight: "700",
     },
   });
   const windowWidth = Dimensions.get("window").width;
