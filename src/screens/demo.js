@@ -39,7 +39,7 @@
 //     const loadCustomFont = async () => {
 //       try {
 //         await Font.loadAsync({
-//           Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+//           Glory: require("../../../assets/Fonts/Glory.ttf"),
 //         });
 //         setIsFontLoaded(true);
 //       } catch (error) {
