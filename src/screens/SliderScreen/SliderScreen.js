@@ -23,10 +23,19 @@ const SliderScreen = (props) => {
   const styles = SliderStyles(); 
   // Calculate the image width and height based on screen width
   const imageWidth = width >= 720 ? 280 : 130;
-  const imageHeight = height * 0.2; // 20% of screen height
+  const imageHeight = height * 0.15; // 20% of screen height
 
   return (
     <View style={styles.container}>
+       <View style={{
+        width:'100%',
+        height:50,
+        backgroundColor:'#FFF',
+        position: "absolute", 
+        bottom: 0,
+        zIndex:0
+        
+      }}></View>
       <Swiper
         loop={false}
         showsPagination={true}
@@ -160,6 +169,7 @@ const SliderScreen = (props) => {
           </View>
         </ImageBackground>
       </Swiper>
+     
     </View>
   );
 };

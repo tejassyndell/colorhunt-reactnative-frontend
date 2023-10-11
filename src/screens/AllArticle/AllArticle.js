@@ -117,7 +117,7 @@ export default function AllArticle(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -336,7 +336,7 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All");
+    // console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function

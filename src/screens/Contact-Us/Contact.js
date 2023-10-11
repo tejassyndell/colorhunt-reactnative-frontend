@@ -109,7 +109,7 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontFamily: 'Glory' ,
               fontWeight: 700,
               width: "100%",
             }}
@@ -136,7 +136,7 @@ export default function Contact(props) {
       color: "white",
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
-      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: 'Glory' ,
       fontWeight: 700,
     },
   });
@@ -144,13 +144,15 @@ export default function Contact(props) {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ height:'100%' }}
+      behavior={Platform.OS === "android" ? "padding" : Platform.OS === "ios" ? "padding" : "height"}
+      
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 0.7 }}
         keyboardShouldPersistTaps="handled"
-        showsHorizontalScrollIndicator={true}
+        // showsHorizontalScrollIndicator={true}
+        showVerticalsScrollIndicator={true}
       >
         <View
           style={{
@@ -198,13 +200,13 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: 'Glory' ,
 
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !username && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
                 This field is required
               </Text>
             )}
@@ -226,12 +228,12 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: 'Glory' ,
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !email && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
                 This field is required
               </Text>
             )}
@@ -254,11 +256,11 @@ export default function Contact(props) {
                 margin: 5,
                 height: width >= 720 ? 70 : 40,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: 'Glory' ,
               }}
             />
             {showValidationErrors && !subject && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
                 This field is required
               </Text>
             )}
@@ -286,11 +288,11 @@ export default function Contact(props) {
                 margin: 5,
                 height: multilineHeight,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: 'Glory' ,
               }}
             />
             {showValidationErrors && !message && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
                 This field is required
               </Text>
             )}
@@ -311,7 +313,7 @@ export default function Contact(props) {
           </View>
         </View>
       </ScrollView>
-      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+      <View style={{ sitiopon: "absolute", bottom: 0, left: 0, right: 0 }}>
         <ButtomNavigation navigation={navigation} page="contactus" />
       </View>
     </KeyboardAvoidingView>
