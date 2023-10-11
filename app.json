@@ -48,8 +48,7 @@
       "favicon": "./assets/icon.png"
     },
     "extra": {
-      "firebase": {},
-      "eas": {
+      "firebase": {
         "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
       }
     }

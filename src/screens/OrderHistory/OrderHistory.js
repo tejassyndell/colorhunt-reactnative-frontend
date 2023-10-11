@@ -309,7 +309,7 @@ const OrderHistory = (props) => {
                                 </View>
                               </View>
                               <View>
-                                <View style={orderstyles.text_cnt}>
+                                <View style={[orderstyles.text_cnt, {marginBottom:10 }]}>
                                   <Text style={orderstyles.txt_titile}>
                                     Order Total :
                                   </Text>
@@ -330,6 +330,7 @@ const OrderHistory = (props) => {
                               width: "40%",
                               paddingVertical: "2%",
                               paddingRight: "2%",
+
                             }}
                           >
                             <View style={{ height: "53%" }}>
@@ -441,7 +442,7 @@ const OrderHistory = (props) => {
                                 </View>
                               </View>
                               <View>
-                                <View style={orderstyles.text_cnt}>
+                                <View style={[orderstyles.text_cnt, {marginBottom:10 }]}>
                                   <Text style={orderstyles.txt_titile}>
                                     Order Total :
                                   </Text>

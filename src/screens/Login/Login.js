@@ -21,6 +21,8 @@ const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.6;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// import messaging from '@react-native-firebase/messaging';
+
 const Login = (props) => {
   const { navigation } = props;
   const route = useRoute();
@@ -58,8 +60,49 @@ const Login = (props) => {
   };
 
   useEffect(() => {
+    
     getNotificationPermission();
   }, []);
+
+
+  // const getFCMToken = async () => {
+  //   try {
+  //     const token = await messaging().getToken();
+  //     return token;
+  //   } catch (error) {
+  //     console.error('Error getting FCM token:', error);
+  //     return null;
+  //   }
+  // }
+  
+  // const getNotificationPermission = async () => {
+  //   try {
+  //     const { status } = await Notifications.requestPermissionsAsync();
+  //     console.log(status, "statuss"); // Move this line here
+  //     if (status === "granted") {
+  //       const pushToken = await getFCMToken();
+  //       console.log("FCM Token:", pushToken);
+  //       setToken(pushToken);
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: true, token: pushToken })
+  //       );
+  //       console.log({ status: true, token: pushToken });
+  //     } else {
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: false, token: "" })
+  //       );
+  //       console.log("Notification permission denied");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error getting notification permission:", error);
+  //   }
+  // };
+  
+  // useEffect(() => {
+  //   getNotificationPermission();
+  // }, []);
 
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
