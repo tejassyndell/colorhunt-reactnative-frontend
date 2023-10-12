@@ -706,7 +706,6 @@ export default function HomeScreen(props) {
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
-                  style={{ overflow: "hidden" }}
                 >
                   {kids.length === 0 ? (
                     <View
@@ -722,7 +721,9 @@ export default function HomeScreen(props) {
                           fontSize: width >= 720 ? 25 : 17,
                           fontFamily: isFontLoaded ? "Glory" : undefined,
                           textAlign: "center",
+                          position: "absolute",
                           color: "#808080",
+                          left: 150,
                         }}
                       >
                         No Article Found
