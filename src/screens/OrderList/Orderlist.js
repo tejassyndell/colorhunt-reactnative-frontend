@@ -31,7 +31,7 @@ const Orderlist = (props) => {
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
 
   // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
-  const [Transportation, setTransportation] = useState([]);
+  const [Transportation, set] = useState([]);
   const [OldTransportation, setOldTransportation] = useState([]);
   const [ParsedData, setParsedData] = useState([]);
   const currentDate = new Date();
@@ -69,9 +69,9 @@ const Orderlist = (props) => {
       ? width >= 720
         ? 120
         : 100
-      : width >= 420
-      ? 120
-      : 80;
+      : height >= 844
+      ? 100
+      : 65;
   const AddSo = async () => {
     let userdata = await AsyncStorage.getItem("UserData");
     userdata = await JSON.parse(userdata);
@@ -93,7 +93,7 @@ const Orderlist = (props) => {
     const data = {
       Date: currentDate,
       Destination: destinationVal,
-      Transporter: transportationVal,
+      Transporter: Val,
       GSTType: userdata[0].GSTNumber ? userdata[0].GSTType : "null",
       GST: "",
       GST_Percentage: userdata[0].GSTNumber ? "5" : "",

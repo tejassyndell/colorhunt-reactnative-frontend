@@ -24,9 +24,9 @@ export default function Userprofile(props) {
       ? width >= 720
         ? 120
         : 100
-      : width >= 420
-      ? 120
-      : 80;
+      : height >= 844
+      ? 100
+      : 65;
   useEffect(() => {
     fetchprofiledata();
   }, []);
@@ -45,14 +45,9 @@ export default function Userprofile(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: {
-        backgroundColor: "black", // Change the background color to black
+        backgroundColor: "black",
       },
       headerLeft: () => (
-        // <MenuBackArrow
-        //   onPress={() => {
-        //     navigation.goBack();
-        //   }}
-        // />
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();

@@ -88,9 +88,9 @@ export default function CategorisWiseArticle(props) {
       ? width >= 720
         ? 120
         : 100
-      : width >= 420
-      ? 120
-      : 80;
+      : height >= 844
+      ? 100
+      : 65;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   // uploard url image
@@ -195,7 +195,7 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              isLoggedIn ? navigation.navigate("Profile") : "";
+              navigation.navigate("Profile");
             }}
           >
             <Image

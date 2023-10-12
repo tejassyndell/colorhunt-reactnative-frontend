@@ -36,9 +36,9 @@ const OrderHistory = (props) => {
       ? width >= 720
         ? 120
         : 100
-      : width >= 420
-      ? 120
-      : 80;
+      : height >= 844
+      ? 100
+      : 65;
   const toggleCalendar = () => {
     setCalendarVisible(!isCalendarVisible);
   };
@@ -801,6 +801,7 @@ const orderstyles = StyleSheet.create({
     fontSize: width < 720 ? 12 : 22,
     fontWeight: "700",
     color: "#000000",
+    marginTop: 1,
   },
   complete_icon_text: {
     backgroundColor: "#E1FFD3",

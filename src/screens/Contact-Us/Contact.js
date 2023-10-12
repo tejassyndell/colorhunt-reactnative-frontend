@@ -34,7 +34,7 @@ export default function Contact(props) {
         : 100
       : width >= 420
       ? 120
-      : 80;
+      : 120;
   const { width, height } = Dimensions.get("window");
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
@@ -206,7 +206,7 @@ export default function Contact(props) {
                 fontSize: width >= 720 ? 30 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
 
-                height: width >= 720 ? 70 : 40,
+                height: width >= 720 ? 70 : 45,
               }}
             />
             {showValidationErrors && !username && (
@@ -240,7 +240,7 @@ export default function Contact(props) {
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
-                height: width >= 720 ? 70 : 40,
+                height: width >= 720 ? 70 : 45,
               }}
             />
             {showValidationErrors && !email && (
@@ -272,7 +272,7 @@ export default function Contact(props) {
                 borderRadius: 5,
                 padding: 10,
                 margin: 5,
-                height: width >= 720 ? 70 : 40,
+                height: width >= 720 ? 70 : 45,
                 fontSize: width >= 720 ? 30 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
@@ -333,7 +333,8 @@ export default function Contact(props) {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginTop: width >= 720 ? 100 : 60,
+              marginTop: width >= 720 ? 80 : 60,
+              paddingBottom: 300,
             }}
           >
             <TouchableOpacity

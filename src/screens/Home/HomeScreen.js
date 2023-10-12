@@ -63,9 +63,9 @@ export default function HomeScreen(props) {
       ? width >= 720
         ? 120
         : 100
-      : width >= 420
-      ? 120
-      : 80;
+      : height >= 844
+      ? 100
+      : 65;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 
@@ -703,34 +703,33 @@ export default function HomeScreen(props) {
                   top: 20,
                 }}
               >
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                  {kids.length === 0 ? (
-                    <View
+                {kids.length === 0 ? (
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Text
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        justifyContent: "center",
+                        fontSize: width >= 720 ? 25 : 17,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         textAlign: "center",
+
+                        color: "#808080",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: width >= 720 ? 25 : 17,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
-                          textAlign: "center",
-                          position: "absolute",
-                          color: "#808080",
-                          left: 150,
-                        }}
-                      >
-                        No Article Found
-                      </Text>
-                    </View>
-                  ) : (
-                    kids.map((item, index) => (
+                      No Article Found
+                    </Text>
+                  </View>
+                ) : (
+                  kids.map((item, index) => (
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                    >
                       <View
                         key={index}
                         style={{
@@ -823,9 +822,9 @@ export default function HomeScreen(props) {
                           {"₹" + item.ArticleRate + ".00"}
                         </Text>
                       </View>
-                    ))
-                  )}
-                </ScrollView>
+                    </ScrollView>
+                  ))
+                )}
               </View>
             </View>
           </ScrollView>

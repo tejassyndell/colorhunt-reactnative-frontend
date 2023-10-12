@@ -61,9 +61,9 @@ const OrderDetails = (props) => {
       ? width >= 720
         ? 120
         : 100
-      : width >= 420
-      ? 120
-      : 80;
+      : height >= 844
+      ? 100
+      : 65;
 
   console.log(newPrint);
 
