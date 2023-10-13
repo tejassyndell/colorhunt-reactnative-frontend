@@ -10,7 +10,7 @@ import { useState, useLayoutEffect, useEffect } from "react";
 import { Pressable } from "react-native";
 import { StyleSheet, Dimensions, Platform } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import { getsonumber } from "../../api/api";
+import { getCompletedSoDetails, getsonumber } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { Calendar } from "react-native-calendars";
@@ -25,11 +25,15 @@ const OrderHistory = (props) => {
   const [sonumberdata, setSoNumberData] = useState([]);
   const [oldDataOfso, setOldDateOfso] = useState([]);
   const [isloading, setIsLoading] = useState(true);
+  const [isLoadingsodetails, setIsLoadingsodetails] = useState(true);
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("DD/MM/YYYY");
   const [selectedDateIncompleted, setSelectedDateIncompleted] =
     useState("DD/MM/YYYY");
   const [completedsodata, setcompletedsodata] = useState();
+  const [olddataofcompleted, setOldDataOfCompleted] = useState([]);
+  const [sodatanotfount, setSodatanotfount] = useState(false);
+  const [outworddatanotfount,setOutworddatanotfount]=useState(false);
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
   const toggleCalendar = () => {
@@ -147,7 +151,10 @@ const OrderHistory = (props) => {
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     await getsonumber({ PartyId: data[0].Id }).then((res) => {
-      console.log(res.data);
+      if (res.data.length <= 0) {
+        console.log(res.data, "_+_+_+_+_+__++_+");
+        setSodatanotfount(true);
+      }
       setSoNumberData(res.data);
       setOldDateOfso(res.data);
       setcompletedsodata(res.data);
@@ -192,6 +199,24 @@ const OrderHistory = (props) => {
 
     return sum;
   };
+
+
+
+  const getCompleteData = async () => {
+    setIsLoadingsodetails(true);
+    let data = await AsyncStorage.getItem("UserData");
+    data = await JSON.parse(data);
+    console.log(data, "{}{}{}{}{}");
+    await getCompletedSoDetails({ PartyId: data[0].Id }).then((res) => {
+      // console.log(res.data);
+      if(res.data.length<=0){
+        setOutworddatanotfount(true);
+      }
+      setcompletedsodata(res.data);
+      setOldDataOfCompleted(res.data);
+      setIsLoadingsodetails(false);
+    })
+  }
   return (
     <>
       {isloading ? (
@@ -230,6 +255,7 @@ const OrderHistory = (props) => {
                   onPress={() => {
                     setToggle(!toggle);
                     setOrderstatus(false);
+                    getCompleteData();
                   }}
                 >
                   <Text
@@ -260,10 +286,14 @@ const OrderHistory = (props) => {
             </View>
           </View>
           {orderstatus ? (
-            <View style={orderstyles.order_cnt}>
-              <ScrollView nestedScrollEnabled={true}>
-                {sonumberdata
-                  ? sonumberdata.map((item) =>
+            sodatanotfount ?
+              <View style={orderstyles.nodataContainer}>
+                <Text style={orderstyles.nodataText}>NO DATA AVAILABLE</Text>
+              </View> :
+              <View style={orderstyles.order_cnt}>
+                <ScrollView nestedScrollEnabled={true}>
+                  {sonumberdata
+                    ? sonumberdata.map((item) =>
                       item.status === 0 ? (
                         <TouchableOpacity
                           style={orderstyles.data_cnt}
@@ -293,7 +323,7 @@ const OrderHistory = (props) => {
                                   SO No :
                                 </Text>
                                 <Text style={orderstyles.txt_val}>
-                                {`${item.UserName}${item.SoNumber}/${item.StartYear}-${item.EndYear}`}
+                                  {`${item.UserName}${item.SoNumber}/${item.StartYear}-${item.EndYear}`}
                                 </Text>
                               </View>
                               <View>
@@ -309,16 +339,16 @@ const OrderHistory = (props) => {
                                 </View>
                               </View>
                               <View>
-                                <View style={[orderstyles.text_cnt, {marginBottom:10 }]}>
+                                <View style={[orderstyles.text_cnt, { marginBottom: 10 }]}>
                                   <Text style={orderstyles.txt_titile}>
                                     Order Total :
                                   </Text>
                                   <Text style={orderstyles.txt_val}>
                                     {item.OutwardNoPacks[0] !== null
                                       ? calculateTotalAmount(
-                                          item.OutwardNoPacks,
-                                          item.ArticleRate
-                                        )
+                                        item.OutwardNoPacks,
+                                        item.ArticleRate
+                                      )
                                       : "0"}
                                   </Text>
                                 </View>
@@ -389,14 +419,22 @@ const OrderHistory = (props) => {
                         ""
                       )
                     )
-                  : ""}
-              </ScrollView>
-            </View>
+                    : ""}
+                </ScrollView>
+              </View>
           ) : (
-            <View style={orderstyles.order_cnt}>
-              <ScrollView nestedScrollEnabled={true}>
-                {completedsodata
-                  ? completedsodata.map((item) =>
+            isLoadingsodetails ?
+              <View style={orderstyles.loader}>
+                <ActivityIndicator size="large" color="black" />
+              </View> :
+              outworddatanotfount ?
+              <View style={orderstyles.nodataContainer}>
+                <Text style={orderstyles.nodataText}>NO DATA AVAILABLE</Text>
+              </View> :
+              <View style={orderstyles.order_cnt}>
+                <ScrollView nestedScrollEnabled={true}>
+                  {completedsodata
+                    ? completedsodata.map((item) =>
                       item.status === 1 ? (
                         <TouchableOpacity
                           style={orderstyles.data_cnt}
@@ -404,12 +442,14 @@ const OrderHistory = (props) => {
                             navigation.navigate("orderdetails", {
                               sonumber: item.SoNumber,
                               CreatedDate: item.CreatedDate,
-                              remarks: item.Remarks,
+                              // remarks: item.Remarks,
                               transport: item.Transporter,
                               name: item.UserName,
                               OutwardNumber: item.OutwardNumber,
                               startyear: item.StartYear,
                               endyear: item.EndYear,
+                              outwardArticleId:item.outwardArticleId,
+                              OutwardNumberId:item.OutwardNumberId
                             });
                           }}
                         >
@@ -425,8 +465,8 @@ const OrderHistory = (props) => {
                                 <Text style={orderstyles.txt_titile}>
                                   Outward No :
                                 </Text>
-                                <Text style={orderstyles.txt_val}>
-                                {`${item.UserName}${item.OutwardNumber}/${item.StartYear}-${item.EndYear}`}
+                                <Text style={orderstyles.txt_val} adjustsFontSizeToFit={true}>
+                                  {`${item.OutwardNumber}/${item.StartYear}-${item.EndYear}`}
                                 </Text>
                               </View>
                               <View>
@@ -442,16 +482,16 @@ const OrderHistory = (props) => {
                                 </View>
                               </View>
                               <View>
-                                <View style={[orderstyles.text_cnt, {marginBottom:10 }]}>
+                                <View style={[orderstyles.text_cnt, { marginBottom: 10 }]}>
                                   <Text style={orderstyles.txt_titile}>
                                     Order Total :
                                   </Text>
                                   <Text style={orderstyles.txt_val}>
                                     {item.OutwardNoPacks[0] !== null
                                       ? calculateTotalAmount(
-                                          item.OutwardNoPacks,
-                                          item.ArticleRate
-                                        )
+                                        item.OutwardNoPacks,
+                                        item.ArticleRate
+                                      )
                                       : "0"}
                                   </Text>
                                 </View>
@@ -521,9 +561,9 @@ const OrderHistory = (props) => {
                         ""
                       )
                     )
-                  : ""}
-              </ScrollView>
-            </View>
+                    : ""}
+                </ScrollView>
+              </View>
           )}
 
           <Modal
@@ -745,6 +785,7 @@ const orderstyles = StyleSheet.create({
     width: "100%",
 
     backgroundColor: "#FFF",
+    paddingBottom:200
   },
   data_cnt: {
     marginBottom: 15,
@@ -753,7 +794,7 @@ const orderstyles = StyleSheet.create({
     marginHorizontal: "5%",
     borderRadius: 12,
     flexDirection: "row",
-    height: width < 720 ? 100 : 150,
+    height: width < 720 ? 115 : 150,
     // elevation: 5,
   },
   pending_icon: {
@@ -784,6 +825,7 @@ const orderstyles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     gap: 5,
+    flexWrap: "wrap"
   },
   txt_titile: {
     fontSize: width < 720 ? 14 : 20,
@@ -810,4 +852,21 @@ const orderstyles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
   },
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  nodataContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFFFF"
+  },
+  nodataText:{
+    fontFamily:"Glory",
+    fontSize:18,
+    fontStyle:"normal",
+    color:"gray"
+  }
 });

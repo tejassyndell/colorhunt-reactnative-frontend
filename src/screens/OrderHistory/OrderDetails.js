@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import { ThemeProvider, useRoute } from "@react-navigation/native";
 import { Table, Row, Rows } from "react-native-table-component";
 import Textarea from "react-native-textarea";
-import { getSoArticleDetails } from "../../api/api";
+import { getSoArticleDetails, getcompleteoutwordDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
 import { printToFileAsync } from "expo-print";
@@ -52,6 +52,8 @@ const OrderDetails = (props) => {
     endyear = 0,
     startyear = 0,
     OutwardNumber = 0,
+    outwardArticleId = [],
+    OutwardNumberId =""
   } = route.params;
   console.log(remarks, "{}{}{}{}{}{}{}{}");
   const [newPrint, setNewPrint] = useState(false);
@@ -125,9 +127,12 @@ const OrderDetails = (props) => {
   const transformSodetailsToTableData = (sodetails) => {
     return sodetails.map((item, index) => {
       // Parse ArticleSize JSON string to extract sizes
-      const sizes = JSON.parse(item.ArticleSize)
+    
+      const sizes =
+      item.ArticleSize.length > 0?
+       JSON.parse(item.ArticleSize)
         .map((sizeObj) => sizeObj.Name)
-        .join(", ");
+        .join(", "):""
 
       // Parse ArticleColor JSON string to extract color names
       const colors =
@@ -147,45 +152,34 @@ const OrderDetails = (props) => {
       );
 
       // Combine ArticleColor and OutwardNoPacks
-      const colorPacksCombination = (
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {colors.length > 0
-            ? colors.map((color, i) => (
-              <Text key={i} style={{ marginHorizontal: 2 }}>
-                <Text style={{ fontWeight: "bold" }}>
-                  {color ? color : "--"}:
-                </Text>
-                {String(outwardNoPacksArray[i] || 0).padStart(2, "0")}
-                <Text>,</Text>
-              </Text>
-            ))
-            : outwardNoPacksArray.map((nopack, i) => (
-              <Text key={i} style={{ marginHorizontal: 2 }}>
-                <Text style={{ fontWeight: "bold" }}>--:</Text>
-                {String(nopack || 0).padStart(2, "0")}
-                <Text>,</Text>
-              </Text>
-            ))}
-        </View>
-      );
+      const colorPacksCombination = () => {
+        const combinedTextArray = [];
+      
+        if (colors.length > 0) {
+          colors.forEach((color, i) => {
+            const textValue = `${color ? color : "--"}:${String(outwardNoPacksArray[i] || 0).padStart(2, "0")}`;
+            combinedTextArray.push(textValue);
+          });
+        } else {
+          outwardNoPacksArray.forEach((nopack) => {
+            const textValue = `--:${String(nopack || 0).padStart(2, "0")}`;
+            combinedTextArray.push(textValue);
+          });
+        }
+      
+        const combinedText = combinedTextArray.join(",");
+        return combinedText;
+      };
 
       // Calculate the total amount for this item
       const totalAmount = item.ArticleRate * totalQuantity;
-
+      const combinedText= "";
       return [
         (index + 1).toString(), // SN
         item.ArticleNumber,
         item.Title, // ARTICLE
         sizes, // SIZE's
-        colorPacksCombination, // COLOR:PACKS combination
+        colorPacksCombination(), // COLOR:PACKS combination
         totalQuantity.toString(), // TOTAL QTY
         "₹" + item.ArticleRate + ".00", // RATE
         "₹" + totalAmount.toFixed(2), // AMOUNT
@@ -273,10 +267,38 @@ const OrderDetails = (props) => {
       party_id: ptdata[0].Id,
       CreatedDate: formattedDateTime,
     };
+ if(outwardArticleId){
+  if(outwardArticleId.length>0){
+    let ptdata = await AsyncStorage.getItem("UserData");
+    ptdata =await JSON.parse(ptdata);
+    await getcompleteoutwordDetails({articlearray:outwardArticleId,OutwardNumberId:OutwardNumberId,PartyId:ptdata[0].Id}).then((res)=>{
+      console.log(res.data,"(((((((((((((((");
+      if (res.status === 200) {
+        setTableData({
+          tableHead: [
+            "SN",
+            "ARTICLE",
+            "CATEGORY",
+            "SIZES",
+            "COLORWISE QTY IN PCS",
+            "TOTAL QTY",
+            "RATE",
+            "AMOUNT",
+          ],
+          tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
+        });
 
+        settotle(res.data);
+        settotalqut(res.data);
+        setsodetials(res.data);
+        setIsLoading(false);
+        // console.log(res.data);
+      }
+    })
+  }
+ }else{
     await getSoArticleDetails(data).then((res) => {
       if (res.status === 200) {
-        console.log(res.data);
         setTableData({
           tableHead: [
             "SN",
@@ -299,6 +321,7 @@ const OrderDetails = (props) => {
         // console.log(res.data);
       }
     });
+  }
   };
   const calculateRowHeight = (rowData) => {
     // You can adjust this logic based on your data and requirements
@@ -361,7 +384,7 @@ const OrderDetails = (props) => {
   const GSThtmlContent = GSThtmltable();
   const htmlTableData = tableData.tableData
     ? tableData.tableData.map((rowData) => {
-      // console.log(rowData[4]);
+      console.log(rowData[4]);
       return `
         <tr>
           <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>
@@ -1127,7 +1150,7 @@ const OrderDetails = (props) => {
                   <ScrollView
                     nestedScrollEnabled={true}
                     keyboardShouldPersistTaps="handled"
-                    style={{ maxWidth: "100%", backgroundColor: "#fff" }}
+                    style={{ maxWidth: "100%", backgroundColor: "#fff",marginBottom:280 }}
                   >
                     <ScrollView
                       horizontal={true}
@@ -1159,10 +1182,10 @@ const OrderDetails = (props) => {
                           </Table>
                         </View>
                         <View>
-                          <ScrollView
+                          {/* <ScrollView
                             vertical={true}
                             style={{ maxHeight: width >= 720 ? 450 : 180 }}
-                          >
+                          > */}
                             <Table
                               borderStyle={{
                                 borderWidth: 2,
@@ -1187,7 +1210,7 @@ const OrderDetails = (props) => {
                                 widthArr={widthArr} // Apply column widths to the data rows
                               />
                             </Table>
-                          </ScrollView>
+                          {/* </ScrollView> */}
 
                           <ScrollView>
                             <View
