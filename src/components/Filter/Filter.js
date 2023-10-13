@@ -79,7 +79,7 @@ export default function Filter({
     const resetFilters = () => {
         setSelectedCategories([]);
         setSelectedPriceRange(defaultPriceRange);
-        onFilterChange([], [minArticleRate, maxArticleRate]);
+        // onFilterChange([], [minArticleRate, maxArticleRate]);
         setLeftValue(minArticleRate);
         setRightValue(maxArticleRate);
     };
@@ -376,7 +376,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginVertical: 5,
         width: "48%",
-        height: width >= 720 ?200:150,
         borderWidth: 1,
         borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: 8,

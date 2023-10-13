@@ -1,8 +1,8 @@
 /* eslint-disable */
 import axios from "axios";
-const url = "http://10.0.2.2:4000";
+// const url = "http://10.0.2.2:4000";
 // const url = "http://localhost:4000";
-// const url = 'https://colorhunt-server.sincprojects.com'
+const url = 'https://colorhunt-server.sincprojects.com'
 // const url = 'https://garment-backend.sincprojects.com'
 
 export const loginAuth = async (user) => {

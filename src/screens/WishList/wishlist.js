@@ -89,6 +89,7 @@ export default function WishList(props) {
       party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
+      console.log(res.data);
       setSelectprd(res.data);
       setIsLoading(false);
     });
@@ -208,7 +209,7 @@ export default function WishList(props) {
           </View>
 
           <Image
-            source={{ uri: baseImageUrl + item.article_photos }}
+            source={{ uri: baseImageUrl + item.Photos }}
             style={{ flex: 1, borderRadius: 10 }}
           />
         </View>

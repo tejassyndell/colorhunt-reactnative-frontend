@@ -418,7 +418,6 @@ const AddToCart = (props) => {
               style={{
                 fontSize: windowwidthe * 0.1,
                 fontFamily: isFontLoaded ? 'Glory' : undefined,
-                fontWeight: "bolder",
                 textAlign: "center",
                 fontWeight: "700",
                 color: "#808080",
@@ -507,7 +506,7 @@ const AddToCart = (props) => {
                                     width: "94%",
                                     shadowColor: "gray",
                                     shadowOpacity: 0.5,
-
+                                    height: windowheight * 0.142,
                                     elevation: 4, // For Android, use elevation
                                     shadowOffset: {
                                       width: 1,
@@ -710,7 +709,6 @@ const AddToCart = (props) => {
                                     borderRadius: 10,
                                     height: windowheight * 0.142,
                                     paddingVertical: "1.5%",
-                                    backgroundColor: "#FFF",
                                   }}
                                 >
                                   <TouchableOpacity
@@ -916,7 +914,6 @@ const AddToCart = (props) => {
                                   borderRadius: 10,
                                   height: windowheight * 0.142,
                                   paddingVertical: "1.5%",
-                                  backgroundColor: "#FFF",
                                 }}
                               >
                                 <TouchableOpacity

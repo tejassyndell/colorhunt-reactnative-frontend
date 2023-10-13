@@ -105,8 +105,8 @@ const OrderDetails = (props) => {
   }, []);
   const widthArr =
     width >= 720
-      ? [40, 200, 100, 60, 250, 100, 100, 100]
-      : [40, 200, 100, 60, 200, 90, 100, 100];
+      ? [40, 130, 150, 80, 250, 100, 100, 100]
+      : [40, 130, 150, 80, 200, 90, 100, 100];
 
   // Calculate column-wise total
   const columnTotals = tableData
@@ -182,8 +182,8 @@ const OrderDetails = (props) => {
 
       return [
         (index + 1).toString(), // SN
+        item.ArticleNumber,
         item.Title, // ARTICLE
-        item.CategoryId.toString(), // CATEGORY (You may need to map CategoryId to the actual category name)
         sizes, // SIZE's
         colorPacksCombination, // COLOR:PACKS combination
         totalQuantity.toString(), // TOTAL QTY
@@ -361,6 +361,7 @@ const OrderDetails = (props) => {
   const GSThtmlContent = GSThtmltable();
   const htmlTableData = tableData.tableData
     ? tableData.tableData.map((rowData) => {
+      // console.log(rowData[4]);
       return `
         <tr>
           <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>
@@ -384,8 +385,8 @@ const OrderDetails = (props) => {
             <td colspan="12" style="text-align: center; font-weight: bold">SALES ORDER</td>
         </tr>
         <tr>
-            <td colspan="12" style="text-align: center; background-color: black; color: white">
-                NRS(JHCPL)
+            <td colspan="12" style="text-align: center; background-color: black; color: white;font-weight: bold">
+                COLORHUNT
             </td>
         </tr>
         <tr>
@@ -947,7 +948,6 @@ const OrderDetails = (props) => {
                   <View
                     style={{
                       textAlignVertical: "top",
-                      height: width >= 720 ? 200 : 170,
                       height: width >= 720 ? 120 : 80,
                       padding: 5,
                       borderWidth: 2,
@@ -1038,7 +1038,6 @@ const OrderDetails = (props) => {
                         style={{
                           fontSize: width >= 720 ? 20 : 16,
                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                          color: "#000000",
                           fontWeight: "bold",
                           color: transport !== null ? "black" : "#00000080",
                         }}
@@ -1086,7 +1085,6 @@ const OrderDetails = (props) => {
                         style={{
                           fontSize: width >= 720 ? 20 : 16,
                           fontFamily: isFontLoaded ? 'Glory' : undefined,
-                          color: "#000000",
                           fontWeight: "bold",
                           color:
                             partydata.length > 0
@@ -1283,8 +1281,6 @@ const OrderDetails = (props) => {
                                       width: 100,
                                       borderRightWidth: 2,
                                       borderColor: "#000000",
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
                                       textAlign: "center",
                                       fontWeight: "bold",
                                       paddingTop: width >= 720 ? 10 : 9,
@@ -1397,8 +1393,6 @@ const OrderDetails = (props) => {
                                       width: 100,
                                       borderRightWidth: 2,
                                       borderColor: "#000000",
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
                                       textAlign: "center",
                                       fontWeight: "bold",
                                       paddingTop: width >= 720 ? 10 : 9,
@@ -1449,8 +1443,6 @@ const OrderDetails = (props) => {
                                   <Text
                                     style={{
                                       width: 100,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
                                       borderRightWidth: 2,
                                       borderColor: "#000000",
                                       textAlign: "center",
@@ -1543,7 +1535,6 @@ const OrderDetails = (props) => {
                   <View style={{
                     width: width >= 720 ? 70 : 50,
                     height: width >= 720 ? 70 : 50,
-                    borderRadius: 5,
                     backgroundColor:"white",
                     borderRadius:10
                   }}>

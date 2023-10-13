@@ -948,7 +948,6 @@ const Orderlist = (props) => {
                   width: "50%",
                   alignItems: "flex-end",
                   height: windowheight * 0.06,
-                  gap: 5,
                   paddingBottom: 20,
                   backgroundColor: "#FFF",
                 }}

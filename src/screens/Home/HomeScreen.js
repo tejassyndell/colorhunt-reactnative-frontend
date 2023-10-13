@@ -192,8 +192,21 @@ export default function HomeScreen(props) {
     getCategoriesname();
   }, []);
 
-  const viewAllArticles = () => {
-    navigation.navigate("AllArticle", { finalData });
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
+  const viewAllArticles = async () => {
+    navigation.navigate("AllArticle");
+
+
+    try {
+      const serializedCategories = JSON.stringify(selectedCategories);
+      const serrializedPriceRange = JSON.stringify(selectedPriceRange)
+      await AsyncStorage.setItem(key, serializedCategories);
+      await AsyncStorage.setItem(key2, serrializedPriceRange)
+      console.log('Data stored successfully.');
+    } catch (error) {
+      console.error('Error storing data:', error);
+    }
   };
 
   useLayoutEffect(() => {
@@ -225,7 +238,6 @@ export default function HomeScreen(props) {
           </TouchableOpacity>
         </View>
       ),
-      headerTitle: () => <View />,
       headerRight: () => (
         <View
           style={{

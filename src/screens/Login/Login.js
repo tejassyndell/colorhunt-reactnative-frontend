@@ -39,7 +39,9 @@ const Login = (props) => {
       const { status } = await Notifications.requestPermissionsAsync();
       console.log(status, "statuss"); // Move this line here
       if (status === "granted") {
-        const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+        const pushToken = (await Notifications.getExpoPushTokenAsync({
+          projectId: 'b0d5d035-7a66-4a0f-b5ec-33b84d030443',
+        })).data;
         console.log("Expo Push Token:", pushToken);
         setToken(pushToken);
         AsyncStorage.setItem(

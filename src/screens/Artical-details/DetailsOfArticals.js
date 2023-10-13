@@ -390,7 +390,6 @@ const DetailsOfArticals = (props) => {
                 style={{
                   backgroundColor: "#FFF",
                   elevation: 12,
-                  shadowColor: "black",
                   borderColor: "#b3a8a8",
                   width: "100%",
                   height: "100%",
@@ -517,7 +516,6 @@ const DetailsOfArticals = (props) => {
                         <View
                           style={{
                             width: "100%",
-                            height: "100%",
                             height: width >= 720 ? 100 : 60,
                             flexDirection: "row",
                             borderWidth: 1,

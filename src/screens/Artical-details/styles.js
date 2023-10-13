@@ -130,10 +130,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 7,
   },
-  color_div: {
-    width: "31%",
-    textAlign: "left",
-  },
 
   product_detail: {
     // display: "flex",
@@ -207,34 +203,6 @@ const styles = StyleSheet.create({
     color: "#000000",
     textAlign: "center",
     fontWeight: "500",
-  },
-  product_detail_sec3: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    width: "100%",
-  },
-  container_grid: {
-    width: "100%",
-  },
-  head_grid: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    height: 30,
-  },
-  color_Text: {
-    width: "31%",
-    textAlign: "left",
-  },
-  available_Text: {
-    width: "37%",
-    textAlign: "left",
-  },
-  qty_Text: {
-    width: "31%",
-    textAlign: "left",
   },
   qty_box_Text: { width: "31%", display: "flex", paddingLeft: 20 },
   color_div: {
@@ -353,7 +321,6 @@ const styles = StyleSheet.create({
   box1_btn: {
     textAlign: "left",
     borderRadius: 10,
-    paddingBottom: 0,
     backgroundColor: "white",
     borderWidth: 1,
     borderStyle: "solid",

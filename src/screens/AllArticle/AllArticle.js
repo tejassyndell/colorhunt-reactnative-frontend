@@ -42,7 +42,25 @@ export default function AllArticle(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
 
+  const retrieveStoredCategories = async () => {
+    try {
+      const serializedCategories = await AsyncStorage.getItem(key);
+      const serrializedPriceRange = await AsyncStorage.getItem(key2)
+      if (serializedCategories !== null || selectedPriceRange !== null) {
+        const categories = JSON.parse(serializedCategories);
+        const priceRange = JSON.parse(serrializedPriceRange)
+        setSelectedCategories(categories);
+        setSelectedPriceRange(priceRange)
+      } else {
+        console.log('No data found with the key.');
+      }
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+    }
+  };
   const userChecked = async () => {
     const token = await AsyncStorage.getItem("UserData");
 
@@ -81,6 +99,7 @@ export default function AllArticle(props) {
     return partydata[0].Id;
   };
   const getCategoriesname = async () => {
+    retrieveStoredCategories();
     const res = await getProductName();
     if (res.status === 200) {
       // console.log(res.data);
@@ -285,7 +304,7 @@ export default function AllArticle(props) {
           borderRadius: 10,
         }}
       >
-          { item.Photos?
+          {/* { item.Photos?
           item.Photos.length>0 && item.Photos[0]==="demo"? <Image
           source={require("../../../assets/demo.png")}
           style={{
@@ -297,7 +316,8 @@ export default function AllArticle(props) {
             zIndex: 1,
             marginTop: 10,
           }}
-        />: <Image
+        />:  */}
+        <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
             width: "90%",
@@ -308,7 +328,8 @@ export default function AllArticle(props) {
             zIndex: 1,
             marginTop: 10,
           }}
-        />:""}
+        />
+        {/* :""} */}
       </View>
       <View
         style={{
