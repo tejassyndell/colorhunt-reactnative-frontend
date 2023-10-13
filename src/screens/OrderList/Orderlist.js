@@ -42,6 +42,9 @@ const Orderlist = (props) => {
   const windowheight = parseInt(Dimensions.get("window").height);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isfailed, setisFailed] = useState('')
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -68,6 +71,7 @@ const Orderlist = (props) => {
   const headerHeight =
     Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 100) : 120;
   const AddSo = async () => {
+    setIsLoading2(true);
     let userdata = await AsyncStorage.getItem("UserData");
     userdata = await JSON.parse(userdata);
     let Articldata = ParsedData.map(
@@ -102,11 +106,15 @@ const Orderlist = (props) => {
     console.log("-=-=-=-", data);
     await addso(data).then((res) => {
       if (res.status === 200) {
-        setIsModalVisible(true);
+        setIsLoading2(false); 
+        setIsSuccess(true)
+      }else{
+        setisFailed(true)
       }
     });
   };
   const showSuccessModal = () => {
+    setIsModalVisible(true);
     if (destinationVal) {
       AddSo();
     } else {
@@ -617,7 +625,12 @@ const Orderlist = (props) => {
               transparent={true}
               animationType="slide"
               onRequestClose={() => setIsModalVisible(false)}
-            >
+            >{
+              isLoading2 && (
+                <ActivityIndicator size="large" color="black" />
+              )
+            }
+            {isSuccess && (
               <TouchableWithoutFeedback
                 onPress={() => setIsModalVisible(false)}
               >
@@ -703,6 +716,86 @@ const Orderlist = (props) => {
                   </View>
                 </View>
               </TouchableWithoutFeedback>
+            ) }
+            {isfailed && (
+              <TouchableWithoutFeedback
+                onPress={() => setIsModalVisible(false)}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 360,
+                      height: 390,
+                      backgroundColor: "white",
+                      borderRadius: 25,
+                      alignItems: "center",
+                      padding: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 32,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontWeight: "700",
+                        marginBottom: 10,
+                        marginTop:50
+                      }}
+                    >
+                      Failed
+                    </Text>
+
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        textAlign: "center",
+                        marginBottom: 20,
+                        fontWeight: "500",
+                        color: "rgba(0, 0, 0, 0.70)",
+                      }}
+                    >
+                      "Your Order Is {"\n"} Failed to Place.{"\n"} Please Try Again Later" 
+                    </Text>
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsModalVisible(false);
+                        navigation.navigate("Home");
+                      }}
+                      style={{
+                        backgroundColor: "black",
+                        width: 189,
+                        height: 50,
+                        borderRadius: 10,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginVertical: 20,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          fontWeight: "700",
+                          color: "white",
+                          paddingHorizontal: 15,
+                        }}
+                      >
+                        Continue Shopping
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            )}
+              
             </Modal>
           </ScrollView>
           <View

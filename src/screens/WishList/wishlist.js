@@ -32,21 +32,21 @@ export default function WishList(props) {
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
-    useEffect(() => {
-      const loadCustomFont = async () => {
-        try {
-          await Font.loadAsync({
-            Glory: require("../../../assets/Fonts/Glory.ttf"),
-          });
-          setIsFontLoaded(true);
-        } catch (error) {
-          console.error("Error loading custom font:", error);
-        }
-      };
-  
-      loadCustomFont();
-    }, []);
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
   // uploard url image
   const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const getpartyid = async () => {
@@ -122,7 +122,7 @@ export default function WishList(props) {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 35 : 20,
+              fontSize: width >= 720 ? 35 : 25,
               fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: "700",
               width: "100%",
@@ -143,25 +143,21 @@ export default function WishList(props) {
     <TouchableOpacity
       onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
       style={{
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-        shadowOpacity: 0.1,
-
         alignItems: "center",
-        elevation: 10,
         height: "auto",
-        width: width >= 720 ? "22%" : "45%",
+        width: width >= 720 ? "22%" : "44%",
         marginHorizontal: 12,
-        marginTop: 10,
-        borderColor: "grey",
         backgroundColor: "#FFFFFF",
         paddingBottom: 15,
-        borderRadius: 10,
         marginVertical: 15,
-        paddingTop: width >= 720 ? 10 : 20,
+        paddingTop: width >= 720 ? 10 : 10,
+        borderRadius: 12,
+        backgroundColor: "#FFF",
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+        elevation: 5, // For Android, use elevation
+
       }}
     >
       <View
@@ -174,19 +170,16 @@ export default function WishList(props) {
       >
         <View
           style={{
-            width: width >= 720 ? "80%" : "80%", // Adjust the width for tablets
+            width: width >= 720 ? "80%" : "90%",
             height: width >= 720 ? 200 : 190,
-            borderColor: "gray",
-            shadowColor: "#000000",
-            shadowOpacity: 0.9,
+            borderRadius: 12,
+            backgroundColor: "#FFF",
+            shadowColor: "#000",
+            shadowOpacity: 0.1,
             shadowRadius: 1,
-            borderRadius: 10,
             elevation: 5, // For Android, use elevation
-            shadowOffset: {
-              width: 0,
-              height: 0,
-            },
           }}
+
         >
           <View id={item.id} style={styles.producticones}>
             {selectedprd.some((i) => i.Id === item.Id) ? (
@@ -213,11 +206,11 @@ export default function WishList(props) {
             style={{ flex: 1, borderRadius: 10 }}
           />
         </View>
-        <Text style={{ fontWeight: "bold", marginTop: 12 }}>
+        <Text style={{ fontWeight: "700", marginTop: 12, fontSize: width >= 720 ? 20 : 16 }}>
           {item.ArticleNumber}
         </Text>
-        <Text style={{ marginTop: 3 }}>{item.Title}</Text>
-        <Text style={{ fontWeight: "bold", marginTop: 3 }}>
+        <Text style={{ marginTop: 3, fontSize: width >= 720 ? 14 : 12, fontWeight: "400" }}>{item.Title}</Text>
+        <Text style={{ fontWeight: "600", marginTop: 3, fontSize: width >= 720 ? 20 : 16 }}>
           {"₹" + item.ArticleRate + ".00"}
         </Text>
       </View>
@@ -279,7 +272,7 @@ export default function WishList(props) {
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text style={{ color: "white", fontSize: width * 0.035,fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
+              <Text style={{ color: "white", fontSize: width * 0.035, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
                 Continue Shopping
               </Text>
             </TouchableOpacity>
@@ -296,7 +289,7 @@ export default function WishList(props) {
               position: "relative",
               maxWidth: "100%",
               height: "auto",
-              top: 20,
+              // top: 20,
             }}
           >
             <FlatList

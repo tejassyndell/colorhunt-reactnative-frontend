@@ -59,7 +59,7 @@ export default function HomeScreen(props) {
     loadCustomFont();
   }, []);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 
@@ -277,6 +277,7 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = () => {
+    console.log(searchText, selectedCategories, selectedPriceRange, "filters in home ")
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
@@ -444,7 +445,7 @@ export default function HomeScreen(props) {
                   fontWeight: "600",
                 }}
                 onPress={() => {
-                   viewAllArticles() 
+                  viewAllArticles()
                 }}
               >
                 View All
@@ -492,16 +493,12 @@ export default function HomeScreen(props) {
                             style={{
                               width: width >= 720 ? 300 : 155,
                               height: width >= 720 ? 280 : 190,
-                              borderColor: "gray",
-                              shadowColor: "rgba(0, 0, 0, 0.5)",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 3,
-                              borderRadius: 10,
-                              elevation: 4,
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
+                              borderRadius: 12,
+                              backgroundColor: "#FFF",
+                              shadowColor: "#000",
+                              shadowOpacity: 0.1,
+                              shadowRadius: 1,
+                              elevation: 5,
                             }}
                           >
                             <View id={item.id} style={styles.producticones}>
@@ -556,14 +553,14 @@ export default function HomeScreen(props) {
                             style={{
                               fontWeight: "bold",
                               marginTop: 10,
-                              fontSize: width >= 720 ? 20 : 15,
+                              fontSize: width >= 720 ? 20 : 16,
                               fontFamily: isFontLoaded ? 'Glory' : undefined,
                             }}
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
+                          <Text style={{fontSize: width >= 720 ? 16 : 14}}>{convertToTitleCase(item.Category)}</Text>
+                          <Text style={{ fontWeight: "bold",fontSize: width >= 720 ? 20 : 16 }}>
                             {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
@@ -693,7 +690,7 @@ export default function HomeScreen(props) {
                     fontWeight: "600",
                   }}
                   onPress={() => {
-                     viewAllArticles();
+                    viewAllArticles();
                   }}
                 >
                   View All

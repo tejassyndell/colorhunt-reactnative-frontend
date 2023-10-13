@@ -83,7 +83,7 @@ export default function CategorisWiseArticle(props) {
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   const { width, height } = Dimensions.get("window");
@@ -189,19 +189,20 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <TouchableOpacity
-            onPress={() => {
-              isLoggedIn ? navigation.navigate("Profile") : "";
-            }}
-          >
-            <Image
-              style={{
-                resizeMode: "contain",
-                width: width >= 720 ? 55 : 32,
-                height: width >= 720 ? 55 : 32,
-              }}
-              source={require("../../../assets/Nevbar/Profile.png")}
-            />
-          </TouchableOpacity>
+  onPress={() => {
+    isLoggedIn ? navigation.navigate("Profile") : "";
+  }}
+>
+  <Image
+    style={{
+      resizeMode: "contain",
+      width: width >= 720 ? 55 : 35,
+      height: width >= 720 ? 55 : 35,
+    }}
+    source={require("../../../assets/Nevbar/Profile.png")}
+  />
+</TouchableOpacity>
+
         </View>
       ),
       headerStyle: {
@@ -298,13 +299,17 @@ export default function CategorisWiseArticle(props) {
       </View>
       <View
         style={{
-          width: "100%",
+          width: "90%",
+          height: 180,
           justifyContent: "center",
           alignItems: "center",
-          elevation: 20,
-          borderColor: "gray",
-          shadowColor: "#c0c0c0",
-          borderRadius: 10,
+          borderRadius: 12,
+          backgroundColor: "#FFF",
+          shadowColor: "#000",
+          shadowOpacity: 0.1,
+          shadowRadius: 1,
+          elevation: 5,
+          marginTop:10
         }}
       >
         {/* { item.Photos?
@@ -334,13 +339,13 @@ export default function CategorisWiseArticle(props) {
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
-            width: "90%",
-            height: 180,
+            width: "100%",
+            height: "100%",
             flex: 1,
             resizeMode: "contain",
-            borderRadius: 10,
+            // borderRadius: 10,
             zIndex: 1,
-            marginTop: 10,
+            // marginTop: 10,
           }}
         />
       </View>
@@ -490,25 +495,25 @@ export default function CategorisWiseArticle(props) {
           >
             {finalData.length === 0 ? (
               (console.log(nameDatas.length, "ewqewqewqeewq"),
-              (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center", // Center vertically
-                    alignItems: "center", // Center horizontally
-                  }}
-                >
-                  <Text
+                (
+                  <View
                     style={{
-                      textAlign: "center",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontSize: 20,
+                      flex: 1,
+                      justifyContent: "center", // Center vertically
+                      alignItems: "center", // Center horizontally
                     }}
                   >
-                    No Articles Found
-                  </Text>
-                </View>
-              ))
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontSize: 20,
+                      }}
+                    >
+                      No Articles Found
+                    </Text>
+                  </View>
+                ))
             ) : (
               <FlatList
                 style={{ backgroundColor: "#FFF" }}

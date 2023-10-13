@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 0.5,
     textAlign: "left",
-    fontSize: width >= 720 ? 20 : 13,
+    fontSize: width >= 720 ? 22 : 16,
     fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   article_content_r: {
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     color: "#626262",
   },
   articallabel1: {
-    fontWeight: "500",
+    fontWeight: "bold",
     marginLeft: 0.5,
     fontSize: width >= 720 ? 20 : 14,
     fontFamily: isFontLoaded ? 'Glory' : undefined,

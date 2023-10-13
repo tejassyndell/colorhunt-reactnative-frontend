@@ -7,7 +7,7 @@ import MenuImage from "../../components/MenuImage/MenuImage";
 
 export default function CategoriesScreen(props) {
   const { navigation } = props;
-  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 86) : 120;
    const styles = Categoriesstyle();
   useLayoutEffect(() => {
     navigation.setOptions({

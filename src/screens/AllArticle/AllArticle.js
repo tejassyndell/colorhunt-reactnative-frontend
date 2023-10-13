@@ -85,7 +85,7 @@ export default function AllArticle(props) {
   };
 
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
 
   // uploard url image
   const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";

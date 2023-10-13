@@ -15,7 +15,7 @@ export default function Notification(props) {
   const [notificationData, setNotificationData] = useState(null);
   const { width, height } = Dimensions.get("window");
 
-  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 86) : 120;
 
   const data = [{}]
 
@@ -88,7 +88,7 @@ export default function Notification(props) {
         }}>
           <Text style={{
             textAlign: "center",
-            fontSize: 25, fontWeight: "700", width: "100%"
+            fontSize: width >= 720 ? 35 : 25, fontWeight: "700", width: "100%"
           }}>Notification</Text>
         </View>
       ),

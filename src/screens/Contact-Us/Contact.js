@@ -28,7 +28,7 @@ export default function Contact(props) {
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   const { width, height } = Dimensions.get("window");
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
@@ -144,7 +144,7 @@ export default function Contact(props) {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1,backgroundColor:'white' }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView

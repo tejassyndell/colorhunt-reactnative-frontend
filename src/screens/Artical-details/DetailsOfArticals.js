@@ -88,7 +88,7 @@ const DetailsOfArticals = (props) => {
   };
 
   const headerHeight =
-    Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 86) : 120;
 
   const ArticleDetailsData = async () => {
     let data = {
@@ -937,16 +937,16 @@ const DetailsOfArticals = (props) => {
       >
         <View style={{ flex: 1, justifyContent: "center",paddingBottom:15, }}>
           <View>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10,  fontFamily: isFontLoaded ? 'Glory' : undefined, fontWeight: "400" }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 11,  fontFamily: isFontLoaded ? 'Glory' : undefined, fontWeight: "400" }}>
               Total Price
             </Text>
           </View>
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 27 : 16,
+                fontSize: width >= 720 ? 27 : 18,
                 fontFamily: isFontLoaded ? 'Glory' : undefined,
-                fontWeight: 'bold',
+                fontWeight: '700',
                 color: "black",
               }}
             >
