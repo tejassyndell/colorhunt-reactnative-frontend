@@ -35,7 +35,7 @@ const OrderHistory = (props) => {
   const [sodatanotfount, setSodatanotfount] = useState(false);
   const [outworddatanotfount,setOutworddatanotfount]=useState(false);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   const toggleCalendar = () => {
     setCalendarVisible(!isCalendarVisible);
   };

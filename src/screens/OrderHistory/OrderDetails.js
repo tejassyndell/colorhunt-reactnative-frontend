@@ -62,7 +62,7 @@ const OrderDetails = (props) => {
   const [partydata, setpartydata] = useState();
   const [sodetails, setsodetials] = useState([]);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
 
   console.log(newPrint);
 
@@ -267,7 +267,8 @@ const OrderDetails = (props) => {
       party_id: ptdata[0].Id,
       CreatedDate: formattedDateTime,
     };
- if(outwardArticleId){
+    console.log(outwardArticleId.length,"OPOPOPOPOPOPO");
+
   if(outwardArticleId.length>0){
     let ptdata = await AsyncStorage.getItem("UserData");
     ptdata =await JSON.parse(ptdata);
@@ -296,7 +297,8 @@ const OrderDetails = (props) => {
       }
     })
   }
- }else{
+ else{
+  console.log("jdjjdjdjjdjdjdjdjdjdjjdjdjdjddjdjdjj");
     await getSoArticleDetails(data).then((res) => {
       if (res.status === 200) {
         setTableData({

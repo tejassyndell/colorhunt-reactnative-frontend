@@ -69,7 +69,7 @@ const Orderlist = (props) => {
     getpartydata();
   }, []);
   const headerHeight =
-    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 86) : 120;
   const AddSo = async () => {
     setIsLoading2(true);
     let userdata = await AsyncStorage.getItem("UserData");
@@ -627,7 +627,14 @@ const Orderlist = (props) => {
               onRequestClose={() => setIsModalVisible(false)}
             >{
               isLoading2 && (
+                <View style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor:"#FFFFFF"
+                }}>
                 <ActivityIndicator size="large" color="black" />
+              </View>
               )
             }
             {isSuccess && (
