@@ -4,11 +4,28 @@ import PropTypes from "prop-types";
 import styles from "./styles";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from "expo-font";
 
 export default function DrawerContainer(props) {
   const { navigation, isLoggedIn, name } = props;
   const [userName, setUserName] = useState("");
   console.log(isLoggedIn);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
   const fetchUserName = async () => {
     try {
       let storedName = await AsyncStorage.getItem("UserData");
@@ -75,28 +92,32 @@ export default function DrawerContainer(props) {
                 color: "#FFF",
                 left: 10,
                 fontSize: width >= 720 ? 25 : 17,
-                height: 50,
-                paddingTop: width >= 720 ? 10 : 20,
-                fontWeight: 700,
-                width: "75%",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+                height: "auto",
+
+                fontWeight: "700",
+                width: "60%",
               }}
             >
               {name ? name : "Guest"}
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.closeDrawer();
-              }}
-            >
-              <Image
-                source={require("../../../assets/sidebaricons/menu.png")}
-                style={{
-                  width: width >= 720 ? 30 : 20,
-                  height: width >= 720 ? 30 : 20,
-                }}
-              />
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.closeDrawer();
+            }}
+          >
+            <Image
+              source={require("../../../assets/sidebaricons/menu.png")}
+              style={{
+                position: "absolute",
+                right: 0,
+                top: width >= 720 ? 75 : 30,
+                width: width >= 720 ? 30 : 20,
+                height: width >= 720 ? 30 : 20,
+              }}
+            />
+          </TouchableOpacity>
         </View>
 
         {isLoggedIn ? ( // If user is logged in
@@ -159,9 +180,19 @@ export default function DrawerContainer(props) {
             >
               <Image
                 source={require("../../../assets/sidebaricons/download-4.png")}
-                style={{ width: 20, height: 20 }}
+                style={{
+                  height: width >= 720 ? 30 : 20,
+                  width: width >= 720 ? 30 : 20,
+                }}
               />
-              <Text style={{ fontSize: 15, color: "#FFF", marginLeft: 8 }}>
+              <Text
+                style={{
+                  fontSize: width >= 720 ? 20 : 16,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  color: "#FFF",
+                  marginLeft: 8,
+                }}
+              >
                 Logout
               </Text>
             </TouchableOpacity>
@@ -209,9 +240,18 @@ export default function DrawerContainer(props) {
         >
           <Image
             source={require("../../../assets/sidebaricons/image_98.png")}
-            style={{ width: 161, height: 161 }}
+            style={{
+              height: width >= 720 ? 200 : 161,
+              width: width >= 720 ? 200 : 161,
+            }}
           />
-          <Text style={{ color: "rgba(255, 255, 255, 1)", fontSize: 12 }}>
+          <Text
+            style={{
+              color: "rgba(255, 255, 255, 1)",
+              fontSize: width >= 720 ? 15 : 12,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
+            }}
+          >
             Design By SYNDELL Inc.
           </Text>
         </View>

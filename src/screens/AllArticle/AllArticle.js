@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  Modal,
 } from "react-native";
 import {
   getProductName,
@@ -23,6 +24,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ActivityIndicator } from "react-native";
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 
 export default function AllArticle(props) {
   const { navigation } = props;
@@ -37,22 +39,67 @@ export default function AllArticle(props) {
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [noArticlesFound, setNoArticlesFound] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
+
+  const retrieveStoredCategories = async () => {
+    try {
+      const serializedCategories = await AsyncStorage.getItem(key);
+      const serrializedPriceRange = await AsyncStorage.getItem(key2)
+      if (serializedCategories !== null || selectedPriceRange !== null) {
+        const categories = JSON.parse(serializedCategories);
+        const priceRange = JSON.parse(serrializedPriceRange)
+        setSelectedCategories(categories);
+        setSelectedPriceRange(priceRange)
+      } else {
+        console.log('No data found with the key.');
+      }
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+    }
+  };
+  const userChecked = async () => {
+    const token = await AsyncStorage.getItem("UserData");
+
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    userChecked();
+  });
+
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
+
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
 
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
-  }
+  };
   const getCategoriesname = async () => {
+    retrieveStoredCategories();
     const res = await getProductName();
     if (res.status === 200) {
       // console.log(res.data);
@@ -63,7 +110,7 @@ export default function AllArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -80,7 +127,7 @@ export default function AllArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -89,7 +136,7 @@ export default function AllArticle(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -125,7 +172,7 @@ export default function AllArticle(props) {
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 10,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
@@ -191,7 +238,12 @@ export default function AllArticle(props) {
   };
 
   const renderItem = ({ item }) => (
-    <View
+    <TouchableOpacity
+      onPress={() =>
+        isLoggedIn
+          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
+          : openCreateAccountModal()
+      }
       style={{
         alignItems: "center",
         height: "auto",
@@ -252,6 +304,19 @@ export default function AllArticle(props) {
           borderRadius: 10,
         }}
       >
+          {/* { item.Photos?
+          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
+          source={require("../../../assets/demo.png")}
+          style={{
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
+            zIndex: 1,
+            marginTop: 10,
+          }}
+        />:  */}
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
@@ -264,6 +329,7 @@ export default function AllArticle(props) {
             marginTop: 10,
           }}
         />
+        {/* :""} */}
       </View>
       <View
         style={{
@@ -274,9 +340,6 @@ export default function AllArticle(props) {
         }}
       >
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("DetailsOfArticals", { id: item.Id })
-          }
           style={{
             display: "flex",
             justifyContent: "center",
@@ -301,12 +364,12 @@ export default function AllArticle(props) {
           </View>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All")
+    console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -316,7 +379,6 @@ export default function AllArticle(props) {
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
-
 
   useEffect(() => {
     const minRate = nameDatas.reduce((min, item) => {
@@ -364,8 +426,8 @@ export default function AllArticle(props) {
               <Image
                 source={require("../../../assets/filetr_icone.png")}
                 style={{
-                  width: width >= 720 ? 65 : 40, // Adjust the width for tablets
-                  height: width >= 720 ? 65 : 40,
+                  width: width >= 720 ? 65 : 42, // Adjust the width for tablets
+                  height: width >= 720 ? 65 : 42,
                   resizeMode: "contain",
                   borderRadius: 10,
                 }}
@@ -376,7 +438,7 @@ export default function AllArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
-                fontWeight: 700,
+                fontWeight: "700",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
@@ -439,13 +501,13 @@ export default function AllArticle(props) {
             >
               <View
                 style={{
-                  width: "92%",
+                  width: "94%",
                   backgroundColor: "#FFF",
                   position: "absolute",
                   bottom: 0,
-                  left: 1,
+                  left: 0,
                   right: 0, // To make it span the full width
-                  marginLeft: "4%", // Margin on the left side
+                  marginLeft: "3%", // Margin on the left side
                   padding: 10,
                   borderTopLeftRadius: 10, // Adjust the radius as needed
                   borderTopRightRadius: 10,
@@ -459,12 +521,41 @@ export default function AllArticle(props) {
                   maxArticleRate={maxArticleRate}
                   status={false}
                   spr={selectedPriceRange}
+                  uniquerates={nameDatas}
                 />
               </View>
             </View>
           )}
         </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }

@@ -20,13 +20,15 @@ import WishList from "../screens/WishList/wishlist";
 import Orderlist from "../screens/OrderList/Orderlist";
 import Notification from "../screens/Notification/Notification";
 import Login from "../screens/Login/Login";
-import SkipHomeScreen from "../screens/SkipHomePage/SkipHomePage";
 import OrderHistory from "../screens/OrderHistory/OrderHistory";
 import SliderScreen from "../screens/SliderScreen/SliderScreen";
-import SkipSliderScreen from "../screens/SkipHomePage/SkipSlider";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import { useEffect } from "react";
 import OrderDetails from "../screens/OrderHistory/OrderDetails";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// @ts-ignore
+
 const Stack = createStackNavigator();
 let value = false;
 let name = "";
@@ -71,12 +73,7 @@ function MainNavigator() {
       />
       <Stack.Screen name="cart_list" component={AddToCart} />
       <Stack.Screen name="Orderlist" component={Orderlist} />
-      <Stack.Screen name="SkipHome" component={SkipHomeScreen} />
-      <Stack.Screen
-        name="SkipSlider"
-        component={SkipSliderScreen}
-        options={{ headerShown: false }}
-      />
+
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ordershistroy" component={OrderHistory} />
       <Stack.Screen name="DrawerContainer" component={DrawerContainer} />

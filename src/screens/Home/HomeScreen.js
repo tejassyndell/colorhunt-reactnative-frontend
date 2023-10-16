@@ -7,9 +7,8 @@ import {
   TouchableOpacity,
   Modal,
   Dimensions,
-  Platform
+  Platform,
 } from "react-native";
-// import Image from 'react-native-responsive-image';
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -25,14 +24,12 @@ import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
+import * as Font from "expo-font";
+
 export default function HomeScreen(props) {
   const { navigation } = props;
-  const [categoryName, setCategoryName] = useState();
-  const [ApplyStatushBack, setApplyStatushBack] = useState(true);
   const [nameData, setNameData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
-  const [applyrData, setApplyData] = useState([]);
   const [selectedprd, setSelectprd] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -40,20 +37,38 @@ export default function HomeScreen(props) {
   const [finalData, setFinalData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const [filterDataSearch, setFilterDataSearch] = useState([]);
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
-  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
-  const [kids, setkidsdata] = useState([])
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
+  const headerHeight =
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+  const [kids, setkidsdata] = useState([]);
+  const [showarticle, setshowarticle] = useState(false);
+
   // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
-  }
+  };
   useEffect(() => {
     // Set isLoading to true initially
     setIsLoading(true);
@@ -68,7 +83,7 @@ export default function HomeScreen(props) {
     };
   }, []);
   const openFilter = () => {
-    setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
+    setIsFilterVisible((prev) => !prev);
   };
 
   const openCreateAccountModal = () => {
@@ -86,7 +101,7 @@ export default function HomeScreen(props) {
       }
     } catch (error) {
       console.error("Error while checking user data:", error);
-      return false; // Handle errors by returning false or appropriate error handling
+      return false;
     }
   };
 
@@ -96,7 +111,7 @@ export default function HomeScreen(props) {
 
   const getWishlist = async () => {
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -106,13 +121,17 @@ export default function HomeScreen(props) {
     return str
       .toLowerCase()
       .split("-") // Split the string at hyphens or spaces
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join("-"); // Join the words with spaces
+      .map((word, index) => (
+        <Text key={index}>
+          {word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()}
+        </Text>
+      ))
+      .reduce((prev, curr) => [prev, "-", curr]); // Join the words with hyphens and wrap them in a span element
   }
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     console.log("............111", data);
@@ -128,7 +147,7 @@ export default function HomeScreen(props) {
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
     let data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: i.Id,
     };
     console.log(data);
@@ -149,66 +168,22 @@ export default function HomeScreen(props) {
     getWishlist();
   }, []);
 
-  // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
-  //getCategoriesname
-  // const getCategoriesname = async () => {
-  //   try {
-  //     const result1 = await getcateGorywithphotos();
-  //     if (result1.status === 200) {
-  //       setCategoryName(result1.data);
-  //       setNameData(result1.data);
-  //       setApplyData(result1.data);
-  //     }
-
-  //     const result2 = await getProductName();
-  //     if (result2.status === 200) {
-  //       setCategoryName(result2.data);
-  //       setNameDatas(result2.data);
-  //       setApplyData(result2.data);
-  //       setFilterDataSearch(result2.data);
-  //     }
-
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     // Handle any errors that might occur during the API requests.
-  //     console.error(error);
-  //     setIsLoading(false); // Make sure to set isLoading to false in case of an error.
-  //   }
-  // };
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const getCategoriesname = async () => {
     try {
-      // Make an API request to get category data with photos
       const result1 = await getcateGorywithphotos();
-
-      // Check if the response status is 200 (success)
       if (result1.status === 200) {
-        // Update state variables with the data from the API response
-        setCategoryName(result1.data);
         setNameData(result1.data);
-        setApplyData(result1.data);
       }
-
-      // Make another API request to get product names
       const result2 = await getProductName();
-
-      // Check if the response status is 200 (success)
       if (result2.status === 200) {
-        // Update state variables with the data from the API response
-        setCategoryName(result2.data);
         setNameDatas(result2.data);
-        setApplyData(result2.data);
-        setFilterDataSearch(result2.data);
         setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
       }
-
-      // Set isLoading to false to indicate that data loading is complete
       setIsLoading(false);
     } catch (error) {
       console.error(error);
-
-      // Set isLoading to false in case of an error.
       setIsLoading(false);
     }
   };
@@ -217,9 +192,21 @@ export default function HomeScreen(props) {
     getCategoriesname();
   }, []);
 
-  const viewAllArticles = () => {
-    console.log(finalData.length, "lenght of navigation data ");
-    navigation.navigate("AllArticle", { finalData });
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
+  const viewAllArticles = async () => {
+    navigation.navigate("AllArticle");
+
+
+    try {
+      const serializedCategories = JSON.stringify(selectedCategories);
+      const serrializedPriceRange = JSON.stringify(selectedPriceRange)
+      await AsyncStorage.setItem(key, serializedCategories);
+      await AsyncStorage.setItem(key2, serrializedPriceRange)
+      console.log('Data stored successfully.');
+    } catch (error) {
+      console.error('Error storing data:', error);
+    }
   };
 
   useLayoutEffect(() => {
@@ -245,18 +232,16 @@ export default function HomeScreen(props) {
               style={{
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
-                // resizeMode: "contain",
                 borderRadius: 5,
               }}
             ></Image>
           </TouchableOpacity>
         </View>
       ),
-      headerTitle: () => <View />,
       headerRight: () => (
         <View
           style={{
-            marginHorizontal: 10,
+            marginHorizontal: width >= 720 ? 10 : 5,
             width: "auto",
             height: "auto",
             padding: 4,
@@ -272,7 +257,6 @@ export default function HomeScreen(props) {
           >
             <Image
               style={{
-                // resizeMode: "contain",
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
               }}
@@ -283,30 +267,44 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight
+        height: headerHeight,
         // backgroundColor: "black",
       },
     });
   }, []);
+
   const handlePress = (item) => {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
-
   const filterData = () => {
-    if (searchText === "") {
+    console.log(searchText, selectedCategories, selectedPriceRange, "filters in home ")
+    if (
+      searchText === "" &&
+      selectedCategories.length === 0 &&
+      selectedPriceRange.length === 0
+    ) {
+      setshowarticle(false);
     } else {
-      console.log(searchText);
-      const filtered = filterDataSearch.filter(
+      setshowarticle(true);
+      const filtered = nameDatas.filter(
         (item) =>
-          item.ArticleNumber.toString().includes(searchText.toString()) ||
-          item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-          item.ArticleRate.toString().includes(searchText.toString()) ||
-          item.StyleDescription.toLowerCase().includes(
-            searchText.toLowerCase()
-          ) ||
-          item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
+          (searchText === "" || // Check if searchText is empty or matches any criteria
+            item.ArticleNumber.toString().includes(searchText.toString()) ||
+            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.ArticleRate.toString().includes(searchText.toString()) ||
+            item.StyleDescription.toLowerCase().includes(
+              searchText.toLowerCase()
+            ) ||
+            item.Subcategory.toLowerCase().includes(
+              searchText.toLowerCase()
+            )) &&
+          (selectedCategories.length === 0 ||
+            selectedCategories.includes(item.Category)) &&
+          (selectedPriceRange.length === 0 ||
+            (item.ArticleRate >= selectedPriceRange[0] &&
+              item.ArticleRate <= selectedPriceRange[1]))
       );
-      console.log(filtered.length, "search data lnegth");
+
       setFinalData(filtered);
     }
   };
@@ -319,29 +317,12 @@ export default function HomeScreen(props) {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
     setSearchText("");
-    const filteredData = nameDatas.filter(
-      (item) =>
-        selectedCategories.includes(item.Category) &&
-        item.ArticleRate >= selectedPriceRange[0] &&
-        item.ArticleRate <= selectedPriceRange[1]
-    );
-
-    setFinalData(filteredData);
+    filterData();
   };
 
   useEffect(() => {
-    console.log(selectedCategories, "Sc");
-    console.log(selectedPriceRange, "Range");
-    const abc = nameDatas.filter(
-      (item) =>
-        (!selectedCategories.length ||
-          selectedCategories.includes(item.Category)) &&
-        item.ArticleRate >= selectedPriceRange[0] &&
-        item.ArticleRate <= selectedPriceRange[1]
-    );
-    console.log(abc.length);
-    setFinalData(abc);
-  }, [selectedCategories, selectedPriceRange]);
+    filterData();
+  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
 
   const handleCloseFilter = (isClosed) => {
     setIsFilterVisible(isClosed);
@@ -359,9 +340,7 @@ export default function HomeScreen(props) {
     }, -Infinity);
 
     setMinArticleRate(minRate);
-    console.log(minArticleRate);
     setMaxArticleRate(maxRate);
-    console.log(maxArticleRate);
   }, [nameDatas]);
 
   const checkUserLogin = async () => {
@@ -405,10 +384,9 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
-                  fontWeight: 700,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontWeight: "700",
                   paddingLeft: 8,
-
-                  // fontFamily: "Glory-Regular",
                 }}
               >
                 Welcome
@@ -428,15 +406,14 @@ export default function HomeScreen(props) {
               <TouchableOpacity
                 style={{ width: "10%", alignItems: "flex-end" }}
                 onPress={() => {
-                  isLoggedIn ? openFilter() : openCreateAccountModal();
+                  openFilter();
                 }}
               >
                 <Image
                   source={require("../../../assets/filetr_icone.png")}
                   style={{
-                    width: width >= 720 ? 65 : 40, // Adjust the width for tablets
+                    width: width >= 720 ? 65 : 40,
                     height: width >= 720 ? 65 : 40,
-                    // resizeMode: "contain",
                     borderRadius: 10,
                   }}
                 />
@@ -451,8 +428,9 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   start: 10,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   fontSize: width >= 720 ? 25 : 18,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
                 }}
               >
                 Men's
@@ -460,13 +438,14 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   position: "absolute",
-                  color: "rgba(102, 102, 102, 1)",
+                  color: "#666666",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
-                  fontWeight: 600,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontWeight: "600",
                 }}
                 onPress={() => {
-                  isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                  viewAllArticles()
                 }}
               >
                 View All
@@ -487,63 +466,51 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-                {ApplyStatushBack === true
-                  ? finalData.length > 0
-                    ? finalData.map((item, key) => (
+                {console.log(setshowarticle, "setshwo")}
+                {showarticle ? (
+                  finalData.length > 0 ? (
+                    finalData.map((item, index) => (
                       <TouchableOpacity
-                        key={key}
+                        key={index}
                         onPress={() => {
-                          isLoggedIn
-                            ? navigation.navigate("DetailsOfArticals", {
-                              id: item.Id,
-                            })
-                            : openCreateAccountModal();
+                          navigation.navigate("DetailsOfArticals", {
+                            id: item.Id,
+                          });
                         }}
                       >
                         <View
-                          key={item.id}
+                          key={index}
                           style={{
                             alignItems: "center",
-                            width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                            width: width >= 720 ? 300 : 155,
                             height: width >= 720 ? 280 : 280,
                             marginLeft: width >= 720 ? 15 : 10,
                             marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
                           }}
-                        // style={styles.contener2}
                         >
                           <View
                             style={{
-                              width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                              width: width >= 720 ? 300 : 155,
                               height: width >= 720 ? 280 : 190,
-                              borderColor: "gray",
-                              shadowColor: "rgba(0, 0, 0, 0.5)",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 3,
-                              borderRadius: 10,
-                              elevation: 4, // For Android, use elevation
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
+                              borderRadius: 12,
+                              backgroundColor: "#FFF",
+                              shadowColor: "#000",
+                              shadowOpacity: 0.1,
+                              shadowRadius: 1,
+                              elevation: 5,
                             }}
-                          // style={styles.fastconimage1}
                           >
                             <View id={item.id} style={styles.producticones}>
                               {selectedprd.some((i) => i.Id === item.Id) ? (
                                 <TouchableOpacity
                                   onPress={() => {
-                                    isLoggedIn
-                                      ? rmvProductWishlist(item)
-                                      : openCreateAccountModal();
+                                    rmvProductWishlist(item);
                                   }}
                                 >
                                   <FontAwesome
                                     name="heart"
-                                    style={[
-                                      styles.icon,
-                                      // isLoggedin === false ? styles.disabledIcon : null,
-                                    ]}
+                                    style={[styles.icon]}
                                   />
                                 </TouchableOpacity>
                               ) : (
@@ -556,10 +523,7 @@ export default function HomeScreen(props) {
                                 >
                                   <FontAwesome
                                     name="heart-o"
-                                    style={[
-                                      styles.disabledIcon,
-                                      // isLoggedin === false ? styles.disabledIcon : null,
-                                    ]}
+                                    style={[styles.disabledIcon]}
                                   />
                                 </TouchableOpacity>
                               )}
@@ -569,11 +533,9 @@ export default function HomeScreen(props) {
                                 source={{ uri: baseImageUrl + item.Photos }}
                                 style={{
                                   width: "100%",
-                                  resizeMode: "contain",
                                   height: width >= 720 ? 280 : 190,
                                   borderRadius: 10,
                                 }}
-                              // style={styles.fastconimage}
                               />
                             ) : (
                               <Image
@@ -583,7 +545,6 @@ export default function HomeScreen(props) {
                                   height: width >= 720 ? 280 : 190,
                                   borderRadius: 10,
                                 }}
-                              // style={styles.fastconimage}
                               />
                             )}
                           </View>
@@ -592,133 +553,111 @@ export default function HomeScreen(props) {
                             style={{
                               fontWeight: "bold",
                               marginTop: 10,
-                              fontSize: width >= 720 ? 20 : 15,
+                              fontSize: width >= 720 ? 20 : 16,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
                             }}
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
+                          <Text style={{fontSize: width >= 720 ? 16 : 14}}>{convertToTitleCase(item.Category)}</Text>
+                          <Text style={{ fontWeight: "bold",fontSize: width >= 720 ? 20 : 16 }}>
                             {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
                       </TouchableOpacity>
                     ))
-                    : nameData.map((item) => (
-                      <View
-                        key={item.id}
+                  ) : (
+                    <View
+                      style={{
+                        width: "100%",
+                        height: "80%",
+                        justifyContent: "center",
+                        textAlign: "center",
+                      }}
+                    >
+                      <Text
                         style={{
-                          alignItems: "center",
-                          height: "auto",
-                          width: width >= 720 ? 300 : 165,
-                          marginLeft: width >= 720 ? 15 : 5,
-                          marginRight: width >= 720 ? 15 : 5,
-                          marginTop: 10,
-                          marginBottom: 10,
-                          borderRadius: 10,
+                          fontSize: width >= 720 ? 25 : 17,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          textAlign: "center",
+                          color: "#808080",
                         }}
-                      // style={styles.contener2}
                       >
-                        <TouchableOpacity
-                          onPress={() => {
-                            isLoggedIn
-                              ? handlePress(item)
-                              : openCreateAccountModal();
-                          }}
-                        >
-                          <View
-                            style={{
-                              width: width >= 720 ? 300 : 155, // Adjust the width for tablets
-                              height: width >= 720 ? 280 : 190,
-                              borderColor: "gray",
-                              shadowColor: "gray",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 10,
-                              elevation: 10,
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
-                            }}
-                          // style={styles.fastconimage1}
-                          >
-                            {item.Photos ? (
-                              <Image
-                                source={{ uri: baseImageUrl + item.Photos }}
-                                style={{
-                                  width: "100%",
-                                  resizeMode: "contain",
-                                  height: width >= 720 ? 280 : 190,
-                                  borderRadius: 10,
-                                }}
-                              // style={styles.fastconimage}
-                              />
-                            ) : (
-                              <Image
-                                source={require("../../../assets/demo.png")}
-                                style={{
-                                  width: "100%",
-                                  height: width >= 720 ? 280 : 190,
-                                  borderRadius: 10,
-                                }}
-                              // style={styles.fastconimage}
-                              />
-                            )}
-                          </View>
-                        </TouchableOpacity>
-                        <Text
-                          style={{
-                            marginTop: 10,
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 30 : 14,
-                            marginBottom: 10,
-                            textAlign: "center",
-                          }}
-                        >
-                          {convertToTitleCase(item.Category)}
-                        </Text>
-                      </View>
-                    ))
-                  : applyrData.map((item) => (
+                        No Mens Article Found
+                      </Text>
+                    </View>
+                  )
+                ) : (
+                  nameData.map((item, index) => (
                     <View
                       key={item.id}
                       style={{
                         alignItems: "center",
-                        justifyContent: "center",
-                        width: width >= 720 ? 300 : 200,
+                        height: "auto",
+                        width: width >= 720 ? 300 : 165,
                         marginLeft: width >= 720 ? 15 : 5,
                         marginRight: width >= 720 ? 15 : 5,
+                        marginTop: 10,
+                        marginBottom: 10,
+                        borderRadius: 10,
                       }}
-                    // style={styles.contener2}
                     >
                       <TouchableOpacity
                         onPress={() => {
-                          isLoggedIn
-                            ? handlePress(item)
-                            : openCreateAccountModal();
+                          handlePress(item);
                         }}
                       >
-                        <Image
-                          source={require("../../../assets/demo.png")}
+                        <View
                           style={{
-                            width: width >= 720 ? 300 : 200, // Adjust the width for tablets
-                            height: width >= 720 ? 280 : 300,
-                            borderRadius: 10,
+                            width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                            height: width >= 720 ? 280 : 190,
+                            borderColor: "gray",
+                            shadowColor: "gray",
+                            shadowOpacity: 0.9,
+                            shadowRadius: 10,
+                            elevation: 10,
+                            shadowOffset: {
+                              width: 0,
+                              height: 0,
+                            },
                           }}
-                        // style={styles.fastconimage}
-                        />
+                        >
+                          {item.Photos ? (
+                            <Image
+                              source={{ uri: baseImageUrl + item.Photos }}
+                              style={{
+                                width: "100%",
+                                height: width >= 720 ? 280 : 190,
+                                borderRadius: 10,
+                              }}
+                            />
+                          ) : (
+                            <Image
+                              source={require("../../../assets/demo.png")}
+                              style={{
+                                width: "100%",
+                                height: width >= 720 ? 280 : 190,
+                                borderRadius: 10,
+                              }}
+                            />
+                          )}
+                        </View>
                       </TouchableOpacity>
                       <Text
                         style={{
                           marginTop: 10,
-                          fontSize: 17,
                           fontWeight: "bold",
+                          fontSize: width >= 720 ? 30 : 14,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          marginBottom: 10,
+                          textAlign: "center",
                         }}
                       >
                         {convertToTitleCase(item.Category)}
                       </Text>
                     </View>
-                  ))}
+                  ))
+                )}
               </ScrollView>
             </View>
             <View></View>
@@ -734,8 +673,9 @@ export default function HomeScreen(props) {
                 <Text
                   style={{
                     start: 10,
-                    fontWeight: 700,
+                    fontWeight: "700",
                     fontSize: width >= 720 ? 25 : 18,
+                    fontFamily: isFontLoaded ? 'Glory' : undefined,
                   }}
                 >
                   Kid’s
@@ -744,12 +684,13 @@ export default function HomeScreen(props) {
                   style={{
                     position: "absolute",
                     end: 10,
-                    color: "rgba(102, 102, 102, 1)",
+                    color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
-                    fontWeight: 600,
+                    fontFamily: isFontLoaded ? 'Glory' : undefined,
+                    fontWeight: "600",
                   }}
                   onPress={() => {
-                    isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                    viewAllArticles();
                   }}
                 >
                   View All
@@ -759,7 +700,7 @@ export default function HomeScreen(props) {
               <View
                 style={{
                   position: "relative",
-                  maxWidth: "100%",
+                  width: "100%",
                   height: "auto",
                   flexDirection: "row",
                   top: 20,
@@ -768,19 +709,35 @@ export default function HomeScreen(props) {
                 <ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
-                  style={{ flex: 1, overflow: "hidden" }}
+                  style={{ overflow: "hidden" }}
                 >
-                  {kids.length === 0 ?
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ fontSize: 17 }}>No Kids Article Found</Text>
+                  {kids.length === 0 ? (
+                    <View
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        justifyContent: "center",
+                        textAlign: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: width >= 720 ? 25 : 17,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          textAlign: "center",
+                          color: "#808080",
+                        }}
+                      >
+                        No Article Found
+                      </Text>
                     </View>
-
-                    : kids.map((item) => (
+                  ) : (
+                    kids.map((item, index) => (
                       <View
-                        key={item.id}
+                        key={index}
                         style={{
                           alignItems: "center",
-                          width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                          width: width >= 720 ? 300 : 155,
                           height: width >= 720 ? 280 : 280,
                           marginLeft: width >= 720 ? 15 : 10,
                           marginRight: width >= 720 ? 15 : 5,
@@ -790,14 +747,14 @@ export default function HomeScreen(props) {
                       >
                         <View
                           style={{
-                            width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                            width: width >= 720 ? 300 : 155,
                             height: width >= 720 ? 280 : 190,
                             borderColor: "gray",
-                            shadowColor: "rgba(0, 0, 0, 0.5)",
+                            shadowColor: "#000000",
                             shadowOpacity: 0.9,
                             shadowRadius: 3,
                             borderRadius: 10,
-                            elevation: 4, // For Android, use elevation
+                            elevation: 4,
                             shadowOffset: {
                               width: 0,
                               height: 0,
@@ -808,17 +765,12 @@ export default function HomeScreen(props) {
                             {selectedprd.some((i) => i.Id === item.Id) ? (
                               <TouchableOpacity
                                 onPress={() => {
-                                  isLoggedIn
-                                    ? rmvProductWishlist(item)
-                                    : openCreateAccountModal();
+                                  rmvProductWishlist(item);
                                 }}
                               >
                                 <FontAwesome
                                   name="heart"
-                                  style={[
-                                    styles.icon,
-                                    // isLoggedin === false ? styles.disabledIcon : null,
-                                  ]}
+                                  style={[styles.icon]}
                                 />
                               </TouchableOpacity>
                             ) : (
@@ -831,10 +783,7 @@ export default function HomeScreen(props) {
                               >
                                 <FontAwesome
                                   name="heart-o"
-                                  style={[
-                                    styles.disabledIcon,
-                                    // isLoggedin === false ? styles.disabledIcon : null,
-                                  ]}
+                                  style={[styles.disabledIcon]}
                                 />
                               </TouchableOpacity>
                             )}
@@ -843,7 +792,6 @@ export default function HomeScreen(props) {
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               flex: 1,
-                              resizeMode: "contain",
                               borderRadius: 10,
                             }}
                           />
@@ -854,23 +802,26 @@ export default function HomeScreen(props) {
                             fontWeight: "bold",
                             marginTop: 10,
                             fontSize: width >= 720 ? 18 : 12,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
                           }}
                         >
                           {item.ArticleNumber}
                         </Text>
-                        <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+                        <Text style={{ fontSize: width >= 720 ? 15 : 10, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
                           {convertToTitleCase(item.Category)}
                         </Text>
                         <Text
                           style={{
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 12,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
                           }}
                         >
                           {"₹" + item.ArticleRate + ".00"}
                         </Text>
                       </View>
-                    ))}
+                    ))
+                  )}
                 </ScrollView>
               </View>
             </View>
@@ -889,12 +840,12 @@ export default function HomeScreen(props) {
       {isFilterVisible && (
         <View
           style={{
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(0,0,0,0.5)",
             width: "100%",
             height: "100%",
             position: "absolute",
             top: 0,
-            right: 0, // Updated to 0
+            right: 0,
             left: 0,
             zIndex: 2,
           }}
@@ -919,6 +870,7 @@ export default function HomeScreen(props) {
               maxArticleRate={maxArticleRate}
               status={false}
               spr={selectedPriceRange}
+              uniquerates={nameDatas}
             />
           </View>
         </View>
@@ -934,12 +886,12 @@ export default function HomeScreen(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: "rgba(0,0,0,0.5)",
           }}
         >
           <View
             style={{
-              width: "100%", // Adjust the width as needed
+              width: "100%",
               backgroundColor: "#fff",
               borderRadius: 10,
               padding: 10,

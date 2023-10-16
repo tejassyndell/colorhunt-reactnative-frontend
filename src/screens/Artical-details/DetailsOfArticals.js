@@ -19,15 +19,15 @@ import {
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import styles from "./styles";
+import detailsOfArtStyles from "./styles";
 import stylesRecipe from "../Recipe/styles";
 // import { ScrollView } from "react-native-gesture-handler";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { ActivityIndicator } from "react-native";
-import bagicon from "../../../assets/icons/icon.png";
 import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
+import * as Font from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailsOfArticals = (props) => {
@@ -40,7 +40,8 @@ const DetailsOfArticals = (props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
   const { id, Quantity = 0 } = route.params;
   console.log(id);
-  const handleSizeClick = (size) => { };
+  const styles = detailsOfArtStyles();
+  const handleSizeClick = (size) => {};
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -63,18 +64,36 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
+
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
-  }
+  };
+
   const headerHeight =
-    Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 86) : 120;
 
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
-      PartyId:await getpartyid(),
+      PartyId: await getpartyid(),
     };
     try {
       const res = await ArticleDetails(data);
@@ -147,9 +166,7 @@ const DetailsOfArticals = (props) => {
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
-
-  const addtocart = async (ArticleId) => {
-
+  const addtocart = async ( ArticleId) => {
     if (!combinedArray) {
       console.log("undefined");
       return;
@@ -162,7 +179,7 @@ const DetailsOfArticals = (props) => {
     console.log("cqty to string ", colorwiseQuantitiesTOstring);
     console.log(totalPrice);
     const data = {
-      party_id:await getpartyid(),
+      party_id: await getpartyid(),
       article_id: ArticleId,
       Quantity: colorwiseQuantitiesTOstring,
       rate: totalPrice,
@@ -194,7 +211,7 @@ const DetailsOfArticals = (props) => {
     return `₹${value.toFixed(2)}`;
   };
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const imageElements = articlePhotos.map((fileName, index) => (
     <Image
       source={{ uri: baseImageUrl + fileName }}
@@ -299,6 +316,8 @@ const DetailsOfArticals = (props) => {
   // }
 
   const windowWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get("window").width;
+  const isFirstContainerFullWidth = screenWidth >= 720;
   return (
     <>
       {isLoading ? (
@@ -306,7 +325,7 @@ const DetailsOfArticals = (props) => {
           <ActivityIndicator size="large" color="black" />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF", flex: 1 }}>
+        <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>
           <ScrollView nestedScrollEnabled={true}>
             <View style={{ zIndex: 1, flex: 1 }}>
               <View
@@ -325,44 +344,44 @@ const DetailsOfArticals = (props) => {
                   autoplay={true}
                   autoplayInterval={3000}
                 ></Carousel>
-              </View>
-            </View>
-
-            <View
-              style={{
-                zIndex: 2,
-                position: "absolute",
-                top: viewportWidth >= 720 ? "45%" : "48%",
-                left: 0,
-                right: 0,
-                bottom: 0,
-              }}
-            >
-              <Image
-                style={{ width: "100%", height: width >= 720 ? "20%" : 74 }}
-                source={require("../../../assets/Rectangle_18898.png")}
-              />
-              <View
-                style={{
-                  zIndex: 3,
-                  position: "absolute",
-                  bottom: width >= 720 ? 420 : 300,
-                  left: 0,
-                  right: 0,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
+                <View
                   style={{
-                    fontSize: width >= 720 ? 40 : 26,
-                    textAlign: "center",
-                    fontWeight: 600,
-                    color: "black",
+                    zIndex: 2,
+                    position: "absolute",
+                    top: viewportWidth >= 720 ? "88%" : "86%",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                   }}
                 >
-                  Article No: {articleNumber}
-                </Text>
+                  <Image
+                    style={{ width: "100%" }}
+                    source={require("../../../assets/Rectangle_18898.png")}
+                  />
+                  <View
+                    style={{
+                      zIndex: 3,
+                      position: "absolute",
+                      top: width >= 720 ? "10%" : "30%",
+                      left: 0,
+                      right: 0,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: width >= 720 ? 40 : 26,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        textAlign: "center",
+                        fontWeight: 'bold',
+                        color: "black",
+                      }}
+                    >
+                      Article No: {articleNumber}
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
 
@@ -371,55 +390,180 @@ const DetailsOfArticals = (props) => {
                 style={{
                   backgroundColor: "#FFF",
                   elevation: 12,
-                  shadowColor: "black",
+                  borderColor: "#b3a8a8",
                   width: "100%",
                   height: "100%",
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
                   padding: 12,
+                  shadowColor: "#000000",
+                  shadowOpacity: 1,
                 }}
               >
                 <View>
-                  <View style={styles.product_detail}>
-                    <View style={styles.product_detail_sec}>
-                      <Text style={styles.size_label}>Size</Text>
-                      <View style={styles.size_container1}>
-                        <ScrollView
-                          horizontal={true}
-                          nestedScrollEnabled={true}
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                      alignItems: "stretch",
+                      // padding: 20,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: "100%",
+                        flexDirection:
+                          articleSizeData.length > 3 ? "column" : "row",
+                        alignItems:
+                          articleSizeData.length > 3
+                            ? "flex-Start"
+                            : "flex-start",
+                        marginBottom: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          marginRight: articleSizeData.length > 3 ? 0 : 30,
+                          width: articleSizeData.length > 3 ? "auto" : "50%",
+                          marginBottom: articleSizeData.length > 3 ? 10 : 0,
+                        }}
+                      >
+                        <Text
                           style={{
+                            marginBottom: 5,
+                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 20 : 14,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          }}
+                        >
+                          Size
+                        </Text>
+                        <View
+                          style={{
+                            paddingHorizontal:
+                              articleSizeData.length > 3 ? "6%" : 0,
                             width: "100%",
-                            display: "flex",
+                            height: width >= 720 ? 100 : 60,
                             flexDirection: "row",
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            borderRadius: 10,
+                            padding: 10,
+                            alignItems: "center",
+
+                            justifyContent:
+                              articleSizeData.length > 3
+                                ? "flex-start"
+                                : "center",
+                            ...Platform.select({
+                              ios: {
+                                shadowColor: "black",
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 2,
+                            backgroundColor:'#f4f4f4',
+
+                              },
+                              android: {
+                                elevation: 0,
+                            backgroundColor:'#f4f4f4',
+
+                              },
+                            }),
                           }}
                         >
                           {articleSizeData &&
                             articleSizeData.map((item, index) => (
-                              <View style={styles.size_options} key={index}>
-                                <View style={styles.size}>
-                                  <Text
-                                    href="/"
-                                    style={styles.size_a}
-                                    onPress={() => handleSizeClick(item.Name)}
-                                  >
-                                    {item.Name}
-                                  </Text>
-                                </View>
+                              <View
+                                style={[
+                                  styles.size_options,
+                                  {
+                                    paddingHorizontal:
+                                      articleSizeData.length > 3 ? "1%" : 0,
+                                  },
+                                ]}
+                                key={index}
+                              >
+                                <TouchableOpacity
+                                  onPress={() => handleSizeClick(item.Name)}
+                                >
+                                  <View style={styles.size}>
+                                    <Text href="/" style={styles.size_a}>
+                                      {item.Name}
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
                               </View>
                             ))}
-                        </ScrollView>
+                        </View>
                       </View>
-                    </View>
-                    <View></View>
-                    <View style={styles.product_detail_sec2}>
-                      <Text style={styles.size_label1}>Category</Text>
-                      <View style={styles.size_container2}>
-                        <View style={styles.size_options2}>
-                          <Text style={styles.size_p}>{subcategory}</Text>
+                      <View
+                        style={{
+                          // width: "40%",
+                          width: articleSizeData.length > 3 ? "auto" : "40%",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginBottom: 5,
+                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 20 : 14,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          }}
+                        >
+                          Subcategory
+                        </Text>
+                        <View
+                          style={{
+                            width: "100%",
+                            height: width >= 720 ? 100 : 60,
+                            flexDirection: "row",
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            borderRadius: 10,
+                            padding: 10,
+                            alignContent: "center",
+                            justifyContent:
+                              articleSizeData.length > 3
+                                ? "flex-start"
+                                : "center",
+
+                            alignItems: "center",
+                            ...Platform.select({
+                              ios: {
+                                shadowColor: "black",
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.2,
+                                shadowRadius: 2,
+                            backgroundColor:'#f4f4f4',
+
+                              },
+                              android: {
+                                elevation: 0,
+                            backgroundColor:'#f4f4f4',
+
+                              },
+                            }),
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: width >= 720 ? 35 : 16,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              paddingHorizontal:
+                                articleSizeData.length > 3 ? "10%" : 0,
+                              fontWeight: "400",
+                              textAlign: "center",
+                              color: "#000000",
+                            }}
+                          >
+                            {subcategory}
+                          </Text>
                         </View>
                       </View>
                     </View>
                   </View>
+
                   <View
                     style={{
                       flex: 1,
@@ -433,7 +577,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontWeight: 600,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontWeight: 'bold',
                           }}
                         >
                           Color
@@ -443,7 +588,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontWeight: 600,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontWeight: 'bold',
                           }}
                         >
                           Available in Stock
@@ -453,7 +599,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontWeight: 600,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontWeight: 'bold',
                           }}
                         >
                           Add Qty.
@@ -469,6 +616,7 @@ const DetailsOfArticals = (props) => {
                             borderWidth: 1,
                             borderColor: "#0000001d",
                             marginTop: 8,
+                            
                             justifyContent: "center",
                             alignContent: "center",
                             alignItems: "center",
@@ -478,14 +626,15 @@ const DetailsOfArticals = (props) => {
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
                             style={{
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
-                              fontWeight: 500,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontWeight: "500",
                               color: "#626262",
                             }}
                           >
@@ -508,14 +657,15 @@ const DetailsOfArticals = (props) => {
                             paddingHorizontal: 8,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
                             style={{
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
-                              fontWeight: 500,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontWeight: "500",
                               color: "#626262",
                             }}
                           >
@@ -527,17 +677,21 @@ const DetailsOfArticals = (props) => {
                             flex: 1,
                             flexDirection: "row",
                             borderRadius: 10,
-                            borderWidth: 1,
+                            borderWidth: 0.8,
                             borderColor: "#0000001d",
                             marginTop: 8,
                             justifyContent: "center",
                             alignContent: "center",
+                            borderRightColor:'#FFF',
+                            borderLeftWidth:0,
+                            borderRightWidth:0,
                             alignItems: "center",
                             backgroundColor: "#FFF",
                             height: width >= 720 ? 70 : 42,
                             elevation: 2,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 0,
+
                           }}
                         >
                           <Pressable
@@ -546,7 +700,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               flex: 1.2,
                               borderWidth: 1,
-                              width: "100%",
+                              width: "95%",
                               height: "100%",
                               borderColor: "#0000001d",
                               borderRadius: 10,
@@ -558,7 +712,8 @@ const DetailsOfArticals = (props) => {
                             <Text
                               style={{
                                 fontSize: width >= 720 ? 45 : 24,
-                                fontWeight: 800,
+                                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                fontWeight: "800",
                               }}
                             >
                               -
@@ -567,9 +722,10 @@ const DetailsOfArticals = (props) => {
                           <View style={{ flex: 1 }}>
                             <Text
                               style={{
-                                fontSize: width >= 720 ? 30 : 21,
+                                fontSize: width >= 720 ? 30 : 18,
+                                fontFamily: isFontLoaded ? 'Glory' : undefined,
                                 textAlign: "center",
-                                fontWeight: 600,
+                                fontWeight: 'bold',
                                 color: "#000",
                               }}
                             >
@@ -594,6 +750,7 @@ const DetailsOfArticals = (props) => {
                             <Text
                               style={{
                                 fontSize: width >= 720 ? 40 : 21,
+                                fontFamily: isFontLoaded ? 'Glory' : undefined,
                                 textAlign: "center",
                                 paddingBottom: 0,
                               }}
@@ -649,7 +806,7 @@ const DetailsOfArticals = (props) => {
                       width: 360,
                       height: 320,
                       backgroundColor: "white",
-                      borderRadius: 25,
+                      borderRadius: 15,
                       alignItems: "center",
                       // padding: 5
                     }}
@@ -657,8 +814,8 @@ const DetailsOfArticals = (props) => {
                     <Image
                       source={require("../../../assets/update_cart.png")}
                       style={{
-                        width: 100,
-                        height: 100,
+                        width: 70,
+                        height: 70,
                         marginBottom: 20,
                         marginTop: 30,
                       }}
@@ -667,22 +824,22 @@ const DetailsOfArticals = (props) => {
                     <Text
                       style={{
                         fontSize: 24,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                         textAlign: "center",
-                        marginBottom: 30,
-                        fontWeight: 500,
+                        marginBottom: 10,
+                        fontWeight: "500",
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
-                      Are you sure {"\n"} you want to update this {"\n"} artical
-                      in cart.
+                      Are you sure that want {"\n"}to update in cart
                     </Text>
                     <View
                       style={{
-                        width: "100%",
+                        width: "90%",
                         display: "flex",
                         flexDirection: "row",
                         position: "absolute",
-                        bottom: 0,
+                        bottom: 20,
                       }}
                     >
                       <TouchableOpacity
@@ -690,21 +847,21 @@ const DetailsOfArticals = (props) => {
                           setIsModalVisible(false);
                         }}
                         style={{
-                          backgroundColor: "black",
-                          width: "50%",
+                          width: "47.5%",
+                          borderWidth: 1,
                           height: 50,
-                          borderBottomLeftRadius: 25,
                           justifyContent: "center",
                           alignItems: "center",
-                          borderWidth: 1,
-                          borderColor: "white",
+                          borderRadius: 10,
+                          borderColor: "grey",
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
-                            fontWeight: 700,
-                            color: "white",
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontWeight: "700",
+                            color: "grey",
                             paddingHorizontal: 15,
                           }}
                         >
@@ -718,19 +875,21 @@ const DetailsOfArticals = (props) => {
                         }}
                         style={{
                           backgroundColor: "black",
-                          width: "50%",
+                          width: "47.5%",
                           height: 50,
-                          borderBottomRightRadius: 25,
                           justifyContent: "center",
                           alignItems: "center",
                           borderWidth: 1,
+                          borderRadius: 10,
+                          marginLeft: "5%",
                           borderColor: "white",
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
-                            fontWeight: 700,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontWeight: "700",
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -770,24 +929,24 @@ const DetailsOfArticals = (props) => {
         style={{
           position: "absolute",
           flexDirection: "row",
-          padding: 8,
           paddingHorizontal: 14,
           bottom: 0,
           flex: 1,
           backgroundColor: "#FFF",
         }}
       >
-        <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={{ flex: 1, justifyContent: "center",paddingBottom:15, }}>
           <View>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10, fontWeight: 400 }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 11,  fontFamily: isFontLoaded ? 'Glory' : undefined, fontWeight: "400" }}>
               Total Price
             </Text>
           </View>
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 27 : 16,
-                fontWeight: 600,
+                fontSize: width >= 720 ? 27 : 18,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontWeight: '700',
                 color: "black",
               }}
             >
@@ -821,8 +980,6 @@ const DetailsOfArticals = (props) => {
                 <Image
                   source={require("../../../assets/icons/icon.png")}
                   style={{
-                    marginRight: width >= 720 ? -10 : 10,
-
                     width: width >= 720 ? 30 : 20,
                     height: width >= 720 ? 30 : 20,
                   }}
@@ -831,9 +988,9 @@ const DetailsOfArticals = (props) => {
                   style={{
                     color: "white",
                     textAlign: "center",
-                    fontWeight: 600,
+                    fontWeight: 'bold',
                     fontSize: width >= 720 ? 30 : 18,
-                    width: "70%",
+                    marginLeft: width >= 720 ? 20 : 10,
                   }}
                 >
                   Add to cart
