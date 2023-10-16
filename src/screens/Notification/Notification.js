@@ -47,9 +47,9 @@ export default function Notification(props) {
 
       // Parse the stored data as JSON
       console.log(storedData, "{}{}{{{}{}{}{}{}{}{}");
-      const data = JSON.parse(storedData);
+      const data =await JSON.parse(storedData);
 
-      console.log(data, 'token');
+      console.log(data.token, 'token');
 
       if (data !== null) {
         if (data.status === true) {
