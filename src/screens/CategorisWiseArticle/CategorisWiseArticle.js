@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  Modal,
 } from "react-native";
 import {
   getProductName,
@@ -23,6 +24,9 @@ import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
+
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
@@ -35,16 +39,57 @@ export default function CategorisWiseArticle(props) {
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
+
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
+
+  const CheckUser = async () => {
+    const user = await AsyncStorage.getItem("UserData");
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+  useEffect(() => {
+    CheckUser();
+  }, []);
+
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
+
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   const { width, height } = Dimensions.get("window");
 
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
   console.log(category);
@@ -52,10 +97,17 @@ export default function CategorisWiseArticle(props) {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
+<<<<<<< HEAD
     let partydata = await AsyncStorage.getItem("UserData")
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   }
+=======
+    let partydata = await AsyncStorage.getItem("UserData");
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  };
+>>>>>>> miltestone-test
 
   const getproductnamess = async () => {
     try {
@@ -74,7 +126,11 @@ export default function CategorisWiseArticle(props) {
   };
   const rmvProductWishlist = async (i) => {
     let data = {
+<<<<<<< HEAD
       party_id:await getpartyid(),
+=======
+      party_id: await getpartyid(),
+>>>>>>> miltestone-test
       article_id: i.Id,
     };
     try {
@@ -91,7 +147,11 @@ export default function CategorisWiseArticle(props) {
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
+<<<<<<< HEAD
       party_id:await getpartyid(),
+=======
+      party_id: await getpartyid(),
+>>>>>>> miltestone-test
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -100,7 +160,7 @@ export default function CategorisWiseArticle(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -144,19 +204,20 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Profile");
-            }}
-          >
-            <Image
-              style={{
-                resizeMode: "contain",
-                width: width >= 720 ? 55 : 32,
-                height: width >= 720 ? 55 : 32,
-              }}
-              source={require("../../../assets/Nevbar/Profile.png")}
-            />
-          </TouchableOpacity>
+  onPress={() => {
+    isLoggedIn ? navigation.navigate("Profile") : "";
+  }}
+>
+  <Image
+    style={{
+      resizeMode: "contain",
+      width: width >= 720 ? 55 : 35,
+      height: width >= 720 ? 55 : 35,
+    }}
+    source={require("../../../assets/Nevbar/Profile.png")}
+  />
+</TouchableOpacity>
+
         </View>
       ),
       headerStyle: {
@@ -203,9 +264,17 @@ export default function CategorisWiseArticle(props) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
+<<<<<<< HEAD
     onPress={() =>
       navigation.navigate("DetailsOfArticals", { id: item.Id })
     }
+=======
+      onPress={() =>
+        isLoggedIn
+          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
+          : openCreateAccountModal()
+      }
+>>>>>>> miltestone-test
       style={{
         alignItems: "center",
         height: "auto",
@@ -245,28 +314,38 @@ export default function CategorisWiseArticle(props) {
               addArticleWishlist(item);
             }}
           >
-            <FontAwesome
-              name="heart-o"
-              style={[
-                styles.disabledIcon,
-                // isLoggedin === false ? styles.disabledIcon : null,
-              ]}
-            />
+            <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
           </TouchableOpacity>
         )}
       </View>
       <View
         style={{
-          width: "100%",
+          width: "90%",
+          height: 180,
           justifyContent: "center",
           alignItems: "center",
-          elevation: 20,
-          borderColor: "gray",
-          shadowColor: "#c0c0c0",
-          borderRadius: 10,
+          borderRadius: 12,
+          backgroundColor: "#FFF",
+          shadowColor: "#000",
+          shadowOpacity: 0.1,
+          shadowRadius: 1,
+          elevation: 5,
+          marginTop:10
         }}
       >
-        <Image
+        {/* { item.Photos?
+          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
+          source={require("../../../assets/demo.png")}
+          style={{
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
+            zIndex: 1,
+            marginTop: 10,
+          }}
+        />: <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
             width: "90%",
@@ -276,6 +355,18 @@ export default function CategorisWiseArticle(props) {
             borderRadius: 10,
             zIndex: 1,
             marginTop: 10,
+          }}
+        />:""} */}
+        <Image
+          source={{ uri: baseImageUrl + item.Photos }}
+          style={{
+            width: "100%",
+            height: "100%",
+            flex: 1,
+            resizeMode: "contain",
+            // borderRadius: 10,
+            zIndex: 1,
+            // marginTop: 10,
           }}
         />
       </View>
@@ -288,7 +379,10 @@ export default function CategorisWiseArticle(props) {
         }}
       >
         <TouchableOpacity
+<<<<<<< HEAD
          
+=======
+>>>>>>> miltestone-test
           style={{
             display: "flex",
             justifyContent: "center",
@@ -297,10 +391,24 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
-            <Text style={{ fontWeight: "bold" }}>{item.ArticleNumber}</Text>
-            <Text>{convertToTitleCase(item.Category)}</Text>
-            <Text style={{ fontWeight: "bold" }}>
-              {"₹" + item.ArticleRate + ".00"}
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
+            >
+              {item.ArticleNumber}
+            </Text>
+            <Text style={{ fontFamily: isFontLoaded ? "Glory" : undefined }}>
+              {convertToTitleCase(item.Category)}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
+            >
+              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
             </Text>
           </View>
         </TouchableOpacity>
@@ -371,7 +479,9 @@ export default function CategorisWiseArticle(props) {
             />
             <TouchableOpacity
               style={{ width: "10%", alignItems: "flex-end", paddingEnd: 0 }}
-              onPress={openFilter}
+              onPress={() => {
+                isLoggedIn ? openFilter() : "";
+              }}
             >
               <Image
                 source={require("../../../assets/filetr_icone.png")}
@@ -387,7 +497,8 @@ export default function CategorisWiseArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
-                fontWeight: 700,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontWeight: "700",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
@@ -409,24 +520,25 @@ export default function CategorisWiseArticle(props) {
           >
             {finalData.length === 0 ? (
               (console.log(nameDatas.length, "ewqewqewqeewq"),
-              (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center", // Center vertically
-                    alignItems: "center", // Center horizontally
-                  }}
-                >
-                  <Text
+                (
+                  <View
                     style={{
-                      textAlign: "center",
-                      fontSize: 20,
+                      flex: 1,
+                      justifyContent: "center", // Center vertically
+                      alignItems: "center", // Center horizontally
                     }}
                   >
-                    No Articles Found
-                  </Text>
-                </View>
-              ))
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontSize: 20,
+                      }}
+                    >
+                      No Articles Found
+                    </Text>
+                  </View>
+                ))
             ) : (
               <FlatList
                 style={{ backgroundColor: "#FFF" }}
@@ -490,6 +602,34 @@ export default function CategorisWiseArticle(props) {
           )}
         </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }

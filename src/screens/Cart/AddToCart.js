@@ -22,16 +22,39 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { ImageZoomProps } from "react-native-image-pan-zoom";
+import * as Font from "expo-font";
 
-const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
 const AddToCart = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(true);
   const windowwidthe = parseInt(Dimensions.get("window").width);
   const windowheight = parseInt(Dimensions.get("window").height);
+  const [isFontLoaded, setIsFontLoaded] = useState(false)
+  const { width, height } = Dimensions.get("window");;
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
+
   const headerHeight =
+<<<<<<< HEAD
     Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 100) : 120;
+=======
+    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 86) : 120;
+>>>>>>> miltestone-test
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -56,7 +79,8 @@ const AddToCart = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: windowwidthe * 0.05,
+              fontSize: width >= 720 ? 35 : 25,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -87,7 +111,11 @@ const AddToCart = (props) => {
     });
   };
   const cartDetails = async () => {
+<<<<<<< HEAD
     let data = await AsyncStorage.getItem("UserData")
+=======
+    let data = await AsyncStorage.getItem("UserData");
+>>>>>>> miltestone-test
     data = await JSON.parse(data);
     await cartdetails({ party_id: data[0].Id })
       .then((response) => {
@@ -177,6 +205,7 @@ const AddToCart = (props) => {
           const quntitynumber = item.Quantity.split(",").map((num) =>
             parseInt(num.trim())
           );
+          let outofstockcount =0;
           for (let i = 0; i < stringNumbers.length; i++) {
             for (let j = 0; j < quntitynumber.length; j++) {
               const e = stringNumbers[i];
@@ -194,14 +223,18 @@ const AddToCart = (props) => {
                 break;
               } else {
                 if (!listOfOutOfProduct.includes(item.article_id)) {
-                  listOfOutOfProduct.push(item.article_id);
+                  // listOfOutOfProduct.push(item.article_id);
+                  outofstockcount+=1;
                 }
               }
             }
           }
+          if(outofstockcount===stringNumbers.length){
+            listOfOutOfProduct.push(item.article_id);
+          }
         } else {
           if (
-            parseInt(it.SalesNoPacks) > parseInt(item.Quantity) &&
+            parseInt(it.SalesNoPacks) >= parseInt(item.Quantity) &&
             it.ArticleId === item.article_id
           ) {
             listOfOutOfProduct.push(item.article_id);
@@ -233,7 +266,11 @@ const AddToCart = (props) => {
   };
   const handleDeleteOrder = async (article_id) => {
     // console.log(article_id);
+<<<<<<< HEAD
     let partydata = await AsyncStorage.getItem("UserData")
+=======
+    let partydata = await AsyncStorage.getItem("UserData");
+>>>>>>> miltestone-test
     partydata = await JSON.parse(partydata);
     const data = {
       party_id: partydata[0].Id,
@@ -273,6 +310,7 @@ const AddToCart = (props) => {
         parseInt(num.trim())
       );
       let outOfStock = false;
+      let outofstokecount = 0;
       for (let i = 0; i < stringNumbers.length; i++) {
         const e = stringNumbers[i];
 
@@ -280,9 +318,14 @@ const AddToCart = (props) => {
           parseInt(e) < parseInt(item.Quantity) &&
           it.ArticleId === item.article_id
         ) {
-          outOfStock = true;
-          break; // Exit the loop
+          // outOfStock = true;
+          // break; // Exit the loop
+          outofstokecount +=1;
         }
+      }
+
+      if(outofstokecount===stringNumbers.length){
+        outOfStock = true
       }
       if (outOfStock) {
         return (
@@ -290,7 +333,8 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontWeight: 500,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontWeight: "500",
               color: "red",
               textAlign: "right",
             }}
@@ -310,7 +354,8 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontWeight: 400,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontWeight: "400",
               color: "red",
             }}
           >
@@ -350,9 +395,6 @@ const AddToCart = (props) => {
         setCartDataIdArray((i) => [...i, it.ArticalId]);
       }
     }
-
-    // Return null if the item is not out of stock
-    // return null;
   };
 
   const geticondeHeighte = () => {
@@ -396,9 +438,9 @@ const AddToCart = (props) => {
             <Text
               style={{
                 fontSize: windowwidthe * 0.1,
-                fontWeight: "bolder",
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 textAlign: "center",
-                fontWeight: 700,
+                fontWeight: "700",
                 color: "#808080",
               }}
             >
@@ -425,7 +467,7 @@ const AddToCart = (props) => {
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text style={{ color: "white", fontSize: windowwidthe * 0.035 }}>
+              <Text style={{ color: "white", fontFamily: isFontLoaded ? 'Glory' : undefined, fontSize: windowwidthe * 0.035 }}>
                 Create Order
               </Text>
             </TouchableOpacity>
@@ -447,6 +489,7 @@ const AddToCart = (props) => {
                 backgroundColor: "#FFF",
                 borderTopColor: "#828282",
                 borderTopWidth: 1,
+
               }}
             >
               <View style={{ width: "100%", backgroundColor: "#FFF" }}>
@@ -485,7 +528,11 @@ const AddToCart = (props) => {
                                     width: "94%",
                                     shadowColor: "gray",
                                     shadowOpacity: 0.5,
+<<<<<<< HEAD
 
+=======
+                                    height: windowheight * 0.142,
+>>>>>>> miltestone-test
                                     elevation: 4, // For Android, use elevation
                                     shadowOffset: {
                                       width: 1,
@@ -503,14 +550,21 @@ const AddToCart = (props) => {
                                       width:
                                         windowwidthe >= 720 ? "21%" : "31%",
                                       paddingHorizontal:
+<<<<<<< HEAD
                                         windowwidthe >= 720 ? "2%" : "1%",
                                       paddingVertical: "1%",
+=======
+                                        windowwidthe >= 720 ? "4%" : "2%",
+                                      paddingVertical: windowwidthe >= 720 ? "2%" : "1%",
+                                      // backgroundColor:'red'
+>>>>>>> miltestone-test
                                     }}
                                   >
                                     <TouchableOpacity
                                       style={{
                                         width: windowwidthe >= 720 ? 120 : 100,
                                         height: windowwidthe >= 720 ? 140 : 100,
+<<<<<<< HEAD
                                         borderRadius: 10,
                                         shadowOpacity: 0.4,
 
@@ -519,6 +573,16 @@ const AddToCart = (props) => {
                                           width: 0,
                                           height: 0,
                                         },
+=======
+                                        borderRadius: 12,
+                                        backgroundColor: "#FFF",
+                                        shadowColor: "#000",
+                                        shadowOpacity: 0.1,
+                                        shadowRadius: 1,
+                                        elevation: 5, // For Android, use elevation
+
+
+>>>>>>> miltestone-test
                                       }}
                                       onPress={() =>
                                         handleEditOrder(
@@ -557,16 +621,18 @@ const AddToCart = (props) => {
                                     >
                                       <Text
                                         style={{
-                                          fontSize: windowwidthe * 0.035,
-                                          fontWeight: 700,
+                                          fontSize: width >= 720 ? 20 : 18,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         {item.ArticleNumber}
                                       </Text>
                                       <Text
                                         style={{
-                                          fontSize: windowwidthe * 0.025,
-                                          fontWeight: 400,
+                                          fontSize: width >= 720 ? 16 : 14,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         {item.StyleDescription}
@@ -583,16 +649,18 @@ const AddToCart = (props) => {
                                     >
                                       <Text
                                         style={{
-                                          fontSize: windowwidthe * 0.025,
-                                          fontWeight: 400,
+                                          fontSize: width >= 720 ? 16 : 14,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         Rate
                                       </Text>
                                       <Text
                                         style={{
-                                          fontSize: windowwidthe * 0.035,
-                                          fontWeight: 700,
+                                          fontSize: width >= 720 ? 19 : 17,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         ₹{item.rate}.00
@@ -684,7 +752,6 @@ const AddToCart = (props) => {
                                     borderRadius: 10,
                                     height: windowheight * 0.142,
                                     paddingVertical: "1.5%",
-                                    backgroundColor: "#FFF",
                                   }}
                                 >
                                   <TouchableOpacity
@@ -740,8 +807,9 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.035,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 700,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         {item.ArticleNumber}
@@ -749,8 +817,9 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.025,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 400,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         {item.StyleDescription}
@@ -768,8 +837,9 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.025,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 400,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         Rate
@@ -777,8 +847,9 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.035,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 700,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         ₹{item.rate}.00
@@ -862,9 +933,15 @@ const AddToCart = (props) => {
                                     >
                                       {compreInward
                                         ? compreInward.map(
+<<<<<<< HEAD
                                             (it) => checkOutOfStock(it, item)
                                             // console.log(it.SalesNoPacks)
                                           )
+=======
+                                          (it) => checkOutOfStock(it, item)
+                                          // console.log(it.SalesNoPacks)
+                                        )
+>>>>>>> miltestone-test
                                         : ""}
                                     </View>
                                   </View>
@@ -886,7 +963,6 @@ const AddToCart = (props) => {
                                   borderRadius: 10,
                                   height: windowheight * 0.142,
                                   paddingVertical: "1.5%",
-                                  backgroundColor: "#FFF",
                                 }}
                               >
                                 <TouchableOpacity
@@ -939,8 +1015,9 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.035,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 700,
+                                        fontWeight: "700",
                                       }}
                                     >
                                       {item.ArticleNumber}
@@ -948,8 +1025,9 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.025,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 400,
+                                        fontWeight: "400",
                                       }}
                                     >
                                       {item.StyleDescription}
@@ -967,8 +1045,9 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.025,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 400,
+                                        fontWeight: "400",
                                       }}
                                     >
                                       Rate
@@ -976,8 +1055,9 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.035,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
-                                        fontWeight: 700,
+                                        fontWeight: "700",
                                       }}
                                     >
                                       ₹{item.rate}.00
@@ -1061,9 +1141,15 @@ const AddToCart = (props) => {
                                   >
                                     {compreInward
                                       ? compreInward.map(
+<<<<<<< HEAD
                                           (it) => checkOutOfStock(it, item)
                                           // console.log(it.SalesNoPacks)
                                         )
+=======
+                                        (it) => checkOutOfStock(it, item)
+                                        // console.log(it.SalesNoPacks)
+                                      )
+>>>>>>> miltestone-test
                                       : ""}
                                   </View>
                                 </View>
@@ -1094,7 +1180,8 @@ const AddToCart = (props) => {
                           paddingLeft: "5%",
                           borderRadius: 10,
                           fontSize:
-                            windowwidthe < 720 ? windowwidthe * 0.04 : 26,
+                            width >= 720 ? 20 : 18,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                           backgroundColor: "#EEE",
                           borderColor: "#E4E7EA",
                         }}
@@ -1129,8 +1216,9 @@ const AddToCart = (props) => {
                             style={{
                               color: "white",
                               fontSize:
-                                windowwidthe < 720 ? windowwidthe * 0.04 : 22,
-                              fontWeight: 600,
+                                width >= 720 ? 20 : 18,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontWeight: "600",
                               textAlign: "center",
                             }}
                           >
@@ -1139,8 +1227,6 @@ const AddToCart = (props) => {
                         </TouchableOpacity>
                       </View>
                     </View>
-
-                    {/* </View> */}
                   </View>
                 </View>
               </View>
@@ -1176,8 +1262,9 @@ const AddToCart = (props) => {
                       style={{
                         color: "white",
                         fontSize:
-                          windowwidthe < 720 ? windowwidthe * 0.042 : 26,
-                        fontWeight: 600,
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontWeight: "600",
                         textAlign: "center",
                       }}
                     >
@@ -1199,8 +1286,9 @@ const AddToCart = (props) => {
                 >
                   <Text
                     style={{
-                      fontSize: windowwidthe < 720 ? windowwidthe * 0.035 : 22,
-                      fontWeight: 700,
+                      fontSize: width >= 720 ? 13 : 11,
+                      fontFamily: isFontLoaded ? 'Glory' : undefined,
+                      fontWeight: "700",
                       color: "#AAAAAA",
                     }}
                   >
@@ -1224,8 +1312,9 @@ const AddToCart = (props) => {
                     <Text
                       style={{
                         fontSize:
-                          windowwidthe < 720 ? windowwidthe * 0.045 : 28,
-                        fontWeight: 600,
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontWeight: "600",
                         color: "#585656",
                       }}
                     >
@@ -1241,14 +1330,14 @@ const AddToCart = (props) => {
                       justifyContent: "flex-end",
                       alignItems: "flex-end",
                       paddingRight: windowwidthe * 0.03,
-                      // paddingLeft: "14%"
                     }}
                   >
                     <Text
                       style={{
                         fontSize:
-                          windowwidthe < 720 ? windowwidthe * 0.045 : 28,
-                        fontWeight: 800,
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontWeight: "800",
                         color: "#000",
                       }}
                     >
@@ -1273,8 +1362,9 @@ const AddToCart = (props) => {
                       style={{
                         color: "white",
                         fontSize:
-                          windowwidthe < 720 ? windowwidthe * 0.044 : 28,
-                        fontWeight: 600,
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontWeight: "600",
                         textAlign: "left",
                       }}
                     >

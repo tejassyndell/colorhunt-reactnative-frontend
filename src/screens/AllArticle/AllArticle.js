@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  Modal,
 } from "react-native";
 import {
   getProductName,
@@ -21,9 +22,13 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+<<<<<<< HEAD
 
+=======
+>>>>>>> miltestone-test
 
 import { ActivityIndicator } from "react-native";
+import CreateAccount from "../../components/CreateAccount/CreateAccount";
 
 export default function AllArticle(props) {
   const key = 'your_storage_key';
@@ -56,20 +61,79 @@ export default function AllArticle(props) {
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [noArticlesFound, setNoArticlesFound] = useState(false);
+<<<<<<< HEAD
+=======
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
+>>>>>>> miltestone-test
   const { width, height } = Dimensions.get("window");
-  const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
 
+  const retrieveStoredCategories = async () => {
+    try {
+      const serializedCategories = await AsyncStorage.getItem(key);
+      const serrializedPriceRange = await AsyncStorage.getItem(key2)
+      if (serializedCategories !== null || selectedPriceRange !== null) {
+        const categories = JSON.parse(serializedCategories);
+        const priceRange = JSON.parse(serrializedPriceRange)
+        setSelectedCategories(categories);
+        setSelectedPriceRange(priceRange)
+      } else {
+        console.log('No data found with the key.');
+      }
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+    }
+  };
+  const userChecked = async () => {
+    const token = await AsyncStorage.getItem("UserData");
+
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    userChecked();
+  });
+
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
+
+  const headerHeight =
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+
+<<<<<<< HEAD
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+=======
+  // uploard url image
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+>>>>>>> miltestone-test
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
+<<<<<<< HEAD
     let partydata = await AsyncStorage.getItem("UserData")
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   }
+=======
+    let partydata = await AsyncStorage.getItem("UserData");
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  };
+>>>>>>> miltestone-test
   const getCategoriesname = async () => {
     retrieveStoredCategories();
     const res = await getProductName();
@@ -106,7 +170,7 @@ export default function AllArticle(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     try {
@@ -209,7 +273,13 @@ export default function AllArticle(props) {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() =>
+<<<<<<< HEAD
         navigation.navigate("DetailsOfArticals", { id: item.Id })
+=======
+        isLoggedIn
+          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
+          : openCreateAccountModal()
+>>>>>>> miltestone-test
       }
       style={{
         alignItems: "center",
@@ -271,6 +341,19 @@ export default function AllArticle(props) {
           borderRadius: 10,
         }}
       >
+          {/* { item.Photos?
+          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
+          source={require("../../../assets/demo.png")}
+          style={{
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
+            zIndex: 1,
+            marginTop: 10,
+          }}
+        />:  */}
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
@@ -283,6 +366,7 @@ export default function AllArticle(props) {
             marginTop: 10,
           }}
         />
+        {/* :""} */}
       </View>
       <View
         style={{
@@ -293,7 +377,10 @@ export default function AllArticle(props) {
         }}
       >
         <TouchableOpacity
+<<<<<<< HEAD
 
+=======
+>>>>>>> miltestone-test
           style={{
             display: "flex",
             justifyContent: "center",
@@ -390,7 +477,7 @@ export default function AllArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
-                fontWeight: 700,
+                fontWeight: "700",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
@@ -480,6 +567,34 @@ export default function AllArticle(props) {
           )}
         </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }

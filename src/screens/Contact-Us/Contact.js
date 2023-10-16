@@ -16,6 +16,7 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { SendMail } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import ResponsiveImage from "react-native-responsive-image";
+import * as Font from "expo-font";
 
 export default function Contact(props) {
   const { navigation } = props;
@@ -27,12 +28,36 @@ export default function Contact(props) {
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
   const headerHeight =
+<<<<<<< HEAD
     Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+=======
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+>>>>>>> miltestone-test
   const { width, height } = Dimensions.get("window");
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
   const multilineHeight = numberOfLines * lineHeight;
 
+<<<<<<< HEAD
+=======
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
+
+>>>>>>> miltestone-test
   const handleSubmit = async () => {
     console.log("Hello", username, email, subject, message);
     if (!username || !email || !subject || !message) {
@@ -91,7 +116,12 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
+<<<<<<< HEAD
               fontWeight: 700,
+=======
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontWeight: "700",
+>>>>>>> miltestone-test
               width: "100%",
             }}
           >
@@ -117,14 +147,19 @@ export default function Contact(props) {
       color: "white",
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
+<<<<<<< HEAD
       fontWeight: 700,
+=======
+      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontWeight: "700",
+>>>>>>> miltestone-test
     },
   });
   const windowWidth = Dimensions.get("window").width;
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1,backgroundColor:'white' }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
@@ -178,12 +213,20 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
+<<<<<<< HEAD
+=======
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
+>>>>>>> miltestone-test
 
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !username && (
+<<<<<<< HEAD
               <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+=======
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+>>>>>>> miltestone-test
                 This field is required
               </Text>
             )}
@@ -205,12 +248,20 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
+<<<<<<< HEAD
 
+=======
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
+>>>>>>> miltestone-test
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !email && (
+<<<<<<< HEAD
               <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+=======
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+>>>>>>> miltestone-test
                 This field is required
               </Text>
             )}
@@ -233,10 +284,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: width >= 720 ? 70 : 40,
                 fontSize: width >= 720 ? 30 : 15,
+<<<<<<< HEAD
               }}
             />
             {showValidationErrors && !subject && (
               <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+=======
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
+              }}
+            />
+            {showValidationErrors && !subject && (
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+>>>>>>> miltestone-test
                 This field is required
               </Text>
             )}
@@ -264,10 +323,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: multilineHeight,
                 fontSize: width >= 720 ? 30 : 15,
+<<<<<<< HEAD
               }}
             />
             {showValidationErrors && !message && (
               <Text style={{ color: "red", fontSize: 10, marginLeft: 10 }}>
+=======
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
+              }}
+            />
+            {showValidationErrors && !message && (
+              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+>>>>>>> miltestone-test
                 This field is required
               </Text>
             )}

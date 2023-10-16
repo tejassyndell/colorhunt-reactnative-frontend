@@ -440,7 +440,11 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
+<<<<<<< HEAD
     marginBottom: width >= 720 ? 30 : 10,
+=======
+    marginBottom: width >= 720 ? 30 : 30,
+>>>>>>> miltestone-test
   },
   title: {
     fontSize: windowWidth * 0.05,
@@ -449,13 +453,17 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   input: {
+<<<<<<< HEAD
     height: width >= 720 ? 60 : 40,
+=======
+    height: width >= 720 ? 60 : 50,
+>>>>>>> miltestone-test
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
     paddingLeft: windowWidth * 0.02,
-    fontSize: windowWidth * 0.03,
+    fontSize: windowWidth * 0.04,
   },
   inputError: {
     borderColor: "red",
@@ -477,6 +485,10 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: "white",
     fontWeight: "bold",
+<<<<<<< HEAD
+=======
+    fontFamily: "Glory",
+>>>>>>> miltestone-test
     fontSize: windowWidth * 0.04,
   },
   closeButton: {

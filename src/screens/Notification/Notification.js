@@ -1,10 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { useLayoutEffect } from 'react';
+<<<<<<< HEAD
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView,Platform,Dimensions, } from 'react-native';
+=======
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Platform, Dimensions, } from 'react-native';
+>>>>>>> miltestone-test
 import React, { useEffect, useState, navigation } from 'react';
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow'
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getNotification } from '../../api/api';
 
 export default function Notification(props) {
   const { navigation } = props;
@@ -14,13 +19,18 @@ export default function Notification(props) {
   const [notificationData, setNotificationData] = useState(null);
   const { width, height } = Dimensions.get("window");
 
+<<<<<<< HEAD
   const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
+=======
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 86) : 120;
+>>>>>>> miltestone-test
 
   const data = [{}]
 
   useEffect(() => {
     //android working code
     // const getToken = async () => {
+<<<<<<< HEAD
   //     try {
   //       let data =await AsyncStorage.getItem('notificationstatus')  
   //       data = await JSON.parse(data)
@@ -38,11 +48,31 @@ export default function Notification(props) {
     getToken();
   }, []);
   
+=======
+    //     try {
+    //       let data =await AsyncStorage.getItem('notificationstatus')  
+    //       data = await JSON.parse(data)
+    //       if (data.status === true) {
+    //         setToken(data.token);
+    //         console.log(data.token,'token2');
+    //       } else {
+    //         console.log('Notification permission denied');
+    //       }
+    //     } catch (error) {
+    //       console.error('Error requesting permission:', error);
+    //     }
+    //   };
+
+    getToken();
+  }, []);
+
+>>>>>>> miltestone-test
 
   const getToken = async () => {
     try {
       // Get the stored data from AsyncStorage
       const storedData = await AsyncStorage.getItem('notificationstatus');
+<<<<<<< HEAD
       
       // Parse the stored data as JSON
       console.log(storedData,"{}{}{{{}{}{}{}{}{}{}");
@@ -50,6 +80,15 @@ export default function Notification(props) {
   
       console.log(data, 'token');
   
+=======
+
+      // Parse the stored data as JSON
+      console.log(storedData, "{}{}{{{}{}{}{}{}{}{}");
+      const data = JSON.parse(storedData);
+
+      console.log(data, 'token');
+
+>>>>>>> miltestone-test
       if (data !== null) {
         if (data.status === true) {
           // Assuming that setToken is a function for setting the token
@@ -87,13 +126,13 @@ export default function Notification(props) {
         }}>
           <Text style={{
             textAlign: "center",
-            fontSize: 25, fontWeight: 700, width: "100%"
+            fontSize: width >= 720 ? 35 : 25, fontWeight: "700", width: "100%"
           }}>Notification</Text>
         </View>
       ),
       headerStyle: {
         height: headerHeight // Increase the header height here
-    },
+      },
 
 
     });
@@ -101,17 +140,12 @@ export default function Notification(props) {
 
   const sendNotification = async () => {
     try {
-      await fetch('http://10.0.2.2:4000/getNotification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          registrationToken: token,
-          title: title,
-          body: bodydec,
-        }),
-      });
+      let data = {
+        registrationToken: token,
+        title: title,
+        body: bodydec,
+      }
+      await getNotification(data).then((res) => { console.log(res) })
       console.log('Notification sent successfully');
     } catch (error) {
       console.error('Error sending notification:', error);
@@ -119,17 +153,12 @@ export default function Notification(props) {
   };
   const sendAllNotification = async () => {
     try {
-      await fetch('http://10.0.2.2:4000/getNotification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          registrationToken: token,
-          title: title,
-          body: bodydec,
-        }),
-      });
+      let data = {
+        registrationToken: token,
+        title: title,
+        body: bodydec,
+      }
+      await getNotification(data).then((res) => { })
       console.log('Notification sent successfully');
     } catch (error) {
       console.error('Error sending notification:', error);

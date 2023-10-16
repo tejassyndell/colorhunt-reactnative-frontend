@@ -1,4 +1,26 @@
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, } from "react-native";
+import * as Font from "expo-font";
+
+
+const Categoriesstyle = () => {
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
+
 
 const styles = StyleSheet.create({
   categoriesItemContainer: {
@@ -29,6 +51,7 @@ const styles = StyleSheet.create({
   categoriesName: {
     flex: 1,
     fontSize: 20,
+    fontFamily: isFontLoaded ? 'Glory' : undefined,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#333333',
@@ -40,4 +63,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default styles;
+  return styles;
+};
+
+export default Categoriesstyle;

@@ -24,6 +24,11 @@ import { ActivityIndicator } from "react-native";
 import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+<<<<<<< HEAD
+=======
+import * as Font from "expo-font";
+
+>>>>>>> miltestone-test
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -40,9 +45,13 @@ export default function HomeScreen(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+<<<<<<< HEAD
   const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
   const [kids, setkidsdata] = useState([])
   const [showarticle, setshowarticle] = useState(false)
+=======
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+>>>>>>> miltestone-test
 
   // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
   const getpartyid = async () => {
@@ -50,6 +59,31 @@ export default function HomeScreen(props) {
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   }
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
+  const headerHeight =
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+  const [kids, setkidsdata] = useState([]);
+  const [showarticle, setshowarticle] = useState(false);
+
+  // const textStyles = width >= 720 ? styles.tabletText : styles.phoneText;
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData");
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  };
   useEffect(() => {
     // Set isLoading to true initially
     setIsLoading(true);
@@ -82,7 +116,7 @@ export default function HomeScreen(props) {
       }
     } catch (error) {
       console.error("Error while checking user data:", error);
-      return false; // Handle errors by returning false or appropriate error handling
+      return false;
     }
   };
 
@@ -112,7 +146,7 @@ export default function HomeScreen(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     console.log("............111", data);
@@ -149,7 +183,11 @@ export default function HomeScreen(props) {
     getWishlist();
   }, []);
 
+<<<<<<< HEAD
   const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+=======
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+>>>>>>> miltestone-test
 
   const getCategoriesname = async () => {
     try {
@@ -177,6 +215,14 @@ export default function HomeScreen(props) {
   const viewAllArticles = async () => {
     navigation.navigate("AllArticle");
 
+<<<<<<< HEAD
+=======
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
+  const viewAllArticles = async () => {
+    navigation.navigate("AllArticle");
+
+>>>>>>> miltestone-test
 
     try {
       const serializedCategories = JSON.stringify(selectedCategories);
@@ -213,14 +259,12 @@ export default function HomeScreen(props) {
               style={{
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
-                // resizeMode: "contain",
                 borderRadius: 5,
               }}
             ></Image>
           </TouchableOpacity>
         </View>
       ),
-      headerTitle: () => <View />,
       headerRight: () => (
         <View
           style={{
@@ -240,7 +284,6 @@ export default function HomeScreen(props) {
           >
             <Image
               style={{
-                // resizeMode: "contain",
                 width: width >= 720 ? 50 : 35,
                 height: width >= 720 ? 50 : 35,
                 resizeMode: "contain",
@@ -261,6 +304,7 @@ export default function HomeScreen(props) {
   const handlePress = (item) => {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
+<<<<<<< HEAD
   
   const filterData = () => {
     console.log(searchText,selectedCategories,selectedPriceRange,"in filter ")
@@ -270,6 +314,16 @@ export default function HomeScreen(props) {
       selectedPriceRange.length === 0
     ) {
       setshowarticle(false)
+=======
+  const filterData = () => {
+    console.log(searchText, selectedCategories, selectedPriceRange, "filters in home ")
+    if (
+      searchText === "" &&
+      selectedCategories.length === 0 &&
+      selectedPriceRange.length === 0
+    ) {
+      setshowarticle(false);
+>>>>>>> miltestone-test
     } else {
       setshowarticle(true);
       const filtered = nameDatas.filter(
@@ -304,7 +358,11 @@ export default function HomeScreen(props) {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
     setSearchText("");
+<<<<<<< HEAD
     filterData()
+=======
+    filterData();
+>>>>>>> miltestone-test
   };
 
   useEffect(() => {
@@ -371,7 +429,8 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
-                  fontWeight: 700,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontWeight: "700",
                   paddingLeft: 8,
                 }}
               >
@@ -392,7 +451,7 @@ export default function HomeScreen(props) {
               <TouchableOpacity
                 style={{ width: "10%", alignItems: "flex-end" }}
                 onPress={() => {
-                  isLoggedIn ? openFilter() : openCreateAccountModal();
+                  openFilter();
                 }}
               >
                 <Image
@@ -414,8 +473,9 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   start: 10,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   fontSize: width >= 720 ? 25 : 18,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
                 }}
               >
                 Men's
@@ -426,10 +486,11 @@ export default function HomeScreen(props) {
                   color: "#666666",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
-                  fontWeight: 600,
+                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontWeight: "600",
                 }}
                 onPress={() => {
-                  isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                  viewAllArticles()
                 }}
               >
                 View All
@@ -449,6 +510,7 @@ export default function HomeScreen(props) {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
+<<<<<<< HEAD
               >{console.log(setshowarticle, "setshwo")}
                 {showarticle ? (finalData.length > 0 ?
                   finalData.map((item, index) => (
@@ -481,6 +543,29 @@ export default function HomeScreen(props) {
                             shadowColor: "rgba(0, 0, 0, 0.5)",
                             shadowOpacity: 0.9,
                             shadowRadius: 3,
+=======
+              >
+                {console.log(setshowarticle, "setshwo")}
+                {showarticle ? (
+                  finalData.length > 0 ? (
+                    finalData.map((item, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => {
+                          navigation.navigate("DetailsOfArticals", {
+                            id: item.Id,
+                          });
+                        }}
+                      >
+                        <View
+                          key={index}
+                          style={{
+                            alignItems: "center",
+                            width: width >= 720 ? 300 : 155,
+                            height: width >= 720 ? 280 : 280,
+                            marginLeft: width >= 720 ? 15 : 10,
+                            marginRight: width >= 720 ? 15 : 5,
+>>>>>>> miltestone-test
                             borderRadius: 10,
                             elevation: 4,
                             shadowOffset: {
@@ -489,6 +574,7 @@ export default function HomeScreen(props) {
                             },
                           }}
                         >
+<<<<<<< HEAD
                           <View id={item.id} style={styles.producticones}>
                             {selectedprd.some((i) => i.Id === item.Id) ? (
                               <TouchableOpacity
@@ -505,6 +591,56 @@ export default function HomeScreen(props) {
                                   ]}
                                 />
                               </TouchableOpacity>
+=======
+                          <View
+                            style={{
+                              width: width >= 720 ? 300 : 155,
+                              height: width >= 720 ? 280 : 190,
+                              borderRadius: 12,
+                              backgroundColor: "#FFF",
+                              shadowColor: "#000",
+                              shadowOpacity: 0.1,
+                              shadowRadius: 1,
+                              elevation: 5,
+                            }}
+                          >
+                            <View id={item.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    rmvProductWishlist(item);
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart"
+                                    style={[styles.icon]}
+                                  />
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? addArticleWishlist(item)
+                                      : openCreateAccountModal();
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart-o"
+                                    style={[styles.disabledIcon]}
+                                  />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            {item.Photos ? (
+                              <Image
+                                source={{ uri: baseImageUrl + item.Photos }}
+                                style={{
+                                  width: "100%",
+                                  height: width >= 720 ? 280 : 190,
+                                  borderRadius: 10,
+                                }}
+                              />
+>>>>>>> miltestone-test
                             ) : (
                               <TouchableOpacity
                                 onPress={() => {
@@ -512,6 +648,7 @@ export default function HomeScreen(props) {
                                     ? addArticleWishlist(item)
                                     : openCreateAccountModal();
                                 }}
+<<<<<<< HEAD
                               >
                                 <FontAwesome
                                   name="heart-o"
@@ -563,10 +700,37 @@ export default function HomeScreen(props) {
                   <View
                     style={
                       {
+=======
+                              />
+                            )}
+                          </View>
+
+                          <Text
+                            style={{
+                              fontWeight: "bold",
+                              marginTop: 10,
+                              fontSize: width >= 720 ? 20 : 16,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            }}
+                          >
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text style={{fontSize: width >= 720 ? 16 : 14}}>{convertToTitleCase(item.Category)}</Text>
+                          <Text style={{ fontWeight: "bold",fontSize: width >= 720 ? 20 : 16 }}>
+                            {"₹" + item.ArticleRate + ".00"}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    ))
+                  ) : (
+                    <View
+                      style={{
+>>>>>>> miltestone-test
                         width: "100%",
                         height: "80%",
                         justifyContent: "center",
                         textAlign: "center",
+<<<<<<< HEAD
                       }
 
                     }
@@ -654,6 +818,93 @@ export default function HomeScreen(props) {
                 ))
                 )}
 
+=======
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: width >= 720 ? 25 : 17,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          textAlign: "center",
+                          color: "#808080",
+                        }}
+                      >
+                        No Mens Article Found
+                      </Text>
+                    </View>
+                  )
+                ) : (
+                  nameData.map((item, index) => (
+                    <View
+                      key={item.id}
+                      style={{
+                        alignItems: "center",
+                        height: "auto",
+                        width: width >= 720 ? 300 : 165,
+                        marginLeft: width >= 720 ? 15 : 5,
+                        marginRight: width >= 720 ? 15 : 5,
+                        marginTop: 10,
+                        marginBottom: 10,
+                        borderRadius: 10,
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => {
+                          handlePress(item);
+                        }}
+                      >
+                        <View
+                          style={{
+                            width: width >= 720 ? 300 : 155, // Adjust the width for tablets
+                            height: width >= 720 ? 280 : 190,
+                            borderColor: "gray",
+                            shadowColor: "gray",
+                            shadowOpacity: 0.9,
+                            shadowRadius: 10,
+                            elevation: 10,
+                            shadowOffset: {
+                              width: 0,
+                              height: 0,
+                            },
+                          }}
+                        >
+                          {item.Photos ? (
+                            <Image
+                              source={{ uri: baseImageUrl + item.Photos }}
+                              style={{
+                                width: "100%",
+                                height: width >= 720 ? 280 : 190,
+                                borderRadius: 10,
+                              }}
+                            />
+                          ) : (
+                            <Image
+                              source={require("../../../assets/demo.png")}
+                              style={{
+                                width: "100%",
+                                height: width >= 720 ? 280 : 190,
+                                borderRadius: 10,
+                              }}
+                            />
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          marginTop: 10,
+                          fontWeight: "bold",
+                          fontSize: width >= 720 ? 30 : 14,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          marginBottom: 10,
+                          textAlign: "center",
+                        }}
+                      >
+                        {convertToTitleCase(item.Category)}
+                      </Text>
+                    </View>
+                  ))
+                )}
+>>>>>>> miltestone-test
               </ScrollView>
             </View>
             <View></View>
@@ -669,8 +920,9 @@ export default function HomeScreen(props) {
                 <Text
                   style={{
                     start: 10,
-                    fontWeight: 700,
+                    fontWeight: "700",
                     fontSize: width >= 720 ? 25 : 18,
+                    fontFamily: isFontLoaded ? 'Glory' : undefined,
                   }}
                 >
                   Kid’s
@@ -681,10 +933,11 @@ export default function HomeScreen(props) {
                     end: 10,
                     color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
-                    fontWeight: 600,
+                    fontFamily: isFontLoaded ? 'Glory' : undefined,
+                    fontWeight: "600",
                   }}
                   onPress={() => {
-                    isLoggedIn ? viewAllArticles() : openCreateAccountModal();
+                    viewAllArticles();
                   }}
                 >
                   View All
@@ -707,6 +960,7 @@ export default function HomeScreen(props) {
                 >
                   {kids.length === 0 ? (
                     <View
+<<<<<<< HEAD
                       style={
                         {
                           width: "100%",
@@ -716,15 +970,31 @@ export default function HomeScreen(props) {
                         }
 
                       }
+=======
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        justifyContent: "center",
+                        textAlign: "center",
+                      }}
+>>>>>>> miltestone-test
                     >
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
+<<<<<<< HEAD
+=======
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+>>>>>>> miltestone-test
                           textAlign: "center",
                           color: "#808080",
                         }}
                       >
+<<<<<<< HEAD
                         No Kids Article Found
+=======
+                        No Article Found
+>>>>>>> miltestone-test
                       </Text>
                     </View>
                   ) : (
@@ -761,16 +1031,18 @@ export default function HomeScreen(props) {
                             {selectedprd.some((i) => i.Id === item.Id) ? (
                               <TouchableOpacity
                                 onPress={() => {
-                                  isLoggedIn
-                                    ? rmvProductWishlist(item)
-                                    : openCreateAccountModal();
+                                  rmvProductWishlist(item);
                                 }}
                               >
                                 <FontAwesome
                                   name="heart"
+<<<<<<< HEAD
                                   style={[
                                     styles.icon,
                                   ]}
+=======
+                                  style={[styles.icon]}
+>>>>>>> miltestone-test
                                 />
                               </TouchableOpacity>
                             ) : (
@@ -783,9 +1055,13 @@ export default function HomeScreen(props) {
                               >
                                 <FontAwesome
                                   name="heart-o"
+<<<<<<< HEAD
                                   style={[
                                     styles.disabledIcon,
                                   ]}
+=======
+                                  style={[styles.disabledIcon]}
+>>>>>>> miltestone-test
                                 />
                               </TouchableOpacity>
                             )}
@@ -794,7 +1070,10 @@ export default function HomeScreen(props) {
                             source={{ uri: baseImageUrl + item.Photos }}
                             style={{
                               flex: 1,
+<<<<<<< HEAD
                               // resizeMode: "contain",
+=======
+>>>>>>> miltestone-test
                               borderRadius: 10,
                             }}
                           />
@@ -805,17 +1084,19 @@ export default function HomeScreen(props) {
                             fontWeight: "bold",
                             marginTop: 10,
                             fontSize: width >= 720 ? 18 : 12,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
                           }}
                         >
                           {item.ArticleNumber}
                         </Text>
-                        <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+                        <Text style={{ fontSize: width >= 720 ? 15 : 10, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
                           {convertToTitleCase(item.Category)}
                         </Text>
                         <Text
                           style={{
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 12,
+                            fontFamily: isFontLoaded ? 'Glory' : undefined,
                           }}
                         >
                           {"₹" + item.ArticleRate + ".00"}
@@ -887,7 +1168,11 @@ export default function HomeScreen(props) {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+<<<<<<< HEAD
             backgroundColor: "#000000",
+=======
+            backgroundColor: "rgba(0,0,0,0.5)",
+>>>>>>> miltestone-test
           }}
         >
           <View

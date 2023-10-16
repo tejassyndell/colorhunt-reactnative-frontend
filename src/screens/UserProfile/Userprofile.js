@@ -20,7 +20,7 @@ export default function Userprofile(props) {
   const { width, height } = Dimensions.get("window");
   // const fontSize = width > 400 ? 18 : 16; // Adjust the font size based on screen width
   const marginTop = height > 800 ? 30 : 20; // Adjust the margin top based on screen height
-  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 100) : 120;
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 86) : 120;
   useEffect(() => {
     fetchprofiledata();
   }, []);
@@ -38,9 +38,6 @@ export default function Userprofile(props) {
   };
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerStyle: {
-        backgroundColor: "black", // Change the background color to black
-      },
       headerLeft: () => (
         // <MenuBackArrow
         //   onPress={() => {

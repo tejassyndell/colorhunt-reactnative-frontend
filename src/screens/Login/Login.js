@@ -4,10 +4,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   Image,
   Dimensions,
   ImageBackground,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -16,12 +16,17 @@ import { PixelRatio } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
+<<<<<<< HEAD
 const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.4;
+=======
+import LoginStyles from "./styles.js";
+const { width, height } = Dimensions.get("window");
+const logoSize = Math.min(width, height) * 0.6;
+>>>>>>> miltestone-test
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+// import messaging from '@react-native-firebase/messaging';
 
 const Login = (props) => {
   const { navigation } = props;
@@ -32,13 +37,23 @@ const Login = (props) => {
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
+<<<<<<< HEAD
+=======
+  const styles = LoginStyles();
+>>>>>>> miltestone-test
 
   const getNotificationPermission = async () => {
     try {
       const { status } = await Notifications.requestPermissionsAsync();
       console.log(status, "statuss"); // Move this line here
       if (status === "granted") {
+<<<<<<< HEAD
         const pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+=======
+        const pushToken = (await Notifications.getExpoPushTokenAsync({
+          projectId: 'b0d5d035-7a66-4a0f-b5ec-33b84d030443',
+        })).data;
+>>>>>>> miltestone-test
         console.log("Expo Push Token:", pushToken);
         setToken(pushToken);
         AsyncStorage.setItem(
@@ -59,8 +74,54 @@ const Login = (props) => {
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     getNotificationPermission();
   }, []);
+=======
+    
+    getNotificationPermission();
+  }, []);
+
+
+  // const getFCMToken = async () => {
+  //   try {
+  //     const token = await messaging().getToken();
+  //     return token;
+  //   } catch (error) {
+  //     console.error('Error getting FCM token:', error);
+  //     return null;
+  //   }
+  // }
+  
+  // const getNotificationPermission = async () => {
+  //   try {
+  //     const { status } = await Notifications.requestPermissionsAsync();
+  //     console.log(status, "statuss"); // Move this line here
+  //     if (status === "granted") {
+  //       const pushToken = await getFCMToken();
+  //       console.log("FCM Token:", pushToken);
+  //       setToken(pushToken);
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: true, token: pushToken })
+  //       );
+  //       console.log({ status: true, token: pushToken });
+  //     } else {
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: false, token: "" })
+  //       );
+  //       console.log("Notification permission denied");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error getting notification permission:", error);
+  //   }
+  // };
+  
+  // useEffect(() => {
+  //   getNotificationPermission();
+  // }, []);
+>>>>>>> miltestone-test
 
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
@@ -148,6 +209,7 @@ const Login = (props) => {
       // Implement OTP verification logic here.
       // For simplicity, we'll just check if the OTP is "1234".
       const enteredOTP = otp.join(""); // Concatenate OTP digits
+<<<<<<< HEAD
       // if (enteredOTP === "1234") {
         // Navigate to the Home screen or your desired destination.
         navigation.navigate("Slider");
@@ -155,6 +217,13 @@ const Login = (props) => {
         // Handle invalid OTP (display an error message, etc.).
         // alert("Invalid OTP. Please try again.");
       // }
+=======
+      if (enteredOTP === "1234") {
+        navigation.navigate("Slider");
+      } else {
+        alert("Invalid OTP. Please try again.");
+      }
+>>>>>>> miltestone-test
     }
   };
   const otpInput = [useRef(), useRef(), useRef(), useRef()];
@@ -174,48 +243,27 @@ const Login = (props) => {
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
   return (
-    <View style={styles.container1}>
-      <View style={styles.imagebox}>
-        <ImageBackground
-          source={require("../../../assets/Login/LoginBackground.png")}
-          style={styles.backgroundImage1}
-          resizeMode="stretch"
-        >
-          <View style={styles.loginLogoContainer}>
-            <Image
-              source={imageSource}
-              style={[styles.loginLogo, { height: logoSize, width: logoSize }]}
-            />
-          </View>
-        </ImageBackground>
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>Welcome!</Text>
-          <Text style={styles.subtitle}>
-            {showLogin
-              ? "Please Login To Continue"
-              : "Please Login To Continue"}
-          </Text>
-          {showLogin ? (
-            <View style={styles.inputContainer}>
-              <View style={styles.phoneIconContainer}>
-                <Image
-                  source={require("../../../assets/Login/phone.png")}
-                  style={styles.phoneIcon}
-                />
-              </View>
-              <TextInput
-                style={[styles.input, { color: "black" }]}
-                placeholder="Phone Number"
-                placeholderTextColor="#0000004D"
-                keyboardType="numeric"
-                maxLength={10}
-                value={phoneNumber}
-                onChangeText={(text) => {
-                  const numericText = text.replace(/[^0-9]/g, "");
-                  setPhoneNumber(numericText);
-                }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }} // You might need to adjust the style as per your layout
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={styles.container1}>
+        <View style={styles.imagebox}>
+          <ImageBackground
+            source={require("../../../assets/Login/LoginBackground.png")}
+            style={styles.backgroundImage1}
+            resizeMode="stretch"
+          >
+            <View style={styles.loginLogoContainer}>
+              <Image
+                source={imageSource}
+                style={[
+                  styles.loginLogo,
+                  { height: logoSize, width: logoSize },
+                ]}
               />
             </View>
+<<<<<<< HEAD
           ) : (
             <View style={{ width: "100%", alignItems: "center" }}>
               <View style={styles.otpContainer}>
@@ -232,22 +280,71 @@ const Login = (props) => {
                   />
                 ))}
               </View>
+=======
+          </ImageBackground>
+          <View style={styles.contentContainer}>
+            <Text style={styles.title}>Welcome!</Text>
+            <Text style={styles.subtitle}>
+              {showLogin
+                ? "Please Login To Continue"
+                : "Please Login To Continue"}
+            </Text>
+            {showLogin ? (
+              <View style={styles.inputContainer}>
+                <View style={styles.phoneIconContainer}>
+                  <Image
+                    source={require("../../../assets/Login/phone.png")}
+                    style={styles.phoneIcon}
+                  />
+                </View>
+                <TextInput
+                  style={[styles.input, { color: "black" }]}
+                  placeholder="Phone Number"
+                  placeholderTextColor="#0000004D"
+                  keyboardType="numeric"
+                  maxLength={10}
+                  value={phoneNumber}
+                  onChangeText={(text) => {
+                    const numericText = text.replace(/[^0-9]/g, "");
+                    setPhoneNumber(numericText);
+                  }}
+                />
+              </View>
+            ) : (
+              <View style={{ width: "100%", alignItems: "center" }}>
+                <View style={styles.otpContainer}>
+                  {otp.map((digit, index) => (
+                    <TextInput
+                      key={index}
+                      style={styles.otpInput}
+                      placeholder=""
+                      keyboardType="numeric"
+                      maxLength={1}
+                      value={digit}
+                      onChangeText={(text) => handleOTPDigitChange(index, text)}
+                      ref={otpInput[index]}
+                    />
+                  ))}
+                </View>
+              </View>
+            )}
+            <View style={{ width: "100%", height: 100 }}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleNextOrVerify}
+              >
+                <Text style={styles.buttonText}>{buttonLabel}</Text>
+              </TouchableOpacity>
+>>>>>>> miltestone-test
             </View>
-          )}
-          <View style={{ width: "100%", height: 100 }}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleNextOrVerify}
-            >
-              <Text style={styles.buttonText}>{buttonLabel}</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   contentContainer: {
     width: "100%",
@@ -368,4 +465,6 @@ const styles = StyleSheet.create({
   },
 });
 
+=======
+>>>>>>> miltestone-test
 export default Login;
