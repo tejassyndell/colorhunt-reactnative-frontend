@@ -27,15 +27,15 @@ export default function Contact(props) {
   const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
+  const { width, height } = Dimensions.get("window");
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
         ? 120
         : 100
-      : width >= 420
-      ? 120
-      : 120;
-  const { width, height } = Dimensions.get("window");
+      : height >= 720
+      ? 110
+      : 70;
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
   const multilineHeight = numberOfLines * lineHeight;
@@ -46,7 +46,7 @@ export default function Contact(props) {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -116,7 +116,7 @@ export default function Contact(props) {
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
               fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: 700,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -143,14 +143,14 @@ export default function Contact(props) {
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
       fontFamily: isFontLoaded ? "Glory" : undefined,
-      fontWeight: 700,
+      fontWeight: "700",
     },
   });
   const windowWidth = Dimensions.get("window").width;
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: "white" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
@@ -206,7 +206,7 @@ export default function Contact(props) {
                 fontSize: width >= 720 ? 30 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
 
-                height: width >= 720 ? 70 : 45,
+                height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !username && (
@@ -240,7 +240,7 @@ export default function Contact(props) {
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
-                height: width >= 720 ? 70 : 45,
+                height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !email && (
@@ -272,7 +272,7 @@ export default function Contact(props) {
                 borderRadius: 5,
                 padding: 10,
                 margin: 5,
-                height: width >= 720 ? 70 : 45,
+                height: width >= 720 ? 70 : 40,
                 fontSize: width >= 720 ? 30 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
@@ -333,8 +333,7 @@ export default function Contact(props) {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginTop: width >= 720 ? 80 : 60,
-              paddingBottom: 300,
+              marginTop: height >= 720 ? 90 : 45,
             }}
           >
             <TouchableOpacity

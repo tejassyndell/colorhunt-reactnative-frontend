@@ -79,7 +79,7 @@ export default function Filter({
     const resetFilters = () => {
         setSelectedCategories([]);
         setSelectedPriceRange(defaultPriceRange);
-        onFilterChange([], [minArticleRate, maxArticleRate]);
+        // onFilterChange([], [minArticleRate, maxArticleRate]);
         setLeftValue(minArticleRate);
         setRightValue(maxArticleRate);
     };
@@ -376,7 +376,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginVertical: 5,
         width: "48%",
-        height: width >= 720 ?200:150,
         borderWidth: 1,
         borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: 8,
@@ -415,7 +414,7 @@ const styles = StyleSheet.create({
         paddingVertical:5,
         wordWrap: 'break-word',
         justifyContent:'center',
-        fontWeight: 500,
+        fontWeight: "500",
     },
     buttonsContainer: {
         flexDirection: "row",
@@ -437,7 +436,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: width >= 720 ?30: 22,
         marginBottom: 10,
-        fontWeight: 700,
+        fontWeight: "700",
         height:50,
         paddingTop:10,
         justifyContent:'center'
@@ -456,7 +455,7 @@ const styles = StyleSheet.create({
         height: width >= 720 ?42:38,
         width: width >= 720 ?120:76,
         fontSize: width >= 720 ?42:24,
-        fontWeight: 700,
+        fontWeight: "700",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -471,7 +470,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "white",
         fontSize: width >= 720 ?20:18,
-        fontWeight: 600,
+        fontWeight: "600",
     },
     tooltipContainer: {
         backgroundColor: "black",
@@ -531,6 +530,6 @@ const styleslider = StyleSheet.create({
         top: 15,
         color: "black",
         fontSize: width >= 720 ?22:15,
-        fontWeight: 500,
+        fontWeight: "500",
     },
 });

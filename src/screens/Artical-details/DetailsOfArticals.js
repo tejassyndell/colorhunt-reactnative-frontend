@@ -28,6 +28,7 @@ import { ActivityIndicator } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
@@ -70,7 +71,7 @@ const DetailsOfArticals = (props) => {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -80,6 +81,11 @@ const DetailsOfArticals = (props) => {
 
     loadCustomFont();
   }, []);
+  const getpartyid = async () => {
+    let partydata = await AsyncStorage.getItem("UserData");
+    partydata = await JSON.parse(partydata);
+    return partydata[0].Id;
+  };
 
   const headerHeight =
     Platform.OS === "android"
@@ -87,17 +93,16 @@ const DetailsOfArticals = (props) => {
         ? 120
         : 100
       : height >= 844
-      ? 100
+      ? 110
       : 65;
-
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
-      PartyId: 197,
+      PartyId: await getpartyid(),
     };
     try {
       const res = await ArticleDetails(data);
-      console.log(res.data, "_+_+_+_+_+_+_+");
+      console.log(res.data);
       console.log("dd", res.data.photos);
       setArticlePhotos(res.data.photos);
       setArticleCategory(res.data.calculatedData[0].Category);
@@ -166,7 +171,7 @@ const DetailsOfArticals = (props) => {
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
-  const addtocart = async (PartyId, ArticleId) => {
+  const addtocart = async (ArticleId) => {
     if (!combinedArray) {
       console.log("undefined");
       return;
@@ -179,7 +184,7 @@ const DetailsOfArticals = (props) => {
     console.log("cqty to string ", colorwiseQuantitiesTOstring);
     console.log(totalPrice);
     const data = {
-      party_id: PartyId,
+      party_id: await getpartyid(),
       article_id: ArticleId,
       Quantity: colorwiseQuantitiesTOstring,
       rate: totalPrice,
@@ -211,7 +216,8 @@ const DetailsOfArticals = (props) => {
     return `₹${value.toFixed(2)}`;
   };
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const imageElements = articlePhotos.map((fileName, index) => (
     <Image
       source={{ uri: baseImageUrl + fileName }}
@@ -259,7 +265,11 @@ const DetailsOfArticals = (props) => {
     <TouchableOpacity onPress={() => openImageZoom(item)}>
       <View style={{ width: "100%", height: "100%" }}>
         <Image
-          style={{ width: "100%", height: width >= 720 ? 500 : 550 }}
+          style={{
+            width: "100%",
+            height: width >= 720 ? "100%" : "100%",
+            resizeMode: "contain",
+          }}
           source={{ uri: baseImageUrl + item }}
         />
       </View>
@@ -390,7 +400,6 @@ const DetailsOfArticals = (props) => {
                 style={{
                   backgroundColor: "#FFF",
                   elevation: 12,
-                  shadowColor: "black",
                   borderColor: "#b3a8a8",
                   width: "100%",
                   height: "100%",
@@ -398,7 +407,7 @@ const DetailsOfArticals = (props) => {
                   borderTopRightRadius: 30,
                   padding: 12,
                   shadowColor: "#000000",
-                  shadowOpacity: 1,
+                  shadowOpacity: 0.5,
                 }}
               >
                 <View>
@@ -515,7 +524,6 @@ const DetailsOfArticals = (props) => {
                         <View
                           style={{
                             width: "100%",
-                            height: "100%",
                             height: width >= 720 ? 100 : 60,
                             flexDirection: "row",
                             borderWidth: 1,
@@ -550,7 +558,7 @@ const DetailsOfArticals = (props) => {
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               paddingHorizontal:
                                 articleSizeData.length > 3 ? "10%" : 0,
-                              fontWeight: 400,
+                              fontWeight: "400",
                               textAlign: "center",
                               color: "#000000",
                             }}
@@ -632,7 +640,7 @@ const DetailsOfArticals = (props) => {
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: 500,
+                              fontWeight: "500",
                               color: "#626262",
                             }}
                           >
@@ -663,7 +671,7 @@ const DetailsOfArticals = (props) => {
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: 500,
+                              fontWeight: "500",
                               color: "#626262",
                             }}
                           >
@@ -710,7 +718,7 @@ const DetailsOfArticals = (props) => {
                               style={{
                                 fontSize: width >= 720 ? 45 : 24,
                                 fontFamily: isFontLoaded ? "Glory" : undefined,
-                                fontWeight: 800,
+                                fontWeight: "800",
                               }}
                             >
                               -
@@ -824,7 +832,7 @@ const DetailsOfArticals = (props) => {
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         textAlign: "center",
                         marginBottom: 10,
-                        fontWeight: 500,
+                        fontWeight: "500",
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
@@ -857,7 +865,7 @@ const DetailsOfArticals = (props) => {
                           style={{
                             fontSize: 18,
                             fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: 700,
+                            fontWeight: "700",
                             color: "grey",
                             paddingHorizontal: 15,
                           }}
@@ -886,7 +894,7 @@ const DetailsOfArticals = (props) => {
                           style={{
                             fontSize: 18,
                             fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: 700,
+                            fontWeight: "700",
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -936,9 +944,9 @@ const DetailsOfArticals = (props) => {
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 15 : 10,
+                fontSize: width >= 720 ? 15 : 11,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: 400,
+                fontWeight: "400",
               }}
             >
               Total Price
@@ -947,9 +955,9 @@ const DetailsOfArticals = (props) => {
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 27 : 16,
+                fontSize: width >= 720 ? 27 : 18,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: "bold",
+                fontWeight: "700",
                 color: "black",
               }}
             >
@@ -967,7 +975,7 @@ const DetailsOfArticals = (props) => {
                   opacity: totalQuantity === 0 ? 0.5 : 1,
                 },
               ]}
-              onPress={() => addtocart(197, id)}
+              onPress={() => addtocart(id)}
               disabled={totalQuantity === 0}
             >
               <View

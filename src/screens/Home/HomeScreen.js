@@ -48,7 +48,7 @@ export default function HomeScreen(props) {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -64,7 +64,7 @@ export default function HomeScreen(props) {
         ? 120
         : 100
       : height >= 844
-      ? 100
+      ? 110
       : 65;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
@@ -126,13 +126,13 @@ export default function HomeScreen(props) {
   function convertToTitleCase(str) {
     return str
       .toLowerCase()
-      .split("-")
+      .split("-") // Split the string at hyphens or spaces
       .map((word, index) => (
         <Text key={index}>
           {word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()}
         </Text>
       ))
-      .reduce((prev, curr) => [prev, "-", curr]);
+      .reduce((prev, curr) => [prev, "-", curr]); // Join the words with hyphens and wrap them in a span element
   }
 
   const addArticleWishlist = async (i) => {
@@ -174,7 +174,8 @@ export default function HomeScreen(props) {
     getWishlist();
   }, []);
 
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const getCategoriesname = async () => {
     try {
@@ -198,8 +199,20 @@ export default function HomeScreen(props) {
     getCategoriesname();
   }, []);
 
-  const viewAllArticles = () => {
-    navigation.navigate("AllArticle", { finalData });
+  const key = "your_storage_key";
+  const key2 = "your_storage_key";
+  const viewAllArticles = async () => {
+    navigation.navigate("AllArticle");
+
+    try {
+      const serializedCategories = JSON.stringify(selectedCategories);
+      const serrializedPriceRange = JSON.stringify(selectedPriceRange);
+      await AsyncStorage.setItem(key, serializedCategories);
+      await AsyncStorage.setItem(key2, serrializedPriceRange);
+      console.log("Data stored successfully.");
+    } catch (error) {
+      console.error("Error storing data:", error);
+    }
   };
 
   useLayoutEffect(() => {
@@ -231,7 +244,6 @@ export default function HomeScreen(props) {
           </TouchableOpacity>
         </View>
       ),
-      headerTitle: () => <View />,
       headerRight: () => (
         <View
           style={{
@@ -271,6 +283,12 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = () => {
+    console.log(
+      searchText,
+      selectedCategories,
+      selectedPriceRange,
+      "filters in home "
+    );
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
@@ -378,7 +396,7 @@ export default function HomeScreen(props) {
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   paddingLeft: 8,
                 }}
               >
@@ -421,7 +439,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   start: 10,
-                  fontWeight: 700,
+                  fontWeight: "700",
                   fontSize: width >= 720 ? 25 : 18,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                 }}
@@ -435,7 +453,7 @@ export default function HomeScreen(props) {
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
-                  fontWeight: 600,
+                  fontWeight: "600",
                 }}
                 onPress={() => {
                   viewAllArticles();
@@ -486,16 +504,12 @@ export default function HomeScreen(props) {
                             style={{
                               width: width >= 720 ? 300 : 155,
                               height: width >= 720 ? 280 : 190,
-                              borderColor: "gray",
-                              shadowColor: "rgba(0, 0, 0, 0.5)",
-                              shadowOpacity: 0.9,
-                              shadowRadius: 3,
-                              borderRadius: 10,
-                              elevation: 4,
-                              shadowOffset: {
-                                width: 0,
-                                height: 0,
-                              },
+                              borderRadius: 12,
+                              backgroundColor: "#FFF",
+                              shadowColor: "#000",
+                              shadowOpacity: 0.1,
+                              shadowRadius: 1,
+                              elevation: 5,
                             }}
                           >
                             <View id={item.id} style={styles.producticones}>
@@ -550,14 +564,21 @@ export default function HomeScreen(props) {
                             style={{
                               fontWeight: "bold",
                               marginTop: 10,
-                              fontSize: width >= 720 ? 20 : 15,
+                              fontSize: width >= 720 ? 20 : 16,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                             }}
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold" }}>
+                          <Text style={{ fontSize: width >= 720 ? 16 : 14 }}>
+                            {convertToTitleCase(item.Category)}
+                          </Text>
+                          <Text
+                            style={{
+                              fontWeight: "bold",
+                              fontSize: width >= 720 ? 20 : 16,
+                            }}
+                          >
                             {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
@@ -670,7 +691,7 @@ export default function HomeScreen(props) {
                 <Text
                   style={{
                     start: 10,
-                    fontWeight: 700,
+                    fontWeight: "700",
                     fontSize: width >= 720 ? 25 : 18,
                     fontFamily: isFontLoaded ? "Glory" : undefined,
                   }}
@@ -684,7 +705,7 @@ export default function HomeScreen(props) {
                     color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
                     fontFamily: isFontLoaded ? "Glory" : undefined,
-                    fontWeight: 600,
+                    fontWeight: "600",
                   }}
                   onPress={() => {
                     viewAllArticles();
@@ -717,7 +738,6 @@ export default function HomeScreen(props) {
                         fontSize: width >= 720 ? 25 : 17,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         textAlign: "center",
-
                         color: "#808080",
                       }}
                     >
@@ -729,6 +749,7 @@ export default function HomeScreen(props) {
                     <ScrollView
                       horizontal={true}
                       showsHorizontalScrollIndicator={false}
+                      style={{ overflow: "hidden" }}
                     >
                       <View
                         key={index}

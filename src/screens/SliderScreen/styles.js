@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import * as Font from "expo-font";
 
-const SliderStyles = () => {
+const LoginStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -33,8 +33,7 @@ const SliderStyles = () => {
       flex: 1,
       width: width >= 720 ? "100%" : "100%",
       height: width >= 720 ? "100%" : "100%",
-
-      zIndex: 999,
+      // padding: width >= 720 ? "100%" : "100%",
       resizeMode: "cover",
     },
     paginationContainer: {
@@ -53,6 +52,7 @@ const SliderStyles = () => {
       borderColor: "black",
       borderWidth: 1,
     },
+
     activePaginationDot: {
       backgroundColor: "black",
       borderColor: "black",
@@ -100,7 +100,7 @@ const SliderStyles = () => {
     },
     contain4: {
       position: "absolute",
-      top: "40%",
+      top: "45%",
       right: "30%",
       width: "100%",
       height: "100%",
@@ -125,4 +125,4 @@ const SliderStyles = () => {
   return styles;
 };
 
-export default SliderStyles;
+export default LoginStyles;

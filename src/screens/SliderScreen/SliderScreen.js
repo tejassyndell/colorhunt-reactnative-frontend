@@ -177,16 +177,6 @@ const SliderScreen = (props) => {
           </View>
         </ImageBackground>
       </Swiper>
-      {/* <View
-        style={{
-          width: "100%",
-          backgroundColor: "white",
-          position: "absolute",
-          height: 20,
-          bottom: 15,
-          zIndex: 1,
-        }}
-      ></View> */}
     </View>
   );
 };

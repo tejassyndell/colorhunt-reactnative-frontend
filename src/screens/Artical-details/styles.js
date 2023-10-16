@@ -13,7 +13,7 @@ const detailsOfArtStyles = () => {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -130,10 +130,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 7,
   },
-  color_div: {
-    width: "31%",
-    textAlign: "left",
-  },
 
   product_detail: {
     // display: "flex",
@@ -164,7 +160,7 @@ const styles = StyleSheet.create({
     borderColor: "#b3a8a8",
     borderRadius: 100,
     color: "#000000",
-    fontWeight: 400,
+    fontWeight: "400",
     marginLeft: 8,
     padding: width >= 720 ? 9 : 6,
   },
@@ -206,35 +202,7 @@ const styles = StyleSheet.create({
     fontFamily: isFontLoaded ? 'Glory' : undefined,
     color: "#000000",
     textAlign: "center",
-    fontWeight: 500,
-  },
-  product_detail_sec3: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    width: "100%",
-  },
-  container_grid: {
-    width: "100%",
-  },
-  head_grid: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    height: 30,
-  },
-  color_Text: {
-    width: "31%",
-    textAlign: "left",
-  },
-  available_Text: {
-    width: "37%",
-    textAlign: "left",
-  },
-  qty_Text: {
-    width: "31%",
-    textAlign: "left",
+    fontWeight: "500",
   },
   qty_box_Text: { width: "31%", display: "flex", paddingLeft: 20 },
   color_div: {
@@ -353,7 +321,6 @@ const styles = StyleSheet.create({
   box1_btn: {
     textAlign: "left",
     borderRadius: 10,
-    paddingBottom: 0,
     backgroundColor: "white",
     borderWidth: 1,
     borderStyle: "solid",
@@ -410,7 +377,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 0.5,
     textAlign: "left",
-    fontSize: width >= 720 ? 20 : 13,
+    fontSize: width >= 720 ? 22 : 16,
     fontFamily: isFontLoaded ? 'Glory' : undefined,
   },
   article_content_r: {
@@ -435,7 +402,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: width >= 720 ? 31 : 18,
     fontFamily: isFontLoaded ? 'Glory' : undefined,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#626262",
   },
   article_rate_container: {
@@ -448,11 +415,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: width >= 720 ? 30 : 18,
     fontFamily: isFontLoaded ? 'Glory' : undefined,
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#626262",
   },
   articallabel1: {
-    fontWeight: 500,
+    fontWeight: "bold",
     marginLeft: 0.5,
     fontSize: width >= 720 ? 20 : 14,
     fontFamily: isFontLoaded ? 'Glory' : undefined,

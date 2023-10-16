@@ -15,14 +15,14 @@ import MenuImage from "../../components/MenuImage/MenuImage";
 
 export default function CategoriesScreen(props) {
   const { navigation } = props;
-  const { width, height } = Dimensions.get("screen");
+  const { width, height } = Dimensions.get("window");
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
         ? 120
         : 100
       : height >= 844
-      ? 100
+      ? 110
       : 65;
   const styles = Categoriesstyle();
   useLayoutEffect(() => {

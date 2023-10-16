@@ -31,7 +31,9 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.colorhuntmobileapp.app",
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notification"],
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
         "NSNotificationsUsageDescription": "We need your permission to send you notifications"
       }
     },
@@ -48,7 +50,9 @@
       "favicon": "./assets/icon.png"
     },
     "extra": {
-      "firebase": {},
+      "firebase": {
+        "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
+      },
       "eas": {
         "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
       }
