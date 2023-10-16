@@ -22,10 +22,6 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-<<<<<<< HEAD
-
-=======
->>>>>>> miltestone-test
 
 import { ActivityIndicator } from "react-native";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
@@ -61,11 +57,8 @@ export default function AllArticle(props) {
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
   const [noArticlesFound, setNoArticlesFound] = useState(false);
-<<<<<<< HEAD
-=======
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
->>>>>>> miltestone-test
   const { width, height } = Dimensions.get("window");
   const key = 'your_storage_key';
   const key2 = 'your_storage_key';
@@ -112,28 +105,17 @@ export default function AllArticle(props) {
   const headerHeight =
     Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
 
-<<<<<<< HEAD
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
-=======
   // uploard url image
   const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
->>>>>>> miltestone-test
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
-<<<<<<< HEAD
-    let partydata = await AsyncStorage.getItem("UserData")
-    partydata = await JSON.parse(partydata);
-    return partydata[0].Id;
-  }
-=======
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   };
->>>>>>> miltestone-test
   const getCategoriesname = async () => {
     retrieveStoredCategories();
     const res = await getProductName();
@@ -273,13 +255,9 @@ export default function AllArticle(props) {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() =>
-<<<<<<< HEAD
-        navigation.navigate("DetailsOfArticals", { id: item.Id })
-=======
         isLoggedIn
           ? navigation.navigate("DetailsOfArticals", { id: item.Id })
           : openCreateAccountModal()
->>>>>>> miltestone-test
       }
       style={{
         alignItems: "center",
@@ -377,10 +355,6 @@ export default function AllArticle(props) {
         }}
       >
         <TouchableOpacity
-<<<<<<< HEAD
-
-=======
->>>>>>> miltestone-test
           style={{
             display: "flex",
             justifyContent: "center",

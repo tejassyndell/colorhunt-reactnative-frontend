@@ -11,12 +11,8 @@ export const loginAuth = async (user) => {
   } catch (err) {
     // console.log(err, 'err in react api')
   }
-<<<<<<< HEAD
-};``
-=======
 };
 ``;
->>>>>>> miltestone-test
 
 //---------------------new change 28-----------------------
 export const getProductName = async () => {

@@ -376,10 +376,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginVertical: 5,
         width: "48%",
-<<<<<<< HEAD
-        height: width >= 720 ?200:150,
-=======
->>>>>>> miltestone-test
         borderWidth: 1,
         borderColor: "rgba(0, 0, 0, 0.25)",
         borderRadius: 8,
@@ -418,11 +414,7 @@ const styles = StyleSheet.create({
         paddingVertical:5,
         wordWrap: 'break-word',
         justifyContent:'center',
-<<<<<<< HEAD
-        fontWeight: 500,
-=======
         fontWeight: "500",
->>>>>>> miltestone-test
     },
     buttonsContainer: {
         flexDirection: "row",
@@ -444,11 +436,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: width >= 720 ?30: 22,
         marginBottom: 10,
-<<<<<<< HEAD
-        fontWeight: 700,
-=======
         fontWeight: "700",
->>>>>>> miltestone-test
         height:50,
         paddingTop:10,
         justifyContent:'center'
@@ -467,11 +455,7 @@ const styles = StyleSheet.create({
         height: width >= 720 ?42:38,
         width: width >= 720 ?120:76,
         fontSize: width >= 720 ?42:24,
-<<<<<<< HEAD
-        fontWeight: 700,
-=======
         fontWeight: "700",
->>>>>>> miltestone-test
         alignItems: "center",
         justifyContent: "center",
     },
@@ -486,11 +470,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "white",
         fontSize: width >= 720 ?20:18,
-<<<<<<< HEAD
-        fontWeight: 600,
-=======
         fontWeight: "600",
->>>>>>> miltestone-test
     },
     tooltipContainer: {
         backgroundColor: "black",
@@ -550,10 +530,6 @@ const styleslider = StyleSheet.create({
         top: 15,
         color: "black",
         fontSize: width >= 720 ?22:15,
-<<<<<<< HEAD
-        fontWeight: 500,
-=======
         fontWeight: "500",
->>>>>>> miltestone-test
     },
 });
