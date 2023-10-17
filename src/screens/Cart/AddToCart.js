@@ -544,16 +544,21 @@ const AddToCart = (props) => {
                                     style={{
                                       marginHorizontal: 10,
                                       borderRadius: 10,
+                                      shadowColor: "#000",
+                                      shadowOffset: {
+                                        width: 1,
+                                        height: 1,
+                                      },
+                                      shadowOpacity: 1,
                                     }}
                                   >
                                     <TouchableOpacity
                                       style={{
                                         width: windowwidthe >= 720 ? 150 : 100,
                                         height: windowwidthe >= 720 ? 140 : 100,
-                                        backgroundColor: "pink",
                                         borderRadius: 12,
                                         shadowColor: "#000",
-                                        shadowOpacity: 0.5,
+                                        shadowOpacity: 1,
                                         shadowOffset: {
                                           width: 1,
                                           height: 1,
