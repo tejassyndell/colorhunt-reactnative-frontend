@@ -14,14 +14,14 @@ import { phoneNumberValidation, udatepartytoken } from "../../api/api";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-// import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
 import LoginStyles from "./styles.js";
 const { width, height } = Dimensions.get("window");
 const logoSize = Math.min(width, height) * 0.6;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import messaging from '@react-native-firebase/messaging';
-// import * as Permissions from "expo-permissions";
+import * as Permissions from "expo-permissions";
+import * as Notifications from "expo-notifications";
 const Login = (props) => {
   const { navigation } = props;
   const route = useRoute();
@@ -31,35 +31,51 @@ const Login = (props) => {
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
+  const [show,setShow]=useState("No");
   const styles = LoginStyles();
 
-  // const getNotificationPermission = async () => {
-  //   try {
-  //     // const { status } =await Notifications.requestPermissionsAsync();
-  //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-  //     console.log(status, "statuss"); // Move this line here
-  //     if (status === "granted") {
-  //       const pushToken = (await Notifications.getExpoPushTokenAsync({
-  //         projectId: '45ac2315-27f0-44a1-bda0-536ac873608d',
-  //       })).data;
-  //       console.log("Expo Push Token:", pushToken);
-  //       setToken(pushToken);
-  //       AsyncStorage.setItem(
-  //         "notificationstatus",
-  //         JSON.stringify({ status: true, token: pushToken })
-  //       );
-  //       console.log({ status: true, token: pushToken });
-  //     } else {
-  //       AsyncStorage.setItem(
-  //         "notificationstatus",
-  //         JSON.stringify({ status: false, token: "" })
-  //       );
-  //       console.log("Notification permission denied");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error getting notification permission:", error);
-  //   }
-  // };
+  const getNotificationPermission = async () => {
+    try {
+      // const { status } =await Notifications.requestPermissionsAsync();
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      console.log(status, "statuss"); // Move this line here
+      if (status === "granted") {
+        setShow("Yes")
+        const pushToken = (await Notifications.getExpoPushTokenAsync({
+          projectId: '45ac2315-27f0-44a1-bda0-536ac873608d',
+        })).data;
+        console.log("Expo Push Token:", pushToken);
+        setToken(pushToken);
+        AsyncStorage.setItem(
+          "notificationstatus",
+          JSON.stringify({ status: true, token: pushToken })
+        );
+        console.log({ status: true, token: pushToken });
+      } else {
+        const {status} =await Notifications.requestPermissionsAsync();
+        if (status === "granted") {
+          setShow("Yes");
+          const pushToken = (await Notifications.getExpoPushTokenAsync({
+            projectId: '45ac2315-27f0-44a1-bda0-536ac873608d',
+          })).data;
+          console.log("Expo Push Token:", pushToken);
+          setToken(pushToken);
+          AsyncStorage.setItem(
+            "notificationstatus",
+            JSON.stringify({ status: true, token: pushToken })
+          );
+          console.log({ status: true, token: pushToken });
+        }
+        AsyncStorage.setItem(
+          "notificationstatus",
+          JSON.stringify({ status: false, token: "" })
+        );
+        console.log("Notification permission denied");
+      }
+    } catch (error) {
+      console.error("Error getting notification permission:", error);
+    }
+  };
 
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
@@ -73,23 +89,60 @@ const Login = (props) => {
   };
   
   // Get the device token
-  const getDeviceToken = async () => {
-    const token = await messaging().getToken();
-    console.log('Device Token:', token);
-    setToken(token);
-    AsyncStorage.setItem(
-              "notificationstatus",
-              JSON.stringify({ status: true, token: token })
-            );
-  };
-   const gettoken = async  ()=>{
-    requestUserPermission();
-    getDeviceToken();
-   }
+  // const getDeviceToken = async () => {
+  //   const token = await messaging().getToken();
+  //   console.log('Device Token:', token);
+  //   setToken(token);
+  //   AsyncStorage.setItem(
+  //             "notificationstatus",
+  //             JSON.stringify({ status: true, token: token })
+  //           );
+  // };
+  //  const gettoken = async  ()=>{
+  //   requestUserPermission();
+  //   getDeviceToken();
+  //  }
   useEffect(() => {
+// if(requestUserPermission()){
+//     messaging().getToken().then((token)=>{
+//       console.log('Device Token:', token);
+//       setToken(token);
+//       AsyncStorage.setItem(
+//                 "notificationstatus",
+//                 JSON.stringify({ status: true, token: token })
+//               );
+//     })       
 
-    // getNotificationPermission();
-    gettoken();
+//     messaging()
+//       .getInitialNotification()
+//       .then(async(remoteMessage) => {
+//         if (remoteMessage) {
+//           console.log(
+//             'Notification caused app to open from quit state:',
+//             remoteMessage.notification,
+//           );
+//         }
+//       });
+//       messaging().onNotificationOpenedApp(async remoteMessage => {
+//         console.log(
+//           'Notification caused app to open from background state:',
+//           remoteMessage.notification,
+//         );
+//       });
+//       messaging().setBackgroundMessageHandler(async remoteMessage => {
+//         console.log('Message handled in the background!', remoteMessage);
+//       });
+//       const unsubscribe = messaging().onMessage(async remoteMessage => {
+//         Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+//       });
+  
+//       return unsubscribe;
+// }
+// else{
+//   console.log("Not working.....");
+// }
+    getNotificationPermission();
+    // gettoken();
   }, []);
 
 
@@ -264,7 +317,7 @@ const Login = (props) => {
             </View>
           </ImageBackground>
           <View style={styles.contentContainer}>
-            <Text style={styles.title}>Welcome! {token==="" || !token ? "Token is not gnreted":token}</Text>
+            <Text style={styles.title}>{`Welcome! \n${show}\n${show ? token :""}`}</Text>
             <Text style={styles.subtitle}>
               {showLogin
                 ? "Please Login To Continue"
