@@ -532,7 +532,7 @@ const Orderlist = (props) => {
                             backgroundColor: "#FFF",
                             elevation: 5,
                             shadowColor: "gray",
-                            shadowOpacity: 1,
+                            shadowOpacity: 0.5,
                             shadowOffset: {
                               width: 1,
                               height: 1,
@@ -541,6 +541,7 @@ const Orderlist = (props) => {
 
                             borderRadius: 10,
                             borderWidth: 1,
+                            borderColor: "rgba(0,0,0,0.2)",
                           }}
                         >
                           <TouchableOpacity

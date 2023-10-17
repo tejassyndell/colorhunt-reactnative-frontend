@@ -489,8 +489,7 @@ const AddToCart = (props) => {
                 backgroundColor: "#FFF",
                 borderTopColor: "#828282",
                 borderTopWidth: 1,
-                borderWidth:1,
-                
+                borderWidth: 1,
               }}
             >
               <View style={{ width: "100%", backgroundColor: "#FFF" }}>
@@ -517,8 +516,7 @@ const AddToCart = (props) => {
                           width: "100%",
                         }}
                       >
-                      
-                        <View style={{ paddingBottom: 20}}>
+                        <View style={{ paddingBottom: 20 }}>
                           {orderItems.map((item) =>
                             array_1.length > 0 ? (
                               array_1.includes(item.article_id) ? (
@@ -528,8 +526,8 @@ const AddToCart = (props) => {
                                   style={{
                                     flexDirection: "row",
                                     width: "94%",
-                                    shadowColor: "gray",
-                                    shadowOpacity: 2,
+
+                                    shadowOpacity: 0.5,
                                     elevation: 5, // For Android, use elevation
                                     shadowOffset: {
                                       width: 1,
@@ -541,9 +539,8 @@ const AddToCart = (props) => {
                                     paddingVertical: "1.5%",
                                     backgroundColor: "#FFF",
                                     paddingHorizontal: 3,
-                                    borderWidth:1,
-borderColor:"rgba(0,0,0,0.3)"
-                                  
+                                    borderWidth: 1,
+                                    borderColor: "rgba(0,0,0,0.3)",
                                   }}
                                 >
                                   <View
@@ -555,8 +552,7 @@ borderColor:"rgba(0,0,0,0.3)"
                                         width: 1,
                                         height: 1,
                                       },
-                                      shadowOpacity: 1,
-                                      
+                                      shadowOpacity: 0.1,
                                     }}
                                   >
                                     <TouchableOpacity
@@ -570,9 +566,8 @@ borderColor:"rgba(0,0,0,0.3)"
                                           width: 1,
                                           height: 1,
                                         },
-                                        borderColor:"rgba(0,0,0,0.2)",
-                                        borderWidth:1,
-
+                                        borderColor: "rgba(0,0,0,0.2)",
+                                        borderWidth: 1,
                                       }}
                                       onPress={() =>
                                         handleEditOrder(
@@ -955,6 +950,7 @@ borderColor:"rgba(0,0,0,0.3)"
                                   backgroundColor: "#FFF",
                                   elevation: 5,
                                   shadowColor: "gray",
+
                                   shadowOpacity: 0.5,
                                   marginHorizontal: "5%",
                                   marginTop: "5%",
