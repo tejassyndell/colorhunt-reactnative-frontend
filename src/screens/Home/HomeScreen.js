@@ -59,7 +59,13 @@ export default function HomeScreen(props) {
     loadCustomFont();
   }, []);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 844
+      ? 110
+      : 65;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 
@@ -168,7 +174,8 @@ export default function HomeScreen(props) {
     getWishlist();
   }, []);
 
-  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const getCategoriesname = async () => {
     try {
@@ -192,20 +199,19 @@ export default function HomeScreen(props) {
     getCategoriesname();
   }, []);
 
-  const key = 'your_storage_key';
-  const key2 = 'your_storage_key';
+  const key = "your_storage_key";
+  const key2 = "your_storage_key";
   const viewAllArticles = async () => {
     navigation.navigate("AllArticle");
 
-
     try {
       const serializedCategories = JSON.stringify(selectedCategories);
-      const serrializedPriceRange = JSON.stringify(selectedPriceRange)
+      const serrializedPriceRange = JSON.stringify(selectedPriceRange);
       await AsyncStorage.setItem(key, serializedCategories);
-      await AsyncStorage.setItem(key2, serrializedPriceRange)
-      console.log('Data stored successfully.');
+      await AsyncStorage.setItem(key2, serrializedPriceRange);
+      console.log("Data stored successfully.");
     } catch (error) {
-      console.error('Error storing data:', error);
+      console.error("Error storing data:", error);
     }
   };
 
@@ -277,7 +283,12 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = () => {
-    console.log(searchText, selectedCategories, selectedPriceRange, "filters in home ")
+    console.log(
+      searchText,
+      selectedCategories,
+      selectedPriceRange,
+      "filters in home "
+    );
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
@@ -384,7 +395,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
-                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
                   fontWeight: "700",
                   paddingLeft: 8,
                 }}
@@ -430,7 +441,7 @@ export default function HomeScreen(props) {
                   start: 10,
                   fontWeight: "700",
                   fontSize: width >= 720 ? 25 : 18,
-                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
                 }}
               >
                 Men's
@@ -441,11 +452,11 @@ export default function HomeScreen(props) {
                   color: "#666666",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
-                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
                   fontWeight: "600",
                 }}
                 onPress={() => {
-                  viewAllArticles()
+                  viewAllArticles();
                 }}
               >
                 View All
@@ -554,13 +565,20 @@ export default function HomeScreen(props) {
                               fontWeight: "bold",
                               marginTop: 10,
                               fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
                             }}
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text style={{fontSize: width >= 720 ? 16 : 14}}>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold",fontSize: width >= 720 ? 20 : 16 }}>
+                          <Text style={{ fontSize: width >= 720 ? 16 : 14 }}>
+                            {convertToTitleCase(item.Category)}
+                          </Text>
+                          <Text
+                            style={{
+                              fontWeight: "bold",
+                              fontSize: width >= 720 ? 20 : 16,
+                            }}
+                          >
                             {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
@@ -578,7 +596,7 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
-                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
                           textAlign: "center",
                           color: "#808080",
                         }}
@@ -648,7 +666,7 @@ export default function HomeScreen(props) {
                           marginTop: 10,
                           fontWeight: "bold",
                           fontSize: width >= 720 ? 30 : 14,
-                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
                           marginBottom: 10,
                           textAlign: "center",
                         }}
@@ -675,7 +693,7 @@ export default function HomeScreen(props) {
                     start: 10,
                     fontWeight: "700",
                     fontSize: width >= 720 ? 25 : 18,
-                    fontFamily: isFontLoaded ? 'Glory' : undefined,
+                    fontFamily: isFontLoaded ? "Glory" : undefined,
                   }}
                 >
                   Kid’s
@@ -686,7 +704,7 @@ export default function HomeScreen(props) {
                     end: 10,
                     color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
-                    fontFamily: isFontLoaded ? 'Glory' : undefined,
+                    fontFamily: isFontLoaded ? "Glory" : undefined,
                     fontWeight: "600",
                   }}
                   onPress={() => {
@@ -706,33 +724,33 @@ export default function HomeScreen(props) {
                   top: 20,
                 }}
               >
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  style={{ overflow: "hidden" }}
-                >
-                  {kids.length === 0 ? (
-                    <View
+                {kids.length === 0 ? (
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Text
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        justifyContent: "center",
+                        fontSize: width >= 720 ? 25 : 17,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         textAlign: "center",
+                        color: "#808080",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: width >= 720 ? 25 : 17,
-                          fontFamily: isFontLoaded ? 'Glory' : undefined,
-                          textAlign: "center",
-                          color: "#808080",
-                        }}
-                      >
-                        No Article Found
-                      </Text>
-                    </View>
-                  ) : (
-                    kids.map((item, index) => (
+                      No Article Found
+                    </Text>
+                  </View>
+                ) : (
+                  kids.map((item, index) => (
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                      style={{ overflow: "hidden" }}
+                    >
                       <View
                         key={index}
                         style={{
@@ -802,27 +820,32 @@ export default function HomeScreen(props) {
                             fontWeight: "bold",
                             marginTop: 10,
                             fontSize: width >= 720 ? 18 : 12,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           {item.ArticleNumber}
                         </Text>
-                        <Text style={{ fontSize: width >= 720 ? 15 : 10, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 15 : 10,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                          }}
+                        >
                           {convertToTitleCase(item.Category)}
                         </Text>
                         <Text
                           style={{
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 12,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           {"₹" + item.ArticleRate + ".00"}
                         </Text>
                       </View>
-                    ))
-                  )}
-                </ScrollView>
+                    </ScrollView>
+                  ))
+                )}
               </View>
             </View>
           </ScrollView>

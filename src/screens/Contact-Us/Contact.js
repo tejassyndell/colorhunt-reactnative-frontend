@@ -27,9 +27,15 @@ export default function Contact(props) {
   const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
-  const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   const { width, height } = Dimensions.get("window");
+  const headerHeight =
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 720
+      ? 110
+      : 70;
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
   const multilineHeight = numberOfLines * lineHeight;
@@ -109,7 +115,7 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -136,7 +142,7 @@ export default function Contact(props) {
       color: "white",
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
-      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       fontWeight: "700",
     },
   });
@@ -144,7 +150,7 @@ export default function Contact(props) {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1,backgroundColor:'white' }}
+      style={{ flex: 1, backgroundColor: "white" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
@@ -198,13 +204,20 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
 
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !username && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -226,12 +239,19 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !email && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -254,11 +274,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: width >= 720 ? 70 : 40,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
             />
             {showValidationErrors && !subject && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -286,11 +313,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: multilineHeight,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
             />
             {showValidationErrors && !message && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -299,7 +333,7 @@ export default function Contact(props) {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginTop: width >= 720 ? 100 : 60,
+              marginTop: height >= 720 ? 90 : 45,
             }}
           >
             <TouchableOpacity

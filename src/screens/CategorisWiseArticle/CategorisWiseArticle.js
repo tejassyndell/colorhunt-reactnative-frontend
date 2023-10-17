@@ -82,14 +82,20 @@ export default function CategorisWiseArticle(props) {
 
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
+  const { width, height } = Dimensions.get("window");
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 844
+      ? 110
+      : 65;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
-  const { width, height } = Dimensions.get("window");
-
   // uploard url image
-  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
   console.log(category);
@@ -189,20 +195,19 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <TouchableOpacity
-  onPress={() => {
-    isLoggedIn ? navigation.navigate("Profile") : "";
-  }}
->
-  <Image
-    style={{
-      resizeMode: "contain",
-      width: width >= 720 ? 55 : 35,
-      height: width >= 720 ? 55 : 35,
-    }}
-    source={require("../../../assets/Nevbar/Profile.png")}
-  />
-</TouchableOpacity>
-
+            onPress={() => {
+              isLoggedIn ? navigation.navigate("Profile") : "";
+            }}
+          >
+            <Image
+              style={{
+                resizeMode: "contain",
+                width: width >= 720 ? 55 : 35,
+                height: width >= 720 ? 55 : 35,
+              }}
+              source={require("../../../assets/Nevbar/Profile.png")}
+            />
+          </TouchableOpacity>
         </View>
       ),
       headerStyle: {
@@ -306,36 +311,15 @@ export default function CategorisWiseArticle(props) {
           borderRadius: 12,
           backgroundColor: "#FFF",
           shadowColor: "#000",
-          shadowOpacity: 0.1,
-          shadowRadius: 1,
+          shadowOpacity: 0.2,
+          shadowOffset: {
+            width: 1,
+            height: 1,
+          },
           elevation: 5,
-          marginTop:10
+          marginTop: 10,
         }}
       >
-        {/* { item.Photos?
-          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
-          source={require("../../../assets/demo.png")}
-          style={{
-            width: "90%",
-            height: 180,
-            flex: 1,
-            resizeMode: "contain",
-            borderRadius: 10,
-            zIndex: 1,
-            marginTop: 10,
-          }}
-        />: <Image
-          source={{ uri: baseImageUrl + item.Photos }}
-          style={{
-            width: "90%",
-            height: 180,
-            flex: 1,
-            resizeMode: "contain",
-            borderRadius: 10,
-            zIndex: 1,
-            marginTop: 10,
-          }}
-        />:""} */}
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
@@ -343,8 +327,9 @@ export default function CategorisWiseArticle(props) {
             height: "100%",
             flex: 1,
             resizeMode: "contain",
-            // borderRadius: 10,
+            borderRadius: 10,
             zIndex: 1,
+
             // marginTop: 10,
           }}
         />
@@ -489,31 +474,31 @@ export default function CategorisWiseArticle(props) {
               backgroundColor: "#FFF",
               width: "100%",
               height: "74%",
-              top: 20,
+              top: 10,
               paddingHorizontal: 10,
             }}
           >
             {finalData.length === 0 ? (
               (console.log(nameDatas.length, "ewqewqewqeewq"),
-                (
-                  <View
+              (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
                     style={{
-                      flex: 1,
-                      justifyContent: "center", // Center vertically
-                      alignItems: "center", // Center horizontally
+                      textAlign: "center",
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontSize: 20,
                     }}
                   >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontSize: 20,
-                      }}
-                    >
-                      No Articles Found
-                    </Text>
-                  </View>
-                ))
+                    No Articles Found
+                  </Text>
+                </View>
+              ))
             ) : (
               <FlatList
                 style={{ backgroundColor: "#FFF" }}

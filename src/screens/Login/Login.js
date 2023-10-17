@@ -39,9 +39,11 @@ const Login = (props) => {
       const { status } = await Notifications.requestPermissionsAsync();
       console.log(status, "statuss"); // Move this line here
       if (status === "granted") {
-        const pushToken = (await Notifications.getExpoPushTokenAsync({
-          projectId: 'b0d5d035-7a66-4a0f-b5ec-33b84d030443',
-        })).data;
+        const pushToken = (
+          await Notifications.getExpoPushTokenAsync({
+            projectId: "b0d5d035-7a66-4a0f-b5ec-33b84d030443",
+          })
+        ).data;
         console.log("Expo Push Token:", pushToken);
         setToken(pushToken);
         AsyncStorage.setItem(
@@ -62,49 +64,8 @@ const Login = (props) => {
   };
 
   useEffect(() => {
-    
     getNotificationPermission();
   }, []);
-
-
-  // const getFCMToken = async () => {
-  //   try {
-  //     const token = await messaging().getToken();
-  //     return token;
-  //   } catch (error) {
-  //     console.error('Error getting FCM token:', error);
-  //     return null;
-  //   }
-  // }
-  
-  // const getNotificationPermission = async () => {
-  //   try {
-  //     const { status } = await Notifications.requestPermissionsAsync();
-  //     console.log(status, "statuss"); // Move this line here
-  //     if (status === "granted") {
-  //       const pushToken = await getFCMToken();
-  //       console.log("FCM Token:", pushToken);
-  //       setToken(pushToken);
-  //       AsyncStorage.setItem(
-  //         "notificationstatus",
-  //         JSON.stringify({ status: true, token: pushToken })
-  //       );
-  //       console.log({ status: true, token: pushToken });
-  //     } else {
-  //       AsyncStorage.setItem(
-  //         "notificationstatus",
-  //         JSON.stringify({ status: false, token: "" })
-  //       );
-  //       console.log("Notification permission denied");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error getting notification permission:", error);
-  //   }
-  // };
-  
-  // useEffect(() => {
-  //   getNotificationPermission();
-  // }, []);
 
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
@@ -152,9 +113,9 @@ const Login = (props) => {
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
           }).then(async (res) => {
-            if (res.status === 201) {
+            if (res && res.status === 201) {
               alert("Invalid Phone Number. Please enter a valid phone number.");
-            } else if (res.status === 200) {
+            } else if (res && res.status === 200) {
               // Store data in local storage
               if (res.data[0].token == token) {
               } else {
@@ -189,8 +150,6 @@ const Login = (props) => {
         alert("Invalid Phone Number. Please enter a 10-digit phone number.");
       }
     } else {
-      // Implement OTP verification logic here.
-      // For simplicity, we'll just check if the OTP is "1234".
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         navigation.navigate("Slider");
@@ -217,8 +176,8 @@ const Login = (props) => {
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }} // You might need to adjust the style as per your layout
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1, justifyContent: "center" }} // You might need to adjust the style as per your layout
+      behavior={Platform.OS === "ios" ? "padding" : null}
     >
       <View style={styles.container1}>
         <View style={styles.imagebox}>

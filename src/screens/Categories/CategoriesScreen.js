@@ -1,5 +1,13 @@
 import React, { useLayoutEffect } from "react";
-import { FlatList, Text, View, Image, TouchableHighlight,Platform } from "react-native";
+import {
+  FlatList,
+  Text,
+  View,
+  Image,
+  TouchableHighlight,
+  Platform,
+  Dimensions,
+} from "react-native";
 import Categoriesstyle from "./styles";
 import { categories } from "../../data/dataArrays";
 import { getNumberOfRecipes } from "../../data/MockDataAPI";
@@ -7,8 +15,16 @@ import MenuImage from "../../components/MenuImage/MenuImage";
 
 export default function CategoriesScreen(props) {
   const { navigation } = props;
-  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 86) : 120;
-   const styles = Categoriesstyle();
+  const { width, height } = Dimensions.get("window");
+  const headerHeight =
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 844
+      ? 110
+      : 65;
+  const styles = Categoriesstyle();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitleStyle: {
@@ -26,9 +42,8 @@ export default function CategoriesScreen(props) {
       ),
       headerRight: () => <View />,
       headerStyle: {
-        height: headerHeight // Increase the header height here
-    },
-
+        height: headerHeight, // Increase the header height here
+      },
     });
   }, []);
 
@@ -39,18 +54,30 @@ export default function CategoriesScreen(props) {
   };
 
   const renderCategory = ({ item }) => (
-    <TouchableHighlight underlayColor="rgba(73,182,77,0.9)" onPress={() => onPressCategory(item)}>
+    <TouchableHighlight
+      underlayColor="rgba(73,182,77,0.9)"
+      onPress={() => onPressCategory(item)}
+    >
       <View style={styles.categoriesItemContainer}>
-        <Image style={styles.categoriesPhoto} source={{ uri: item.photo_url }} />
+        <Image
+          style={styles.categoriesPhoto}
+          source={{ uri: item.photo_url }}
+        />
         <Text style={styles.categoriesName}>{item.name}</Text>
-        <Text style={styles.categoriesInfo}>{getNumberOfRecipes(item.id)} recipes</Text>
+        <Text style={styles.categoriesInfo}>
+          {getNumberOfRecipes(item.id)} recipes
+        </Text>
       </View>
     </TouchableHighlight>
   );
 
   return (
     <View>
-      <FlatList data={categories} renderItem={renderCategory} keyExtractor={(item) => `${item.id}`} />
+      <FlatList
+        data={categories}
+        renderItem={renderCategory}
+        keyExtractor={(item) => `${item.id}`}
+      />
     </View>
   );
 }

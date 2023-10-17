@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     height: 60,
-    backgroundColor: "#fff", // Set your desired background color
+    backgroundColor: "#fff",
   },
   backIcon: {
     width: 30,

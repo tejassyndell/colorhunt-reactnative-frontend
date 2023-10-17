@@ -42,23 +42,23 @@ export default function AllArticle(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
-  const key = 'your_storage_key';
-  const key2 = 'your_storage_key';
+  const key = "your_storage_key";
+  const key2 = "your_storage_key";
 
   const retrieveStoredCategories = async () => {
     try {
       const serializedCategories = await AsyncStorage.getItem(key);
-      const serrializedPriceRange = await AsyncStorage.getItem(key2)
+      const serrializedPriceRange = await AsyncStorage.getItem(key2);
       if (serializedCategories !== null || selectedPriceRange !== null) {
         const categories = JSON.parse(serializedCategories);
-        const priceRange = JSON.parse(serrializedPriceRange)
+        const priceRange = JSON.parse(serrializedPriceRange);
         setSelectedCategories(categories);
-        setSelectedPriceRange(priceRange)
+        setSelectedPriceRange(priceRange);
       } else {
-        console.log('No data found with the key.');
+        console.log("No data found with the key.");
       }
     } catch (error) {
-      console.error('Error retrieving data:', error);
+      console.error("Error retrieving data:", error);
     }
   };
   const userChecked = async () => {
@@ -83,12 +83,17 @@ export default function AllArticle(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
-
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
-
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 844
+      ? 100
+      : 65;
   // uploard url image
-  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
@@ -293,30 +298,23 @@ export default function AllArticle(props) {
           </TouchableOpacity>
         )}
       </View>
+
       <View
         style={{
-          width: "100%",
+          width: "90%",
+          height: 180,
+          flex: 1,
+          marginTop: 10,
+
           justifyContent: "center",
           alignItems: "center",
           elevation: 20,
-          borderColor: "gray",
-          shadowColor: "#c0c0c0",
+
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.2)",
           borderRadius: 10,
         }}
       >
-          {/* { item.Photos?
-          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
-          source={require("../../../assets/demo.png")}
-          style={{
-            width: "90%",
-            height: 180,
-            flex: 1,
-            resizeMode: "contain",
-            borderRadius: 10,
-            zIndex: 1,
-            marginTop: 10,
-          }}
-        />:  */}
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
@@ -325,11 +323,10 @@ export default function AllArticle(props) {
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
-            zIndex: 1,
+
             marginTop: 10,
           }}
         />
-        {/* :""} */}
       </View>
       <View
         style={{

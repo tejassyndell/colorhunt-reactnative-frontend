@@ -32,7 +32,13 @@ export default function WishList(props) {
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 844
+      ? 110
+      : 65;
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -48,13 +54,14 @@ export default function WishList(props) {
     loadCustomFont();
   }, []);
   // uploard url image
-  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData")
+    let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     console.log(partydata[0].Id, "[][][[][]");
     return partydata[0].Id;
-  }
+  };
 
   // getCategoriesname
   const getCategoriesname = async () => {
@@ -65,7 +72,7 @@ export default function WishList(props) {
   };
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
-    let id = await getpartyid()
+    let id = await getpartyid();
     let data = {
       party_id: id,
       article_id: i.Id,
@@ -123,7 +130,7 @@ export default function WishList(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -145,19 +152,17 @@ export default function WishList(props) {
       style={{
         alignItems: "center",
         height: "auto",
-        width: width >= 720 ? "22%" : "44%",
-        marginHorizontal: 12,
-        backgroundColor: "#FFFFFF",
+        width: width >= 720 ? "22%" : "45%",
+        marginHorizontal: 10,
         paddingBottom: 15,
         marginVertical: 15,
         paddingTop: width >= 720 ? 10 : 10,
         borderRadius: 12,
         backgroundColor: "#FFF",
-        shadowColor: "#000",
-        shadowOpacity: 0.1,
+        borderWidth: 1,
+        borderColor: "rgba(0,0,0,0.3)",
         shadowRadius: 1,
         elevation: 5, // For Android, use elevation
-
       }}
     >
       <View
@@ -165,7 +170,12 @@ export default function WishList(props) {
         style={{
           alignItems: "center",
           height: "auto",
-          width: width >= 720 ? 180 : 180,
+          width: width >= 720 ? 170 : 160,
+          shadowOpacity: 0.3,
+          shadowOffset: {
+            width: 1,
+            height: 1,
+          },
         }}
       >
         <View
@@ -179,7 +189,6 @@ export default function WishList(props) {
             shadowRadius: 1,
             elevation: 5, // For Android, use elevation
           }}
-
         >
           <View id={item.id} style={styles.producticones}>
             {selectedprd.some((i) => i.Id === item.Id) ? (
@@ -206,11 +215,31 @@ export default function WishList(props) {
             style={{ flex: 1, borderRadius: 10 }}
           />
         </View>
-        <Text style={{ fontWeight: "700", marginTop: 12, fontSize: width >= 720 ? 20 : 16 }}>
+        <Text
+          style={{
+            fontWeight: "700",
+            marginTop: 12,
+            fontSize: width >= 720 ? 20 : 16,
+          }}
+        >
           {item.ArticleNumber}
         </Text>
-        <Text style={{ marginTop: 3, fontSize: width >= 720 ? 14 : 12, fontWeight: "400" }}>{item.Title}</Text>
-        <Text style={{ fontWeight: "600", marginTop: 3, fontSize: width >= 720 ? 20 : 16 }}>
+        <Text
+          style={{
+            marginTop: 3,
+            fontSize: width >= 720 ? 14 : 12,
+            fontWeight: "400",
+          }}
+        >
+          {item.Title}
+        </Text>
+        <Text
+          style={{
+            fontWeight: "600",
+            marginTop: 3,
+            fontSize: width >= 720 ? 20 : 16,
+          }}
+        >
           {"₹" + item.ArticleRate + ".00"}
         </Text>
       </View>
@@ -243,7 +272,7 @@ export default function WishList(props) {
             <Text
               style={{
                 fontSize: width * 0.1,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
                 textAlign: "center",
                 fontWeight: "700",
                 color: "#808080",
@@ -272,7 +301,13 @@ export default function WishList(props) {
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text style={{ color: "white", fontSize: width * 0.035, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: width * 0.035,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                }}
+              >
                 Continue Shopping
               </Text>
             </TouchableOpacity>
