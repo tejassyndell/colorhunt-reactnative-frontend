@@ -308,7 +308,6 @@ export default function AllArticle(props) {
 
           justifyContent: "center",
           alignItems: "center",
-          elevation: 20,
 
           borderWidth: 1,
           borderColor: "rgba(0,0,0,0.2)",
