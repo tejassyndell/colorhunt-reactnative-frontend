@@ -532,25 +532,30 @@ const Orderlist = (props) => {
                             backgroundColor: "#FFF",
                             elevation: 5,
                             shadowColor: "gray",
-                            shadowOpacity: 0.5,
+                            shadowOpacity: 1,
                             shadowOffset: {
                               width: 1,
                               height: 1,
                             },
                             marginHorizontal: "5%",
-                            marginTop: "5%",
+
                             borderRadius: 10,
                             borderWidth: 1,
                           }}
                         >
                           <TouchableOpacity
                             style={{
-                              width: windowwidthe * 0.18,
+                              // backgroundColor: "pink",
+                              width: windowwidthe * 0.3,
+                              shadowOpacity: 1,
+                              shadowOffset: {
+                                width: 1,
+                                height: 1,
+                              },
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
                               borderRadius: 10,
-                              backgroundColor: "pink",
                             }}
                           >
                             <Image
@@ -576,7 +581,7 @@ const Orderlist = (props) => {
                               borderRadius: 10,
                             }}
                           >
-                            <View style={{ height: "50%", paddingBottom: 1 }}>
+                            <View style={{ paddingBottom: 1 }}>
                               <Text
                                 style={{
                                   fontSize: windowwidthe * 0.035,
