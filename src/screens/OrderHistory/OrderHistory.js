@@ -634,7 +634,7 @@ const OrderHistory = (props) => {
                     onPress={() => {
                       toggleCalendar();
                       setSelectedDate("DD/MM/YYYY");
-                      setSoNumberData(oldDataOfso);
+                      orderstatus? setSoNumberData(oldDataOfso):setcompletedsodata(olddataofcompleted)
                     }}
                   >
                     <Image

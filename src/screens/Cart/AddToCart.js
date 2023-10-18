@@ -55,8 +55,8 @@ const AddToCart = (props) => {
         ? 120
         : 100
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -197,22 +197,26 @@ const AddToCart = (props) => {
           item.Quantity.includes(searchString)
         ) {
           let saleNumber = it.SalesNoPacks;
-          const stringNumbers = saleNumber
+          let stringNumbers = saleNumber
             .split(",")
             .map((num) => parseInt(num.trim()));
           const quntitynumber = item.Quantity.split(",").map((num) =>
             parseInt(num.trim())
           );
+          console.log(stringNumbers.length, "::::::");
+
           let outofstockcount = 0;
+          let notoutofstocke = 0;
           for (let i = 0; i < stringNumbers.length; i++) {
             for (let j = 0; j < quntitynumber.length; j++) {
-              const e = stringNumbers[i];
+              let e = stringNumbers[i];
               const f = quntitynumber[j];
               console.log(e, f, "()()()()");
               if (
                 parseInt(e) < parseInt(f) &&
                 it.ArticleId === item.article_id
               ) {
+                notoutofstocke += 1;
                 listOfOutOfProduct = listOfOutOfProduct.filter((item) => {
                   if (item !== it.ArticleId) {
                     return item;
@@ -227,7 +231,9 @@ const AddToCart = (props) => {
               }
             }
           }
-          if (outofstockcount === stringNumbers.length) {
+          console.log(notoutofstocke, ":{:{:{:{");
+          if (notoutofstocke > 0) {
+            console.log(outofstockcount, stringNumbers.length, "{}{}{}");
             listOfOutOfProduct.push(item.article_id);
           }
         } else {
@@ -489,8 +495,8 @@ const AddToCart = (props) => {
                 backgroundColor: "#FFF",
                 borderTopColor: "#828282",
                 borderTopWidth: 1,
-                borderWidth:1,
-                
+                borderWidth: 1,
+
               }}
             >
               <View style={{ width: "100%", backgroundColor: "#FFF" }}>
@@ -517,8 +523,8 @@ const AddToCart = (props) => {
                           width: "100%",
                         }}
                       >
-                      
-                        <View style={{ paddingBottom: 20}}>
+
+                        <View style={{ paddingBottom: 20 }}>
                           {orderItems.map((item) =>
                             array_1.length > 0 ? (
                               array_1.includes(item.article_id) ? (
@@ -541,9 +547,9 @@ const AddToCart = (props) => {
                                     paddingVertical: "1.5%",
                                     backgroundColor: "#FFF",
                                     paddingHorizontal: 3,
-                                    borderWidth:1,
-borderColor:"rgba(0,0,0,0.3)"
-                                  
+                                    borderWidth: 1,
+                                    borderColor: "rgba(0,0,0,0.3)"
+
                                   }}
                                 >
                                   <View
@@ -556,7 +562,7 @@ borderColor:"rgba(0,0,0,0.3)"
                                         height: 1,
                                       },
                                       shadowOpacity: 1,
-                                      
+
                                     }}
                                   >
                                     <TouchableOpacity
@@ -570,8 +576,8 @@ borderColor:"rgba(0,0,0,0.3)"
                                           width: 1,
                                           height: 1,
                                         },
-                                        borderColor:"rgba(0,0,0,0.2)",
-                                        borderWidth:1,
+                                        borderColor: "rgba(0,0,0,0.2)",
+                                        borderWidth: 1,
 
                                       }}
                                       onPress={() =>
@@ -858,10 +864,10 @@ borderColor:"rgba(0,0,0,0.3)"
                                       >
                                         ₹{item.rate}.00
                                       </Text>
-                                      {/* {compreInward ? compreInward.map((it) => (
-                                                                            checkOutOfStock(it, item)
-                                                                            // console.log(it.SalesNoPacks)
-                                                                        )) : ""} */}
+                                      {compreInward ? compreInward.map((it) => (
+                                        checkOutOfStock(it, item)
+                                        // console.log(it.SalesNoPacks)
+                                      )) : ""}
                                     </View>
                                   </View>
                                   <View
@@ -937,9 +943,9 @@ borderColor:"rgba(0,0,0,0.3)"
                                     >
                                       {compreInward
                                         ? compreInward.map(
-                                            (it) => checkOutOfStock(it, item)
-                                            // console.log(it.SalesNoPacks)
-                                          )
+                                          (it) => checkOutOfStock(it, item)
+                                          // console.log(it.SalesNoPacks)
+                                        )
                                         : ""}
                                     </View>
                                   </View>
@@ -1068,10 +1074,10 @@ borderColor:"rgba(0,0,0,0.3)"
                                     >
                                       ₹{item.rate}.00
                                     </Text>
-                                    {/* {compreInward ? compreInward.map((it) => (
-                                                                            checkOutOfStock(it, item)
-                                                                            // console.log(it.SalesNoPacks)
-                                                                        )) : ""} */}
+                                    {compreInward ? compreInward.map((it) => (
+                                      checkOutOfStock(it, item)
+                                      // console.log(it.SalesNoPacks)
+                                    )) : ""}
                                   </View>
                                 </View>
                                 <View
@@ -1147,9 +1153,9 @@ borderColor:"rgba(0,0,0,0.3)"
                                   >
                                     {compreInward
                                       ? compreInward.map(
-                                          (it) => checkOutOfStock(it, item)
-                                          // console.log(it.SalesNoPacks)
-                                        )
+                                        (it) => checkOutOfStock(it, item)
+                                        // console.log(it.SalesNoPacks)
+                                      )
                                       : ""}
                                   </View>
                                 </View>
