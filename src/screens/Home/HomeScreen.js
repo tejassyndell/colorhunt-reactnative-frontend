@@ -8,6 +8,8 @@ import {
   Modal,
   Dimensions,
   Platform,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -43,6 +45,28 @@ export default function HomeScreen(props) {
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+
+  // Add a listener to track keyboard visibility
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -851,15 +875,22 @@ export default function HomeScreen(props) {
           </ScrollView>
         </View>
       )}
-      {isFilterVisible ? null : (
-        <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-          <ButtomNavigation
-            navigation={navigation}
-            isLoggedIn={isLoggedIn}
-            page="home"
-          />
-        </View>
-      )}
+      <KeyboardAvoidingView
+        behavior={isKeyboardOpen ? "padding" : null}
+        style={{ flex: 1 }}
+      >
+        {isFilterVisible ? null : (
+          <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+            <ButtomNavigation
+              navigation={navigation}
+              isLoggedIn={isLoggedIn}
+              page="home"
+            />
+          </View>
+        )}
+
+        {/* Other components here */}
+      </KeyboardAvoidingView>
       {isFilterVisible && (
         <View
           style={{

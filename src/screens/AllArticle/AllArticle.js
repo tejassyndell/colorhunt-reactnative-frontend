@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Platform,
   Modal,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 import {
   getProductName,
@@ -44,6 +46,28 @@ export default function AllArticle(props) {
   const { width, height } = Dimensions.get("window");
   const key = "your_storage_key";
   const key2 = "your_storage_key";
+  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+
+  // Add a listener to track keyboard visibility
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const retrieveStoredCategories = async () => {
     try {
@@ -474,6 +498,10 @@ export default function AllArticle(props) {
             )}
           </View>
           {/* {/ </ScrollView> /} */}
+          <KeyboardAvoidingView
+        behavior={isKeyboardOpen ? "padding" : null}
+        style={{ flex: 1 }}
+      >
           {isFilterVisible ? null : (
             <View
               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
@@ -481,6 +509,7 @@ export default function AllArticle(props) {
               <ButtomNavigation navigation={navigation} page="home" />
             </View>
           )}
+          </KeyboardAvoidingView>
 
           {isFilterVisible && (
             <View

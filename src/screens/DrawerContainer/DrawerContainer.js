@@ -241,8 +241,8 @@ export default function DrawerContainer(props) {
           <Image
             source={require("../../../assets/sidebaricons/image_98.png")}
             style={{
-              height: width >= 720 ? 200 : 161,
-              width: width >= 720 ? 200 : 161,
+              height: width >= 720 ? 200 : 150,
+              width: width >= 720 ? 200 : 150,
             }}
           />
           <Text

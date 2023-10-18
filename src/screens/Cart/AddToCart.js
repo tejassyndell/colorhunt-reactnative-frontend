@@ -202,7 +202,7 @@ const AddToCart = (props) => {
           const quntitynumber = item.Quantity.split(",").map((num) =>
             parseInt(num.trim())
           );
-          let outofstockcount = 0;
+          let outofstockcount =0;
           for (let i = 0; i < stringNumbers.length; i++) {
             for (let j = 0; j < quntitynumber.length; j++) {
               const e = stringNumbers[i];
@@ -221,12 +221,12 @@ const AddToCart = (props) => {
               } else {
                 if (!listOfOutOfProduct.includes(item.article_id)) {
                   // listOfOutOfProduct.push(item.article_id);
-                  outofstockcount += 1;
+                  outofstockcount+=1;
                 }
               }
             }
           }
-          if (outofstockcount === stringNumbers.length) {
+          if(outofstockcount===stringNumbers.length){
             listOfOutOfProduct.push(item.article_id);
           }
         } else {
@@ -313,12 +313,12 @@ const AddToCart = (props) => {
         ) {
           // outOfStock = true;
           // break; // Exit the loop
-          outofstokecount += 1;
+          outofstokecount +=1;
         }
       }
 
-      if (outofstokecount === stringNumbers.length) {
-        outOfStock = true;
+      if(outofstokecount===stringNumbers.length){
+        outOfStock = true
       }
       if (outOfStock) {
         return (
@@ -326,8 +326,8 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: 500,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontWeight: "500",
               color: "red",
               textAlign: "right",
             }}
@@ -347,8 +347,8 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: 400,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontWeight: "400",
               color: "red",
             }}
           >
