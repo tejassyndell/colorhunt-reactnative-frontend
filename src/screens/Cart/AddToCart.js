@@ -53,7 +53,7 @@ const AddToCart = (props) => {
     Platform.OS === "android"
       ? width >= 720
         ? 110
-        : 60
+        : 80
       : height >= 844
       ? 110
       : 65;
@@ -327,7 +327,7 @@ const AddToCart = (props) => {
             style={{
               fontSize: windowwidthe * 0.035,
               fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "500",
+              fontWeight: 500,
               color: "red",
               textAlign: "right",
             }}
@@ -348,7 +348,7 @@ const AddToCart = (props) => {
             style={{
               fontSize: windowwidthe * 0.035,
               fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "400",
+              fontWeight: 400,
               color: "red",
             }}
           >
@@ -433,7 +433,7 @@ const AddToCart = (props) => {
                 fontSize: windowwidthe * 0.1,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
                 textAlign: "center",
-                fontWeight: "700",
+                fontWeight: 700,
                 color: "#808080",
               }}
             >
@@ -609,7 +609,7 @@ const AddToCart = (props) => {
                                           fontFamily: isFontLoaded
                                             ? "Glory"
                                             : undefined,
-                                          fontWeight: "700",
+                                          fontWeight: 600,
                                         }}
                                       >
                                         {item.ArticleNumber}
@@ -620,7 +620,7 @@ const AddToCart = (props) => {
                                           fontFamily: isFontLoaded
                                             ? "Glory"
                                             : undefined,
-                                          fontWeight: "400",
+                                          fontWeight: 400,
                                         }}
                                       >
                                         {item.StyleDescription}
@@ -638,7 +638,7 @@ const AddToCart = (props) => {
                                         style={{
                                           fontSize: width >= 720 ? 16 : 14,
                                           fontFamily: "Glory",
-                                          fontWeight: "400",
+                                          fontWeight: 400,
                                         }}
                                       >
                                         Rate
@@ -796,7 +796,7 @@ const AddToCart = (props) => {
                                             ? "Glory"
                                             : undefined,
                                           color: "#00000040",
-                                          fontWeight: "700",
+                                          fontWeight: 600,
                                         }}
                                       >
                                         {item.ArticleNumber}

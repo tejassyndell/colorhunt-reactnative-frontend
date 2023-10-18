@@ -73,7 +73,7 @@ const Orderlist = (props) => {
     Platform.OS === "android"
       ? width >= 720
         ? 110
-        : 60
+        : 80
       : height >= 844
       ? 110
       : 65;

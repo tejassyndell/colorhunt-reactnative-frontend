@@ -91,7 +91,7 @@ const DetailsOfArticals = (props) => {
     Platform.OS === "android"
       ? width >= 720
         ? 110
-        : 60
+        : 80
       : height >= 844
       ? 110
       : 65;
@@ -463,7 +463,7 @@ const DetailsOfArticals = (props) => {
 
                             justifyContent:
                               articleSizeData.length > 3
-                                ? "flex-start"
+                                ? "center"
                                 : "center",
                             ...Platform.select({
                               ios: {
@@ -488,6 +488,8 @@ const DetailsOfArticals = (props) => {
                                   {
                                     paddingHorizontal:
                                       articleSizeData.length > 3 ? "1%" : 0,
+                         
+
                                   },
                                 ]}
                                 key={index}
@@ -508,7 +510,8 @@ const DetailsOfArticals = (props) => {
                       <View
                         style={{
                           // width: "40%",
-                          width: articleSizeData.length > 3 ? "auto" : "40%",
+                          width: articleSizeData.length > 3 ? "40%" : "40%",
+
                         }}
                       >
                         <Text
