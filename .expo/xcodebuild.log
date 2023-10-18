@@ -1,0 +1,22 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/syndell-068/Documents/GitHub/colorhunt-reactnative-frontend/ios/ColorHunt.xcodeproj -configuration Debug -scheme ColorHunt -destination id=AD47CCB5-F214-4502-B461-A207D302A23B
+
+User defaults from command line:
+    IDEPackageSupportUseBuiltinSCM = YES
+
+Prepare packages
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'ColorHunt' in project 'ColorHunt' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+Build description signature: 728b9f1cf171ba1715554ac1bfe7a391
+Build description path: /Users/syndell-068/Library/Developer/Xcode/DerivedData/ColorHunt-bizosntrxudmcscvnwrblpfjozth/Build/Intermediates.noindex/XCBuildData/728b9f1cf171ba1715554ac1bfe7a391.xcbuilddata
+
+/Users/syndell-068/Documents/GitHub/colorhunt-reactnative-frontend/ios/Pods/Target Support Files/Pods-ColorHunt/Pods-ColorHunt.debug.xcconfig:1:1: error: unable to open configuration settings file
+warning: Run script build phase 'Start Packager' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'ColorHunt' from project 'ColorHunt')
+warning: Run script build phase 'Bundle React Native code and images' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'ColorHunt' from project 'ColorHunt')

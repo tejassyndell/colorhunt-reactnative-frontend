@@ -52,8 +52,8 @@ const AddToCart = (props) => {
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
-        ? 120
-        : 100
+        ? 110
+        : 60
       : height >= 844
       ? 110
       : 65;
@@ -82,8 +82,7 @@ const AddToCart = (props) => {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "700",
+              fontFamily: "Glory",
               width: "100%",
             }}
           >
@@ -638,9 +637,7 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: width >= 720 ? 16 : 14,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
+                                          fontFamily: "Glory",
                                           fontWeight: "400",
                                         }}
                                       >
@@ -649,10 +646,7 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: width >= 720 ? 19 : 17,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
-                                          fontWeight: "700",
+                                          fontFamily: "Glory",
                                         }}
                                       >
                                         ₹{item.rate}.00

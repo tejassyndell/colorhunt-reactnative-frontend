@@ -86,8 +86,8 @@ export default function CategorisWiseArticle(props) {
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
-        ? 120
-        : 100
+        ? 110
+        : 60
       : height >= 844
       ? 110
       : 65;

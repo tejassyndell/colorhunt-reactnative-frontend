@@ -37,8 +37,8 @@ const OrderHistory = (props) => {
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
-        ? 120
-        : 100
+        ? 110
+        : 60
       : height >= 844
       ? 110
       : 65;
@@ -616,9 +616,7 @@ const OrderHistory = (props) => {
                       source={require("../../../assets/gray_calender.png")}
                     ></Image>
                   </View>
-                  <Text
-                    style={{ fontSize: 18, fontWeight: "400", color: "#BBB" }}
-                  >
+                  <Text style={{ fontSize: 18, color: "#BBB" }}>
                     {orderstatus ? selectedDate : selectedDateIncompleted}
                   </Text>
                 </View>
@@ -680,7 +678,7 @@ const OrderHistory = (props) => {
                   >
                     <Text
                       style={{
-                        fontWeight: "700",
+                        // fontWeight: "700",
                         color: "#FFF",
                         textAlign: "center",
                         fontSize: width >= 720 ? 25 : 16,
@@ -844,11 +842,11 @@ const orderstyles = StyleSheet.create({
   },
   txt_titile: {
     fontSize: width < 720 ? 14 : 20,
-    fontWeight: "500",
+    fontWeight: "400",
     color: "#000000B2",
   },
   txt_val: {
-    fontSize: width < 720 ? 15 : 22,
+    fontSize: width >= 720 ? 22 : 13,
     fontWeight: "700",
     color: "#000000",
   },
