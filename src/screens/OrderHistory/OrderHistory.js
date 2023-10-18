@@ -202,8 +202,8 @@ const OrderHistory = (props) => {
         sum += rate * value;
       }
     }
-
-    return sum;
+    const totalAmount = sum + 0.05 * sum;
+    return Math.floor(totalAmount);
   };
 
   const getCompleteData = async () => {
@@ -351,7 +351,7 @@ const OrderHistory = (props) => {
                                     ]}
                                   >
                                     <Text style={orderstyles.txt_titile}>
-                                      Order Total :
+                                      Total Amount :
                                     </Text>
                                     <Text style={orderstyles.txt_val}>
                                       {item.OutwardNoPacks[0] !== null
@@ -502,7 +502,7 @@ const OrderHistory = (props) => {
                                   ]}
                                 >
                                   <Text style={orderstyles.txt_titile}>
-                                    Order Total :
+                                    Total Amount :
                                   </Text>
                                   <Text style={orderstyles.txt_val}>
                                     {item.OutwardNoPacks[0] !== null

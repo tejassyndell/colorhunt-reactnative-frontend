@@ -161,8 +161,8 @@ export default function WishList(props) {
         backgroundColor: "#FFF",
         borderWidth: 1,
         borderColor: "rgba(0,0,0,0.3)",
-        shadowRadius: 1,
-        elevation: 5, // For Android, use elevation
+        shadowRadius: 0.5,
+        elevation: 3, // For Android, use elevation
       }}
     >
       <View
@@ -182,10 +182,10 @@ export default function WishList(props) {
           style={{
             width: width >= 720 ? "80%" : "90%",
             height: width >= 720 ? 200 : 190,
-            borderRadius: 12,
-            backgroundColor: "#FFF",
+            // borderWidth: 1,
+            // borderRadius: 12,
             shadowColor: "#000",
-            shadowOpacity: 0.1,
+            shadowOpacity: 0,
             shadowRadius: 1,
             elevation: 5, // For Android, use elevation
           }}
@@ -212,7 +212,18 @@ export default function WishList(props) {
 
           <Image
             source={{ uri: baseImageUrl + item.Photos }}
-            style={{ flex: 1, borderRadius: 10 }}
+            style={{
+              flex: 1,
+              resizeMode: "stretch",
+              borderRadius: 10,
+              shadowOpacity: 1,
+              shadowColor: "rgba(0,0,0,0.9)",
+              shadowOffset: {
+                width: 1,
+                height: 1,
+              },
+              elevation: 3,
+            }}
           />
         </View>
         <Text

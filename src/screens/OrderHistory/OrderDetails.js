@@ -253,7 +253,7 @@ const OrderDetails = (props) => {
     ptdata = JSON.parse(ptdata);
     if (ptdata !== null) {
       setpartydata(ptdata);
-      console.log(ptdata);
+      console.log(ptdata, "[][][][[][][][][]=-gnfgdgf");
     } else {
       console.log("No data found");
     }
@@ -1013,7 +1013,10 @@ const OrderDetails = (props) => {
                         color: partydata ? "#000000" : "#00000080",
                       }}
                     >
-                      {partydata ? partydata[0].Address : "Address"}
+                      {partydata
+                        ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}-${partydata[0].PinCode}.`
+                        : "Address"}
+                      {console.log(partydata, "skhvchgvsacjvsjdc hasvcjvsdc")}
                     </Text>
                   </View>
                   <View style={{ marginTop: 10, flexDirection: "row" }}>

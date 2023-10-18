@@ -345,15 +345,30 @@ const DetailsOfArticals = (props) => {
                   flex: 1,
                 }}
               >
-                <Carousel
-                  data={articlePhotos}
-                  renderItem={renderImage}
-                  sliderWidth={viewportWidth}
-                  itemWidth={viewportWidth}
-                  loop={true}
-                  autoplay={true}
-                  autoplayInterval={3000}
-                ></Carousel>
+                {articlePhotos && articlePhotos.length > 0 ? (
+                  <Carousel
+                    data={articlePhotos}
+                    renderItem={renderImage}
+                    sliderWidth={viewportWidth}
+                    itemWidth={viewportWidth}
+                    loop={true}
+                    autoplay={true}
+                    autoplayInterval={3000}
+                  ></Carousel>
+                ) : (
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      position: "absolute",
+                    }}
+                  >
+                    <Text style={{ textAlign: "center", fontSize: 25 }}>
+                      No Image
+                    </Text>
+                  </View>
+                )}
                 <View
                   style={{
                     zIndex: 2,
@@ -434,14 +449,14 @@ const DetailsOfArticals = (props) => {
                       <View
                         style={{
                           marginRight: articleSizeData.length > 3 ? 0 : 30,
-                          width: articleSizeData.length > 3 ? "auto" : "50%",
+                          width: articleSizeData.length > 3 ? "100%" : "50%",
                           marginBottom: articleSizeData.length > 3 ? 10 : 0,
                         }}
                       >
                         <Text
                           style={{
                             marginBottom: 5,
-                            fontWeight: "bold",
+                            fontWeight: "600",
                             fontSize: width >= 720 ? 20 : 14,
                             fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
@@ -462,9 +477,7 @@ const DetailsOfArticals = (props) => {
                             alignItems: "center",
 
                             justifyContent:
-                              articleSizeData.length > 3
-                                ? "center"
-                                : "center",
+                              articleSizeData.length > 3 ? "center" : "center",
                             ...Platform.select({
                               ios: {
                                 shadowColor: "black",
@@ -488,8 +501,6 @@ const DetailsOfArticals = (props) => {
                                   {
                                     paddingHorizontal:
                                       articleSizeData.length > 3 ? "1%" : 0,
-                         
-
                                   },
                                 ]}
                                 key={index}
@@ -510,14 +521,13 @@ const DetailsOfArticals = (props) => {
                       <View
                         style={{
                           // width: "40%",
-                          width: articleSizeData.length > 3 ? "40%" : "40%",
-
+                          width: articleSizeData.length > 3 ? "100%" : "40%",
                         }}
                       >
                         <Text
                           style={{
                             marginBottom: 5,
-                            fontWeight: "bold",
+                            fontWeight: 600,
                             fontSize: width >= 720 ? 20 : 14,
                             fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
@@ -535,9 +545,7 @@ const DetailsOfArticals = (props) => {
                             padding: 10,
                             alignContent: "center",
                             justifyContent:
-                              articleSizeData.length > 3
-                                ? "flex-start"
-                                : "center",
+                              articleSizeData.length > 3 ? "center" : "center",
 
                             alignItems: "center",
                             ...Platform.select({
@@ -557,11 +565,11 @@ const DetailsOfArticals = (props) => {
                         >
                           <Text
                             style={{
-                              fontSize: width >= 720 ? 35 : 16,
+                              fontSize: width >= 720 ? 35 : 22,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               paddingHorizontal:
                                 articleSizeData.length > 3 ? "10%" : 0,
-                              fontWeight: "400",
+                              fontWeight: "600",
                               textAlign: "center",
                               color: "#000000",
                             }}
