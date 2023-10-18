@@ -65,7 +65,7 @@ const OrderDetails = (props) => {
     Platform.OS === "android"
       ? width >= 720
         ? 110
-        : 80
+        : 60
       : height >= 844
       ? 110
       : 65;
@@ -253,7 +253,7 @@ const OrderDetails = (props) => {
     ptdata = JSON.parse(ptdata);
     if (ptdata !== null) {
       setpartydata(ptdata);
-      console.log(ptdata);
+      console.log(ptdata,'testing');
     } else {
       console.log("No data found");
     }
