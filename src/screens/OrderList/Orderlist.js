@@ -16,10 +16,10 @@ import {
 import { addso, gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+const baseImageUrl =
+  "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 import { TouchableWithoutFeedback } from "react-native";
 import * as Font from "expo-font";
-
 
 const Orderlist = (props) => {
   const { navigation } = props;
@@ -29,7 +29,8 @@ const Orderlist = (props) => {
   const [transportationVal, setTransportationVal] = useState();
   const [fillvalue, setValue] = useState(false);
   const [userdata, setUserdata] = useState("");
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   // const OldTransportation = ["T-shirte", "Black_shirte", "white_shirte", "Blue_shirte", "Green_shirte"]
   const [Transportation, setTransportation] = useState([]);
@@ -42,11 +43,14 @@ const Orderlist = (props) => {
   const windowheight = parseInt(Dimensions.get("window").height);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isfailed, setisFailed] = useState("");
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -66,8 +70,15 @@ const Orderlist = (props) => {
     getpartydata();
   }, []);
   const headerHeight =
-    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 110
+        : 80
+      : height >= 844
+      ? 110
+      : 65;
   const AddSo = async () => {
+    setIsLoading2(true);
     let userdata = await AsyncStorage.getItem("UserData");
     userdata = await JSON.parse(userdata);
     let Articldata = ParsedData.map(
@@ -102,16 +113,22 @@ const Orderlist = (props) => {
     console.log("-=-=-=-", data);
     await addso(data).then((res) => {
       if (res.status === 200) {
-        setIsModalVisible(true);
+        setIsLoading2(false);
+        setIsSuccess(true);
+      } else {
+        setisFailed(true);
       }
     });
   };
   const showSuccessModal = () => {
+    if(!fillvalue){
+    setIsModalVisible(true);
     if (destinationVal) {
       AddSo();
     } else {
       setValue(true);
     }
+  }
   };
   // let ParsedData = [];
   const formattedDate = `${
@@ -179,8 +196,8 @@ const Orderlist = (props) => {
             style={{
               textAlign: "center",
               fontSize: windowwidthe * 0.05,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
-              fontWeight: 700,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -270,8 +287,8 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: 500,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
+                      fontWeight: "500",
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
                       color: "#000",
                     }}
                   >
@@ -293,10 +310,10 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         color: "#626262",
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: 500,
+                        fontWeight: "500",
                       }}
                     >
                       {new Date(currentDate).toLocaleDateString("en-GB", {
@@ -317,8 +334,8 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: 500,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
+                      fontWeight: "500",
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
                       color: "#000",
                     }}
                   >
@@ -335,7 +352,7 @@ const Orderlist = (props) => {
                       borderColor: "#E4E7EA",
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                       backgroundColor: "#EEE",
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
                     }}
                     onChangeText={(e) => {
                       setDestinationVal(e);
@@ -347,8 +364,8 @@ const Orderlist = (props) => {
                       style={{
                         fontSize: windowwidthe * 0.03,
                         color: "red",
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 500,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "500",
                       }}
                     >
                       {fillvalue ? "Filed cannot be empty" : ""}
@@ -366,8 +383,8 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: 500,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
+                      fontWeight: "500",
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
                       color: "#000",
                     }}
                   >
@@ -395,8 +412,8 @@ const Orderlist = (props) => {
                         color: "#626262",
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: 500,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontWeight: "500",
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                       }}
                     >
                       {transportationVal.toUpperCase()}
@@ -485,7 +502,7 @@ const Orderlist = (props) => {
                                     hoveredItem === item.Id
                                       ? "#fff"
                                       : "#626262",
-                                  fontWeight: 500,
+                                  fontWeight: "500",
                                 },
                               ]}
                             >
@@ -512,7 +529,6 @@ const Orderlist = (props) => {
                       <View key={item.id} style={{ paddingBottom: 20 }}>
                         <View
                           style={{
-                            display: "flex",
                             flexDirection: "row",
                             width: "90%",
                             backgroundColor: "#FFF",
@@ -524,22 +540,24 @@ const Orderlist = (props) => {
                               height: 1,
                             },
                             marginHorizontal: "5%",
-                            marginTop: "5%",
+
                             borderRadius: 10,
-                            height: windowheight * 0.142,
-                            paddingVertical: "1.5%",
+                            borderWidth: 1,
+                            borderColor: "rgba(0,0,0,0.2)",
                           }}
                         >
                           <TouchableOpacity
                             style={{
-                              width: windowwidthe * 0.18,
-                              margin: "3.8%",
-                              marginTop: "1.5%",
-                              height: windowheight * 0.108,
+                              // backgroundColor: "pink",
+                              width: windowwidthe * 0.3,
+                              shadowOpacity: 1,
+                              shadowOffset: {
+                                width: 1,
+                                height: 1,
+                              },
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
-                              // marginVertical: 10,
                               borderRadius: 10,
                             }}
                           >
@@ -566,12 +584,14 @@ const Orderlist = (props) => {
                               borderRadius: 10,
                             }}
                           >
-                            <View style={{ height: "50%", paddingBottom: 1 }}>
+                            <View style={{ paddingBottom: 1 }}>
                               <Text
                                 style={{
                                   fontSize: windowwidthe * 0.035,
-                                  fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                  fontWeight: 700,
+                                  fontFamily: isFontLoaded
+                                    ? "Glory"
+                                    : undefined,
+                                  fontWeight: "700",
                                 }}
                               >
                                 {item.ArticleNumber}
@@ -579,8 +599,10 @@ const Orderlist = (props) => {
                               <Text
                                 style={{
                                   fontSize: windowwidthe * 0.025,
-                                  fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                  fontWeight: 400,
+                                  fontFamily: isFontLoaded
+                                    ? "Glory"
+                                    : undefined,
+                                  fontWeight: "400",
                                 }}
                               >
                                 {item.StyleDescription}
@@ -598,8 +620,10 @@ const Orderlist = (props) => {
                               <Text
                                 style={{
                                   fontSize: windowwidthe * 0.035,
-                                  fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                  fontWeight: 700,
+                                  fontFamily: isFontLoaded
+                                    ? "Glory"
+                                    : undefined,
+                                  fontWeight: "700",
                                 }}
                               >
                                 ₹{item.rate}.00
@@ -618,91 +642,184 @@ const Orderlist = (props) => {
               animationType="slide"
               onRequestClose={() => setIsModalVisible(false)}
             >
-              <TouchableWithoutFeedback
-                onPress={() => setIsModalVisible(false)}
-              >
+              {isLoading2 && (
                 <View
                   style={{
                     flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    backgroundColor: "#FFFFFF",
                   }}
+                >
+                  <ActivityIndicator size="large" color="black" />
+                </View>
+              )}
+              {isSuccess && (
+                <TouchableWithoutFeedback
+                  onPress={() => setIsModalVisible(false)}
                 >
                   <View
                     style={{
-                      width: 360,
-                      height: 390,
-                      backgroundColor: "white",
-                      borderRadius: 25,
+                      flex: 1,
+                      justifyContent: "center",
                       alignItems: "center",
-                      padding: 5,
+                      backgroundColor: "rgba(0, 0, 0, 0.5)",
                     }}
                   >
-                    <Image
-                      source={require("../../../assets/icons/Modalicon.png")}
+                    <View
                       style={{
-                        width: 100,
-                        height: 100,
-                        marginBottom: 20,
-                        marginTop: 30,
-                      }}
-                    />
-
-                    <Text
-                      style={{
-                        fontSize: 32,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 700,
-                        marginBottom: 10,
-                      }}
-                    >
-                      Successful!
-                    </Text>
-
-                    <Text
-                      style={{
-                        fontSize: 24,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        textAlign: "center",
-                        marginBottom: 20,
-                        fontWeight: 500,
-                        color: "rgba(0, 0, 0, 0.70)",
-                      }}
-                    >
-                      "Your Order Is {"\n"} Confirmed Successfully"
-                    </Text>
-
-                    <TouchableOpacity
-                      onPress={() => {
-                        setIsModalVisible(false);
-                        navigation.navigate("Home");
-                      }}
-                      style={{
-                        backgroundColor: "black",
-                        width: 189,
-                        height: 50,
-                        borderRadius: 10,
-                        justifyContent: "center",
+                        width: 360,
+                        height: 390,
+                        backgroundColor: "white",
+                        borderRadius: 25,
                         alignItems: "center",
-                        marginVertical: 20,
+                        padding: 5,
+                      }}
+                    >
+                      <Image
+                        source={require("../../../assets/icons/Modalicon.png")}
+                        style={{
+                          width: 100,
+                          height: 100,
+                          marginBottom: 20,
+                          marginTop: 30,
+                        }}
+                      />
+
+                      <Text
+                        style={{
+                          fontSize: 32,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontWeight: "700",
+                          marginBottom: 10,
+                        }}
+                      >
+                        Successful!
+                      </Text>
+
+                      <Text
+                        style={{
+                          fontSize: 24,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          textAlign: "center",
+                          marginBottom: 20,
+                          fontWeight: "500",
+                          color: "rgba(0, 0, 0, 0.70)",
+                        }}
+                      >
+                        "Your Order Is {"\n"} Confirmed Successfully"
+                      </Text>
+
+                      <TouchableOpacity
+                        onPress={() => {
+                          setIsModalVisible(false);
+                          navigation.navigate("Home");
+                        }}
+                        style={{
+                          backgroundColor: "black",
+                          width: 189,
+                          height: 50,
+                          borderRadius: 10,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginVertical: 20,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "700",
+                            color: "white",
+                            paddingHorizontal: 15,
+                          }}
+                        >
+                          Continue Shopping
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              )}
+              {isfailed && (
+                <TouchableWithoutFeedback
+                  onPress={() => setIsModalVisible(false)}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: 360,
+                        height: 390,
+                        backgroundColor: "white",
+                        borderRadius: 25,
+                        alignItems: "center",
+                        padding: 5,
                       }}
                     >
                       <Text
                         style={{
-                          fontSize: 18,
-                          fontFamily: isFontLoaded ? 'Glory' : undefined,
-                          fontWeight: 700,
-                          color: "white",
-                          paddingHorizontal: 15,
+                          fontSize: 32,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontWeight: "700",
+                          marginBottom: 10,
+                          marginTop: 50,
                         }}
                       >
-                        Continue Shopping
+                        Failed
                       </Text>
-                    </TouchableOpacity>
+
+                      <Text
+                        style={{
+                          fontSize: 24,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          textAlign: "center",
+                          marginBottom: 20,
+                          fontWeight: "500",
+                          color: "rgba(0, 0, 0, 0.70)",
+                        }}
+                      >
+                        "Your Order Is {"\n"} Failed to Place.{"\n"} Please Try
+                        Again Later"
+                      </Text>
+
+                      <TouchableOpacity
+                        onPress={() => {
+                          setIsModalVisible(false);
+                          navigation.navigate("Home");
+                        }}
+                        style={{
+                          backgroundColor: "black",
+                          width: 189,
+                          height: 50,
+                          borderRadius: 10,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginVertical: 20,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "700",
+                            color: "white",
+                            paddingHorizontal: 15,
+                          }}
+                        >
+                          Continue Shopping
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+              )}
             </Modal>
           </ScrollView>
           <View
@@ -743,8 +860,8 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 400,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "400",
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -756,8 +873,8 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 500,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "500",
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -780,8 +897,8 @@ const Orderlist = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 400,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "400",
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -793,8 +910,8 @@ const Orderlist = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 500,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "500",
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -825,8 +942,8 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 400,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontWeight: "400",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -838,8 +955,8 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 500,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontWeight: "500",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -860,8 +977,8 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 400,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontWeight: "400",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -873,8 +990,8 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
-                              fontWeight: 500,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontWeight: "500",
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -918,18 +1035,19 @@ const Orderlist = (props) => {
                     padding: windowwidthe < 720 ? 12 : 20,
                     // padin
                     marginLeft: "2.5%",
-                    backgroundColor: "#212121",
+                    backgroundColor:destinationVal==""?"gray": "#212121",
                     borderRadius: 7.6,
-                    justifyContent: "center",
+                    justifyContent: "center"
                   }}
-                  onPress={showSuccessModal}
+                  onPress={()=>{showSuccessModal()}}
+                  disabled={destinationVal==""?true:false}
                 >
                   <Text
                     style={{
                       color: "white",
                       fontSize: width >= 720 ? 25 : 15,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 600,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "600",
                       textAlign: "center",
                     }}
                   >
@@ -948,7 +1066,6 @@ const Orderlist = (props) => {
                   width: "50%",
                   alignItems: "flex-end",
                   height: windowheight * 0.06,
-                  gap: 5,
                   paddingBottom: 20,
                   backgroundColor: "#FFF",
                 }}
@@ -957,8 +1074,8 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: width >= 720 ? 22 : 12,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 500,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "500",
                     }}
                   >
                     Total Price
@@ -968,8 +1085,8 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: width >= 720 ? 22 : 12,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 700,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "700",
                     }}
                   >
                     ₹{parseInt(totalrate + gstamount)}.00

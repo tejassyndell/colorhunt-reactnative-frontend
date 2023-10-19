@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import Swiper from "react-native-swiper";
-import  SliderStyles  from "./styles";
+import SliderStyles from "./styles";
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,10 +20,26 @@ const SliderScreen = (props) => {
   const Shopping = () => {
     navigation.navigate("Home");
   };
-  const styles = SliderStyles(); 
+  const styles = SliderStyles();
   // Calculate the image width and height based on screen width
   const imageWidth = width >= 720 ? 280 : 130;
   const imageHeight = height * 0.15; // 20% of screen height
+
+  const CustomPagination = ({ index, total }) => {
+    const dots = [];
+    for (let i = 0; i < total; i++) {
+      dots.push(
+        <View
+          key={i}
+          style={[
+            styles.paginationDot,
+            i === index ? styles.activePaginationDot : null,
+          ]}
+        />
+      );
+    }
+    return <View style={styles.paginationContainer}>{dots}</View>;
+  };
 
   return (
     <View style={styles.container}>
@@ -39,8 +55,9 @@ const SliderScreen = (props) => {
       <Swiper
         loop={false}
         showsPagination={true}
-        dotStyle={styles.paginationDot}
-        activeDotStyle={styles.activePaginationDot}
+        renderPagination={(index, total) => (
+          <CustomPagination index={index} total={total} />
+        )}
         autoplay={true}
       >
         <ImageBackground
@@ -173,7 +190,5 @@ const SliderScreen = (props) => {
     </View>
   );
 };
-
-
 
 export default SliderScreen;

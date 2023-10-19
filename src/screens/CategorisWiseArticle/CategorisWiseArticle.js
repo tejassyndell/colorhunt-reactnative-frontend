@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Platform,
   Modal,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 import {
   getProductName,
@@ -44,11 +46,34 @@ export default function CategorisWiseArticle(props) {
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
+  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+
+  // Add a listener to track keyboard visibility
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -82,14 +107,20 @@ export default function CategorisWiseArticle(props) {
 
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
+  const { width, height } = Dimensions.get("window");
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 110
+        : 80
+      : height >= 844
+      ? 110
+      : 65;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
-  const { width, height } = Dimensions.get("window");
-
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
   console.log(category);
@@ -196,8 +227,8 @@ export default function CategorisWiseArticle(props) {
             <Image
               style={{
                 resizeMode: "contain",
-                width: width >= 720 ? 55 : 32,
-                height: width >= 720 ? 55 : 32,
+                width: width >= 720 ? 55 : 35,
+                height: width >= 720 ? 55 : 35,
               }}
               source={require("../../../assets/Nevbar/Profile.png")}
             />
@@ -298,25 +329,33 @@ export default function CategorisWiseArticle(props) {
       </View>
       <View
         style={{
-          width: "100%",
+          width: "90%",
+          height: 180,
           justifyContent: "center",
           alignItems: "center",
-          elevation: 20,
-          borderColor: "gray",
-          shadowColor: "#c0c0c0",
-          borderRadius: 10,
+          borderRadius: 12,
+          backgroundColor: "#FFF",
+          shadowColor: "#000",
+          shadowOpacity: 0.2,
+          shadowOffset: {
+            width: 1,
+            height: 1,
+          },
+          elevation: 5,
+          marginTop: 10,
         }}
       >
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
-            width: "90%",
-            height: 180,
+            width: "100%",
+            height: "100%",
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
             zIndex: 1,
-            marginTop: 10,
+
+            // marginTop: 10,
           }}
         />
       </View>
@@ -444,7 +483,7 @@ export default function CategorisWiseArticle(props) {
               style={{
                 fontSize: width >= 720 ? 25 : 15,
                 fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: 700,
+                fontWeight: "700",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
@@ -460,7 +499,7 @@ export default function CategorisWiseArticle(props) {
               backgroundColor: "#FFF",
               width: "100%",
               height: "74%",
-              top: 20,
+              top: 10,
               paddingHorizontal: 10,
             }}
           >
@@ -470,8 +509,8 @@ export default function CategorisWiseArticle(props) {
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: "center", // Center vertically
-                    alignItems: "center", // Center horizontally
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
                   <Text
@@ -498,6 +537,10 @@ export default function CategorisWiseArticle(props) {
               />
             )}
           </View>
+          <KeyboardAvoidingView
+        behavior={isKeyboardOpen ? "padding" : null}
+        style={{ flex: 1 }}
+      >
           {isFilterVisible ? null : (
             <View
               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
@@ -505,7 +548,7 @@ export default function CategorisWiseArticle(props) {
               <ButtomNavigation navigation={navigation} page="home" />
             </View>
           )}
-
+             </KeyboardAvoidingView>
           {isFilterVisible && (
             <View
               style={{

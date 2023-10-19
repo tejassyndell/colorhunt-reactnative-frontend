@@ -16,7 +16,7 @@ export default function DrawerContainer(props) {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -95,7 +95,7 @@ export default function DrawerContainer(props) {
                 fontFamily: isFontLoaded ? "Glory" : undefined,
                 height: "auto",
 
-                fontWeight: 700,
+                fontWeight: "700",
                 width: "60%",
               }}
             >
@@ -241,8 +241,8 @@ export default function DrawerContainer(props) {
           <Image
             source={require("../../../assets/sidebaricons/image_98.png")}
             style={{
-              height: width >= 720 ? 200 : 161,
-              width: width >= 720 ? 200 : 161,
+              height: width >= 720 ? 200 : 150,
+              width: width >= 720 ? 200 : 150,
             }}
           />
           <Text

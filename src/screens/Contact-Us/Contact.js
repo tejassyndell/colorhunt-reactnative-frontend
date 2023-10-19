@@ -27,9 +27,15 @@ export default function Contact(props) {
   const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
-  const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
   const { width, height } = Dimensions.get("window");
+  const headerHeight =
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 720
+      ? 110
+      : 70;
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
   const multilineHeight = numberOfLines * lineHeight;
@@ -40,7 +46,7 @@ export default function Contact(props) {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -109,8 +115,8 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: 'Glory' ,
-              fontWeight: 700,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -136,23 +142,21 @@ export default function Contact(props) {
       color: "white",
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
-      fontFamily: 'Glory' ,
-      fontWeight: 700,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontWeight: "700",
     },
   });
   const windowWidth = Dimensions.get("window").width;
 
   return (
     <KeyboardAvoidingView
-      style={{ height:'100%' }}
-      behavior={Platform.OS === "android" ? "padding" : Platform.OS === "ios" ? "padding" : "height"}
-      
+      style={{ flex: 1, backgroundColor: "white" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 0.7 }}
         keyboardShouldPersistTaps="handled"
-        // showsHorizontalScrollIndicator={true}
-        showVerticalsScrollIndicator={true}
+        showsHorizontalScrollIndicator={true}
       >
         <View
           style={{
@@ -200,13 +204,20 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: 'Glory' ,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
 
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !username && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -228,12 +239,19 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: 'Glory' ,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !email && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -256,11 +274,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: width >= 720 ? 70 : 40,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: 'Glory' ,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
             />
             {showValidationErrors && !subject && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -288,11 +313,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: multilineHeight,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: 'Glory' ,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
             />
             {showValidationErrors && !message && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: 'Glory' , marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -301,7 +333,7 @@ export default function Contact(props) {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginTop: width >= 720 ? 100 : 60,
+              marginTop: height >= 720 ? 90 : 45,
             }}
           >
             <TouchableOpacity
@@ -313,7 +345,7 @@ export default function Contact(props) {
           </View>
         </View>
       </ScrollView>
-      <View style={{ sitiopon: "absolute", bottom: 0, left: 0, right: 0 }}>
+      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
         <ButtomNavigation navigation={navigation} page="contactus" />
       </View>
     </KeyboardAvoidingView>

@@ -15,10 +15,13 @@ import React, { useState } from "react";
 import { ThemeProvider, useRoute } from "@react-navigation/native";
 import { Table, Row, Rows } from "react-native-table-component";
 import Textarea from "react-native-textarea";
-import { getSoArticleDetails } from "../../api/api";
+import { getSoArticleDetails, getcompleteoutwordDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
-
+import { printToFileAsync } from "expo-print";
+import { shareAsync } from "expo-sharing";
+import * as Location from "expo-location";
+import * as FileSystem from "expo-file-system";
 // import RNHTMLtoPDF from "react-native-html-to-pdf"
 
 const OrderDetails = (props) => {
@@ -29,7 +32,7 @@ const OrderDetails = (props) => {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -49,6 +52,8 @@ const OrderDetails = (props) => {
     endyear = 0,
     startyear = 0,
     OutwardNumber = 0,
+    outwardArticleId = [],
+    OutwardNumberId = "",
   } = route.params;
   console.log(remarks, "{}{}{}{}{}{}{}{}");
   const [newPrint, setNewPrint] = useState(false);
@@ -57,7 +62,13 @@ const OrderDetails = (props) => {
   const [partydata, setpartydata] = useState();
   const [sodetails, setsodetials] = useState([]);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 110
+        : 60
+      : height >= 844
+      ? 110
+      : 65;
 
   console.log(newPrint);
 
@@ -85,8 +96,8 @@ const OrderDetails = (props) => {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
-              fontWeight: 700,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -102,8 +113,8 @@ const OrderDetails = (props) => {
   }, []);
   const widthArr =
     width >= 720
-      ? [40, 200, 100, 60, 250, 100, 100, 100]
-      : [40, 200, 100, 60, 200, 90, 100, 100];
+      ? [40, 130, 150, 80, 250, 100, 100, 100]
+      : [40, 130, 150, 80, 200, 90, 100, 100];
 
   // Calculate column-wise total
   const columnTotals = tableData
@@ -122,9 +133,13 @@ const OrderDetails = (props) => {
   const transformSodetailsToTableData = (sodetails) => {
     return sodetails.map((item, index) => {
       // Parse ArticleSize JSON string to extract sizes
-      const sizes = JSON.parse(item.ArticleSize)
-        .map((sizeObj) => sizeObj.Name)
-        .join(", ");
+
+      const sizes =
+        item.ArticleSize.length > 0
+          ? JSON.parse(item.ArticleSize)
+              .map((sizeObj) => sizeObj.Name)
+              .join(", ")
+          : "";
 
       // Parse ArticleColor JSON string to extract color names
       const colors =
@@ -144,45 +159,36 @@ const OrderDetails = (props) => {
       );
 
       // Combine ArticleColor and OutwardNoPacks
-      const colorPacksCombination = (
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {colors.length > 0
-            ? colors.map((color, i) => (
-                <Text key={i} style={{ marginHorizontal: 2 }}>
-                  <Text style={{ fontWeight: "bold" }}>
-                    {color ? color : "--"}:
-                  </Text>
-                  {String(outwardNoPacksArray[i] || 0).padStart(2, "0")}
-                  <Text>,</Text>
-                </Text>
-              ))
-            : outwardNoPacksArray.map((nopack, i) => (
-                <Text key={i} style={{ marginHorizontal: 2 }}>
-                  <Text style={{ fontWeight: "bold" }}>--:</Text>
-                  {String(nopack || 0).padStart(2, "0")}
-                  <Text>,</Text>
-                </Text>
-              ))}
-        </View>
-      );
+      const colorPacksCombination = () => {
+        const combinedTextArray = [];
+
+        if (colors.length > 0) {
+          colors.forEach((color, i) => {
+            const textValue = `${color ? color : "--"}:${String(
+              outwardNoPacksArray[i] || 0
+            ).padStart(2, "0")}`;
+            combinedTextArray.push(textValue);
+          });
+        } else {
+          outwardNoPacksArray.forEach((nopack) => {
+            const textValue = `--:${String(nopack || 0).padStart(2, "0")}`;
+            combinedTextArray.push(textValue);
+          });
+        }
+
+        const combinedText = combinedTextArray.join(",");
+        return combinedText;
+      };
 
       // Calculate the total amount for this item
       const totalAmount = item.ArticleRate * totalQuantity;
-
+      const combinedText = "";
       return [
         (index + 1).toString(), // SN
+        item.ArticleNumber,
         item.Title, // ARTICLE
-        item.CategoryId.toString(), // CATEGORY (You may need to map CategoryId to the actual category name)
         sizes, // SIZE's
-        colorPacksCombination, // COLOR:PACKS combination
+        colorPacksCombination(), // COLOR:PACKS combination
         totalQuantity.toString(), // TOTAL QTY
         "₹" + item.ArticleRate + ".00", // RATE
         "₹" + totalAmount.toFixed(2), // AMOUNT
@@ -236,12 +242,18 @@ const OrderDetails = (props) => {
     });
     settotalqty(totalOutwardNoPacks);
   };
+  const getgstamount = (val) => {
+    console.log(typeof val);
+    let gsttotal = val * 0.05;
+    let totalamount = val + gsttotal;
+    return parseInt(totalamount);
+  };
   const orderdetils = async () => {
     let ptdata = await AsyncStorage.getItem("UserData");
     ptdata = JSON.parse(ptdata);
     if (ptdata !== null) {
       setpartydata(ptdata);
-      console.log(ptdata);
+      console.log(ptdata, "[][][][[][][][][]=-gnfgdgf");
     } else {
       console.log("No data found");
     }
@@ -264,31 +276,66 @@ const OrderDetails = (props) => {
       party_id: ptdata[0].Id,
       CreatedDate: formattedDateTime,
     };
-    await getSoArticleDetails(data).then((res) => {
-      if (res.status === 200) {
-        console.log(res.data);
-        setTableData({
-          tableHead: [
-            "SN",
-            "ARTICLE",
-            "CATEGORY",
-            "SIZES",
-            "COLORWISE QTY IN PCS",
-            "TOTAL QTY",
-            "RATE",
-            "AMOUNT",
-          ],
-          tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
-        });
+    console.log(outwardArticleId.length, "OPOPOPOPOPOPO");
 
-        settotle(res.data);
-        settotalqut(res.data);
-        setsodetials(res.data);
-        setIsLoading(false);
+    if (outwardArticleId.length > 0) {
+      let ptdata = await AsyncStorage.getItem("UserData");
+      ptdata = await JSON.parse(ptdata);
+      await getcompleteoutwordDetails({
+        articlearray: outwardArticleId,
+        OutwardNumberId: OutwardNumberId,
+        PartyId: ptdata[0].Id,
+      }).then((res) => {
+        console.log(res.data, "(((((((((((((((");
+        if (res.status === 200) {
+          setTableData({
+            tableHead: [
+              "SN",
+              "ARTICLE",
+              "CATEGORY",
+              "SIZES",
+              "COLORWISE QTY IN PCS",
+              "TOTAL QTY",
+              "RATE",
+              "AMOUNT",
+            ],
+            tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
+          });
 
-        // console.log(res.data);
-      }
-    });
+          settotle(res.data);
+          settotalqut(res.data);
+          setsodetials(res.data);
+          setIsLoading(false);
+          // console.log(res.data);
+        }
+      });
+    } else {
+      console.log("jdjjdjdjjdjdjdjdjdjdjjdjdjdjddjdjdjj");
+      await getSoArticleDetails(data).then((res) => {
+        if (res.status === 200) {
+          setTableData({
+            tableHead: [
+              "SN",
+              "ARTICLE",
+              "CATEGORY",
+              "SIZES",
+              "COLORWISE QTY IN PCS",
+              "TOTAL QTY",
+              "RATE",
+              "AMOUNT",
+            ],
+            tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
+          });
+
+          settotle(res.data);
+          settotalqut(res.data);
+          setsodetials(res.data);
+          setIsLoading(false);
+
+          // console.log(res.data);
+        }
+      });
+    }
   };
   const calculateRowHeight = (rowData) => {
     // You can adjust this logic based on your data and requirements
@@ -304,13 +351,179 @@ const OrderDetails = (props) => {
   useEffect(() => {
     console.log(sodetails);
   }, [sodetails]);
+  const GSThtmltable = () => {
+    if (partydata) {
+      if (partydata[0].GSTType === "GST") {
+        return ` 
+        <tr>
+          <td colspan="5" style="text-align: end; font-weight: bold"></td>
+          <td colspan="1"></td>
+          <td colspan="1">GST 5%</td>
+          <td colspan="1">${`₹${parseInt(totalval * 0.05)}.00`}</td>
+        </tr>
+        <tr>
+        <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
+        <td colspan="1"></td>
+        <td colspan="1"></td>
+        <td colspan="1">${`₹${getgstamount(totalval)}.00`}</td>
+    </tr>`;
+      } else if (partydata[0].GSTType === "IGST") {
+        return ` 
+        <tr>
+          <td colspan="5" style="text-align: end; font-weight: bold"></td>
+          <td colspan="1"></td>
+          <td colspan="1">SGST 2.5%</td>
+          <td colspan="1">${`₹${parseInt(totalval * 0.025)}.00`}</td>
+        </tr>
+        <tr>
+          <td colspan="5" style="text-align: end; font-weight: bold"></td>
+          <td colspan="1"></td>
+          <td colspan="1">CGST 2.5%</td>
+          <td colspan="1">${`₹${parseInt(totalval * 0.025)}.00`}</td>
+        </tr>
+        <tr>
+        <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
+        <td colspan="1"></td>
+        <td colspan="1"></td>
+        <td colspan="1">${`₹${getgstamount(totalval)}.00`}</td>
+    </tr>`;
+      } else {
+        return ""; // Return an empty string if no GSTType match
+      }
+    }
+    return ""; // Return an empty string if partydata is empty
+  };
 
-  const generatePDF = async () => {};
-  const getgstamount = (val) => {
-    console.log(typeof val);
-    let gsttotal = val * 0.05;
-    let totalamount = val + gsttotal;
-    return parseInt(totalamount);
+  // Call GSThtmltable function to generate the HTML content
+  const GSThtmlContent = GSThtmltable();
+  const htmlTableData = tableData.tableData
+    ? tableData.tableData.map((rowData) => {
+        console.log(rowData[4]);
+        return `
+        <tr>
+          <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>
+          <td colspan="1" style="text-transform: uppercase">${rowData[1]}</td>
+          <td colspan="1" style="text-transform: uppercase">${rowData[2]}</td>
+          <td colspan="1" style="text-transform: uppercase">${rowData[3]}</td>
+          <td colspan="1" style="text-transform: uppercase">${rowData[4]}</td>
+          <td colspan="1" style="text-transform: uppercase">${rowData[5]}</td>
+          <td colspan="1" style="text-transform: uppercase">${rowData[6]}</td>
+          <td colspan="1" style="text-transform: uppercase">${rowData[7]}</td>
+        </tr>
+      `;
+      })
+    : [];
+
+  const html = `
+    <html>
+    <body>
+    <table border="1" cellspacing="0" cellpadding="10" width="100%">
+        <tr>
+            <td colspan="12" style="text-align: center; font-weight: bold">SALES ORDER</td>
+        </tr>
+        <tr>
+            <td colspan="12" style="text-align: center; background-color: black; color: white;font-weight: bold">
+                COLORHUNT
+            </td>
+        </tr>
+        <tr>
+            <td style="text-transform: uppercase" colspan="9">
+                <strong>PARTY:</strong>${partydata ? partydata[0].Name : ""}
+            </td>
+            <td style="text-transform: uppercase" colspan="1">
+                <strong>DATE:</strong>
+            </td>
+            <td style="text-transform: uppercase" colspan="2">${new Date(
+              CreatedDate
+            ).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            })}</td>
+        </tr>
+        <tr>
+            <td style="text-transform: uppercase" colspan="9">
+                <strong>ADDRESS:</strong>${
+                  partydata ? partydata[0].Address : "Address"
+                }
+            </td>
+            <td style="text-transform: uppercase" colspan="1">
+                <strong>SO NO:</strong>
+            </td>
+            <td style="text-transform: uppercase" colspan="2">
+               ${`${name}${
+                 OutwardNumber !== 0 ? OutwardNumber : sonumber
+               }/${startyear}-${endyear}`}
+            </td>
+        </tr>
+        <tr>
+            <td style="text-transform: uppercase" colspan="12">
+                <strong>TRANSPORT:</strong>${
+                  transport !== null ? transport : "Transport"
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="12"><strong>GST:</strong>${
+              partydata
+                ? partydata[0].GSTNumber !== null
+                  ? partydata[0].GSTNumber
+                  : "GST"
+                : "GST"
+            }</td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <table border="1" cellspacing="0" cellpadding="10" width="100%">
+        <tr>
+            <td colspan="1" style="font-weight: bold">SN</td>
+            <td colspan="1" style="font-weight: bold">ARTICLE</td>
+            <td colspan="1" style="font-weight: bold">CATEGORY</td>
+            <td colspan="1" style="font-weight: bold">SIZES</td>
+            <td colspan="1" style="font-weight: bold">COLORWISE QTY IN PCS</td>
+            <td colspan="1" style="font-weight: bold">TOTAL QTY</td>
+            <td colspan="1" style="font-weight: bold">RATE</td>
+            <td colspan="1" style="font-weight: bold">AMOUNT</td>
+        </tr>
+        ${htmlTableData.join("")}
+        <tr>
+            <td colspan="5" style="text-align: end; font-weight: bold">SUBTOTAL</td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1">${`₹${totalval}.00`}</td>
+        </tr>
+        ${GSThtmlContent}
+    </table>
+</body>
+    </html>
+  `;
+  const generatePDF = async () => {
+    console.log(tableData.tableData);
+    try {
+      if (Platform.OS === "android") {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.error("Location permission not granted");
+          return;
+        }
+      } else if (Platform.OS === "ios") {
+        const { granted } =
+          await FileSystem.requestForegroundPermissionsAsync();
+        if (!granted) {
+          console.error("File system permission not granted");
+          return;
+        }
+      }
+
+      // Generate PDF from HTML content
+      const pdfFile = await printToFileAsync({ html: html, base64: false });
+
+      // Share the generated PDF
+      await shareAsync(pdfFile.uri);
+    } catch (error) {
+      console.error("Error generating and sharing PDF:", error);
+    }
   };
 
   return (
@@ -342,8 +555,8 @@ const OrderDetails = (props) => {
                 <Text
                   style={{
                     fontSize: 30,
-                    fontFamily: isFontLoaded ? 'Glory' : undefined,
-                    fontWeight: 700,
+                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontWeight: "700",
                     color: "#FFFFFF",
                     textAlign: "center",
                   }}
@@ -376,7 +589,7 @@ const OrderDetails = (props) => {
                             fontWeight: "bold",
                             paddingLeft: 3,
                             fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                             paddingTop: width >= 720 ? 10 : 9,
                           }}
                         >
@@ -385,9 +598,9 @@ const OrderDetails = (props) => {
                             style={{
                               borderRightWidth: 2,
                               fontSize: width >= 720 ? 18 : 15,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
                               borderColor: "#000000",
-                              fontWeight: 400,
+                              fontWeight: "400",
                               paddingLeft: 3,
                               paddingTop: width >= 720 ? 10 : 9,
                             }}
@@ -405,7 +618,7 @@ const OrderDetails = (props) => {
                             fontWeight: "bold",
                             paddingTop: width >= 720 ? 10 : 9,
                             fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           DATE:
@@ -414,11 +627,11 @@ const OrderDetails = (props) => {
                           style={{
                             width: 100,
                             textAlign: "center",
-                            fontWeight: 400,
+                            fontWeight: "400",
                             paddingLeft: 5,
                             paddingTop: width >= 720 ? 10 : 9,
                             fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           15/06/2023
@@ -442,7 +655,7 @@ const OrderDetails = (props) => {
                             paddingLeft: 3,
                             fontSize: width >= 720 ? 18 : 15,
                             paddingTop: width >= 720 ? 10 : 9,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           ADDRESS :{" "}
@@ -450,7 +663,7 @@ const OrderDetails = (props) => {
                             style={{
                               borderRightWidth: 2,
                               borderColor: "#000000",
-                              fontWeight: 400,
+                              fontWeight: "400",
                               paddingLeft: 3,
                               paddingTop: width >= 720 ? 10 : 9,
                             }}
@@ -468,7 +681,7 @@ const OrderDetails = (props) => {
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 15,
                             paddingTop: width >= 720 ? 10 : 9,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           SO NO:
@@ -478,10 +691,10 @@ const OrderDetails = (props) => {
                             width: width >= 720 ? 200 : 160,
                             textAlign: "center",
 
-                            fontWeight: 400,
+                            fontWeight: "400",
                             fontSize: width >= 720 ? 18 : 15,
                             paddingTop: width >= 720 ? 10 : 9,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >{`${name}${sonumber}/${startyear}-${endyear}`}</Text>
                       </View>
@@ -501,7 +714,7 @@ const OrderDetails = (props) => {
                             fontWeight: "bold",
                             paddingLeft: 3,
                             fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                             paddingTop: width >= 720 ? 10 : 9,
                           }}
                         >
@@ -525,7 +738,7 @@ const OrderDetails = (props) => {
                             fontWeight: "bold",
                             paddingLeft: 3,
                             fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                             paddingTop: width >= 720 ? 10 : 9,
                           }}
                         >
@@ -534,7 +747,7 @@ const OrderDetails = (props) => {
                             style={{
                               borderRightWidth: 2,
                               borderColor: "#000000",
-                              fontWeight: 400,
+                              fontWeight: "400",
                               paddingLeft: 3,
                               paddingTop: width >= 720 ? 10 : 9,
                             }}
@@ -549,7 +762,7 @@ const OrderDetails = (props) => {
                             textAlign: "center",
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                             paddingTop: width >= 720 ? 10 : 9,
                           }}
                         >
@@ -559,7 +772,7 @@ const OrderDetails = (props) => {
                           style={{
                             width: 160,
                             textAlign: "center",
-                            fontWeight: 400,
+                            fontWeight: "400",
                             paddingTop: width >= 720 ? 10 : 9,
                           }}
                         ></Text>
@@ -576,7 +789,7 @@ const OrderDetails = (props) => {
                             textAlign: "center",
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                           style={{
                             height: 60,
@@ -604,7 +817,7 @@ const OrderDetails = (props) => {
                               margin: 6,
                               textAlign: "center",
                               fontSize: width >= 720 ? 16 : 13,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
                             }}
                             style={{
                               height: width >= 720 ? 50 : "auto",
@@ -693,7 +906,12 @@ const OrderDetails = (props) => {
                   }}
                 >
                   <Text
-                    style={{ fontSize: 30,fontFamily: isFontLoaded ? 'Glory' : undefined, fontWeight: 700, color: "#FFFFFF" }}
+                    style={{
+                      fontSize: 30,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "700",
+                      color: "#FFFFFF",
+                    }}
                   >
                     {name}
                   </Text>
@@ -702,8 +920,8 @@ const OrderDetails = (props) => {
                   style={{
                     color: "#808080",
                     fontSize: width >= 720 ? 25 : 20,
-                    fontFamily: isFontLoaded ? 'Glory' : undefined,
-                    fontWeight: 700,
+                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontWeight: "700",
                   }}
                 >
                   Date:{" "}
@@ -711,8 +929,8 @@ const OrderDetails = (props) => {
                     style={{
                       color: "#000000",
                       fontSize: width >= 720 ? 25 : 20,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 700,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "700",
                     }}
                   >
                     {new Date(CreatedDate).toLocaleDateString("en-GB", {
@@ -726,115 +944,25 @@ const OrderDetails = (props) => {
               <View
                 style={{
                   flex: 1,
-                  paddingHorizontal: 20,
                 }}
               >
-                <View>
-                  <Text
-                    style={{
-                      fontSize: width < 720 ? width * 0.04 : 24,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 500,
-                      color: "#808080",
-                    }}
-                  >
-                    Name:
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    height: width >= 720 ? 45 : 35,
-                    width: "100%",
-                    borderWidth: 2,
-                    borderRadius: 6,
-                    borderColor: "#000000",
-                    paddingStart: 10,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: width >= 720 ? 20 : 16,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      color: "#000000",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {partydata ? partydata[0].Name : ""}
-                  </Text>
-                </View>
-
-                <View style={{ marginTop: 10 }}>
-                  <Text
-                    style={{
-                      fontSize: width < 720 ? width * 0.04 : 24,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 500,
-                      color: "#808080",
-                    }}
-                  >
-                    Address:
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    textAlignVertical: "top",
-                    height: width >= 720 ? 200 : 170,
-                    height: width >= 720 ? 120 : 80,
-                    padding: 5,
-                    borderWidth: 2,
-                    borderRadius: 6,
-                    borderColor: "#000000",
-                    backgroundColor: "#FFFFFF",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: width >= 720 ? 20 : 16,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: "bold",
-                      color: partydata ? "#000000" : "#00000080",
-                    }}
-                  >
-                    {partydata ? partydata[0].Address : "Address"}
-                  </Text>
-                </View>
-                <View style={{ marginTop: 10, flexDirection: "row" }}>
-                  <View style={{ flex: 1.1 }}>
+                <View style={{ paddingHorizontal: 20 }}>
+                  <View>
                     <Text
                       style={{
                         fontSize: width < 720 ? width * 0.04 : 24,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 500,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "500",
                         color: "#808080",
                       }}
                     >
-                      SoNumber:
+                      Name:
                     </Text>
                   </View>
-                  <View style={{ flex: 1 }}>
-                    <Text
-                      style={{
-                        fontSize: width < 720 ? width * 0.04 : 24,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        fontWeight: 500,
-                        color: "#808080",
-                      }}
-                    >
-                      Transport:
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
                   <View
                     style={{
                       height: width >= 720 ? 45 : 35,
-                      width: "48%",
+                      width: "100%",
                       borderWidth: 2,
                       borderRadius: 6,
                       borderColor: "#000000",
@@ -845,99 +973,189 @@ const OrderDetails = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 20 : 16,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         color: "#000000",
                         fontWeight: "bold",
-                      }}
-                      adjustsFontSizeToFit={true}
-                      numberOfLines={1}
-                    >{`${name}${
-                      OutwardNumber !== 0 ? OutwardNumber : sonumber
-                    }/${startyear}-${endyear}`}</Text>
-                  </View>
-
-                  <View
-                    style={{
-                      height: width >= 720 ? 45 : 35,
-                      width: "48%",
-                      borderWidth: 2,
-                      borderRadius: 6,
-                      borderColor: transport !== null ? "black" : "#808080",
-                      paddingStart: 10,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: width >= 720 ? 20 : 16,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        color: "#000000",
-                        fontWeight: "bold",
-                        color: transport !== null ? "black" : "#00000080",
                       }}
                     >
-                      {transport !== null ? transport : "Transport"}
+                      {partydata ? partydata[0].Name : ""}
                     </Text>
                   </View>
-                </View>
-                <View style={{ marginTop: 10 }}>
-                  <Text
-                    style={{
-                      fontSize: width < 720 ? width * 0.04 : 24,
-                      fontFamily: isFontLoaded ? 'Glory' : undefined,
-                      fontWeight: 500,
-                      color: "#808080",
-                    }}
-                  >
-                    GST:
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    flexWrap: "nowrap",
-                  }}
-                >
+
+                  <View style={{ marginTop: 10 }}>
+                    <Text
+                      style={{
+                        fontSize: width < 720 ? width * 0.04 : 24,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "500",
+                        color: "#808080",
+                      }}
+                    >
+                      Address:
+                    </Text>
+                  </View>
                   <View
                     style={{
-                      height: width >= 720 ? 45 : 35,
-                      width: "100%",
+                      textAlignVertical: "top",
+                      height: width >= 720 ? 120 : 80,
+                      padding: 5,
                       borderWidth: 2,
                       borderRadius: 6,
-                      borderColor:
-                        partydata.length > 0
-                          ? partydata[0].GSTNumber !== null
-                            ? "black"
-                            : "#00000080"
-                          : "#00000080",
-                      paddingStart: 10,
-                      justifyContent: "center",
+                      borderColor: "#000000",
+                      backgroundColor: "#FFFFFF",
                     }}
                   >
                     <Text
                       style={{
                         fontSize: width >= 720 ? 20 : 16,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
-                        color: "#000000",
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "bold",
-                        color:
+                        color: partydata ? "#000000" : "#00000080",
+                      }}
+                    >
+                      {partydata
+                        ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}-${partydata[0].PinCode}.`
+                        : "Address"}
+                      {console.log(partydata, "skhvchgvsacjvsjdc hasvcjvsdc")}
+                    </Text>
+                  </View>
+                  <View style={{ marginTop: 10, flexDirection: "row" }}>
+                    <View style={{ flex: 1.1 }}>
+                      <Text
+                        style={{
+                          fontSize: width < 720 ? width * 0.04 : 24,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontWeight: "500",
+                          color: "#808080",
+                        }}
+                      >
+                        SoNumber:
+                      </Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        style={{
+                          fontSize: width < 720 ? width * 0.04 : 24,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontWeight: "500",
+                          color: "#808080",
+                        }}
+                      >
+                        Transport:
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View
+                      style={{
+                        height: width >= 720 ? 45 : 35,
+                        width: "48%",
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        borderColor: "#000000",
+                        paddingStart: 10,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: width >= 720 ? 20 : 16,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          color: "#000000",
+                          fontWeight: "bold",
+                        }}
+                        adjustsFontSizeToFit={true}
+                        numberOfLines={1}
+                      >{`${name}${
+                        OutwardNumber !== 0 ? OutwardNumber : sonumber
+                      }/${startyear}-${endyear}`}</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        height: width >= 720 ? 45 : 35,
+                        width: "48%",
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        borderColor: transport !== null ? "black" : "#808080",
+                        paddingStart: 10,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: width >= 720 ? 20 : 16,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontWeight: "bold",
+                          color: transport !== null ? "black" : "#00000080",
+                        }}
+                      >
+                        {transport !== null ? transport : "Transport"}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ marginTop: 10 }}>
+                    <Text
+                      style={{
+                        fontSize: width < 720 ? width * 0.04 : 24,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "500",
+                        color: "#808080",
+                      }}
+                    >
+                      GST:
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      flexWrap: "nowrap",
+                    }}
+                  >
+                    <View
+                      style={{
+                        height: width >= 720 ? 45 : 35,
+                        width: "100%",
+                        borderWidth: 2,
+                        borderRadius: 6,
+                        borderColor:
                           partydata.length > 0
                             ? partydata[0].GSTNumber !== null
                               ? "black"
                               : "#00000080"
                             : "#00000080",
+                        paddingStart: 10,
+                        justifyContent: "center",
                       }}
                     >
-                      {partydata.length > 0
-                        ? partydata[0].GSTNumber !== null
-                          ? partydata[0].GSTNumber
-                          : "GST"
-                        : "GST"}
-                    </Text>
-                  </View>
+                      <Text
+                        style={{
+                          fontSize: width >= 720 ? 20 : 16,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontWeight: "bold",
+                          color:
+                            partydata.length > 0
+                              ? partydata[0].GSTNumber !== null
+                                ? "black"
+                                : "#00000080"
+                              : "#00000080",
+                        }}
+                      >
+                        {partydata.length > 0
+                          ? partydata[0].GSTNumber !== null
+                            ? partydata[0].GSTNumber
+                            : "GST"
+                          : "GST"}
+                      </Text>
+                    </View>
 
-                  {/* <View
+                    {/* <View
                                         style={{
                                             height: width >= 720 ? 45 : 35,
                                             width: '48%',
@@ -956,12 +1174,17 @@ const OrderDetails = (props) => {
                                             color: remarks !== "" ? "black" : "#00000080"
                                         }}>{remarks !== "" ? remarks : "Remarks"}</Text>
                                     </View> */}
+                  </View>
                 </View>
                 <View>
                   <ScrollView
                     nestedScrollEnabled={true}
                     keyboardShouldPersistTaps="handled"
-                    style={{ maxWidth: "100%", backgroundColor: "#fff" }}
+                    style={{
+                      maxWidth: "100%",
+                      backgroundColor: "#fff",
+                      marginBottom: 280,
+                    }}
                   >
                     <ScrollView
                       horizontal={true}
@@ -982,7 +1205,7 @@ const OrderDetails = (props) => {
                                 textAlign: "center",
                                 fontWeight: "bold",
                                 fontSize: width >= 720 ? 18 : 15,
-                                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                fontFamily: isFontLoaded ? "Glory" : undefined,
                               }}
                               style={{
                                 height: 60,
@@ -993,35 +1216,35 @@ const OrderDetails = (props) => {
                           </Table>
                         </View>
                         <View>
-                          <ScrollView
+                          {/* <ScrollView
                             vertical={true}
-                            style={{ maxHeight: width >= 720 ? 450 : 80 }}
+                            style={{ maxHeight: width >= 720 ? 450 : 180 }}
+                          > */}
+                          <Table
+                            borderStyle={{
+                              borderWidth: 2,
+                              borderColor: "#000000",
+                            }}
                           >
-                            <Table
-                              borderStyle={{
-                                borderWidth: 2,
-                                borderColor: "#000000",
+                            {/* Data Rows */}
+                            <Rows
+                              data={tableData ? tableData.tableData : ""}
+                              textStyle={{
+                                margin: 6,
+                                textAlign: "center",
+                                fontSize: width >= 720 ? 16 : 13,
+                                fontFamily: isFontLoaded ? "Glory" : undefined,
                               }}
-                            >
-                              {/* Data Rows */}
-                              <Rows
-                                data={tableData ? tableData.tableData : ""}
-                                textStyle={{
-                                  margin: 6,
-                                  textAlign: "center",
-                                  fontSize: width >= 720 ? 16 : 13,
-                                  fontFamily: isFontLoaded ? 'Glory' : undefined,
-                                }}
-                                style={({ index }) => ({
-                                  height: calculateRowHeight(
-                                    tableData.tableData[index]
-                                  ), // Call a function to calculate row height based on content
-                                  width: "auto",
-                                })}
-                                widthArr={widthArr} // Apply column widths to the data rows
-                              />
-                            </Table>
-                          </ScrollView>
+                              style={({ index }) => ({
+                                height: calculateRowHeight(
+                                  tableData.tableData[index]
+                                ), // Call a function to calculate row height based on content
+                                width: "auto",
+                              })}
+                              widthArr={widthArr} // Apply column widths to the data rows
+                            />
+                          </Table>
+                          {/* </ScrollView> */}
 
                           <ScrollView>
                             <View
@@ -1044,7 +1267,7 @@ const OrderDetails = (props) => {
                                   paddingTop: width >= 720 ? 10 : 9,
                                 }}
                               >
-                                TOTAL
+                                SUBTOTAL
                               </Text>
                               <Text
                                 style={{
@@ -1113,8 +1336,6 @@ const OrderDetails = (props) => {
                                   <Text
                                     style={{
                                       width: 100,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
                                       borderRightWidth: 2,
                                       borderColor: "#000000",
                                       textAlign: "center",
@@ -1229,8 +1450,6 @@ const OrderDetails = (props) => {
                                       width: 100,
                                       borderRightWidth: 2,
                                       borderColor: "#000000",
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
                                       textAlign: "center",
                                       fontWeight: "bold",
                                       paddingTop: width >= 720 ? 10 : 9,
@@ -1281,8 +1500,6 @@ const OrderDetails = (props) => {
                                   <Text
                                     style={{
                                       width: 100,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
                                       borderRightWidth: 2,
                                       borderColor: "#000000",
                                       textAlign: "center",
@@ -1368,25 +1585,22 @@ const OrderDetails = (props) => {
                   </ScrollView>
                 </View>
               </View>
+
               <View>
                 <TouchableOpacity
-                  onPress={() => generatePDF()}
+                  onPress={generatePDF}
                   style={{ alignItems: "flex-end", marginRight: 10 }}
                 >
-                  {/* <Text style={{
-                                width: width >= 720 ? 40 : 30,
-                                height: width >= 720 ? 40 : 30,
-                                backgroundColor: '#000000', color: '#FFFFFF', borderRadius: 5, textAlign: 'center', fontSize: width >= 720 ? 24 : 19, fontWeight: 'bold'
-                            }}>2</Text> */}
                   <View
                     style={{
                       width: width >= 720 ? 70 : 50,
                       height: width >= 720 ? 70 : 50,
-                      borderRadius: 5,
+                      backgroundColor: "white",
+                      borderRadius: 10,
                     }}
                   >
                     <Image
-                      source={require("../../../assets/pdf.png")}
+                      source={require("../../../assets/PDFImage.png")}
                       style={{
                         width: "100%",
                         height: "100%",

@@ -10,7 +10,7 @@ const SliderStyles = () => {
     const loadCustomFont = async () => {
       try {
         await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory-Regular.ttf"),
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
         });
         setIsFontLoaded(true);
       } catch (error) {
@@ -39,7 +39,7 @@ const logoSize = Math.min(width, height) * 0.6;
       color: "white",
       fontSize: windowWidth * 0.07,
   
-      fontWeight: 700,
+      fontWeight: "700",
       marginBottom: "2%",
     },
     subtitle: {
@@ -47,7 +47,7 @@ const logoSize = Math.min(width, height) * 0.6;
       color: "#BCBCBC",
       fontSize: windowWidth * 0.04,
   
-      fontWeight: 700,
+      fontWeight: "700",
       marginBottom: 80,
     },
     input: {
@@ -96,7 +96,7 @@ const logoSize = Math.min(width, height) * 0.6;
       fontFamily: isFontLoaded ? 'Glory' : undefined,
       color: "white",
       fontSize: width >= 720 ? 40 : 23,
-      fontWeight: 700,
+      fontWeight: "700",
       textAlign: "center",
     },
     phoneIcon: {

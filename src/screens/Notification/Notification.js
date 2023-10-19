@@ -10,14 +10,13 @@ import {
   SafeAreaView,
   Platform,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import * as Notifications from "expo-notifications";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 
 const { width, height } = Dimensions.get("window");
 export default function Notification(props) {
@@ -121,7 +120,7 @@ export default function Notification(props) {
 
   const sendNotification = async () => {
     try {
-      await fetch("http://10.0.2.2:4000/getNotification", {
+      await fetch("https://colorhunt-server.sincprojects.com/getNotification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,13 +132,25 @@ export default function Notification(props) {
         }),
       });
       console.log("Notification sent successfully");
+
+      // Schedule a local notification for iOS
+      if (Platform.OS === "ios") {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: title,
+            body: bodydec,
+          },
+          trigger: { seconds: 2 },
+        });
+      }
     } catch (error) {
       console.error("Error sending notification:", error);
     }
   };
+
   const sendAllNotification = async () => {
     try {
-      await fetch("http://10.0.2.2:4000/getNotification", {
+      await fetch("https://colorhunt-server.sincprojects.com/getNotification", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +179,7 @@ export default function Notification(props) {
         data.push(notificationData);
         console.log(data);
         // Display the notification in the Expo app using Expo's built-in notification UI
-        Notifications.presentNotificationAsync({
+        Notifications.scheduleNotificationAsync({
           title: title,
           body: body,
         });
@@ -182,14 +193,14 @@ export default function Notification(props) {
 
   return (
     <View style={styles.container}>
-      {/* {notificationData && (
+      {notificationData && (
         <View style={styles.notificationContainer}>
           <Text style={styles.notificationTitle}>Received Notification:</Text>
-          <Text style={{ width: '100%' }}>{notificationData.title}</Text>
+          <Text style={{ width: "100%" }}>{notificationData.title}</Text>
           <Text>{notificationData.body}</Text>
         </View>
       )}
-      <SafeAreaView style={{ width: '90%' }}>
+      <SafeAreaView style={{ width: "90%" }}>
         <TextInput
           style={styles.input}
           onChangeText={setTitle}
@@ -203,23 +214,28 @@ export default function Notification(props) {
       </SafeAreaView>
 
       <TouchableOpacity
-        style={{ backgroundColor: 'gray', padding: 10, borderRadius: 5 }}
+        style={{ backgroundColor: "gray", padding: 10, borderRadius: 5 }}
         onPress={sendNotification}
       >
-        <Text style={{ color: 'white' }}>Send Notification</Text>
+        <Text style={{ color: "white" }}>Send Notification</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={{ backgroundColor: 'gray', padding: 10, marginTop: 20, borderRadius: 5 }}
+        style={{
+          backgroundColor: "gray",
+          padding: 10,
+          marginTop: 20,
+          borderRadius: 5,
+        }}
         onPress={sendAllNotification}
       >
-        <Text style={{ color: 'white' }}>Send All Notification</Text>
+        <Text style={{ color: "white" }}>Send All Notification</Text>
       </TouchableOpacity>
 
       {/* {/ Render notification data /} */}
 
-      {/* <StatusBar style="auto" /> */}
-      <ScrollView style={styles.scrollView}>
+      <StatusBar style="auto" />
+      {/* <ScrollView style={styles.scrollView}>
       <View style={styles.notificasionContenor}>
         <TouchableOpacity style={styles.contentBox}>
           <View
@@ -510,20 +526,18 @@ export default function Notification(props) {
           </View>
         </TouchableOpacity>
       </View>
-      </ScrollView>
-      <View
-              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-            >
-              <ButtomNavigation navigation={navigation}  page="notification" />
-            </View>
+      </ScrollView> */}
+      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+        <ButtomNavigation navigation={navigation} page="notification" />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   scrollView: {
-    height:'86%',
-    backgroundColor: 'white', // Set the background color to your preference
+    height: "86%",
+    backgroundColor: "white", // Set the background color to your preference
   },
   container: {
     flex: 1,
@@ -582,7 +596,7 @@ const styles = StyleSheet.create({
     fontWeight: "600", // Corrected to string
     paddingTop: "8%",
     textAlign: "right",
-    paddingRight:15,
+    paddingRight: 15,
   },
   contentsection: {
     flexDirection: "row",

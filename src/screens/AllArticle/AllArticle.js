@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Platform,
   Modal,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 import {
   getProductName,
@@ -42,7 +44,47 @@ export default function AllArticle(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
+  const key = "your_storage_key";
+  const key2 = "your_storage_key";
+  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
 
+  // Add a listener to track keyboard visibility
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const retrieveStoredCategories = async () => {
+    try {
+      const serializedCategories = await AsyncStorage.getItem(key);
+      const serrializedPriceRange = await AsyncStorage.getItem(key2);
+      if (serializedCategories !== null || selectedPriceRange !== null) {
+        const categories = JSON.parse(serializedCategories);
+        const priceRange = JSON.parse(serrializedPriceRange);
+        setSelectedCategories(categories);
+        setSelectedPriceRange(priceRange);
+      } else {
+        console.log("No data found with the key.");
+      }
+    } catch (error) {
+      console.error("Error retrieving data:", error);
+    }
+  };
   const userChecked = async () => {
     const token = await AsyncStorage.getItem("UserData");
 
@@ -65,12 +107,17 @@ export default function AllArticle(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
-
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 90) : 120;
-
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 844
+      ? 100
+      : 65;
   // uploard url image
-  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
@@ -81,6 +128,7 @@ export default function AllArticle(props) {
     return partydata[0].Id;
   };
   const getCategoriesname = async () => {
+    retrieveStoredCategories();
     const res = await getProductName();
     if (res.status === 200) {
       // console.log(res.data);
@@ -274,14 +322,19 @@ export default function AllArticle(props) {
           </TouchableOpacity>
         )}
       </View>
+
       <View
         style={{
-          width: "100%",
+          width: "90%",
+          height: 180,
+          flex: 1,
+          marginTop: 10,
+
           justifyContent: "center",
           alignItems: "center",
-          elevation: 20,
-          borderColor: "gray",
-          shadowColor: "#c0c0c0",
+
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.2)",
           borderRadius: 10,
         }}
       >
@@ -293,7 +346,7 @@ export default function AllArticle(props) {
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
-            zIndex: 1,
+
             marginTop: 10,
           }}
         />
@@ -336,7 +389,7 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    // console.log(priceRange, "All");
+    console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -405,7 +458,7 @@ export default function AllArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
-                fontWeight: 700,
+                fontWeight: "700",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
@@ -445,6 +498,10 @@ export default function AllArticle(props) {
             )}
           </View>
           {/* {/ </ScrollView> /} */}
+          <KeyboardAvoidingView
+        behavior={isKeyboardOpen ? "padding" : null}
+        style={{ flex: 1 }}
+      >
           {isFilterVisible ? null : (
             <View
               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
@@ -452,6 +509,7 @@ export default function AllArticle(props) {
               <ButtomNavigation navigation={navigation} page="home" />
             </View>
           )}
+          </KeyboardAvoidingView>
 
           {isFilterVisible && (
             <View
