@@ -55,8 +55,8 @@ const AddToCart = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -109,6 +109,7 @@ const AddToCart = (props) => {
       console.log(res.data.data);
       setcompreInward(res.data.data);
       TotalPrice(parsedOrderItems, res.data.data);
+      setIsLoading(false);
     });
   };
   const cartDetails = async () => {
@@ -126,7 +127,6 @@ const AddToCart = (props) => {
 
         console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
         setOrderItems(parsedOrderItems);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Error fetching data:", error);
@@ -202,7 +202,8 @@ const AddToCart = (props) => {
           const quntitynumber = item.Quantity.split(",").map((num) =>
             parseInt(num.trim())
           );
-          let outofstockcount =0;
+          let outofstockcount = 0;
+          let status = false;
           for (let i = 0; i < stringNumbers.length; i++) {
             for (let j = 0; j < quntitynumber.length; j++) {
               const e = stringNumbers[i];
@@ -212,6 +213,7 @@ const AddToCart = (props) => {
                 parseInt(e) < parseInt(f) &&
                 it.ArticleId === item.article_id
               ) {
+                status = false;
                 listOfOutOfProduct = listOfOutOfProduct.filter((item) => {
                   if (item !== it.ArticleId) {
                     return item;
@@ -221,12 +223,17 @@ const AddToCart = (props) => {
               } else {
                 if (!listOfOutOfProduct.includes(item.article_id)) {
                   // listOfOutOfProduct.push(item.article_id);
-                  outofstockcount+=1;
+                  // outofstockcount+=1;
+                  status = true;
                 }
               }
             }
+            if(status==true){
+                  outofstockcount+=1;
+            }
           }
-          if(outofstockcount===stringNumbers.length){
+          // console.log(outofstockcount,stringNumbers.length,"{}{}{}{}");
+          if (outofstockcount > 0) {
             listOfOutOfProduct.push(item.article_id);
           }
         } else {
@@ -313,11 +320,11 @@ const AddToCart = (props) => {
         ) {
           // outOfStock = true;
           // break; // Exit the loop
-          outofstokecount +=1;
+          outofstokecount += 1;
         }
       }
 
-      if(outofstokecount===stringNumbers.length){
+      if (outofstokecount === stringNumbers.length) {
         outOfStock = true
       }
       if (outOfStock) {
@@ -651,10 +658,7 @@ const AddToCart = (props) => {
                                       >
                                         ₹{item.rate}.00
                                       </Text>
-                                      {/* {compreInward ? compreInward.map((it) => (
-                                                                            checkOutOfStock(it, item)
-                                                                            // console.log(it.SalesNoPacks)
-                                                                        )) : ""} */}
+
                                     </View>
                                   </View>
                                   <View
@@ -847,10 +851,6 @@ const AddToCart = (props) => {
                                       >
                                         ₹{item.rate}.00
                                       </Text>
-                                      {/* {compreInward ? compreInward.map((it) => (
-                                                                            checkOutOfStock(it, item)
-                                                                            // console.log(it.SalesNoPacks)
-                                                                        )) : ""} */}
                                     </View>
                                   </View>
                                   <View
@@ -924,12 +924,17 @@ const AddToCart = (props) => {
                                         paddingRight: "5%",
                                       }}
                                     >
-                                      {compreInward
-                                        ? compreInward.map(
-                                            (it) => checkOutOfStock(it, item)
-                                            // console.log(it.SalesNoPacks)
-                                          )
-                                        : ""}
+                                      <Text
+                                        style={{
+                                          fontSize: windowwidthe * 0.035,
+                                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                                          fontWeight: "500",
+                                          color: "red",
+                                          textAlign: "right",
+                                        }}
+                                      >
+                                        Out of stock
+                                      </Text>
                                     </View>
                                   </View>
                                 </View>
@@ -1058,10 +1063,6 @@ const AddToCart = (props) => {
                                     >
                                       ₹{item.rate}.00
                                     </Text>
-                                    {/* {compreInward ? compreInward.map((it) => (
-                                                                            checkOutOfStock(it, item)
-                                                                            // console.log(it.SalesNoPacks)
-                                                                        )) : ""} */}
                                   </View>
                                 </View>
                                 <View
@@ -1135,12 +1136,17 @@ const AddToCart = (props) => {
                                       paddingRight: "5%",
                                     }}
                                   >
-                                    {compreInward
-                                      ? compreInward.map(
-                                          (it) => checkOutOfStock(it, item)
-                                          // console.log(it.SalesNoPacks)
-                                        )
-                                      : ""}
+                                    <Text
+                                      style={{
+                                        fontSize: windowwidthe * 0.035,
+                                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                                        fontWeight: "500",
+                                        color: "red",
+                                        textAlign: "right",
+                                      }}
+                                    >
+                                      Out of stock
+                                    </Text>
                                   </View>
                                 </View>
                               </View>

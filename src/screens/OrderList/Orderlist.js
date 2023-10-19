@@ -121,12 +121,14 @@ const Orderlist = (props) => {
     });
   };
   const showSuccessModal = () => {
+    if(!fillvalue){
     setIsModalVisible(true);
     if (destinationVal) {
       AddSo();
     } else {
       setValue(true);
     }
+  }
   };
   // let ParsedData = [];
   const formattedDate = `${
@@ -1033,11 +1035,12 @@ const Orderlist = (props) => {
                     padding: windowwidthe < 720 ? 12 : 20,
                     // padin
                     marginLeft: "2.5%",
-                    backgroundColor: "#212121",
+                    backgroundColor:destinationVal==""?"gray": "#212121",
                     borderRadius: 7.6,
-                    justifyContent: "center",
+                    justifyContent: "center"
                   }}
-                  onPress={showSuccessModal}
+                  onPress={()=>{showSuccessModal()}}
+                  disabled={destinationVal==""?true:false}
                 >
                   <Text
                     style={{
