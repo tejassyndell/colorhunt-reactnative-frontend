@@ -47,6 +47,15 @@ export default function AllArticle(props) {
   const key = "your_storage_key";
   const key2 = "your_storage_key";
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const fetchMoreData = () => {
+    if (!isLoadingMore) {
+      setIsLoadingMore(true);
+      setPage(page + 1);
+    }
+  };
 
   // Add a listener to track keyboard visibility
   useEffect(() => {
@@ -494,21 +503,23 @@ export default function AllArticle(props) {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 0 }}
                 columnWrapperStyle={{ justifyContent: "space-between" }}
+                onEndReached={fetchMoreData}
+                onEndReachedThreshold={0.1}
               />
             )}
           </View>
           {/* {/ </ScrollView> /} */}
           <KeyboardAvoidingView
-        behavior={isKeyboardOpen ? "padding" : null}
-        style={{ flex: 1 }}
-      >
-          {isFilterVisible ? null : (
-            <View
-              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-            >
-              <ButtomNavigation navigation={navigation} page="home" />
-            </View>
-          )}
+            behavior={isKeyboardOpen ? "padding" : null}
+            style={{ flex: 1 }}
+          >
+            {isFilterVisible ? null : (
+              <View
+                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+              >
+                <ButtomNavigation navigation={navigation} page="home" />
+              </View>
+            )}
           </KeyboardAvoidingView>
 
           {isFilterVisible && (

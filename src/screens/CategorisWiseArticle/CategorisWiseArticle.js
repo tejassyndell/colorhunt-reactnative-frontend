@@ -47,6 +47,15 @@ export default function CategorisWiseArticle(props) {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const fetchMoreData = () => {
+    if (!isLoadingMore) {
+      setIsLoadingMore(true);
+      setPage(page + 1);
+    }
+  };
 
   // Add a listener to track keyboard visibility
   useEffect(() => {
@@ -534,21 +543,23 @@ export default function CategorisWiseArticle(props) {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 0 }}
                 columnWrapperStyle={{ justifyContent: "space-between" }}
+                onEndReached={fetchMoreData}
+                onEndReachedThreshold={0.1}
               />
             )}
           </View>
           <KeyboardAvoidingView
-        behavior={isKeyboardOpen ? "padding" : null}
-        style={{ flex: 1 }}
-      >
-          {isFilterVisible ? null : (
-            <View
-              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-            >
-              <ButtomNavigation navigation={navigation} page="home" />
-            </View>
-          )}
-             </KeyboardAvoidingView>
+            behavior={isKeyboardOpen ? "padding" : null}
+            style={{ flex: 1 }}
+          >
+            {isFilterVisible ? null : (
+              <View
+                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+              >
+                <ButtomNavigation navigation={navigation} page="home" />
+              </View>
+            )}
+          </KeyboardAvoidingView>
           {isFilterVisible && (
             <View
               style={{

@@ -117,15 +117,15 @@ const Login = (props) => {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res && res.status === 200) {
               // Store data in local storage
-              if (res.data[0].token == token) {
-              } else {
-                await udatepartytoken({
-                  token: token,
-                  party_id: res.data[0].Id,
-                }).then((res) => {
-                  console.log(res.data);
-                });
-              }
+              // if (res.data[0].token == token) {
+              // } else {
+              //   await udatepartytoken({
+              //     token: token,
+              //     party_id: res.data[0].Id,
+              //   }).then((res) => {
+              //     console.log(res.data);
+              //   });
+              // }
               // console.log(res.data[0].Name);
               getstatus(true, res.data[0].Name);
               const userData = res.data; // Assuming res.data contains user data
