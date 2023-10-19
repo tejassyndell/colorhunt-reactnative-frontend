@@ -331,18 +331,15 @@ export default function CategorisWiseArticle(props) {
         style={{
           width: "90%",
           height: 180,
+          flex: 1,
+          marginTop: 10,
+
           justifyContent: "center",
           alignItems: "center",
-          borderRadius: 12,
-          backgroundColor: "#FFF",
-          shadowColor: "#000",
-          shadowOpacity: 0.2,
-          shadowOffset: {
-            width: 1,
-            height: 1,
-          },
-          elevation: 5,
-          marginTop: 10,
+
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.2)",
+          borderRadius: 10,
         }}
       >
         <Image

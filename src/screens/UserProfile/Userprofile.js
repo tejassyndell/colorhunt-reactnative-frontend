@@ -5,7 +5,8 @@ import {
   Image,
   TouchableHighlight,
   Dimensions,
-  Platform
+  Platform,
+  StatusBar
 } from "react-native";
 import styles from "./style2";
 import { Profiledata } from "../../api/api";
@@ -69,6 +70,18 @@ export default function Userprofile(props) {
   }, []);
 
   return (
+    <>
+     <StatusBar
+         barStyle = "light-content"
+         // dark-content, light-content and default
+         hidden = {false}
+         //To hide statusBar
+         backgroundColor = "black"
+         //Background color of statusBar only works for Android
+         translucent = {false}
+         //allowing light, but not detailed shapes
+         networkActivityIndicatorVisible = {true}
+      />
     <View style={{ flex: 1 }}>
       <View style={styles.TopContainer}>
         <TouchableHighlight>
@@ -116,5 +129,6 @@ export default function Userprofile(props) {
         <ButtomNavigation navigation={navigation} page="profile" />
       </View>
     </View>
+    </>
   );
 }
