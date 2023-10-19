@@ -123,8 +123,12 @@ const ButtomNavigation = (props) => {
           }}
           onPress={NotificationPage}
         >
-          <Image
-            source={require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")}
+         <Image
+            source={
+              page === "notification"
+                ? require("../../../assets/AppFooterIcons/activenotification.png")
+                : require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")
+            }
             style={{
               width: width >= 720 ? 80 : 40,
               height: width >= 720 ? 80 : 40,

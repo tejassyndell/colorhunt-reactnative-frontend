@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   Dimensions,
   Platform,
+  StatusBar
 } from "react-native";
 import styles from "./style2";
 import { Profiledata } from "../../api/api";
@@ -20,14 +21,7 @@ export default function Userprofile(props) {
   const { width, height } = Dimensions.get("window");
   // const fontSize = width > 400 ? 18 : 16; // Adjust the font size based on screen width
   const marginTop = height > 800 ? 30 : 20; // Adjust the margin top based on screen height
-  const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 110
-        : 60
-      : height >= 844
-      ? 110
-      : 65;
+  const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 86) : 120;
   useEffect(() => {
     fetchprofiledata();
   }, []);
@@ -76,6 +70,18 @@ export default function Userprofile(props) {
   }, []);
 
   return (
+    <>
+     <StatusBar
+         barStyle = "light-content"
+         // dark-content, light-content and default
+         hidden = {false}
+         //To hide statusBar
+         backgroundColor = "black"
+         //Background color of statusBar only works for Android
+         translucent = {false}
+         //allowing light, but not detailed shapes
+         networkActivityIndicatorVisible = {true}
+      />
     <View style={{ flex: 1 }}>
       <View style={styles.TopContainer}>
         <TouchableHighlight>
@@ -123,5 +129,6 @@ export default function Userprofile(props) {
         <ButtomNavigation navigation={navigation} page="profile" />
       </View>
     </View>
+    </>
   );
 }

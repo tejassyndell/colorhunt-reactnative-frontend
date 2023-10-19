@@ -12,7 +12,6 @@ import {
 import {
   getProductName,
   getWishlistData,
-  getAddWishlist,
   DeleteWishlist,
 } from "../../api/api";
 import styles from "./styles.js";
@@ -148,111 +147,121 @@ export default function WishList(props) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
+      onPress={() =>
+        isLoggedIn
+          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
+          : openCreateAccountModal()
+      }
       style={{
         alignItems: "center",
         height: "auto",
-        width: width >= 720 ? "22%" : "45%",
-        marginHorizontal: 10,
-        paddingBottom: 15,
-        marginVertical: 15,
-        paddingTop: width >= 720 ? 10 : 10,
-        borderRadius: 12,
+        width: width >= 720 ? "22%" : "44.8%",
+        margin: 10,
+        borderRadius: 10,
+        borderColor: "gray",
         backgroundColor: "#FFF",
-        borderWidth: 1,
-        borderColor: "rgba(0,0,0,0.3)",
-        shadowRadius: 0.5,
-        elevation: 3, // For Android, use elevation
+        shadowColor: "gray",
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 10,
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
       }}
     >
+      <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart-o"
+              style={[
+                styles.disabledIcon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+
       <View
-        key={item.id}
         style={{
+          width: "90%",
+          height: 180,
+          flex: 1,
+          marginTop: 10,
+
+          justifyContent: "center",
           alignItems: "center",
-          height: "auto",
-          width: width >= 720 ? 170 : 160,
-          shadowOpacity: 0.3,
-          shadowOffset: {
-            width: 1,
-            height: 1,
-          },
+
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.2)",
+          borderRadius: 10,
         }}
       >
-        <View
+        <Image
+          source={{ uri: baseImageUrl + item.Photos }}
           style={{
-            width: width >= 720 ? "80%" : "90%",
-            height: width >= 720 ? 200 : 190,
-            // borderWidth: 1,
-            // borderRadius: 12,
-            shadowColor: "#000",
-            shadowOpacity: 0,
-            shadowRadius: 1,
-            elevation: 5, // For Android, use elevation
-          }}
-        >
-          <View id={item.id} style={styles.producticones}>
-            {selectedprd.some((i) => i.Id === item.Id) ? (
-              <TouchableOpacity
-                onPress={() => {
-                  rmvProductWishlist(item);
-                }}
-              >
-                <FontAwesome
-                  name="heart"
-                  style={[
-                    styles.icon,
-                    // isLoggedin === false ? styles.disabledIcon : null,
-                  ]}
-                />
-              </TouchableOpacity>
-            ) : (
-              <></>
-            )}
-          </View>
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
 
-          <Image
-            source={{ uri: baseImageUrl + item.Photos }}
-            style={{
-              flex: 1,
-              resizeMode: "stretch",
-              borderRadius: 10,
-              shadowOpacity: 1,
-              shadowColor: "rgba(0,0,0,0.9)",
-              shadowOffset: {
-                width: 1,
-                height: 1,
-              },
-              elevation: 3,
-            }}
-          />
-        </View>
-        <Text
+            marginTop: 10,
+          }}
+        />
+      </View>
+      <View
+        style={{
+          width: "100%",
+          marginBottom: 10,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity
           style={{
-            fontWeight: "700",
-            marginTop: 12,
-            fontSize: width >= 720 ? 20 : 16,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 0,
           }}
         >
-          {item.ArticleNumber}
-        </Text>
-        <Text
-          style={{
-            marginTop: 3,
-            fontSize: width >= 720 ? 14 : 12,
-            fontWeight: "400",
-          }}
-        >
-          {item.Title}
-        </Text>
-        <Text
-          style={{
-            fontWeight: "600",
-            marginTop: 3,
-            fontSize: width >= 720 ? 20 : 16,
-          }}
-        >
-          {"₹" + item.ArticleRate + ".00"}
-        </Text>
+          <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
+            <Text
+              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+            >
+              {item.ArticleNumber}
+            </Text>
+            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+              {item.Title}
+            </Text>
+            <Text
+              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+            >
+              {"₹" + item.ArticleRate + ".00"}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
