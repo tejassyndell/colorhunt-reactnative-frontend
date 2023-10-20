@@ -453,7 +453,7 @@ const Orderlist = (props) => {
                   <ScrollView
                     style={{
                       // height: "auto",
-                      maxHeight: "30%",
+                      maxHeight: "50%",
                       borderWidth: 1,
                       backgroundColor: "#EEEEEE",
                       marginHorizontal: "5%",
@@ -526,7 +526,7 @@ const Orderlist = (props) => {
                 <ScrollView nestedScrollEnabled={true}>
                   {ParsedData &&
                     ParsedData.map((item, index) => (
-                      <View key={item.id} style={{ paddingBottom: 20 }}>
+                      <View key={item.id} style={{ paddingBottom: '10%' }}>
                         <View
                           style={{
                             flexDirection: "row",

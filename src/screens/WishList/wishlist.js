@@ -147,11 +147,7 @@ export default function WishList(props) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() =>
-        isLoggedIn
-          ? navigation.navigate("DetailsOfArticals", { id: item.Id })
-          : openCreateAccountModal()
-      }
+    onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
       style={{
         alignItems: "center",
         height: "auto",
