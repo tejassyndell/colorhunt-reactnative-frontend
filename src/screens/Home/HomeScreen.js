@@ -639,7 +639,7 @@ export default function HomeScreen(props) {
                         width: width >= 720 ? 300 : 165,
                         marginLeft: width >= 720 ? 15 : 5,
                         marginRight: width >= 720 ? 15 : 5,
-                        marginTop: 10,
+                        marginTop: width >= 720 ? 30 : 10,
                         marginBottom: 10,
                         borderRadius: 10,
                       }}
@@ -655,12 +655,12 @@ export default function HomeScreen(props) {
                             height: width >= 720 ? 280 : 190,
                             borderColor: "gray",
                             shadowColor: "gray",
-                            shadowOpacity: 0.9,
+                            shadowOpacity: 0.1,
                             shadowRadius: 10,
                             elevation: 10,
                             shadowOffset: {
-                              width: 0,
-                              height: 0,
+                              width: 1,
+                              height: 1,
                             },
                           }}
                         >

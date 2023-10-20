@@ -65,7 +65,7 @@ const OrderDetails = (props) => {
     Platform.OS === "android"
       ? width >= 720
         ? 110
-        : 60
+        : 80
       : height >= 844
       ? 110
       : 65;
@@ -1014,7 +1014,7 @@ const OrderDetails = (props) => {
                       }}
                     >
                       {partydata
-                        ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}-${partydata[0].PinCode}.`
+                        ? `${partydata[0].Address},${partydata[0].City} ${partydata[0].State} , PinCode${partydata[0].PinCode},`
                         : "Address"}
                       {console.log(partydata, "skhvchgvsacjvsjdc hasvcjvsdc")}
                     </Text>

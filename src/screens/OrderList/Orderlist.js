@@ -121,14 +121,14 @@ const Orderlist = (props) => {
     });
   };
   const showSuccessModal = () => {
-    if(!fillvalue){
-    setIsModalVisible(true);
-    if (destinationVal) {
-      AddSo();
-    } else {
-      setValue(true);
+    if (!fillvalue) {
+      setIsModalVisible(true);
+      if (destinationVal) {
+        AddSo();
+      } else {
+        setValue(true);
+      }
     }
-  }
   };
   // let ParsedData = [];
   const formattedDate = `${
@@ -421,15 +421,15 @@ const Orderlist = (props) => {
                     <View
                       style={{
                         position: "absolute",
-                        top: windowwidthe < 720 ? "50%" : "52%",
+                        top: width >= 720 ? "52%" : "52%",
                         right: "2.5%",
                         justifyContent: "center",
                       }}
                     >
                       <TouchableOpacity
                         style={{
-                          width: windowwidthe < 720 ? windowwidthe * 0.05 : 30,
-                          height: windowwidthe < 720 ? windowwidthe * 0.05 : 30,
+                          width: width >= 720 ? 40 : 20,
+                          height: width >= 720 ? 40 : 20,
                         }}
                         onPress={() => {
                           Transportation.length !== 0
@@ -519,28 +519,23 @@ const Orderlist = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  height: windowheight * 0.2,
+                  maxHeight: "30%",
                   width: "100%",
                 }}
               >
                 <ScrollView nestedScrollEnabled={true}>
                   {ParsedData &&
                     ParsedData.map((item, index) => (
-                      <View key={item.id} style={{ paddingBottom: '10%' }}>
+                      <View key={item.id}>
                         <View
                           style={{
                             flexDirection: "row",
                             width: "90%",
                             backgroundColor: "#FFF",
-                            elevation: 5,
-                            shadowColor: "gray",
-                            shadowOpacity: 0.5,
-                            shadowOffset: {
-                              width: 1,
-                              height: 1,
-                            },
+                            padding: "3%",
+                            height: width >= 720 ? 200 : 100,
                             marginHorizontal: "5%",
-
+                            marginVertical: width >= 720 ? 20 : 10,
                             borderRadius: 10,
                             borderWidth: 1,
                             borderColor: "rgba(0,0,0,0.2)",
@@ -549,16 +544,19 @@ const Orderlist = (props) => {
                           <TouchableOpacity
                             style={{
                               // backgroundColor: "pink",
-                              width: windowwidthe * 0.3,
-                              shadowOpacity: 1,
-                              shadowOffset: {
-                                width: 1,
-                                height: 1,
-                              },
+                              // width: windowwidthe * 0.3,
+                              // shadowOpacity: 1,
+                              // shadowOffset: {
+                              //   width: 1,
+                              //   height: 1,
+                              // },
+                              width: width >= 720 ? 130 : "20%",
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
                               borderRadius: 10,
+                              borderWidth: 1,
+                              borderColor: "rgba(0,0,0,0.2)",
                             }}
                           >
                             <Image
@@ -577,17 +575,17 @@ const Orderlist = (props) => {
                           <View
                             style={{
                               width: "60%",
-                              marginHorizontal: "1%",
+                              marginHorizontal: "3%",
                               marginBottom: "1%",
                               justifyContent: "center",
-                              paddingTop: 20,
+                              paddingTop: 10,
                               borderRadius: 10,
                             }}
                           >
                             <View style={{ paddingBottom: 1 }}>
                               <Text
                                 style={{
-                                  fontSize: windowwidthe * 0.035,
+                                  fontSize: width >= 720 ? 30 : 18,
                                   fontFamily: isFontLoaded
                                     ? "Glory"
                                     : undefined,
@@ -598,7 +596,7 @@ const Orderlist = (props) => {
                               </Text>
                               <Text
                                 style={{
-                                  fontSize: windowwidthe * 0.025,
+                                  fontSize: width >= 720 ? 30 : 18,
                                   fontFamily: isFontLoaded
                                     ? "Glory"
                                     : undefined,
@@ -619,7 +617,7 @@ const Orderlist = (props) => {
                             >
                               <Text
                                 style={{
-                                  fontSize: windowwidthe * 0.035,
+                                  fontSize: width >= 720 ? 30 : 18,
                                   fontFamily: isFontLoaded
                                     ? "Glory"
                                     : undefined,
@@ -1035,12 +1033,14 @@ const Orderlist = (props) => {
                     padding: windowwidthe < 720 ? 12 : 20,
                     // padin
                     marginLeft: "2.5%",
-                    backgroundColor:destinationVal==""?"gray": "#212121",
+                    backgroundColor: destinationVal == "" ? "gray" : "#212121",
                     borderRadius: 7.6,
-                    justifyContent: "center"
+                    justifyContent: "center",
                   }}
-                  onPress={()=>{showSuccessModal()}}
-                  disabled={destinationVal==""?true:false}
+                  onPress={() => {
+                    showSuccessModal();
+                  }}
+                  disabled={destinationVal == "" ? true : false}
                 >
                   <Text
                     style={{
