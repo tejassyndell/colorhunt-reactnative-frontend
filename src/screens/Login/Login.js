@@ -34,38 +34,38 @@ const Login = (props) => {
   const [token, setToken] = useState("");
   const styles = LoginStyles();
 
-  const getNotificationPermission = async () => {
-    try {
-      const { status } = await Notifications.requestPermissionsAsync();
-      console.log(status, "statuss"); // Move this line here
-      if (status === "granted") {
-        const pushToken = (
-          await Notifications.getExpoPushTokenAsync({
-            projectId: "b0d5d035-7a66-4a0f-b5ec-33b84d030443",
-          })
-        ).data;
-        console.log("Expo Push Token:", pushToken);
-        setToken(pushToken);
-        AsyncStorage.setItem(
-          "notificationstatus",
-          JSON.stringify({ status: true, token: pushToken })
-        );
-        console.log({ status: true, token: pushToken });
-      } else {
-        AsyncStorage.setItem(
-          "notificationstatus",
-          JSON.stringify({ status: false, token: "" })
-        );
-        console.log("Notification permission denied");
-      }
-    } catch (error) {
-      console.error("Error getting notification permission:", error);
-    }
-  };
+  // const getNotificationPermission = async () => {
+  //   try {
+  //     const { status } = await Notifications.requestPermissionsAsync();
+  //     console.log(status, "statuss"); // Move this line here
+  //     if (status === "granted") {
+  //       const pushToken = (
+  //         await Notifications.getExpoPushTokenAsync({
+  //           projectId: "b0d5d035-7a66-4a0f-b5ec-33b84d030443",
+  //         })
+  //       ).data;
+  //       console.log("Expo Push Token:", pushToken);
+  //       setToken(pushToken);
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: true, token: pushToken })
+  //       );
+  //       console.log({ status: true, token: pushToken });
+  //     } else {
+  //       AsyncStorage.setItem(
+  //         "notificationstatus",
+  //         JSON.stringify({ status: false, token: "" })
+  //       );
+  //       console.log("Notification permission denied");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error getting notification permission:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getNotificationPermission();
-  }, []);
+  // useEffect(() => {
+  //   getNotificationPermission();
+  // }, []);
 
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
