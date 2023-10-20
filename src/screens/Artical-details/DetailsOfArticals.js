@@ -456,7 +456,7 @@ const DetailsOfArticals = (props) => {
                           width:
                             articleSizeData && articleSizeData.length > 3
                               ? "100%"
-                              : "50%",
+                              : "45%",
                           marginBottom:
                             articleSizeData && articleSizeData.length > 3
                               ? 10
@@ -540,7 +540,7 @@ const DetailsOfArticals = (props) => {
                           width:
                             articleSizeData && articleSizeData.length > 3
                               ? "100%"
-                              : "40%",
+                              : "45%",
                         }}
                       >
                         <Text
@@ -585,7 +585,10 @@ const DetailsOfArticals = (props) => {
                         >
                           <Text
                             style={{
-                              fontSize: width >= 720 ? 35 : 22,
+                              fontSize:
+                                articleSizeData && articleSizeData.length > 3
+                                  ? 17
+                                  : 22,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               paddingHorizontal:
                                 articleSizeData && articleSizeData.length > 3

@@ -201,7 +201,7 @@ const Orderlist = (props) => {
               width: "100%",
             }}
           >
-            Sales order
+            Sales Order
           </Text>
         </View>
       ),
@@ -262,10 +262,6 @@ const Orderlist = (props) => {
               style={{
                 height: "100%",
                 width: "100%",
-                backgroundColor: "white",
-                borderTopColor: "#828282",
-                borderTopWidth: 1,
-                borderStyle: "solid",
               }}
             >
               <View

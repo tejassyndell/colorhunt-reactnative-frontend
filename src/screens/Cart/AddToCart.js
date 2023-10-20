@@ -420,12 +420,9 @@ const AddToCart = (props) => {
         </View>
       ) : orderItems.length === 0 ? (
         <View
-          style={{
-            flex: 1,
-            backgroundColor: "#FFF",
-            borderTopColor: "#828282",
-            borderTopWidth: 0.5,
-          }}
+        // style={{
+        //   flex: 1,
+        // }}
         >
           <View
             style={{
@@ -493,9 +490,6 @@ const AddToCart = (props) => {
               style={{
                 flex: 1,
                 backgroundColor: "#FFF",
-                borderTopColor: "#828282",
-                borderTopWidth: 1,
-                borderWidth: 1,
               }}
             >
               <View style={{ width: "100%", backgroundColor: "#FFF" }}>
@@ -512,7 +506,8 @@ const AddToCart = (props) => {
                       style={{
                         backgroundColor: "#FFF",
                         height: "auto",
-                        maxHeight: windowwidthe * 1,
+                        // maxHeight: windowwidthe * 1,
+                        maxHeight: "100%",
                       }}
                     >
                       <View
@@ -667,7 +662,7 @@ const AddToCart = (props) => {
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "flex-end",
-                                        gap: windowwidthe * 0.02,
+                                        gap: windowwidthe * 0.01,
                                         paddingRight: "5%",
                                         marginVertical: "5%",
                                         borderRadius: 10,
@@ -682,8 +677,8 @@ const AddToCart = (props) => {
                                           )
                                         }
                                         style={{
-                                          width: windowwidthe * 0.038,
-                                          height: windowheight * 0.038,
+                                          width: width >= 720 ? 30 : 15,
+                                          height: width >= 720 ? 30 : 15,
                                         }}
                                       >
                                         <Image
@@ -701,8 +696,8 @@ const AddToCart = (props) => {
                                           handleDeleteOrder(item.article_id)
                                         }
                                         style={{
-                                          width: windowwidthe * 0.038,
-                                          height: windowheight * 0.038,
+                                          width: width >= 720 ? 30 : 15,
+                                          height: width >= 720 ? 30 : 15,
                                         }}
                                       >
                                         <Image
@@ -1182,7 +1177,7 @@ const AddToCart = (props) => {
                         style={{
                           width: "100%",
                           position: "absolute",
-                          top: width >= 720 ? "37%" : 17,
+                          top: width >= 720 ? "37%" : 20,
                           position: "absolute",
                           justifyContent: "flex-end",
                           alignItems: "flex-end",
