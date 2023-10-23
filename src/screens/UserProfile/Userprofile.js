@@ -6,10 +6,13 @@ import {
   TouchableHighlight,
   Dimensions,
   Platform,
-  StatusBar
+  StatusBar,
+  ScrollView,
+  RefreshControl
 } from "react-native";
 import styles from "./style2";
 import { Profiledata } from "../../api/api";
+import { ActivityIndicator } from "react-native";
 import { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,10 +21,29 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
   // const fontSize = width > 400 ? 18 : 16; // Adjust the font size based on screen width
   const marginTop = height > 800 ? 30 : 20; // Adjust the margin top based on screen height
   const headerHeight = Platform.OS === 'android' ? (width >= 720 ? 120 : 86) : 120;
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    const delay = 3000; // 3 seconds
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setRefreshing(false);
+    }, delay);
+  };
+
   useEffect(() => {
     fetchprofiledata();
   }, []);
@@ -33,6 +55,8 @@ export default function Userprofile(props) {
       const data = { party_id: partyData[0].Id };
       const response = await Profiledata(data);
       setprofile(response.data);
+      setIsLoading(false);
+      setRefreshing(false);
     } catch (err) {
       console.log(err, "error in fetching data");
     }
@@ -71,7 +95,17 @@ export default function Userprofile(props) {
 
   return (
     <>
-     <StatusBar
+     {isLoading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      ) : (
+
+
+    
+    <>
+  
+    <StatusBar
          barStyle = "light-content"
          // dark-content, light-content and default
          hidden = {false}
@@ -83,6 +117,14 @@ export default function Userprofile(props) {
          networkActivityIndicatorVisible = {true}
       />
     <View style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 0.7 }}
+        keyboardShouldPersistTaps="handled"
+        showsHorizontalScrollIndicator={true}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
       <View style={styles.TopContainer}>
         <TouchableHighlight>
           <View style={styles.Profile}>
@@ -125,10 +167,13 @@ export default function Userprofile(props) {
           </View>
         </View>
       ))}
+    </ScrollView>
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
         <ButtomNavigation navigation={navigation} page="profile" />
       </View>
     </View>
     </>
+      )}
+      </>
   );
 }

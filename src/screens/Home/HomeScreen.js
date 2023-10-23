@@ -10,6 +10,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   Keyboard,
+  RefreshControl
 } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -46,6 +47,24 @@ export default function HomeScreen(props) {
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    const delay = 3000; // 3 seconds
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setRefreshing(false);
+    }, delay);
+  };
 
   // Add a listener to track keyboard visibility
   useEffect(() => {
@@ -105,6 +124,7 @@ export default function HomeScreen(props) {
     // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
+      setRefreshing(false)
     }, 2000);
 
     // Clear the timeout when the component unmounts to prevent memory leaks
@@ -213,9 +233,11 @@ export default function HomeScreen(props) {
         setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
       }
       setIsLoading(false);
+      setRefreshing(false)
     } catch (error) {
       console.error(error);
       setIsLoading(false);
+      setRefreshing(false)
     }
   };
 
@@ -457,7 +479,12 @@ export default function HomeScreen(props) {
           </View>
           <ScrollView
             showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 0.7 }}
+            keyboardShouldPersistTaps="handled"
             style={{ overflow: "hidden" }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
               <Text
@@ -500,6 +527,7 @@ export default function HomeScreen(props) {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
+                
               >
                 {console.log(setshowarticle, "setshwo")}
                 {showarticle ? (
