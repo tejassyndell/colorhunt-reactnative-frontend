@@ -8,6 +8,7 @@ import {
   Dimensions,
   ImageBackground,
   KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -18,7 +19,7 @@ import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
 import LoginStyles from "./styles.js";
 const { width, height } = Dimensions.get("window");
-const logoSize = Math.min(width, height) * 0.6;
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // import messaging from '@react-native-firebase/messaging';
@@ -33,6 +34,31 @@ const Login = (props) => {
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
   const styles = LoginStyles();
+
+  const initialLogoSize = Math.min(width, height) * 0.6;
+  const [logoSize, setLogoSize] = useState(initialLogoSize);
+  const [leftPosition, setLeftPosition] = useState('50%');
+
+  const keyboardDidShow = () => {
+    const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
+    setLogoSize(newSize);
+    setLeftPosition('65%');
+  };
+
+  const keyboardDidHide = () => {
+    setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
+    setLeftPosition('50%');
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   // const getNotificationPermission = async () => {
   //   try {
@@ -186,7 +212,7 @@ const Login = (props) => {
             style={styles.backgroundImage1}
             resizeMode="stretch"
           >
-            <View style={styles.loginLogoContainer}>
+            <View style={[styles.loginLogoContainer, { left: leftPosition }]}>
               <Image
                 source={imageSource}
                 style={[

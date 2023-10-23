@@ -125,29 +125,31 @@ const logoSize = Math.min(width, height) * 0.6;
     },
     container1: {
       flex: 1,
-      padding: 20,
+      padding: 15,
     },
     backgroundImage1: {
       flex: 1,
-      resizeMode: "stretch",
       width: "100%",
+      height:'96%',
     },
     loginContainer: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
     },
+    
     loginLogoContainer: {
       position: "absolute",
       top: "40%",
-      left: "50%",
       transform: [{ translateX: -logoSize / 2 }, { translateY: -logoSize / 2 }],
     },
     loginLogo: {
       resizeMode: "contain",
+     
     },
     imagebox: {
       flex: 1,
+      
     },
   });
 

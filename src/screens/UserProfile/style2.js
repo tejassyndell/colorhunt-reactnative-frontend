@@ -18,6 +18,11 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "contain",
   },
+  loader:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
   Profile: {
     height: "100%",
     width: "100%",
