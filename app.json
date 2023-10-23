@@ -24,31 +24,23 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.colorhuntmobileapp.app",
+      "bundleIdentifier": "com.colorhunt.app",
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification"],
         "NSNotificationsUsageDescription": "We need your permission to send you notifications"
       }
     },
     "android": {
-      "package": "com.colorhuntmobileapp.app",
+      "package": "com.colorhunt.app",
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
       ],
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "favicon": "./assets/icon.png"
-    },
-    "extra": {
-      "firebase": {
-        "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
-      },
-      "eas": {
-        "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
-      }
     }
   }
 }

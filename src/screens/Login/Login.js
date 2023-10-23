@@ -22,6 +22,8 @@ const { width, height } = Dimensions.get("window");
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import WhiteLogo from "../../jssvgs/WhiteLogo ";
+import messaging from '@react-native-firebase/messaging';
+import PushNotification from "react-native-push-notification";
 
 // import messaging from '@react-native-firebase/messaging';
 
@@ -40,6 +42,63 @@ const Login = (props) => {
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
   const [isLoading, setIsLoading] = useState(true);
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission()
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus,enabled);
+    }
+  }
+  useEffect(() => {
+    if (requestUserPermission()) {
+      messaging().getToken().then(token => {
+        setToken(token)
+        console.log("token",token);
+      })
+    }
+    else { 
+      console.log("failed token status", authStatus);
+    }
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+        }
+      });
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+    });
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
+    // Listen for incoming FCM messages
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+      PushNotification.localNotification({
+        title:remoteMessage.notification.title,
+        message:remoteMessage.notification.body
+      })
+    });
+
+
+    return unsubscribe;
+    // getNotificationPermission();
+  }, []);
 
   const keyboardDidShow = () => {
     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
