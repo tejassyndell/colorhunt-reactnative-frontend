@@ -19,6 +19,7 @@ import { SendMail } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import ResponsiveImage from "react-native-responsive-image";
 import * as Font from "expo-font";
+import Contactsvg from "../../jssvgs/Contactsvg";
 
 export default function Contact(props) {
   const { navigation } = props;
@@ -216,7 +217,7 @@ export default function Contact(props) {
             marginRight: "20%",
           }}
         >
-          <Image
+          {/* <Image
             source={require("../../../assets/ContactPagePNG/contact.png")}
             style={{
               marginTop: 15,
@@ -224,7 +225,8 @@ export default function Contact(props) {
               resizeMode: "contain",
               height: "100%",
             }}
-          />
+          /> */}
+          <Contactsvg/>
         </View>
         <View
           style={{

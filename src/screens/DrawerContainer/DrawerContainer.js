@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
 
 import Svg, { Circle, Rect, Path, G, Defs, ClipPath } from 'react-native-svg';
+import Drawerwhitelogo from "../../jssvgs/Drawerwhitelogo";
 const { width, height } = Dimensions.get("window");
 
 export default function DrawerContainer(props) {
@@ -310,31 +311,78 @@ export default function DrawerContainer(props) {
         ) : (
           // If user is not logged in
           <>
-            <MenuButton
-              title="Sign Up"
-              source={require("../../../assets/sidebaricons/download-4.png")}
+
+            <TouchableOpacity
+              style={{ flexDirection: "row", marginLeft: 10, marginTop: 10 }}
               onPress={() => {
                 navigation.navigate("login");
                 navigation.closeDrawer();
               }}
-            />
+            >
+              {logout}
+              <Text
+                style={{
+                  fontSize: width >= 720 ? 20 : 16,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  color: "#FFF",
+                  marginLeft: 8,
+                }}
+              >
+                Sign Up
+              </Text>
+            </TouchableOpacity>
 
-            <MenuButton
-              title="About us"
-              source={require("../../../assets/about.png")}
+            <TouchableOpacity
+              style={{ flexDirection: "row", marginLeft: 10, marginTop: 25 }}
               onPress={() => {
                 navigation.navigate("AboutUs");
                 navigation.closeDrawer();
               }}
-            />
-            <MenuButton
-              title="Contact Us"
-              source={require("../../../assets/contact.png")}
+            >
+              {/* <Image
+                source={require("../../../assets/sidebaricons/download-4.png")}
+                style={{
+                  height: width >= 720 ? 30 : 20,
+                  width: width >= 720 ? 30 : 20,
+                }}
+              /> */}
+              {aboutus}
+              <Text
+                style={{
+                  fontSize: width >= 720 ? 20 : 16,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  color: "#FFF",
+                  marginLeft: 8,
+                }}
+              >About us
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ flexDirection: "row", marginLeft: 10, marginTop: 25 }}
               onPress={() => {
                 navigation.navigate("Contact");
                 navigation.closeDrawer();
               }}
-            />
+            >
+              {/* <Image
+                source={require("../../../assets/sidebaricons/download-4.png")}
+                style={{
+                  height: width >= 720 ? 30 : 20,
+                  width: width >= 720 ? 30 : 20,
+                }}
+              /> */}
+              {contactus}
+              <Text
+                style={{
+                  fontSize: width >= 720 ? 20 : 16,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  color: "#FFF",
+                  marginLeft: 8,
+                }}
+              >
+                Contact Us
+              </Text>
+            </TouchableOpacity>
           </>
         )}
 
@@ -348,13 +396,14 @@ export default function DrawerContainer(props) {
             right: 20,
           }}
         >
-          <Image
+          {/* <Image
             source={require("../../../assets/sidebaricons/image_98.png")}
             style={{
               height: width >= 720 ? 200 : 150,
               width: width >= 720 ? 200 : 150,
             }}
-          />
+          /> */}
+          <Drawerwhitelogo />
           <Text
             style={{
               color: "rgba(255, 255, 255, 1)",

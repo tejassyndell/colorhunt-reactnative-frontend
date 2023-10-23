@@ -29,7 +29,7 @@ import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import Svg, { Path } from 'react-native-svg';
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
   const { width: viewportWidth } = Dimensions.get("window");
@@ -41,7 +41,7 @@ const DetailsOfArticals = (props) => {
   const { id, Quantity = 0 } = route.params;
   console.log(id);
   const styles = detailsOfArtStyles();
-  const handleSizeClick = (size) => {};
+  const handleSizeClick = (size) => { };
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -93,8 +93,8 @@ const DetailsOfArticals = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
@@ -514,7 +514,7 @@ const DetailsOfArticals = (props) => {
                                   {
                                     paddingHorizontal:
                                       articleSizeData &&
-                                      articleSizeData.length > 3
+                                        articleSizeData.length > 3
                                         ? "1%"
                                         : 0,
                                   },
@@ -1024,13 +1024,39 @@ const DetailsOfArticals = (props) => {
                   paddingVertical: 3,
                 }}
               >
-                <Image
-                  source={require("../../../assets/icons/icon.png")}
-                  style={{
-                    width: width >= 720 ? 30 : 20,
-                    height: width >= 720 ? 30 : 20,
-                  }}
-                />
+
+                <Svg width={width >= 720 ? 30 : 20} height={width >= 720 ? 30 : 20} viewBox="0 0 18 18" fill="none" {...props}>
+                  <Path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M12.4373 16.9996H5.21111C2.55676 16.9996 0.520444 16.0778 1.09885 12.3675L1.77234 7.33917C2.1289 5.48783 3.35703 4.7793 4.43462 4.7793H13.2455C14.3389 4.7793 15.4957 5.54116 15.9078 7.33917L16.5812 12.3675C17.0725 15.6588 15.0916 16.9996 12.4373 16.9996Z"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <Path
+                    d="M12.5561 4.59605C12.5561 2.61003 10.8817 1.00003 8.81624 1.00003C7.82163 0.995987 6.86631 1.37306 6.16152 2.04788C5.45674 2.7227 5.06054 3.63968 5.06055 4.59605"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <Path
+                    d="M11.3818 8.34375H11.3438"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <Path
+                    d="M6.33497 8.34375H6.29688"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </Svg>
                 <Text
                   style={{
                     color: "white",

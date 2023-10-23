@@ -20,7 +20,8 @@ const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 import { TouchableWithoutFeedback } from "react-native";
 import * as Font from "expo-font";
-
+import Svg, { G, Path } from 'react-native-svg';
+import Ordersuccessful from "../../jssvgs/Ordersucseccful";
 const Orderlist = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(true);
@@ -75,8 +76,8 @@ const Orderlist = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   const AddSo = async () => {
     setIsLoading2(true);
     let userdata = await AsyncStorage.getItem("UserData");
@@ -131,9 +132,8 @@ const Orderlist = (props) => {
     }
   };
   // let ParsedData = [];
-  const formattedDate = `${
-    currentDate.getMonth() + 1
-  }/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+  const formattedDate = `${currentDate.getMonth() + 1
+    }/${currentDate.getDate()}/${currentDate.getFullYear()}`;
   AsyncStorage.getItem("Orderlist")
     .then((Storagedata) => {
       if (Storagedata !== null) {
@@ -305,8 +305,8 @@ const Orderlist = (props) => {
                       borderColor: "#E4E7EA",
                       backgroundColor: "#EEE",
                     }}
-                    // value={formattedDate}
-                    // disableFullscreenUI
+                  // value={formattedDate}
+                  // disableFullscreenUI
                   >
                     <Text
                       style={{
@@ -423,14 +423,14 @@ const Orderlist = (props) => {
                       style={{
                         position: "absolute",
                         top: width >= 720 ? "52%" : "52%",
-                        right: "2.5%",
+                        right: "1%",
                         justifyContent: "center",
                       }}
                     >
                       <TouchableOpacity
                         style={{
-                          width: width >= 720 ? 40 : 20,
-                          height: width >= 720 ? 40 : 20,
+                          width: width >= 720 ? 50 : 30,
+                          height: width >= 720 ? 50 : 30
                         }}
                         onPress={() => {
                           Transportation.length !== 0
@@ -438,14 +438,23 @@ const Orderlist = (props) => {
                             : "";
                         }}
                       >
-                        <Image
+                        {/* <Image
                           style={{
                             width: "100%",
                             height: "100%",
                             resizeMode: "contain",
                           }}
                           source={require("../../../assets/DownArrow(1).png")}
-                        ></Image>
+                        ></Image> */}
+                        <Svg width="100%" height="100%" viewBox="0 0 30 30" fill="none">
+                          <G id="download_2">
+                            <Path
+                              id="Vector"
+                              d="M16.3603 7.18008L10.4603 13.7201C10.2203 14.0001 9.78034 14.0001 9.54034 13.7201L3.64034 7.18008C3.26034 6.76008 3.54034 6.08008 4.10034 6.08008H15.9003C16.4603 6.08008 16.7403 6.76008 16.3603 7.18008Z"
+                              fill="#1A1A1A"
+                            />
+                          </G>
+                        </Svg>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -478,8 +487,8 @@ const Orderlist = (props) => {
                             setTransportationVal(item.Name);
                             setshowTransporatation(!showTransporatation);
                           }}
-                          onPressIn={() => handlePressIn(item)}
-                          onPressOut={handlePressOut}
+                        // onPressIn={() => handlePressIn(item)}
+                        // onPressOut={handlePressOut}
                         >
                           <View
                             style={[
@@ -647,10 +656,23 @@ const Orderlist = (props) => {
                     flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
-                  <ActivityIndicator size="large" color="black" />
+                  <View
+                    style={{
+                      width: 360,
+                      height: 390,
+                      backgroundColor: "white",
+                      borderRadius: 25,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      alignContent:"center",
+                      padding: 5,
+                    }}
+                  >
+                    <ActivityIndicator size="large" color="black" />
+                  </View>
                 </View>
               )}
               {isSuccess && (
@@ -675,15 +697,8 @@ const Orderlist = (props) => {
                         padding: 5,
                       }}
                     >
-                      <Image
-                        source={require("../../../assets/icons/Modalicon.png")}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          marginBottom: 20,
-                          marginTop: 30,
-                        }}
-                      />
+
+                      <Ordersuccessful />
 
                       <Text
                         style={{
@@ -927,7 +942,7 @@ const Orderlist = (props) => {
                 )}
                 {userdata !== "" ? (
                   userdata[0].GSTType === "IGST" &&
-                  userdata[0].GSTNumber !== "" ? (
+                    userdata[0].GSTNumber !== "" ? (
                     <>
                       <View
                         style={{

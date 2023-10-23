@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import Swiper from "react-native-swiper";
 import SliderStyles from "./styles";
+import Blacklogo from "../../jssvgs/Blacklogo";
+import Sliderwhitelog from "../../jssvgs/Sliderwhitelog";
 
 const { width, height } = Dimensions.get("window");
 
@@ -43,14 +45,14 @@ const SliderScreen = (props) => {
 
   return (
     <View style={styles.container}>
-       <View style={{
-        width:'100%',
-        height:50,
-        backgroundColor:'#FFF',
-        position: "absolute", 
+      <View style={{
+        width: '100%',
+        height: 50,
+        backgroundColor: '#FFF',
+        position: "absolute",
         bottom: 0,
-        zIndex:0
-        
+        zIndex: 0
+
       }}></View>
       <Swiper
         loop={false}
@@ -65,15 +67,15 @@ const SliderScreen = (props) => {
           style={styles.slide}
         >
           <View style={styles.contain1}>
-            <Image
+            {/* <Image
               source={require("../../../assets/SliderImage/image99.png")}
               resizeMode="contain"
               style={{
                 width: imageWidth,
                 height: imageHeight,
               }}
-            />
-
+            /> */}
+            <Sliderwhitelog />
             <Text style={[styles.slideText1, { color: "white" }]}>
               Smart{"\n"}Formals
             </Text>
@@ -95,15 +97,15 @@ const SliderScreen = (props) => {
           style={styles.slide}
         >
           <View style={styles.contain2}>
-            <Image
+            {/* <Image
               source={require("../../../assets/SliderImage/image100.png")}
               resizeMode="contain"
               style={{
                 width: imageWidth,
                 height: imageHeight,
               }}
-            />
-
+            /> */}
+            <Blacklogo />
             <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
               Flat{"\n"}40-50% OFF*
             </Text>
@@ -121,14 +123,8 @@ const SliderScreen = (props) => {
           style={styles.slide}
         >
           <View style={styles.contain3}>
-            <Image
-              source={require("../../../assets/SliderImage/image100.png")}
-              resizeMode="contain"
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-              }}
-            />
+            <Blacklogo />
+
 
             <Text
               style={[
@@ -158,14 +154,8 @@ const SliderScreen = (props) => {
           style={styles.slide}
         >
           <View style={styles.contain4}>
-            <Image
-              source={require("../../../assets/SliderImage/image100.png")}
-              resizeMode="contain"
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-              }}
-            />
+            <Blacklogo />
+
 
             <Text style={[styles.slideText1]}>BEST{"\n"}PICKS</Text>
             <Text style={[styles.slideText2, { color: "black" }]}>
@@ -186,7 +176,7 @@ const SliderScreen = (props) => {
           </View>
         </ImageBackground>
       </Swiper>
-     
+
     </View>
   );
 };
