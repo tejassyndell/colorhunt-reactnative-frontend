@@ -29,6 +29,7 @@
     "expo-file-system": "~15.4.4",
     "expo-font": "~11.4.0",
     "expo-location": "~16.1.0",
+    "expo-media-library": "^15.6.0",
     "expo-notifications": "~0.20.1",
     "expo-permissions": "~14.2.1",
     "expo-print": "~12.4.2",

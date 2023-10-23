@@ -55,8 +55,8 @@ const AddToCart = (props) => {
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -81,7 +81,7 @@ const AddToCart = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 35 : 25,
+              fontSize: width >= 720 ? 45 : 25,
               fontFamily: "Glory",
               width: "100%",
             }}
@@ -228,8 +228,8 @@ const AddToCart = (props) => {
                 }
               }
             }
-            if(status==true){
-                  outofstockcount+=1;
+            if (status == true) {
+              outofstockcount += 1;
             }
           }
           // console.log(outofstockcount,stringNumbers.length,"{}{}{}{}");
@@ -325,7 +325,7 @@ const AddToCart = (props) => {
       }
 
       if (outofstokecount === stringNumbers.length) {
-        outOfStock = true
+        outOfStock = true;
       }
       if (outOfStock) {
         return (
@@ -333,7 +333,7 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "500",
               color: "red",
               textAlign: "right",
@@ -354,7 +354,7 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "400",
               color: "red",
             }}
@@ -420,12 +420,9 @@ const AddToCart = (props) => {
         </View>
       ) : orderItems.length === 0 ? (
         <View
-          style={{
-            flex: 1,
-            backgroundColor: "#FFF",
-            borderTopColor: "#828282",
-            borderTopWidth: 0.5,
-          }}
+        // style={{
+        //   flex: 1,
+        // }}
         >
           <View
             style={{
@@ -493,9 +490,6 @@ const AddToCart = (props) => {
               style={{
                 flex: 1,
                 backgroundColor: "#FFF",
-                borderTopColor: "#828282",
-                borderTopWidth: 1,
-                borderWidth: 1,
               }}
             >
               <View style={{ width: "100%", backgroundColor: "#FFF" }}>
@@ -512,7 +506,8 @@ const AddToCart = (props) => {
                       style={{
                         backgroundColor: "#FFF",
                         height: "auto",
-                        maxHeight: windowwidthe * 1,
+                        // maxHeight: windowwidthe * 1,
+                        maxHeight: "100%",
                       }}
                     >
                       <View
@@ -566,12 +561,6 @@ const AddToCart = (props) => {
                                         width: windowwidthe >= 720 ? 150 : 100,
                                         height: windowwidthe >= 720 ? 140 : 110,
                                         borderRadius: 12,
-                                        shadowColor: "#000",
-                                        shadowOpacity: 1,
-                                        shadowOffset: {
-                                          width: 1,
-                                          height: 1,
-                                        },
                                         borderColor: "rgba(0,0,0,0.2)",
                                         borderWidth: 1,
                                       }}
@@ -658,7 +647,6 @@ const AddToCart = (props) => {
                                       >
                                         ₹{item.rate}.00
                                       </Text>
-
                                     </View>
                                   </View>
                                   <View
@@ -674,7 +662,7 @@ const AddToCart = (props) => {
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "flex-end",
-                                        gap: windowwidthe * 0.02,
+                                        gap: windowwidthe * 0.01,
                                         paddingRight: "5%",
                                         marginVertical: "5%",
                                         borderRadius: 10,
@@ -689,8 +677,8 @@ const AddToCart = (props) => {
                                           )
                                         }
                                         style={{
-                                          width: windowwidthe * 0.038,
-                                          height: windowheight * 0.038,
+                                          width: width >= 720 ? 30 : 15,
+                                          height: width >= 720 ? 30 : 15,
                                         }}
                                       >
                                         <Image
@@ -708,8 +696,8 @@ const AddToCart = (props) => {
                                           handleDeleteOrder(item.article_id)
                                         }
                                         style={{
-                                          width: windowwidthe * 0.038,
-                                          height: windowheight * 0.038,
+                                          width: width >= 720 ? 30 : 15,
+                                          height: width >= 720 ? 30 : 15,
                                         }}
                                       >
                                         <Image
@@ -927,7 +915,9 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.035,
-                                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                                          fontFamily: isFontLoaded
+                                            ? "Glory"
+                                            : undefined,
                                           fontWeight: "500",
                                           color: "red",
                                           textAlign: "right",
@@ -1139,7 +1129,9 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.035,
-                                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                                        fontFamily: isFontLoaded
+                                          ? "Glory"
+                                          : undefined,
                                         fontWeight: "500",
                                         color: "red",
                                         textAlign: "right",
@@ -1168,14 +1160,12 @@ const AddToCart = (props) => {
                         onChange={handlePromoCodeChange}
                         style={{
                           width: "100%",
-                          height:
-                            windowwidthe >= 720
-                              ? windowwidthe * 0.1
-                              : windowwidthe * 0.14,
+                          height: width >= 720 ? "54%" : "52%",
+
                           borderWidth: 1,
                           paddingLeft: "5%",
                           borderRadius: 10,
-                          fontSize: width >= 720 ? 20 : 18,
+                          fontSize: width >= 720 ? 40 : 18,
                           fontFamily: isFontLoaded ? "Glory" : undefined,
                           backgroundColor: "#EEE",
                           borderColor: "#E4E7EA",
@@ -1187,7 +1177,8 @@ const AddToCart = (props) => {
                         style={{
                           width: "100%",
                           position: "absolute",
-                          top: windowwidthe < 720 ? "30.5%" : "37%",
+                          top: width >= 720 ? "37%" : 20,
+                          position: "absolute",
                           justifyContent: "flex-end",
                           alignItems: "flex-end",
                         }}
@@ -1196,21 +1187,16 @@ const AddToCart = (props) => {
                           onPress={handleApplyPromoCode}
                           style={{
                             backgroundColor: "#212121",
-                            borderRadius: 7.6,
-                            width:
-                              windowwidthe < 720
-                                ? windowwidthe * 0.25
-                                : windowwidthe * 0.2,
-                            paddingHorizontal:
-                              windowwidthe >= 720 ? "3%" : "6%",
-                            paddingVertical:
-                              windowwidthe >= 720 ? "2%" : "2.5%",
+                            borderRadius: 10,
+                            width: width >= 720 ? "25%" : "25%",
+                            height: width >= 720 ? "190%" : 40,
+                            justifyContent: "center",
                           }}
                         >
                           <Text
                             style={{
                               color: "white",
-                              fontSize: width >= 720 ? 20 : 18,
+                              fontSize: width >= 720 ? 35 : 18,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               fontWeight: "600",
                               textAlign: "center",
@@ -1248,14 +1234,14 @@ const AddToCart = (props) => {
                       marginRight: "2.5%",
                       backgroundColor: "#212121",
                       borderRadius: 7.6,
-                      width: windowwidthe < 720 ? windowwidthe * 0.35 : "30%",
+                      width: width >= 720 ? 200 : 100,
                       paddingVertical: windowwidthe >= 720 ? "2%" : "2.5%",
                     }}
                   >
                     <Text
                       style={{
                         color: "white",
-                        fontSize: width >= 720 ? 20 : 18,
+                        fontSize: width >= 720 ? 35 : 18,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "600",
                         textAlign: "center",
@@ -1279,7 +1265,7 @@ const AddToCart = (props) => {
                 >
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 13 : 11,
+                      fontSize: width >= 720 ? 20 : 11,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontWeight: "700",
                       color: "#AAAAAA",
@@ -1304,7 +1290,7 @@ const AddToCart = (props) => {
                   >
                     <Text
                       style={{
-                        fontSize: width >= 720 ? 20 : 18,
+                        fontSize: width >= 720 ? 25 : 18,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "600",
                         color: "#585656",
@@ -1326,7 +1312,7 @@ const AddToCart = (props) => {
                   >
                     <Text
                       style={{
-                        fontSize: width >= 720 ? 20 : 18,
+                        fontSize: width >= 720 ? 30 : 18,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "800",
                         color: "#000",
@@ -1352,7 +1338,7 @@ const AddToCart = (props) => {
                     <Text
                       style={{
                         color: "white",
-                        fontSize: width >= 720 ? 20 : 18,
+                        fontSize: width >= 720 ? 35 : 18,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "600",
                         textAlign: "left",

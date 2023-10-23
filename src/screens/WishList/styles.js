@@ -47,6 +47,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  producticones: {
+    width: "20%",
+    position: "absolute",
+    resizeMode: "contain",
+    zIndex: 2,
+    right: 20,
+    top: 20,
+  },
+  icon: {
+    width: "100%",
+    fontSize: width >= 720 ? 30 : 20,
+    textAlign: "right",
+    color: "red",
+  },
+  disabledIcon: {
+    width: "100%",
+    color: "black",
+    fontSize: 20,
+    textAlign: "right",
+  },
 });
 
 export default styles;

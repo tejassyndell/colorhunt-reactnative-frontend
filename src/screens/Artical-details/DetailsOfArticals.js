@@ -102,8 +102,6 @@ const DetailsOfArticals = (props) => {
     };
     try {
       const res = await ArticleDetails(data);
-      console.log(res.data);
-      console.log("dd", res.data.photos);
       setArticlePhotos(res.data.photos);
       setArticleCategory(res.data.calculatedData[0].Category);
       setSubcategory(res.data.calculatedData[0].subcategory);
@@ -420,9 +418,10 @@ const DetailsOfArticals = (props) => {
                   height: "100%",
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
-                  padding: 12,
-                  shadowColor: "#000000",
-                  shadowOpacity: 0.5,
+                  padding: 15,
+                  paddingTop: 20,
+                  shadowColor: "grey",
+                  shadowOpacity: 0.4,
                 }}
               >
                 <View>
@@ -438,9 +437,11 @@ const DetailsOfArticals = (props) => {
                       style={{
                         width: "100%",
                         flexDirection:
-                          articleSizeData.length > 3 ? "column" : "row",
+                          articleSizeData && articleSizeData.length > 3
+                            ? "column"
+                            : "row",
                         alignItems:
-                          articleSizeData.length > 3
+                          articleSizeData && articleSizeData.length > 3
                             ? "flex-Start"
                             : "flex-start",
                         marginBottom: 10,
@@ -448,9 +449,18 @@ const DetailsOfArticals = (props) => {
                     >
                       <View
                         style={{
-                          marginRight: articleSizeData.length > 3 ? 0 : 30,
-                          width: articleSizeData.length > 3 ? "100%" : "50%",
-                          marginBottom: articleSizeData.length > 3 ? 10 : 0,
+                          marginRight:
+                            articleSizeData && articleSizeData.length > 3
+                              ? 0
+                              : 30,
+                          width:
+                            articleSizeData && articleSizeData.length > 3
+                              ? "100%"
+                              : "45%",
+                          marginBottom:
+                            articleSizeData && articleSizeData.length > 3
+                              ? 10
+                              : 0,
                         }}
                       >
                         <Text
@@ -466,7 +476,9 @@ const DetailsOfArticals = (props) => {
                         <View
                           style={{
                             paddingHorizontal:
-                              articleSizeData.length > 3 ? "6%" : 0,
+                              articleSizeData && articleSizeData.length > 3
+                                ? "6%"
+                                : 0,
                             width: "100%",
                             height: width >= 720 ? 100 : 60,
                             flexDirection: "row",
@@ -477,12 +489,13 @@ const DetailsOfArticals = (props) => {
                             alignItems: "center",
 
                             justifyContent:
-                              articleSizeData.length > 3 ? "center" : "center",
+                              articleSizeData && articleSizeData.length > 3
+                                ? "center"
+                                : "center",
                             ...Platform.select({
                               ios: {
                                 shadowColor: "black",
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.2,
+                                shadowOffset: { width: 0, height: 0 },
                                 shadowRadius: 2,
                                 backgroundColor: "#f4f4f4",
                               },
@@ -500,7 +513,10 @@ const DetailsOfArticals = (props) => {
                                   styles.size_options,
                                   {
                                     paddingHorizontal:
-                                      articleSizeData.length > 3 ? "1%" : 0,
+                                      articleSizeData &&
+                                      articleSizeData.length > 3
+                                        ? "1%"
+                                        : 0,
                                   },
                                 ]}
                                 key={index}
@@ -521,7 +537,10 @@ const DetailsOfArticals = (props) => {
                       <View
                         style={{
                           // width: "40%",
-                          width: articleSizeData.length > 3 ? "100%" : "40%",
+                          width:
+                            articleSizeData && articleSizeData.length > 3
+                              ? "100%"
+                              : "45%",
                         }}
                       >
                         <Text
@@ -545,14 +564,15 @@ const DetailsOfArticals = (props) => {
                             padding: 10,
                             alignContent: "center",
                             justifyContent:
-                              articleSizeData.length > 3 ? "center" : "center",
+                              articleSizeData && articleSizeData.length > 3
+                                ? "center"
+                                : "center",
 
                             alignItems: "center",
                             ...Platform.select({
                               ios: {
                                 shadowColor: "black",
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.2,
+                                shadowOffset: { width: 0, height: 0 },
                                 shadowRadius: 2,
                                 backgroundColor: "#f4f4f4",
                               },
@@ -565,10 +585,15 @@ const DetailsOfArticals = (props) => {
                         >
                           <Text
                             style={{
-                              fontSize: width >= 720 ? 35 : 22,
+                              fontSize:
+                                articleSizeData && articleSizeData.length > 3
+                                  ? 17
+                                  : 22,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               paddingHorizontal:
-                                articleSizeData.length > 3 ? "10%" : 0,
+                                articleSizeData && articleSizeData.length > 3
+                                  ? "10%"
+                                  : 0,
                               fontWeight: "600",
                               textAlign: "center",
                               color: "#000000",
