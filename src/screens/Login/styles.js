@@ -130,7 +130,7 @@ const logoSize = Math.min(width, height) * 0.6;
     backgroundImage1: {
       flex: 1,
       width: "100%",
-      height:'96%',
+      height: width >= 720 ? '100%' : '98%',
     },
     loginContainer: {
       flex: 1,

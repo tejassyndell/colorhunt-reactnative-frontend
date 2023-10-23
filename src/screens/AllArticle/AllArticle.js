@@ -10,6 +10,8 @@ import {
   Modal,
   KeyboardAvoidingView,
   Keyboard,
+  ScrollView,
+  RefreshControl
 } from "react-native";
 import {
   getProductName,
@@ -49,6 +51,22 @@ export default function AllArticle(props) {
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    // 3 seconds
+
+   
+      setIsLoading(false);
+      setRefreshing(false);
+    
+  };
+
 
   const fetchMoreData = () => {
     if (!isLoadingMore) {
@@ -144,6 +162,7 @@ export default function AllArticle(props) {
       setNameDatas(res.data);
       setFinalData(res.data);
       setIsLoading(false);
+      setRefreshing(false)
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -494,6 +513,12 @@ export default function AllArticle(props) {
                 NO ARTICLES FOUND
               </Text>
             ) : (
+              <ScrollView
+              style={{ flex: 1 }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
               <FlatList
                 style={{ backgroundColor: "#FFF" }}
                 data={finalData}
@@ -506,6 +531,8 @@ export default function AllArticle(props) {
                 onEndReached={fetchMoreData}
                 onEndReachedThreshold={0.1}
               />
+            </ScrollView>
+            
             )}
           </View>
           {/* {/ </ScrollView> /} */}

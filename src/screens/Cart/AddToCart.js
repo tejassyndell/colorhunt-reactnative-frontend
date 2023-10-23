@@ -8,6 +8,7 @@ import {
   Dimensions,
   Pressable,
   Platform,
+  RefreshControl
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -34,6 +35,23 @@ const AddToCart = (props) => {
   const windowheight = parseInt(Dimensions.get("window").height);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const { width, height } = Dimensions.get("window");
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    const delay = 3000; // 3 seconds
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setRefreshing(false);
+    }, delay);
+  };
 
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -485,6 +503,9 @@ const AddToCart = (props) => {
             nestedScrollEnabled={true}
             contentContainerStyle={{ flex: 1 }}
             keyboardShouldPersistTaps="handled"
+             refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
           >
             <View
               style={{
@@ -1177,9 +1198,7 @@ const AddToCart = (props) => {
                         style={{
                           width: "100%",
                           position: "absolute",
-                          top: width >= 720 ? "37%" : 20,
-                          position: "absolute",
-                          justifyContent: "flex-end",
+                          top: width >= 720 ? "37%" : '16%',
                           alignItems: "flex-end",
                         }}
                       >

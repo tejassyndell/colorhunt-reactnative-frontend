@@ -4,12 +4,13 @@ const {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  
 } = require("react-native");
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { Pressable } from "react-native";
 import { StyleSheet, Dimensions, Platform } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { ScrollView, TextInput,RefreshControl } from "react-native-gesture-handler";
 import { getCompletedSoDetails, getsonumber } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
@@ -34,6 +35,24 @@ const OrderHistory = (props) => {
   const [olddataofcompleted, setOldDataOfCompleted] = useState([]);
   const [sodatanotfount, setSodatanotfount] = useState(false);
   const [outworddatanotfount, setOutworddatanotfount] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    const delay = 3000; // 3 seconds
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setRefreshing(false);
+    }, delay);
+  };
+
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
@@ -165,6 +184,7 @@ const OrderHistory = (props) => {
       setOldDateOfso(res.data);
       setcompletedsodata(res.data);
       setIsLoading(false);
+      setRefreshing(false)
     });
   };
   useEffect(() => {
@@ -296,7 +316,13 @@ const OrderHistory = (props) => {
               </View>
             ) : (
               <View style={orderstyles.order_cnt}>
-                <ScrollView nestedScrollEnabled={true}>
+                <ScrollView nestedScrollEnabled={true}
+                 contentContainerStyle={{ flexGrow: 0.7 }}
+                 keyboardShouldPersistTaps="handled"
+                 refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+                >
                   {sonumberdata
                     ? sonumberdata.map((item) =>
                         item.status === 0 ? (
@@ -442,7 +468,13 @@ const OrderHistory = (props) => {
             </View>
           ) : (
             <View style={orderstyles.order_cnt}>
-              <ScrollView nestedScrollEnabled={true}>
+              <ScrollView nestedScrollEnabled={true}
+               contentContainerStyle={{ flexGrow: 0.7 }}
+               keyboardShouldPersistTaps="handled"
+               refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              >
                 {completedsodata
                   ? completedsodata.map((item) =>
                       item.status === 1 ? (
