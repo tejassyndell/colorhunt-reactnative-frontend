@@ -12,6 +12,7 @@ import {
   Modal,
   Platform,
   StyleSheet,
+  RefreshControl
 } from "react-native";
 import { addso, gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
@@ -47,6 +48,25 @@ const Orderlist = (props) => {
   const [isLoading2, setIsLoading2] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isfailed, setisFailed] = useState("");
+
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+   // 3 seconds
+
+   
+      setIsLoading(false);
+      setRefreshing(false);
+    
+  };
+
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -115,6 +135,7 @@ const Orderlist = (props) => {
     await addso(data).then((res) => {
       if (res.status === 200) {
         setIsLoading2(false);
+        setRefreshing(false)
         setIsSuccess(true);
       } else {
         setisFailed(true);
@@ -153,6 +174,7 @@ const Orderlist = (props) => {
         setTransportationVal(response.data[0].Name);
         setOldTransportation(response.data);
         setIsLoading(false);
+        setRefreshing(false)
       })
       .catch((error) => {
         console.error("Error fetching transportation data:", error);
@@ -261,7 +283,14 @@ const Orderlist = (props) => {
             backgroundColor: "white",
           }}
         >
-          <ScrollView nestedScrollEnabled={true}>
+          <ScrollView
+            nestedScrollEnabled={true}
+            contentContainerStyle={{ flex: 1 }}
+            keyboardShouldPersistTaps="handled"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             <View
               style={{
                 height: "100%",

@@ -9,6 +9,7 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -37,22 +38,29 @@ const Login = (props) => {
 
   const initialLogoSize = Math.min(width, height) * 0.6;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
-  const [leftPosition, setLeftPosition] = useState('50%');
+  const [leftPosition, setLeftPosition] = useState("50%");
+  const [isLoading, setIsLoading] = useState(true);
 
   const keyboardDidShow = () => {
     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
     setLogoSize(newSize);
-    setLeftPosition('65%');
+    setLeftPosition("65%");
   };
 
   const keyboardDidHide = () => {
     setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
-    setLeftPosition('50%');
+    setLeftPosition("50%");
   };
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      keyboardDidShow
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      keyboardDidHide
+    );
 
     return () => {
       keyboardDidShowListener.remove();
@@ -111,6 +119,7 @@ const Login = (props) => {
             if (res && res.status === 201) {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res && res.status === 200) {
+              setIsLoading(true)
               // Store data in local storage
               // if (res.data[0].token == token) {
               // } else {
@@ -133,6 +142,7 @@ const Login = (props) => {
                 });
 
               setShowLogin(false); // Switch to OTP view
+              setIsLoading(false)
             } else {
               // console.log("No");
             }
@@ -232,22 +242,38 @@ const Login = (props) => {
                 />
               </View>
             ) : (
-              <View style={{ width: "100%", alignItems: "center" }}>
-                <View style={styles.otpContainer}>
-                  {otp.map((digit, index) => (
-                    <TextInput
-                      key={index}
-                      style={styles.otpInput}
-                      placeholder=""
-                      keyboardType="numeric"
-                      maxLength={1}
-                      value={digit}
-                      onChangeText={(text) => handleOTPDigitChange(index, text)}
-                      ref={otpInput[index]}
-                    />
-                  ))}
-                </View>
-              </View>
+              <>
+                {isLoading ? (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ActivityIndicator size="large" color="black" />
+                  </View>
+                ) : (
+                  <View style={{ width: "100%", alignItems: "center" }}>
+                    <View style={styles.otpContainer}>
+                      {otp.map((digit, index) => (
+                        <TextInput
+                          key={index}
+                          style={styles.otpInput}
+                          placeholder=""
+                          keyboardType="numeric"
+                          maxLength={1}
+                          value={digit}
+                          onChangeText={(text) =>
+                            handleOTPDigitChange(index, text)
+                          }
+                          ref={otpInput[index]}
+                        />
+                      ))}
+                    </View>
+                  </View>
+                )}
+              </>
             )}
             <View style={{ width: "100%", height: 100 }}>
               <TouchableOpacity
