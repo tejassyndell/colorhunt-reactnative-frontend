@@ -22,7 +22,7 @@ import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
-// import RNHTMLtoPDF from "react-native-html-to-pdf"
+import * as Permissions from "expo-permissions";
 
 const OrderDetails = (props) => {
   const { navigation } = props;
@@ -499,19 +499,17 @@ const OrderDetails = (props) => {
     </html>
   `;
   const generatePDF = async () => {
-    console.log(tableData.tableData);
     try {
       if (Platform.OS === "android") {
-        const { status } = await Location.requestForegroundPermissionsAsync();
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== "granted") {
           console.error("Location permission not granted");
           return;
         }
       } else if (Platform.OS === "ios") {
-        const { granted } =
-          await FileSystem.requestForegroundPermissionsAsync();
-        if (!granted) {
-          console.error("File system permission not granted");
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== "granted") {
+          console.error("Location permission not granted");
           return;
         }
       }

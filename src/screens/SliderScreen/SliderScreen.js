@@ -60,7 +60,7 @@ const SliderScreen = (props) => {
         renderPagination={(index, total) => (
           <CustomPagination index={index} total={total} />
         )}
-        autoplay={true}
+        // autoplay={true}
       >
         <ImageBackground
           source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
@@ -77,10 +77,10 @@ const SliderScreen = (props) => {
             /> */}
             <Sliderwhitelog />
             <Text style={[styles.slideText1, { color: "white" }]}>
-              Smart{"\n"}Formals
+              SMAERT{"\n"}FORMALS
             </Text>
             <Text style={[styles.slideText2, { color: "white" }]}>
-              MIN {"\n"}30% OFF*
+              MIN. {"\n"}30% OFF*
             </Text>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: "white" }]}
@@ -131,6 +131,7 @@ const SliderScreen = (props) => {
                 styles.slideText1,
                 {
                   fontWeight: "500",
+                  marginTop: 20,
                 },
               ]}
             >
@@ -176,7 +177,6 @@ const SliderScreen = (props) => {
           </View>
         </ImageBackground>
       </Swiper>
-
     </View>
   );
 };

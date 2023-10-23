@@ -34,7 +34,7 @@ const LoginStyles = () => {
       width: width >= 720 ? "100%" : "100%",
       height: width >= 720 ? "100%" : "100%",
       // padding: width >= 720 ? "100%" : "100%",
-      resizeMode: "cover",
+      // resizeMode: "cover",
     },
     paginationContainer: {
       width: "100%",
@@ -70,7 +70,7 @@ const LoginStyles = () => {
     },
     buttonText: {
       color: "white",
-      fontSize: width >= 720 ? 30 : 20,
+      fontSize: width >= 720 ? 50 : 25,
       fontWeight: "bold",
       fontFamily: isFontLoaded ? "Glory" : undefined,
     },
@@ -108,17 +108,18 @@ const LoginStyles = () => {
     },
     slideText1: {
       color: "black",
-      fontSize: width >= 720 ? 35 : 20,
+      fontSize: width >= 720 ? 40 : 25,
       fontFamily: isFontLoaded ? "Glory" : undefined,
       textAlign: "center",
+      fontWeight: 400,
     },
     slideText2: {
       color: "white",
-      fontSize: width >= 720 ? 40 : 23,
+      fontSize: width >= 720 ? 50 : 30,
       fontFamily: isFontLoaded ? "Glory" : undefined,
       textAlign: "center",
       marginTop: 20,
-      fontWeight: "bold",
+      fontWeight: "500",
     },
   });
 

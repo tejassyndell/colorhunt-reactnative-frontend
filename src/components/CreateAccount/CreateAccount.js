@@ -476,9 +476,9 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "500",
     fontFamily: "Glory",
-    fontSize: windowWidth * 0.04,
+    fontSize: windowWidth >= 720 ? 45 : 25,
   },
   closeButton: {
     backgroundColor: "black",
