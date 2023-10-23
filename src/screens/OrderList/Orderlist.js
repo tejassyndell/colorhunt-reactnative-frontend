@@ -255,13 +255,18 @@ const Orderlist = (props) => {
         </View>
       ) : (
         <View
-          style={{ height: "100%", width: "100%", backgroundColor: "white" }}
+          style={{
+            height: "100%",
+            width: "100%",
+            backgroundColor: "white",
+          }}
         >
           <ScrollView nestedScrollEnabled={true}>
             <View
               style={{
                 height: "100%",
                 width: "100%",
+                marginTop: 20,
               }}
             >
               <View
@@ -276,7 +281,7 @@ const Orderlist = (props) => {
                 <View
                   style={{
                     paddingHorizontal: "5%",
-                    paddingVertical: "2.8%",
+                    paddingVertical: "1%",
                     gap: 5,
                   }}
                 >
