@@ -5,7 +5,7 @@ import Footersvg from "../../jssvgs/Footersvg";
 
 const ButtomNavigation = (props) => {
   const route = useRoute();
-  const { } = props;
+  const {} = props;
   // const {navigation , page , isLoggedIn} = props;
   const { navigation, page, isLoggedIn = true } = props;
 
@@ -45,8 +45,8 @@ const ButtomNavigation = (props) => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View
         style={{
-          width: "96%",
-          height: width >= 720 ? 120 : 70,
+          width: width >= 720 ? "70%" : "96%",
+          height: width >= 720 ? 110 : 70,
           backgroundColor: "#212121",
           flexDirection: "row",
           marginLeft: "2%",
@@ -76,8 +76,10 @@ const ButtomNavigation = (props) => {
           }}
           onPress={OrderList}
         >
-          <Footersvg val="orderhistory" status={page === "orderhistory" ? true : false} />
-
+          <Footersvg
+            val="orderhistory"
+            status={page === "orderhistory" ? true : false}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -89,7 +91,6 @@ const ButtomNavigation = (props) => {
           onPress={CartPage}
         >
           <Footersvg val="cart" status={false} />
-
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -100,7 +101,10 @@ const ButtomNavigation = (props) => {
           }}
           onPress={NotificationPage}
         >
-          <Footersvg val="notification" status={page === "notification" ? true : false} />
+          <Footersvg
+            val="notification"
+            status={page === "notification" ? true : false}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{

@@ -137,7 +137,7 @@ const OrderHistory = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width * 0.05,
+              fontSize: width >= 720 ? 35 : 20,
               fontWeight: "700",
               width: "100%",
             }}

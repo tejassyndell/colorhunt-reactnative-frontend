@@ -587,7 +587,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               fontSize:
                                 articleSizeData && articleSizeData.length > 3
-                                  ? 17
+                                  ? 14
                                   : 22,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               paddingHorizontal:

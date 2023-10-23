@@ -43,22 +43,23 @@ const SliderScreen = (props) => {
 
   return (
     <View style={styles.container}>
-       <View style={{
-        width:'100%',
-        height:50,
-        backgroundColor:'#FFF',
-        position: "absolute", 
-        bottom: 0,
-        zIndex:0
-        
-      }}></View>
+      <View
+        style={{
+          width: "100%",
+          height: 50,
+          backgroundColor: "#FFF",
+          position: "absolute",
+          bottom: 0,
+          zIndex: 0,
+        }}
+      ></View>
       <Swiper
         loop={false}
         showsPagination={true}
         renderPagination={(index, total) => (
           <CustomPagination index={index} total={total} />
         )}
-        autoplay={true}
+        // autoplay={true}
       >
         <ImageBackground
           source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
@@ -75,10 +76,10 @@ const SliderScreen = (props) => {
             />
 
             <Text style={[styles.slideText1, { color: "white" }]}>
-              Smart{"\n"}Formals
+              SMAERT{"\n"}FORMALS
             </Text>
             <Text style={[styles.slideText2, { color: "white" }]}>
-              MIN {"\n"}30% OFF*
+              MIN. {"\n"}30% OFF*
             </Text>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: "white" }]}
@@ -104,7 +105,9 @@ const SliderScreen = (props) => {
               }}
             />
 
-            <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
+            <Text
+              style={[styles.slideText1, { fontWeight: "500", marginTop: 20 }]}
+            >
               Flat{"\n"}40-50% OFF*
             </Text>
             <TouchableOpacity
@@ -135,6 +138,7 @@ const SliderScreen = (props) => {
                 styles.slideText1,
                 {
                   fontWeight: "500",
+                  marginTop: 20,
                 },
               ]}
             >
@@ -186,7 +190,6 @@ const SliderScreen = (props) => {
           </View>
         </ImageBackground>
       </Swiper>
-     
     </View>
   );
 };

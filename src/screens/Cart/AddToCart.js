@@ -420,16 +420,14 @@ const AddToCart = (props) => {
         </View>
       ) : orderItems.length === 0 ? (
         <View
-        // style={{
-        //   flex: 1,
-        // }}
+          style={{
+            flex: 1,
+          }}
         >
           <View
             style={{
-              flex: 1,
-              justifyContent: "flex-end",
-              alignContent: "center",
-              alignItems: "center",
+              height: "80%",
+              justifyContent: "center",
             }}
           >
             <Text
@@ -446,9 +444,8 @@ const AddToCart = (props) => {
           </View>
           <View
             style={{
-              flex: 1,
+              height: "20%",
               justifyContent: "center",
-              alignContent: "center",
               alignItems: "center",
             }}
           >
@@ -458,9 +455,8 @@ const AddToCart = (props) => {
                 height: windowheight * 0.06,
                 borderRadius: 10,
                 backgroundColor: "black",
-                alignItems: "center",
                 justifyContent: "center",
-                // marginTop: "100%",
+                alignItems: "center",
               }}
               onPress={() => navigation.navigate("Home")}
             >
@@ -468,7 +464,7 @@ const AddToCart = (props) => {
                 style={{
                   color: "white",
                   fontFamily: isFontLoaded ? "Glory" : undefined,
-                  fontSize: windowwidthe * 0.035,
+                  fontSize: width >= 720 ? 45 : 25,
                 }}
               >
                 Create Order
@@ -1154,13 +1150,13 @@ const AddToCart = (props) => {
                     nestedScrollEnabled={true}
                     style={{ width: "100%", backgroundColor: "#FFF" }}
                   >
-                    <View style={{ padding: "2.5%" }}>
+                    <View style={{ marginHorizontal: "3%" }}>
                       <TextInput
                         value={promoCode}
                         onChange={handlePromoCodeChange}
                         style={{
                           width: "100%",
-                          height: width >= 720 ? "54%" : "52%",
+                          height: width >= 720 ? 90 : 60,
 
                           borderWidth: 1,
                           paddingLeft: "5%",
@@ -1177,7 +1173,8 @@ const AddToCart = (props) => {
                         style={{
                           width: "100%",
                           position: "absolute",
-                          top: width >= 720 ? "37%" : 20,
+                          top: width >= 720 ? 14 : 7,
+                          right: width >= 720 ? 10 : 10,
                           position: "absolute",
                           justifyContent: "flex-end",
                           alignItems: "flex-end",
@@ -1188,15 +1185,15 @@ const AddToCart = (props) => {
                           style={{
                             backgroundColor: "#212121",
                             borderRadius: 10,
-                            width: width >= 720 ? "25%" : "25%",
-                            height: width >= 720 ? "190%" : 40,
+                            width: width >= 720 ? 150 : 100,
+                            height: width >= 720 ? 60 : 45,
                             justifyContent: "center",
                           }}
                         >
                           <Text
                             style={{
                               color: "white",
-                              fontSize: width >= 720 ? 35 : 18,
+                              fontSize: width >= 720 ? 35 : 25,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               fontWeight: "600",
                               textAlign: "center",
