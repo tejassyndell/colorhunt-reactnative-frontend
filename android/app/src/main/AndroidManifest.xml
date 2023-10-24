@@ -31,7 +31,7 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="com.colorhuntmobileapp.app"/>
+        <data android:scheme="com.colorhunt.app"/>
         <data android:scheme="exp+colorhunt-recipes-app"/>
       </intent-filter>
     </activity>

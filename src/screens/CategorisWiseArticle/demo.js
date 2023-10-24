@@ -8,7 +8,6 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import Filter from "../../components/Filter/Filter";
 import { FontAwesome } from '@expo/vector-icons';
-import { log } from "react-native-reanimated";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AllArticle(props) {

@@ -1,4 +1,4 @@
-package com.colorhuntmobileapp.app;
+package com.colorhunt.app;
 
 import android.os.Build;
 import android.os.Bundle;

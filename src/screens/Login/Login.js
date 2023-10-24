@@ -262,7 +262,7 @@ const Login = (props) => {
             </View>
           </ImageBackground>
           <View style={styles.contentContainer}>
-            <Text style={styles.title}>Welcome!</Text>
+            <Text style={styles.title}>Welcome!{token}</Text>
             <Text style={styles.subtitle}>
               {showLogin
                 ? "Please Login To Continue"
