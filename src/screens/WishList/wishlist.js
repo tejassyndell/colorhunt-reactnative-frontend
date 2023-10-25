@@ -3,17 +3,13 @@ import {
   Text,
   View,
   Image,
-  ScrollView,
   FlatList,
   TouchableOpacity,
   Dimensions,
   Platform,
+  RefreshControl,
 } from "react-native";
-import {
-  getProductName,
-  getWishlistData,
-  DeleteWishlist,
-} from "../../api/api";
+import { getProductName, getWishlistData, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
 import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -30,6 +26,18 @@ export default function WishList(props) {
   const [isLoading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add your refreshing logic here (e.g., fetch new data or update existing data).
+
+    // Simulate a delay to hide the loading indicator after a few seconds (adjust as needed).
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000); // 3 seconds
+  };
+
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
@@ -98,6 +106,7 @@ export default function WishList(props) {
       console.log(res.data);
       setSelectprd(res.data);
       setIsLoading(false);
+      z;
     });
   };
 
@@ -147,7 +156,7 @@ export default function WishList(props) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-    onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
+      onPress={() => navigation.navigate("DetailsOfArticals", { id: item.Id })}
       style={{
         alignItems: "center",
         height: "auto",
@@ -352,6 +361,9 @@ export default function WishList(props) {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: 10 }}
               columnWrapperStyle={{ justifyContent: "space-between" }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
             />
           </View>
 

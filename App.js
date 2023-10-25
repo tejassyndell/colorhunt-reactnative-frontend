@@ -1,32 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import 'firebase/auth';
-import AppContainer from './src/navigations/AppNavigation';
-import 'firebase/messaging';
-import { StatusBar, Text, View, Modal, Image } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
+import React, { useState, useEffect } from "react";
+import "firebase/auth";
+import AppContainer from "./src/navigations/AppNavigation";
+import "firebase/messaging";
+import { StatusBar, Text, View, Modal, Image } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 
 export default function App() {
-  const [isOffline, setOfflineStatus] = useState(false);
-  const [showNetworkError, setShowNetworkError] = useState(false);
+  // const [isOffline, setOfflineStatus] = useState(false);
+  // const [showNetworkError, setShowNetworkError] = useState(false);
 
-  useEffect(() => {
-    const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
-      const offline = !(state.isConnected && state.isInternetReachable);
-      setOfflineStatus(offline);
+  // useEffect(() => {
+  //   const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
+  //     const offline = !(state.isConnected && state.isInternetReachable);
+  //     setOfflineStatus(offline);
+  //     if (offline) {
+  //       // Set showNetworkError with a delay of 2000 milliseconds (2 seconds)
 
-      // Show the network error popup when offline
-      setShowNetworkError(offline);
-    });
+  //       setShowNetworkError(false);
+  //     }
+  //   });
 
-    return () => removeNetInfoSubscription();
-  }, []);
-
-  // Define your fetchUsers function or replace this with your actual data fetching logic
-  const fetchUsers = () => {
-    // Your data fetching logic here
-  };
-
-  fetchUsers();
+  //   return () => removeNetInfoSubscription();
+  // }, []);
 
   return (
     <>
@@ -37,42 +32,41 @@ export default function App() {
         translucent={false}
         networkActivityIndicatorVisible={true}
       />
-      {/* Render your AppContainer with network error handling */}
-      {isOffline ? (
-        <AppContainer />
-      ) : (
-        <AppContainer />
-      )}
-
-      {/* Network Error Popup */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showNetworkError}
-        onRequestClose={() => {
-          // Handle modal close if needed
-          setShowNetworkError(false);
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white', // Set the background color to white
+      <AppContainer />
+      {/* {isOffline ? (
+        // Render the network error modal when offline
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={showNetworkError}
+          onRequestClose={() => {
+            // Handle modal close if needed
+            setShowNetworkError(false);
           }}
         >
-          <Image
-            source={require("./assets/wifiSignal.png")}
+          <View
             style={{
-              width: 50, // Adjust the width as needed
-              height: 50, // Adjust the height as needed
-              borderRadius: 5,
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "white",
             }}
-          ></Image>
-          <Text style={{ marginTop: 10 }}>No Internet Connection</Text>
-        </View>
-      </Modal>
+          >
+            <Image
+              source={require("./assets/wifiSignal.png")}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 5,
+              }}
+            ></Image>
+            <Text style={{ marginTop: 10 }}>No Internet Connection</Text>
+          </View>
+        </Modal>
+      ) : (
+        // Render the AppContainer when online
+        
+      )} */}
     </>
   );
 }

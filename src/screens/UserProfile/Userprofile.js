@@ -152,7 +152,7 @@ export default function Userprofile(props) {
                 <TouchableHighlight>
                   <View style={styles.Profile}>
                     <Image
-                      source={require("../../../assets/Profileicon/Frame_1171274903.png")}
+                      source={require("../../../assets/Profileicon/Mainprofile.png")}
                       style={{
                         width: width >= 720 ? 200 : 120,
                         height: width >= 720 ? 200 : 120,

@@ -47,7 +47,7 @@ const SliderStyles = () => {
       fontSize: windowWidth * 0.04,
 
       fontWeight: "700",
-      marginBottom: 80,
+      marginBottom: 70,
     },
     input: {
       fontFamily: isFontLoaded ? "Glory" : undefined,
@@ -62,7 +62,7 @@ const SliderStyles = () => {
       color: "#000000",
     },
     otpContainer: {
-      height: "auto",
+      // height: "auto",
       flexDirection: "row",
       width: width >= 720 ? 400 : "60%",
       marginBottom: "10%",
@@ -88,8 +88,8 @@ const SliderStyles = () => {
       position: "absolute",
       justifyContent: "center",
       alignItems: "center",
-      bottom: 0,
-      right: 0,
+      bottom: 10,
+      right: 15,
     },
     buttonText: {
       fontFamily: isFontLoaded ? "Glory" : undefined,
@@ -124,12 +124,10 @@ const SliderStyles = () => {
     },
     container1: {
       flex: 1,
-      padding: 15,
     },
     backgroundImage1: {
       flex: 1,
-      width: "100%",
-      height: width >= 720 ? "100%" : "98%",
+      resizeMode: "contain",
     },
     loginContainer: {
       flex: 1,
