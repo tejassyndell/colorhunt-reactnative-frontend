@@ -8,7 +8,6 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from '../../components/menubackarrow/menubackarrow';
 import Filter from "../../components/Filter/Filter";
 import { FontAwesome } from '@expo/vector-icons';
-import { log } from "react-native-reanimated";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AllArticle(props) {
@@ -79,7 +78,7 @@ export default function AllArticle(props) {
 
   const addArticleWishlist = async (i) => {
     let data = {
-      user_id: 197,
+      user_id: await getpartyid(),
       article_id: i.Id,
     };
     console.log(data);

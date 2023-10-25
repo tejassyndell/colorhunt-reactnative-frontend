@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     height: 60,
-    backgroundColor: "#fff", // Set your desired background color
+    backgroundColor: "#fff",
   },
   backIcon: {
     width: 30,
@@ -46,6 +46,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  producticones: {
+    width: "20%",
+    position: "absolute",
+    resizeMode: "contain",
+    zIndex: 2,
+    right: 20,
+    top: 20,
+  },
+  icon: {
+    width: "100%",
+    fontSize: width >= 720 ? 30 : 20,
+    textAlign: "right",
+    color: "red",
+  },
+  disabledIcon: {
+    width: "100%",
+    color: "black",
+    fontSize: 20,
+    textAlign: "right",
   },
 });
 

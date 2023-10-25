@@ -11,12 +11,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  RefreshControl
 } from "react-native";
+import { ActivityIndicator } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { SendMail } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import ResponsiveImage from "react-native-responsive-image";
 import * as Font from "expo-font";
+import Contactsvg from "../../jssvgs/Contactsvg";
 
 export default function Contact(props) {
   const { navigation } = props;
@@ -24,17 +27,55 @@ export default function Contact(props) {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(153);
   const [buttonFontSize, setButtonFontSize] = useState(18);
-  const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   const { width, height } = Dimensions.get("window");
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    const delay = 3000; // 3 seconds
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setRefreshing(false);
+    }, delay);
+  };
+
+
+  const headerHeight =
+    Platform.OS === "android"
+      ? width >= 720
+        ? 120
+        : 100
+      : height >= 720
+      ? 110
+      : 70;
   const numberOfLines = width >= 720 ? 5 : 4;
   const lineHeight = width >= 720 ? 30 : 25;
   const multilineHeight = numberOfLines * lineHeight;
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  useEffect(() => {
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    const delay = 1000; // 3 seconds
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, delay);
+
+    // Clear the timer when the component unmounts
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -109,7 +150,7 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -136,21 +177,35 @@ export default function Contact(props) {
       color: "white",
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 20,
-      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       fontWeight: "700",
     },
   });
   const windowWidth = Dimensions.get("window").width;
 
   return (
+    <>{isLoading ? (
+      <View style={{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+      }}>
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    ) : (
+     
     <KeyboardAvoidingView
-      style={{ flex: 1,backgroundColor:'white' }}
+      style={{ flex: 1, backgroundColor: "white" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      
       <ScrollView
         contentContainerStyle={{ flexGrow: 0.7 }}
         keyboardShouldPersistTaps="handled"
         showsHorizontalScrollIndicator={true}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View
           style={{
@@ -162,7 +217,7 @@ export default function Contact(props) {
             marginRight: "20%",
           }}
         >
-          <Image
+          {/* <Image
             source={require("../../../assets/ContactPagePNG/contact.png")}
             style={{
               marginTop: 15,
@@ -170,7 +225,8 @@ export default function Contact(props) {
               resizeMode: "contain",
               height: "100%",
             }}
-          />
+          /> */}
+          <Contactsvg/>
         </View>
         <View
           style={{
@@ -198,13 +254,20 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
 
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !username && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -226,12 +289,19 @@ export default function Contact(props) {
                 padding: 10,
                 margin: 5,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
                 height: width >= 720 ? 70 : 40,
               }}
             />
             {showValidationErrors && !email && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -254,11 +324,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: width >= 720 ? 70 : 40,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
             />
             {showValidationErrors && !subject && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -286,11 +363,18 @@ export default function Contact(props) {
                 margin: 5,
                 height: multilineHeight,
                 fontSize: width >= 720 ? 30 : 15,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
               }}
             />
             {showValidationErrors && !message && (
-              <Text style={{ color: "red", fontSize: 10,fontFamily: isFontLoaded ? 'Glory' : undefined, marginLeft: 10 }}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 10,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
                 This field is required
               </Text>
             )}
@@ -299,7 +383,7 @@ export default function Contact(props) {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginTop: width >= 720 ? 100 : 60,
+              marginTop: height >= 720 ? 90 : 45,
             }}
           >
             <TouchableOpacity
@@ -315,5 +399,6 @@ export default function Contact(props) {
         <ButtomNavigation navigation={navigation} page="contactus" />
       </View>
     </KeyboardAvoidingView>
+    )}</>
   );
 }

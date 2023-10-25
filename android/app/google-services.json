@@ -1,37 +1,26 @@
 {
   "project_info": {
-    "project_number": "226470800534",
-    "firebase_url": "https://colorhunt-c7e5d-default-rtdb.firebaseio.com",
-    "project_id": "colorhunt-c7e5d",
-    "storage_bucket": "colorhunt-c7e5d.appspot.com"
+    "project_number": "784149544299",
+    "project_id": "colorhuntmobileappnotification",
+    "storage_bucket": "colorhuntmobileappnotification.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:226470800534:android:ae35c4a624e0597257e6b7",
+        "mobilesdk_app_id": "1:784149544299:android:6282431285657b9131602e",
         "android_client_info": {
           "package_name": "com.colorhuntmobileapp.app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "226470800534-lgads3n1k290p4k637ip3spgf3o6h7cr.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDRuACEXhSQfhRt1gga4Q-xkpF-V4ojAI8"
+          "current_key": "AIzaSyBJPUzWhQifsOFJGZUROC8vDR0XbBELFJ0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "226470800534-d9givjf54kki6hfockp45seet2441jfg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

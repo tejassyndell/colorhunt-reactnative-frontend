@@ -8,6 +8,9 @@ import {
   Modal,
   Dimensions,
   Platform,
+  KeyboardAvoidingView,
+  Keyboard,
+  RefreshControl,
 } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -25,7 +28,9 @@ import Filter from "../../components/Filter/Filter";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
-
+import Svg, { Circle, Path } from "react-native-svg";
+import SidebarSvg from "../../jssvgs/Sidebarsvg";
+import ProfileSvg from "../../jssvgs/ProfileSvg";
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -43,6 +48,45 @@ export default function HomeScreen(props) {
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
+    const delay = 3000; // 3 seconds
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setRefreshing(false);
+    }, delay);
+  };
+
+  // Add a listener to track keyboard visibility
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -59,7 +103,13 @@ export default function HomeScreen(props) {
     loadCustomFont();
   }, []);
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 110
+        : 80
+      : height >= 844
+      ? 110
+      : 65;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 
@@ -75,6 +125,7 @@ export default function HomeScreen(props) {
     // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
+      setRefreshing(false);
     }, 2000);
 
     // Clear the timeout when the component unmounts to prevent memory leaks
@@ -168,7 +219,8 @@ export default function HomeScreen(props) {
     getWishlist();
   }, []);
 
-  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const getCategoriesname = async () => {
     try {
@@ -182,9 +234,11 @@ export default function HomeScreen(props) {
         setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
       }
       setIsLoading(false);
+      setRefreshing(false);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -192,20 +246,19 @@ export default function HomeScreen(props) {
     getCategoriesname();
   }, []);
 
-  const key = 'your_storage_key';
-  const key2 = 'your_storage_key';
+  const key = "your_storage_key";
+  const key2 = "your_storage_key";
   const viewAllArticles = async () => {
     navigation.navigate("AllArticle");
 
-
     try {
       const serializedCategories = JSON.stringify(selectedCategories);
-      const serrializedPriceRange = JSON.stringify(selectedPriceRange)
+      const serrializedPriceRange = JSON.stringify(selectedPriceRange);
       await AsyncStorage.setItem(key, serializedCategories);
-      await AsyncStorage.setItem(key2, serrializedPriceRange)
-      console.log('Data stored successfully.');
+      await AsyncStorage.setItem(key2, serrializedPriceRange);
+      console.log("Data stored successfully.");
     } catch (error) {
-      console.error('Error storing data:', error);
+      console.error("Error storing data:", error);
     }
   };
 
@@ -227,14 +280,7 @@ export default function HomeScreen(props) {
               navigation.openDrawer();
             }}
           >
-            <Image
-              source={require("../../../assets/sidbarOpenIcone.png")}
-              style={{
-                width: width >= 720 ? 50 : 35,
-                height: width >= 720 ? 50 : 35,
-                borderRadius: 5,
-              }}
-            ></Image>
+            <SidebarSvg />
           </TouchableOpacity>
         </View>
       ),
@@ -257,10 +303,11 @@ export default function HomeScreen(props) {
           >
             <Image
               style={{
-                width: width >= 720 ? 50 : 35,
-                height: width >= 720 ? 50 : 35,
+                resizeMode: "contain",
+                width: width >= 720 ? 55 : 32,
+                height: width >= 720 ? 55 : 32,
               }}
-              source={require("../../../assets/Nevbar/Profile.png")}
+              source={require("../../../assets/Profileicon/Group8919.png")}
             />
           </TouchableOpacity>
         </View>
@@ -277,7 +324,12 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = () => {
-    console.log(searchText, selectedCategories, selectedPriceRange, "filters in home ")
+    console.log(
+      searchText,
+      selectedCategories,
+      selectedPriceRange,
+      "filters in home "
+    );
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
@@ -384,7 +436,7 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   fontSize: width >= 720 ? 32 : 22,
-                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
                   fontWeight: "700",
                   paddingLeft: 8,
                 }}
@@ -409,20 +461,45 @@ export default function HomeScreen(props) {
                   openFilter();
                 }}
               >
-                <Image
-                  source={require("../../../assets/filetr_icone.png")}
-                  style={{
-                    width: width >= 720 ? 65 : 40,
-                    height: width >= 720 ? 65 : 40,
-                    borderRadius: 10,
-                  }}
-                />
+                <Svg
+                  width={width >= 720 ? 60 : 35}
+                  height={width >= 720 ? 60 : 35}
+                  viewBox="0 0 40 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/Svg"
+                  {...props}
+                >
+                  <Circle cx={20} cy={20} r={20} fill="#212121" />
+                  <Path
+                    opacity={0.4}
+                    d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
+                    fill="white"
+                  />
+                  <Path
+                    opacity={0.4}
+                    d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
+                    fill="white"
+                  />
+                  <Path
+                    d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
+                    fill="white"
+                  />
+                  <Path
+                    d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
+                    fill="white"
+                  />
+                </Svg>
               </TouchableOpacity>
             </View>
           </View>
           <ScrollView
             showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 0.7 }}
+            keyboardShouldPersistTaps="handled"
             style={{ overflow: "hidden" }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
               <Text
@@ -430,7 +507,7 @@ export default function HomeScreen(props) {
                   start: 10,
                   fontWeight: "700",
                   fontSize: width >= 720 ? 25 : 18,
-                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
                 }}
               >
                 Men's
@@ -441,11 +518,11 @@ export default function HomeScreen(props) {
                   color: "#666666",
                   end: 10,
                   fontSize: width >= 720 ? 20 : 12,
-                  fontFamily: isFontLoaded ? 'Glory' : undefined,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
                   fontWeight: "600",
                 }}
                 onPress={() => {
-                  viewAllArticles()
+                  viewAllArticles();
                 }}
               >
                 View All
@@ -459,6 +536,13 @@ export default function HomeScreen(props) {
                 height: "auto",
                 flexDirection: "row",
                 marginTop: "3%",
+                shadowColor: "grey",
+                shadowOffset: {
+                  width: 1,
+                  height: 1,
+                },
+                shadowOpacity: 0.6,
+                elevation: 2,
               }}
             >
               <ScrollView
@@ -495,10 +579,6 @@ export default function HomeScreen(props) {
                               height: width >= 720 ? 280 : 190,
                               borderRadius: 12,
                               backgroundColor: "#FFF",
-                              shadowColor: "#000",
-                              shadowOpacity: 0.1,
-                              shadowRadius: 1,
-                              elevation: 5,
                             }}
                           >
                             <View id={item.id} style={styles.producticones}>
@@ -554,13 +634,20 @@ export default function HomeScreen(props) {
                               fontWeight: "bold",
                               marginTop: 10,
                               fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
                             }}
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text style={{fontSize: width >= 720 ? 16 : 14}}>{convertToTitleCase(item.Category)}</Text>
-                          <Text style={{ fontWeight: "bold",fontSize: width >= 720 ? 20 : 16 }}>
+                          <Text style={{ fontSize: width >= 720 ? 16 : 14 }}>
+                            {convertToTitleCase(item.Category)}
+                          </Text>
+                          <Text
+                            style={{
+                              fontWeight: "bold",
+                              fontSize: width >= 720 ? 20 : 16,
+                            }}
+                          >
                             {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
@@ -578,7 +665,7 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
-                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
                           textAlign: "center",
                           color: "#808080",
                         }}
@@ -597,7 +684,7 @@ export default function HomeScreen(props) {
                         width: width >= 720 ? 300 : 165,
                         marginLeft: width >= 720 ? 15 : 5,
                         marginRight: width >= 720 ? 15 : 5,
-                        marginTop: 10,
+                        marginTop: width >= 720 ? 30 : 10,
                         marginBottom: 10,
                         borderRadius: 10,
                       }}
@@ -613,12 +700,12 @@ export default function HomeScreen(props) {
                             height: width >= 720 ? 280 : 190,
                             borderColor: "gray",
                             shadowColor: "gray",
-                            shadowOpacity: 0.9,
+                            shadowOpacity: 0.1,
                             shadowRadius: 10,
                             elevation: 10,
                             shadowOffset: {
-                              width: 0,
-                              height: 0,
+                              width: 1,
+                              height: 1,
                             },
                           }}
                         >
@@ -648,7 +735,7 @@ export default function HomeScreen(props) {
                           marginTop: 10,
                           fontWeight: "bold",
                           fontSize: width >= 720 ? 30 : 14,
-                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                          fontFamily: isFontLoaded ? "Glory" : undefined,
                           marginBottom: 10,
                           textAlign: "center",
                         }}
@@ -675,7 +762,7 @@ export default function HomeScreen(props) {
                     start: 10,
                     fontWeight: "700",
                     fontSize: width >= 720 ? 25 : 18,
-                    fontFamily: isFontLoaded ? 'Glory' : undefined,
+                    fontFamily: isFontLoaded ? "Glory" : undefined,
                   }}
                 >
                   Kid’s
@@ -686,7 +773,7 @@ export default function HomeScreen(props) {
                     end: 10,
                     color: "#666666",
                     fontSize: width >= 720 ? 18 : 12,
-                    fontFamily: isFontLoaded ? 'Glory' : undefined,
+                    fontFamily: isFontLoaded ? "Glory" : undefined,
                     fontWeight: "600",
                   }}
                   onPress={() => {
@@ -706,33 +793,33 @@ export default function HomeScreen(props) {
                   top: 20,
                 }}
               >
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  style={{ overflow: "hidden" }}
-                >
-                  {kids.length === 0 ? (
-                    <View
+                {kids.length === 0 ? (
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Text
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        justifyContent: "center",
+                        fontSize: width >= 720 ? 25 : 17,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         textAlign: "center",
+                        color: "#808080",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: width >= 720 ? 25 : 17,
-                          fontFamily: isFontLoaded ? 'Glory' : undefined,
-                          textAlign: "center",
-                          color: "#808080",
-                        }}
-                      >
-                        No Article Found
-                      </Text>
-                    </View>
-                  ) : (
-                    kids.map((item, index) => (
+                      No Article Found
+                    </Text>
+                  </View>
+                ) : (
+                  kids.map((item, index) => (
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                      style={{ overflow: "hidden" }}
+                    >
                       <View
                         key={index}
                         style={{
@@ -802,41 +889,53 @@ export default function HomeScreen(props) {
                             fontWeight: "bold",
                             marginTop: 10,
                             fontSize: width >= 720 ? 18 : 12,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           {item.ArticleNumber}
                         </Text>
-                        <Text style={{ fontSize: width >= 720 ? 15 : 10, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 15 : 10,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                          }}
+                        >
                           {convertToTitleCase(item.Category)}
                         </Text>
                         <Text
                           style={{
                             fontWeight: "bold",
                             fontSize: width >= 720 ? 18 : 12,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           {"₹" + item.ArticleRate + ".00"}
                         </Text>
                       </View>
-                    ))
-                  )}
-                </ScrollView>
+                    </ScrollView>
+                  ))
+                )}
               </View>
             </View>
           </ScrollView>
         </View>
       )}
-      {isFilterVisible ? null : (
-        <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-          <ButtomNavigation
-            navigation={navigation}
-            isLoggedIn={isLoggedIn}
-            page="home"
-          />
-        </View>
-      )}
+      <KeyboardAvoidingView
+        behavior={isKeyboardOpen ? "padding" : null}
+        style={{ flex: 1 }}
+      >
+        {isFilterVisible ? null : (
+          <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+            <ButtomNavigation
+              navigation={navigation}
+              isLoggedIn={isLoggedIn}
+              page="home"
+            />
+          </View>
+        )}
+
+        {/* Other components here */}
+      </KeyboardAvoidingView>
       {isFilterVisible && (
         <View
           style={{
@@ -891,7 +990,7 @@ export default function HomeScreen(props) {
         >
           <View
             style={{
-              width: "100%",
+              width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
               padding: 10,
