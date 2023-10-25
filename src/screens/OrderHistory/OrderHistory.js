@@ -614,7 +614,7 @@ const OrderHistory = (props) => {
                     paddingLeft: 20,
                   }}
                 >
-                  <View style={{ height: 25, width: 25 }}>
+                  <View style={{ height: 35, width: 35,marginTop:5 }}>
                     <Image
                       style={{
                         height: "100%",
@@ -847,6 +847,7 @@ const orderstyles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     flexWrap: "wrap",
+    marginBottom:8
   },
   txt_titile: {
     fontSize: width < 720 ? 14 : 20,

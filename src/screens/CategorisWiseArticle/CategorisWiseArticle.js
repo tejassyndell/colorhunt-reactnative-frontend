@@ -640,7 +640,7 @@ export default function CategorisWiseArticle(props) {
         >
           <View
             style={{
-              width: "100%",
+              width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
               padding: 10,

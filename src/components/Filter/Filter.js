@@ -422,9 +422,8 @@ const styles = StyleSheet.create({
     fontSize: width >= 720 ? 16 : 12,
     marginLeft: 3,
     width: "80%",
-    height: "auto",
     paddingVertical: 5,
-    wordWrap: "break-word",
+    flexWrap: "wrap", // Enable text wrapping
     justifyContent: "center",
     fontWeight: "500",
   },
@@ -482,6 +481,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 20 : 18,
+    paddingBottom:3,
     fontWeight: "600",
   },
   tooltipContainer: {

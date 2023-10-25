@@ -897,7 +897,6 @@ const OrderDetails = (props) => {
               >
                 <TouchableOpacity
                   style={{
-                    backgroundColor: "#212121",
                     padding: 8,
                     borderTopRightRadius: 10,
                     borderBottomRightRadius: 10,
@@ -911,7 +910,7 @@ const OrderDetails = (props) => {
                       color: "#FFFFFF",
                     }}
                   >
-                    {name}
+                   
                   </Text>
                 </TouchableOpacity>
                 <Text
@@ -952,6 +951,7 @@ const OrderDetails = (props) => {
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "500",
                         color: "#808080",
+                        
                       }}
                     >
                       Name:
@@ -1182,6 +1182,7 @@ const OrderDetails = (props) => {
                       maxWidth: "100%",
                       backgroundColor: "#fff",
                       marginBottom: 280,
+                      marginTop:20,
                     }}
                   >
                     <ScrollView

@@ -17,7 +17,7 @@ import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { PixelRatio } from "react-native";
 import { useEffect } from "react";
 import LoginStyles from "./styles.js";
-import Svg, { Path, G } from 'react-native-svg';
+import Svg, { Path, G } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -36,7 +36,7 @@ const Login = (props) => {
   const [token, setToken] = useState("");
   const styles = LoginStyles();
 
-  const initialLogoSize = Math.min(width, height) * 0.6;
+  const initialLogoSize = Math.min(width, height) * 0.5;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
   const [isLoading, setIsLoading] = useState(true);
@@ -67,8 +67,6 @@ const Login = (props) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
-
 
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
@@ -119,18 +117,8 @@ const Login = (props) => {
             if (res && res.status === 201) {
               alert("Invalid Phone Number. Please enter a valid phone number.");
             } else if (res && res.status === 200) {
-              setIsLoading(true)
-              // Store data in local storage
-              // if (res.data[0].token == token) {
-              // } else {
-              //   await udatepartytoken({
-              //     token: token,
-              //     party_id: res.data[0].Id,
-              //   }).then((res) => {
-              //     console.log(res.data);
-              //   });
-              // }
-              // console.log(res.data[0].Name);
+              setIsLoading(true);
+
               getstatus(true, res.data[0].Name);
               const userData = res.data; // Assuming res.data contains user data
               AsyncStorage.setItem("UserData", JSON.stringify(userData))
@@ -142,9 +130,8 @@ const Login = (props) => {
                 });
 
               setShowLogin(false); // Switch to OTP view
-              setIsLoading(false)
+              setIsLoading(false);
             } else {
-              // console.log("No");
             }
           });
         } catch (error) {
@@ -199,7 +186,7 @@ const Login = (props) => {
                   { height: logoSize, width: logoSize },
                 ]}
               /> */}
-              <WhiteLogo path={imageSource}/>
+              <WhiteLogo path={imageSource} />
             </View>
           </ImageBackground>
           <View style={styles.contentContainer}>
@@ -213,7 +200,7 @@ const Login = (props) => {
               <View style={styles.inputContainer}>
                 <View style={styles.phoneIconContainer}>
                   <Svg
-                     style={styles.phoneIcon}
+                    style={styles.phoneIcon}
                     viewBox="0 0 20 20"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +213,6 @@ const Login = (props) => {
                       />
                     </G>
                   </Svg>
-
                 </View>
                 <TextInput
                   style={[styles.input, { color: "black" }]}
