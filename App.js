@@ -12,10 +12,17 @@ export default function App() {
   useEffect(() => {
     const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
       const offline = !(state.isConnected && state.isInternetReachable);
+      const online = (state.isConnected && state.isInternetReachable);
       setOfflineStatus(offline);
+      if (offline) {
+        // Set showNetworkError with a delay of 2000 milliseconds (2 seconds)
+        setShowNetworkError(true);
 
-      // Show the network error popup when offline
-      setShowNetworkError(offline);
+      } else if (online) {
+        setShowNetworkError(false);
+      }else{
+        setShowNetworkError(false);
+      }
     });
 
     return () => removeNetInfoSubscription();
