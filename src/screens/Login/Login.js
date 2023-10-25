@@ -22,8 +22,9 @@ const { width, height } = Dimensions.get("window");
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import WhiteLogo from "../../jssvgs/WhiteLogo ";
-
-// import messaging from '@react-native-firebase/messaging';
+import messaging from "@react-native-firebase/messaging"
+import PushNotification from "react-native-push-notification";
+import { requestPermissionsAsync } from "expo-notifications";
 
 const Login = (props) => {
   const { navigation } = props;
@@ -40,7 +41,110 @@ const Login = (props) => {
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
   const [isLoading, setIsLoading] = useState(true);
+  const requestUserPermission = async () => {
+    const status = await requestPermissionsAsync();
+    try {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
+      console.log('Authorization status:', authStatus, enabled);
+      return enabled;
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+      return false;
+    }
+  }
+  useEffect(() => {
+    const getTokenAndSubscribe = async () => {
+      const permissionGranted = await requestUserPermission();
+
+      if (permissionGranted) {
+        const fcmToken = await messaging().getToken();
+        setToken(fcmToken);
+        console.log('FCM Token:', fcmToken);
+      } else {
+        console.log('Permission not granted for notifications.');
+      }
+
+      // Rest of your code for handling notifications
+      messaging()
+        .getInitialNotification()
+        .then(async (remoteMessage) => {
+          if (remoteMessage) {
+            console.log(
+              'Notification caused app to open from quit state:',
+              remoteMessage.notification,
+            );
+          }
+        });
+      // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+      messaging().onNotificationOpenedApp(async (remoteMessage) => {
+        console.log(
+          'Notification caused app to open from background state:',
+          remoteMessage.notification,
+        );
+      });
+      // Register background handler
+      messaging().setBackgroundMessageHandler(async remoteMessage => {
+        console.log('Message handled in the background!', remoteMessage);
+        const channelId = 'colorhuntmobileapp';
+        const channelConfig = {
+          channelId,
+          channelName: 'colorhuntmobileapp Notification Channel',
+          channelDescription: 'colorhuntmobileapp custom notification channel',
+          soundName: 'default',
+          importance: 4, // Notification Importance (0-4), where 4 is the highest
+          vibrate: true,
+        };
+  
+        // Create the channel
+        PushNotification.createChannel(channelConfig);
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+  
+          PushNotification.localNotification({
+            channelId: "colorhuntmobileapp",
+            title: remoteMessage.notification.title,
+            message: remoteMessage.notification.body
+          })
+        });
+        // return unsubscribe;
+      });
+      // Listen for incoming FCM messages
+      // Define the channel settings
+      const channelId = 'colorhuntmobileapp';
+      const channelConfig = {
+        channelId,
+        channelName: 'colorhuntmobileapp Notification Channel',
+        channelDescription: 'colorhuntmobileapp custom notification channel',
+        soundName: 'default',
+        importance: 4, // Notification Importance (0-4), where 4 is the highest
+        vibrate: true,
+      };
+
+      // Create the channel
+      PushNotification.createChannel(channelConfig);
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+        PushNotification.localNotification({
+          channelId: "colorhuntmobileapp",
+          title: remoteMessage.notification.title,
+          message: remoteMessage.notification.body
+        })
+      });
+
+
+      return unsubscribe;
+    };
+
+    getTokenAndSubscribe();
+
+    // Check whether an initial notification is available
+
+    // getNotificationPermission();
+  }, []);
   const keyboardDidShow = () => {
     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
     setLogoSize(newSize);
@@ -199,11 +303,11 @@ const Login = (props) => {
                   { height: logoSize, width: logoSize },
                 ]}
               /> */}
-              <WhiteLogo path={imageSource}/>
+              <WhiteLogo path={imageSource} />
             </View>
           </ImageBackground>
           <View style={styles.contentContainer}>
-            <Text style={styles.title}>Welcome!{token}</Text>
+            <Text style={styles.title}>Welcome!</Text>
             <Text style={styles.subtitle}>
               {showLogin
                 ? "Please Login To Continue"
@@ -213,7 +317,7 @@ const Login = (props) => {
               <View style={styles.inputContainer}>
                 <View style={styles.phoneIconContainer}>
                   <Svg
-                     style={styles.phoneIcon}
+                    style={styles.phoneIcon}
                     viewBox="0 0 20 20"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"

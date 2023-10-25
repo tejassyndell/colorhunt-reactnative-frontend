@@ -36,18 +36,11 @@
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "favicon": "./assets/icon.png"
-    },
-    "extra": {
-      "firebase": {
-        "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
-      },
-      "eas": {
-        "projectId": "b0d5d035-7a66-4a0f-b5ec-33b84d030443"
-      }
     }
   }
 }
