@@ -10,6 +10,7 @@ import {
   Modal,
   KeyboardAvoidingView,
   Keyboard,
+  RefreshControl,
 } from "react-native";
 import {
   getProductName,
@@ -49,6 +50,22 @@ export default function CategorisWiseArticle(props) {
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Perform your data fetching or refreshing logic here
+    // For example, you can call your API to fetch new data
+    // Make sure to set refreshing to false when done.
+
+    setTimeout(() => {
+      // After fetching new data, update your data state
+    
+
+      setRefreshing(false);
+    }, 1000); // Simulating a delay, replace with your API call
+  };
 
   const fetchMoreData = () => {
     if (!isLoadingMore) {
@@ -152,6 +169,8 @@ export default function CategorisWiseArticle(props) {
         setNameDatas(fildata);
         setFinalData(fildata);
         setIsLoading(false);
+        setRefreshing(false)
+
       }
     } catch (error) {
       console.log(error);
@@ -542,6 +561,12 @@ export default function CategorisWiseArticle(props) {
                 columnWrapperStyle={{ justifyContent: "space-between" }}
                 onEndReached={fetchMoreData}
                 onEndReachedThreshold={0.1}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
               />
             )}
           </View>
@@ -615,7 +640,7 @@ export default function CategorisWiseArticle(props) {
         >
           <View
             style={{
-              width: "100%",
+              width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
               padding: 10,

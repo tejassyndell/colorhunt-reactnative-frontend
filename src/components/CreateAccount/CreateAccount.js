@@ -8,6 +8,7 @@ import {
   Keyboard,
   Dimensions,
   Image,
+  ScrollView
 } from "react-native";
 import { UserData } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -39,22 +40,22 @@ const CreateAccount = (props) => {
   const { navigation, onClose } = props;
   const [token, setToken] = useState("");
 
-  //   useEffect(() => {
-  //     const getToken = async () => {
-  //       try {
-  //         let data = await AsyncStorage.getItem("notificationstatus");
-  //         data = await JSON.parse(data);
-  //         if (data.status === true) {
-  //           setToken(data.token);
-  //         } else {
-  //           console.log("Notification permission denied");
-  //         }
-  //       } catch (error) {
-  //         console.error("Error requesting permission:", error);
-  //       }
-  //     };
-  //     getToken();
-  //   }, []);
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        let data = await AsyncStorage.getItem("notificationstatus");
+        data = await JSON.parse(data);
+        if (data.status === true) {
+          setToken(data.token);
+        } else {
+          console.log("Notification permission denied");
+        }
+      } catch (error) {
+        console.error("Error requesting permission:", error);
+      }
+    };
+    getToken();
+  }, []);
   const handleInputChange = (fieldName, value) => {
     // Clear previous error for the field
     switch (fieldName) {
@@ -286,6 +287,7 @@ const CreateAccount = (props) => {
               <Text style={styles.closeText}>X</Text>
             </TouchableOpacity>
           </View>
+          <ScrollView>
           <TextInput
             style={[styles.input, nameError && styles.inputError]}
             placeholder="Name"
@@ -301,7 +303,7 @@ const CreateAccount = (props) => {
             maxLength={500}
             style={[
               styles.input,
-              { height: width >= 720 ? 130 : 90 },
+              { height: width >= 720 ? 130 : 90  },
               addressError && styles.inputError,
             ]}
             placeholder="Address"
@@ -409,6 +411,8 @@ const CreateAccount = (props) => {
               <Text style={styles.submitButtonText}>Submit</Text>
             </TouchableOpacity>
           </View>
+          </ScrollView>
+        
         </>
       ) : (
         <View style={styles.successContainer}>
@@ -430,7 +434,7 @@ const CreateAccount = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     width: "100%",
     alignItem: "center",
     paddingHorizontal: width >= 720 ? 40 : 15,
@@ -469,7 +473,8 @@ const styles = StyleSheet.create({
     width: windowWidth >= 720 ? 230 : 150,
     backgroundColor: "black",
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom:20,
     justifyContent: "center",
     alignItems: "center",
     height: windowHeight * 0.06,
@@ -478,7 +483,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "500",
     fontFamily: "Glory",
-    fontSize: windowWidth >= 720 ? 45 : 25,
+    fontSize: windowWidth >= 720 ? 45 : 30,
   },
   closeButton: {
     backgroundColor: "black",

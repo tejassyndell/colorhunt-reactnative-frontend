@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  RefreshControl,
+  RefreshControl 
 } from "react-native";
 import { getProductName, getWishlistData, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
@@ -29,9 +29,9 @@ export default function WishList(props) {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
-
+  
     // Add your refreshing logic here (e.g., fetch new data or update existing data).
-
+  
     // Simulate a delay to hide the loading indicator after a few seconds (adjust as needed).
     setTimeout(() => {
       setRefreshing(false);

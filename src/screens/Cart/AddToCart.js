@@ -9,6 +9,7 @@ import {
   Pressable,
   Platform,
   RefreshControl,
+  Keyboard 
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -203,6 +204,7 @@ const AddToCart = (props) => {
 
   const handleAddMoreItems = () => {
     navigation.navigate("Home");
+    Keyboard.dismiss(none);
   };
   cartIsEmpty;
   const handleGoBack = () => {

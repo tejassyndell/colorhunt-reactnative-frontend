@@ -65,7 +65,7 @@ const SliderStyles = () => {
       // height: "auto",
       flexDirection: "row",
       width: width >= 720 ? 400 : "60%",
-      marginBottom: "10%",
+      marginBottom: "5%",
       justifyContent: "space-between",
     },
     otpInput: {

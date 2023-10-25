@@ -37,7 +37,7 @@ const Login = (props) => {
   const [token, setToken] = useState("");
   const styles = LoginStyles();
 
-  const initialLogoSize = Math.min(width, height) * 0.6;
+  const initialLogoSize = Math.min(width, height) * 0.5;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
   const [isLoading, setIsLoading] = useState(true);

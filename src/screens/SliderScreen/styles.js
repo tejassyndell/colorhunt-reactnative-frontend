@@ -72,6 +72,7 @@ const LoginStyles = () => {
       color: "white",
       fontSize: width >= 720 ? 40 : 20,
       fontWeight: "bold",
+      paddingBottom:5,
       fontFamily: isFontLoaded ? "Glory" : undefined,
     },
     contain1: {
@@ -99,8 +100,8 @@ const LoginStyles = () => {
       alignItems: "center",
     },
     contain4: {
-      position: "absolute",
-      top: "45%",
+      position: 'relative',
+      top: height >= 844 ? "44%":"40%",
       right: "30%",
       width: "100%",
       height: "100%",

@@ -92,12 +92,14 @@ export default function DrawerContainer(props) {
             </TouchableOpacity>
             <Text
               style={{
-                color: "#FFF",
-                left: 10,
-                fontSize: width >= 720 ? 25 : 17,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: "700",
-                width: "60%",
+                color: "#FFF", // Text color is white
+                height: 50, // Height of the text is 50 units
+                left: 10, // Left margin of 10 units
+                paddingTop:12,
+                fontSize: width >= 720 ? 25 : 17, // Font size is 25 if the width is greater than or equal to 720, otherwise 17
+                fontFamily: isFontLoaded ? "Glory" : undefined, // Font family "Glory" if isFontLoaded is true, otherwise use the default font
+                fontWeight: "700", // Font weight is 700 (bold)
+                width: "60%", // Width of the text is 60% of the container
               }}
             >
               {name ? name : "Guest"}
