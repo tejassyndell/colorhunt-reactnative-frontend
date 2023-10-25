@@ -239,7 +239,7 @@ export default function CategorisWiseArticle(props) {
                 width: width >= 720 ? 55 : 35,
                 height: width >= 720 ? 55 : 35,
               }}
-              source={require("../../../assets/Nevbar/Profile.png")}
+              source={require("../../../assets/Profileicon/Group8919.png")}
             />
           </TouchableOpacity>
         </View>

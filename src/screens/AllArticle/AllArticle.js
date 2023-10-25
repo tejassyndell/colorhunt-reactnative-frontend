@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ScrollView,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import {
   getProductName,
@@ -61,12 +61,9 @@ export default function AllArticle(props) {
     // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
     // 3 seconds
 
-   
-      setIsLoading(false);
-      setRefreshing(false);
-    
+    setIsLoading(false);
+    setRefreshing(false);
   };
-
 
   const fetchMoreData = () => {
     if (!isLoadingMore) {
@@ -162,7 +159,7 @@ export default function AllArticle(props) {
       setNameDatas(res.data);
       setFinalData(res.data);
       setIsLoading(false);
-      setRefreshing(false)
+      setRefreshing(false);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -246,7 +243,7 @@ export default function AllArticle(props) {
                 width: width >= 720 ? 55 : 32,
                 height: width >= 720 ? 55 : 32,
               }}
-              source={require("../../../assets/Nevbar/Profile.png")}
+              source={require("../../../assets/Profileicon/Group8919.png")}
             />
           </TouchableOpacity>
         </View>
@@ -514,25 +511,27 @@ export default function AllArticle(props) {
               </Text>
             ) : (
               <ScrollView
-              style={{ flex: 1 }}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-            >
-              <FlatList
-                style={{ backgroundColor: "#FFF" }}
-                data={finalData}
-                keyExtractor={(item) => item.Id.toString()}
-                renderItem={renderItem}
-                numColumns={width >= 720 ? 4 : 2}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingVertical: 0 }}
-                columnWrapperStyle={{ justifyContent: "space-between" }}
-                onEndReached={fetchMoreData}
-                onEndReachedThreshold={0.1}
-              />
-            </ScrollView>
-            
+                style={{ flex: 1 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+              >
+                <FlatList
+                  style={{ backgroundColor: "#FFF" }}
+                  data={finalData}
+                  keyExtractor={(item) => item.Id.toString()}
+                  renderItem={renderItem}
+                  numColumns={width >= 720 ? 4 : 2}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingVertical: 0 }}
+                  columnWrapperStyle={{ justifyContent: "space-between" }}
+                  onEndReached={fetchMoreData}
+                  onEndReachedThreshold={0.1}
+                />
+              </ScrollView>
             )}
           </View>
           {/* {/ </ScrollView> /} */}

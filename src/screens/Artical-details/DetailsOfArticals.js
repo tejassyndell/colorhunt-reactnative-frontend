@@ -29,7 +29,7 @@ import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from "react-native-svg";
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
   const { width: viewportWidth } = Dimensions.get("window");
@@ -41,7 +41,7 @@ const DetailsOfArticals = (props) => {
   const { id, Quantity = 0 } = route.params;
   console.log(id);
   const styles = detailsOfArtStyles();
-  const handleSizeClick = (size) => { };
+  const handleSizeClick = (size) => {};
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -93,8 +93,8 @@ const DetailsOfArticals = (props) => {
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
@@ -514,7 +514,7 @@ const DetailsOfArticals = (props) => {
                                   {
                                     paddingHorizontal:
                                       articleSizeData &&
-                                        articleSizeData.length > 3
+                                      articleSizeData.length > 3
                                         ? "1%"
                                         : 0,
                                   },
@@ -587,8 +587,8 @@ const DetailsOfArticals = (props) => {
                             style={{
                               fontSize:
                                 articleSizeData && articleSizeData.length > 3
-                                  ? 14
-                                  : 22,
+                                  ? 30
+                                  : 16,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
                               paddingHorizontal:
                                 articleSizeData && articleSizeData.length > 3
@@ -1024,8 +1024,13 @@ const DetailsOfArticals = (props) => {
                   paddingVertical: 3,
                 }}
               >
-
-                <Svg width={width >= 720 ? 30 : 20} height={width >= 720 ? 30 : 20} viewBox="0 0 18 18" fill="none" {...props}>
+                <Svg
+                  width={width >= 720 ? 30 : 20}
+                  height={width >= 720 ? 30 : 20}
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  {...props}
+                >
                   <Path
                     fillRule="evenodd"
                     clipRule="evenodd"

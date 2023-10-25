@@ -45,15 +45,16 @@ const SliderScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={{
-        width: '100%',
-        height: 50,
-        backgroundColor: '#FFF',
-        position: "absolute",
-        bottom: 0,
-        zIndex: 0
-
-      }}></View>
+      <View
+        style={{
+          width: "100%",
+          height: 50,
+          backgroundColor: "#FFF",
+          position: "absolute",
+          bottom: 0,
+          zIndex: 0,
+        }}
+      ></View>
       <Swiper
         loop={false}
         showsPagination={true}
@@ -97,14 +98,6 @@ const SliderScreen = (props) => {
           style={styles.slide}
         >
           <View style={styles.contain2}>
-            {/* <Image
-              source={require("../../../assets/SliderImage/image100.png")}
-              resizeMode="contain"
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-              }}
-            /> */}
             <Blacklogo />
             <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
               Flat{"\n"}40-50% OFF*
@@ -124,7 +117,6 @@ const SliderScreen = (props) => {
         >
           <View style={styles.contain3}>
             <Blacklogo />
-
 
             <Text
               style={[
@@ -156,7 +148,6 @@ const SliderScreen = (props) => {
         >
           <View style={styles.contain4}>
             <Blacklogo />
-
 
             <Text style={[styles.slideText1]}>BEST{"\n"}PICKS</Text>
             <Text style={[styles.slideText2, { color: "black" }]}>

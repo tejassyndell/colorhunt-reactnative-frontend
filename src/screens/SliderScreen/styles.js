@@ -70,7 +70,7 @@ const LoginStyles = () => {
     },
     buttonText: {
       color: "white",
-      fontSize: width >= 720 ? 50 : 25,
+      fontSize: width >= 720 ? 40 : 20,
       fontWeight: "bold",
       fontFamily: isFontLoaded ? "Glory" : undefined,
     },
@@ -108,14 +108,14 @@ const LoginStyles = () => {
     },
     slideText1: {
       color: "black",
-      fontSize: width >= 720 ? 40 : 25,
+      fontSize: width >= 720 ? 30 : 20,
       fontFamily: isFontLoaded ? "Glory" : undefined,
       textAlign: "center",
       fontWeight: 400,
     },
     slideText2: {
       color: "white",
-      fontSize: width >= 720 ? 50 : 30,
+      fontSize: width >= 720 ? 35 : 23,
       fontFamily: isFontLoaded ? "Glory" : undefined,
       textAlign: "center",
       marginTop: 20,
