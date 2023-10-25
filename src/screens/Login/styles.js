@@ -88,7 +88,7 @@ const SliderStyles = () => {
       position: "absolute",
       justifyContent: "center",
       alignItems: "center",
-      bottom: 10,
+      bottom: 20,
       right: 15,
     },
     buttonText: {
@@ -105,7 +105,7 @@ const SliderStyles = () => {
     inputContainer: {
       flexDirection: "row",
       alignItems: "center",
-      width: "90%",
+      width: width >= 720 ? "50%" : "90%",
       height: width >= 720 ? 80 : 10,
       borderColor: "gray",
       borderRadius: 7,

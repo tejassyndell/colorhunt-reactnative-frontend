@@ -39,22 +39,22 @@ const CreateAccount = (props) => {
   const { navigation, onClose } = props;
   const [token, setToken] = useState("");
 
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        let data = await AsyncStorage.getItem("notificationstatus");
-        data = await JSON.parse(data);
-        if (data.status === true) {
-          setToken(data.token);
-        } else {
-          console.log("Notification permission denied");
-        }
-      } catch (error) {
-        console.error("Error requesting permission:", error);
-      }
-    };
-    getToken();
-  }, []);
+  //   useEffect(() => {
+  //     const getToken = async () => {
+  //       try {
+  //         let data = await AsyncStorage.getItem("notificationstatus");
+  //         data = await JSON.parse(data);
+  //         if (data.status === true) {
+  //           setToken(data.token);
+  //         } else {
+  //           console.log("Notification permission denied");
+  //         }
+  //       } catch (error) {
+  //         console.error("Error requesting permission:", error);
+  //       }
+  //     };
+  //     getToken();
+  //   }, []);
   const handleInputChange = (fieldName, value) => {
     // Clear previous error for the field
     switch (fieldName) {
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
     left: 10,
   },
   submitButton: {
-    width: windowWidth * 0.25,
+    width: windowWidth >= 720 ? 230 : 150,
     backgroundColor: "black",
     borderRadius: 5,
     marginTop: 20,

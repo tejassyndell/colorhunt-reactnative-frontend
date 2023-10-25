@@ -169,7 +169,7 @@ const Login = (props) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, justifyContent: "center" }} // You might need to adjust the style as per your layout
-      behavior={Platform.OS === "ios" ? "height" : null}
+      behavior={Platform.OS === "ios" ? "padding" : null}
     >
       <View style={styles.container1}>
         <View style={styles.imagebox}>

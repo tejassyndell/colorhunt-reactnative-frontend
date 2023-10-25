@@ -781,6 +781,7 @@ const OrderDetails = (props) => {
                         {/* Fixed Header Row */}
                         <Row
                           data={tableData ? tableData.tableHead : ""}
+                          key={value}
                           textStyle={{
                             textAlign: "center",
                             fontWeight: "bold",
@@ -809,6 +810,7 @@ const OrderDetails = (props) => {
                           {/* Data Rows */}
                           <Rows
                             data={tableData ? tableData.tableData : ""}
+                            key={value}
                             textStyle={{
                               margin: 6,
                               textAlign: "center",
@@ -1150,26 +1152,6 @@ const OrderDetails = (props) => {
                           : "GST"}
                       </Text>
                     </View>
-
-                    {/* <View
-                                        style={{
-                                            height: width >= 720 ? 45 : 35,
-                                            width: '48%',
-                                            borderWidth: 2,
-                                            borderRadius: 6,
-                                            borderColor: remarks !== "" ? "black" : '#808080',
-                                            paddingStart: 10,
-                                            justifyContent: 'center'
-                                        }}
-                                    // value='NIRAV SIR'
-                                    >
-                                        <Text style={{
-                                            fontSize: width >= 720 ? 20 : 16,
-                                            color: '#000000',
-                                            fontWeight: 'bold',
-                                            color: remarks !== "" ? "black" : "#00000080"
-                                        }}>{remarks !== "" ? remarks : "Remarks"}</Text>
-                                    </View> */}
                   </View>
                 </View>
                 <View>
@@ -1197,6 +1179,7 @@ const OrderDetails = (props) => {
                             {/* Fixed Header Row */}
                             <Row
                               data={tableData ? tableData.tableHead : ""}
+                              key={value}
                               textStyle={{
                                 textAlign: "center",
                                 fontWeight: "bold",
@@ -1225,6 +1208,7 @@ const OrderDetails = (props) => {
                             {/* Data Rows */}
                             <Rows
                               data={tableData ? tableData.tableData : ""}
+                              key={value}
                               textStyle={{
                                 margin: 6,
                                 textAlign: "center",
