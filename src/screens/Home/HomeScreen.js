@@ -108,8 +108,8 @@ export default function HomeScreen(props) {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 
@@ -138,7 +138,6 @@ export default function HomeScreen(props) {
   };
 
   const openCreateAccountModal = () => {
-    console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -185,7 +184,6 @@ export default function HomeScreen(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
-    console.log("............111", data);
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist();
@@ -196,12 +194,10 @@ export default function HomeScreen(props) {
   };
 
   const rmvProductWishlist = async (i) => {
-    console.log(i, "r");
     let data = {
       party_id: await getpartyid(),
       article_id: i.Id,
     };
-    console.log(data);
 
     try {
       await DeleteWishlist(data).then((res) => {
@@ -256,7 +252,6 @@ export default function HomeScreen(props) {
       const serrializedPriceRange = JSON.stringify(selectedPriceRange);
       await AsyncStorage.setItem(key, serializedCategories);
       await AsyncStorage.setItem(key2, serrializedPriceRange);
-      console.log("Data stored successfully.");
     } catch (error) {
       console.error("Error storing data:", error);
     }
@@ -324,57 +319,107 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = () => {
-    console.log(
-      searchText,
-      selectedCategories,
-      selectedPriceRange,
-      "filters in home "
-    );
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange.length === 0
+      selectedPriceRange[0]==minArticleRate && selectedPriceRange[1]==maxArticleRate
     ) {
+      console.log("done");
       setshowarticle(false);
     } else {
       setshowarticle(true);
-      const filtered = nameDatas.filter(
-        (item) =>
-          (searchText === "" || // Check if searchText is empty or matches any criteria
-            item.ArticleNumber.toString().includes(searchText.toString()) ||
-            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(
-              searchText.toLowerCase()
-            ) ||
-            item.Subcategory.toLowerCase().includes(
-              searchText.toLowerCase()
-            )) &&
-          (selectedCategories.length === 0 ||
-            selectedCategories.includes(item.Category)) &&
-          (selectedPriceRange.length === 0 ||
-            (item.ArticleRate >= selectedPriceRange[0] &&
-              item.ArticleRate <= selectedPriceRange[1]))
-      );
+      const chunkSize = 10; // Define the size of each chunk
+      const totalChunks = Math.ceil(nameDatas.length / chunkSize);
+      let filtered = [];
+
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize;
+        const end = (i + 1) * chunkSize;
+        const chunk = nameDatas.slice(start, end);
+
+        const chunkResult = chunk.filter(
+          (item) =>
+            (searchText === "" ||
+              item.ArticleNumber.toString().includes(searchText.toString()) ||
+              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+              item.ArticleRate.toString().includes(searchText.toString()) ||
+              item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+              item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
+            ) &&
+            (selectedCategories.length === 0 ||
+              selectedCategories.includes(item.Category)) &&
+            (selectedPriceRange.length === 0 ||
+              (item.ArticleRate >= selectedPriceRange[0] &&
+                item.ArticleRate <= selectedPriceRange[1]))
+        );
+
+        if (chunkResult.length > 0) {
+          filtered = [...filtered, ...chunkResult];
+          break; // Stop after the first matching chunk
+        }
+      }
 
       setFinalData(filtered);
+      
     }
+    console.log("done","_+__+");
   };
 
+  const filtercategoriesrange = (categories, priceRange)=>{
+    console.log(categories, priceRange);
+    console.log(minArticleRate,maxArticleRate);
+    if (
+      categories.length === 0 &&
+      priceRange[0]==minArticleRate && priceRange[1]==maxArticleRate
+    ) {
+      console.log("done");
+      setshowarticle(false);
+    } else {
+      setshowarticle(true);
+      const chunkSize = 10; // Define the size of each chunk
+      const totalChunks = Math.ceil(nameDatas.length / chunkSize);
+      let filtered = [];
+
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize;
+        const end = (i + 1) * chunkSize;
+        const chunk = nameDatas.slice(start, end);
+
+        const chunkResult = chunk.filter(
+          (item) =>
+            (categories.length === 0 ||
+              categories.includes(item.Category)) &&
+            (priceRange.length === 0 ||
+              (item.ArticleRate >= priceRange[0] &&
+                item.ArticleRate <= priceRange[1]))
+        );
+
+        if (chunkResult.length > 0) {
+          filtered = [...filtered, ...chunkResult];
+          break; // Stop after the first matching chunk
+        }
+      }
+
+      setFinalData(filtered);
+      
+    }
+    console.log("done","_+__+");
+  }
   useEffect(() => {
     filterData();
   }, [searchText]);
 
   const handleFilterChange = (categories, priceRange) => {
+    // console.log(categories, priceRange);
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
     setSearchText("");
-    filterData();
+    filtercategoriesrange(categories, priceRange);
   };
 
-  useEffect(() => {
-    filterData();
-  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
+  // useEffect(() => {
+  //   filterData();
+  // }, [searchText, selectedCategories, selectedPriceRange]);
 
   const handleCloseFilter = (isClosed) => {
     setIsFilterVisible(isClosed);
@@ -399,10 +444,8 @@ export default function HomeScreen(props) {
     const token = await AsyncStorage.getItem("UserData");
 
     if (token) {
-      console.log(token, "------------");
       setIsLoggedIn(true);
     } else {
-      console.log(token, "()()()()(");
       setIsLoggedIn(false);
     }
   };
@@ -550,7 +593,7 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-                {console.log(setshowarticle, "setshwo")}
+
                 {showarticle ? (
                   finalData.length > 0 ? (
                     finalData.map((item, index) => (

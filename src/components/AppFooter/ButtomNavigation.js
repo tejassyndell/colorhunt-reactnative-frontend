@@ -9,7 +9,7 @@ const ButtomNavigation = (props) => {
   // const {navigation , page , isLoggedIn} = props;
   const { navigation, page, isLoggedIn = true } = props;
 
-  console.log(isLoggedIn, "+++++");
+
   //   const navigation = useNavigation();
 
   const HomePage = () => {

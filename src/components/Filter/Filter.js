@@ -42,7 +42,7 @@ export default function Filter({
     return parseFloat(value);
   });
   const allowedValues = allowedValues3.sort((a, b) => a - b);
-  console.log(allowedValues, "unq");
+  // console.log(allowedValues, "unq");
 
   const Screenwidth = Dimensions.get("window").width;
   const sliderlenghtinPercent = 60;
@@ -197,9 +197,9 @@ export default function Filter({
         )}
         {status === false ? (
           <View style={styles.categoriesContainer}>
-            {data.map((item) => (
+            {data.map((item,index) => (
               <TouchableOpacity
-                key={item.Id}
+                key={index}
                 style={[
                   styles.categoryItem,
                   selectedCategories.includes(item.Category) && {

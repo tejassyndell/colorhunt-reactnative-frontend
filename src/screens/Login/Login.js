@@ -49,7 +49,6 @@ const Login = (props) => {
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      console.log('Authorization status:', authStatus, enabled);
       return enabled;
     } catch (error) {
       console.error('Error requesting permission:', error);
@@ -63,7 +62,6 @@ const Login = (props) => {
       if (permissionGranted) {
         const fcmToken = await messaging().getToken();
         setToken(fcmToken);
-        console.log('FCM Token:', fcmToken);
       } else {
         console.log('Permission not granted for notifications.');
       }
@@ -89,7 +87,6 @@ const Login = (props) => {
       });
       // Register background handler
       messaging().setBackgroundMessageHandler(async remoteMessage => {
-        console.log('Message handled in the background!', remoteMessage);
         const channelId = 'colorhuntmobileapp';
         const channelConfig = {
           channelId,

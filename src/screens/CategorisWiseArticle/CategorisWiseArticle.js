@@ -281,27 +281,33 @@ export default function CategorisWiseArticle(props) {
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
-      const filtered = nameDatas.filter(
-        (item) =>
-          (searchText === "" || // Check if searchText is empty or matches any criteria
+      const batchSize = 10; // Define the batch size
+      const filteredData = []; // Create an array to store the filtered data
+      
+      for (let i = 0; i < nameDatas.length; i += batchSize) {
+        // Slice the data into batches of size batchSize
+        const batch = nameDatas.slice(i, i + batchSize);
+      
+        const batchFiltered = batch.filter((item) =>
+          (searchText === "" ||
             item.ArticleNumber.toString().includes(searchText.toString()) ||
             item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
             item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(
-              searchText.toLowerCase()
-            ) ||
-            item.Subcategory.toLowerCase().includes(
-              searchText.toLowerCase()
-            )) &&
+            item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.Subcategory.toLowerCase().includes(searchText.toLowerCase())) &&
           (selectedCategories.length === 0 ||
             selectedCategories.includes(item.Category)) &&
           (selectedPriceRange.length === 0 ||
             (item.ArticleRate >= selectedPriceRange[0] &&
               item.ArticleRate <= selectedPriceRange[1]))
-      );
+        );
+      
+        // Append the batchFiltered data to the filteredData array
+        filteredData.push(...batchFiltered);
+      }
 
-      setFinalData(filtered);
-      setNoArticlesFound(filtered.length === 0);
+      setFinalData(filteredData);
+      setNoArticlesFound(filteredData.length === 0);
     }
   };
 
