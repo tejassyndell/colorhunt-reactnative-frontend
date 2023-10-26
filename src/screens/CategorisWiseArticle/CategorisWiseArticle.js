@@ -163,7 +163,6 @@ export default function CategorisWiseArticle(props) {
     try {
       const res = await getProductName();
       if (res.status === 200) {
-        console.log(res.data);
         const sdPrds = res.data.slice();
         const fildata = sdPrds.filter((item) => item.Category === category);
         setNameDatas(fildata);
@@ -196,6 +195,7 @@ export default function CategorisWiseArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status:"false"
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);

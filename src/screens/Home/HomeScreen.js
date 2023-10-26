@@ -162,9 +162,11 @@ export default function HomeScreen(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status:"false"
     };
     const result = await getWishlistData(data).then((res) => {
-      setSelectprd(res.data);
+      console.log(res.data);
+      setSelectprd(res.data)
     });
   };
   function convertToTitleCase(str) {
@@ -614,6 +616,7 @@ export default function HomeScreen(props) {
                             marginLeft: width >= 720 ? 15 : 10,
                             marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
+                            marginTop:10
                           }}
                         >
                           <View
@@ -622,6 +625,7 @@ export default function HomeScreen(props) {
                               height: width >= 720 ? 280 : 190,
                               borderRadius: 12,
                               backgroundColor: "#FFF",
+                              elevation:2
                             }}
                           >
                             <View id={item.id} style={styles.producticones}>
@@ -658,6 +662,7 @@ export default function HomeScreen(props) {
                                   width: "100%",
                                   height: width >= 720 ? 280 : 190,
                                   borderRadius: 10,
+                                  resizeMode:"contain"
                                 }}
                               />
                             ) : (

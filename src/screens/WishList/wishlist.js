@@ -101,12 +101,13 @@ export default function WishList(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status:"true"
     };
     const result = await getWishlistData(data).then((res) => {
       console.log(res.data);
       setSelectprd(res.data);
       setIsLoading(false);
-      z;
+      
     });
   };
 

@@ -182,6 +182,7 @@ export default function AllArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status:"false"
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -193,6 +194,7 @@ export default function AllArticle(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
+    // setSelectprd((prevSelectprd) => [...prevSelectprd, {"Id":  i.Id}]);
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist();
