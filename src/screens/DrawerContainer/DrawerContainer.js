@@ -284,7 +284,7 @@ export default function DrawerContainer(props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{ flexDirection: "row", marginLeft: 10, marginTop: 50 }}
+              style={{ flexDirection: "row", marginLeft: 12, marginTop: 50 }}
               onPress={() => {
                 clearAsyncStorage();
                 navigation.navigate("login"); // Replace with your login or home screen route

@@ -91,6 +91,7 @@ export default function AllArticle(props) {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
+
   }, []);
 
   const retrieveStoredCategories = async () => {
@@ -110,6 +111,7 @@ export default function AllArticle(props) {
     }
   };
   const userChecked = async () => {
+
     const token = await AsyncStorage.getItem("UserData");
 
     if (token) {
@@ -137,8 +139,8 @@ export default function AllArticle(props) {
         ? 120
         : 100
       : height >= 844
-      ? 100
-      : 65;
+        ? 100
+        : 65;
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -170,7 +172,11 @@ export default function AllArticle(props) {
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist();
+          // getWishlist();
+          let selectedlist = selectedprd;
+          selectedlist = selectedlist.filter((item)=>{return item.Id!==i.Id})
+        setSelectprd(selectedlist);
+
         }
       });
     } catch (error) {
@@ -178,11 +184,22 @@ export default function AllArticle(props) {
     }
   };
 
+  const setsearchtextfromstorage = async()=>{
+    let currentText = await AsyncStorage.getItem("searchText");
+
+    // Parse the currentText if it exists
+    if (currentText) {
+      currentText = JSON.parse(currentText);
+      setSearchText(currentText.text)
+    }
+  }
+
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
+ 
     const data = {
       party_id: await getpartyid(),
-      status:"false"
+      status: "false"
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -197,7 +214,8 @@ export default function AllArticle(props) {
     // setSelectprd((prevSelectprd) => [...prevSelectprd, {"Id":  i.Id}]);
     try {
       await getAddWishlist(data).then((res) => {
-        getWishlist();
+        // getWishlist();
+        setSelectprd((prevSelectprd) => [...prevSelectprd, {"Id":  i.Id}]);
       });
     } catch (error) {
       console.log(error);
@@ -213,6 +231,7 @@ export default function AllArticle(props) {
   useEffect(() => {
     getCategoriesname();
     getWishlist();
+    setsearchtextfromstorage();
   }, []);
 
   useLayoutEffect(() => {
@@ -266,17 +285,17 @@ export default function AllArticle(props) {
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange[0]==minArticleRate&&selectedPriceRange[1]==maxArticleRate
+      selectedPriceRange[0] == minArticleRate && selectedPriceRange[1] == maxArticleRate
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
       const batchSize = 10; // Define the batch size
       const filteredData = []; // Create an array to store the filtered data
-      
+
       for (let i = 0; i < nameDatas.length; i += batchSize) {
         // Slice the data into batches of size batchSize
         const batch = nameDatas.slice(i, i + batchSize);
-      
+
         const batchFiltered = batch.filter((item) =>
           (searchText === "" ||
             item.ArticleNumber.toString().includes(searchText.toString()) ||
@@ -290,11 +309,11 @@ export default function AllArticle(props) {
             (item.ArticleRate >= selectedPriceRange[0] &&
               item.ArticleRate <= selectedPriceRange[1]))
         );
-      
+
         // Append the batchFiltered data to the filteredData array
         filteredData.push(...batchFiltered);
       }
-      
+
       // Set the final filtered data
       setFinalData(filteredData);
 
@@ -522,16 +541,16 @@ export default function AllArticle(props) {
               </Text>
             ) : (
               <View>
-              <ScrollView
-                style={{ flex: 1 }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                  />
-                }
-              >
-              </ScrollView>
+                <ScrollView
+                  style={{ flex: 1 }}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                >
+                </ScrollView>
 
                 <FlatList
                   style={{ backgroundColor: "#FFF" }}
@@ -545,7 +564,7 @@ export default function AllArticle(props) {
                   onEndReached={fetchMoreData}
                   onEndReachedThreshold={0.1}
                 />
-                </View>
+              </View>
             )}
           </View>
           {/* {/ </ScrollView> /} */}

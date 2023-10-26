@@ -162,7 +162,7 @@ export default function HomeScreen(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
-      status:"false"
+      status: "false"
     };
     const result = await getWishlistData(data).then((res) => {
       console.log(res.data);
@@ -310,26 +310,41 @@ export default function HomeScreen(props) {
         </View>
       ),
       headerTitle: () => null, // Remove the header title
-       headerStyle: {
+      headerStyle: {
         height: headerHeight,
         borderBottomWidth: 1, // Adjust the width as needed
         borderBottomColor: "#FFF", // Increase the header height here
       },
-     
+
     });
   }, []);
 
   const handlePress = (item) => {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
-  const filterData = () => {
-    console.log(searchText,selectedCategories,selectedPriceRange);
+  const filterData = async () => {
     if (
-      searchText==""  &&
+      searchText == "" &&
       selectedCategories.length === 0 &&
-      (selectedPriceRange[0]==minArticleRate && selectedPriceRange[1]==maxArticleRate || selectedPriceRange.length === 0)
+      (selectedPriceRange[0] == minArticleRate && selectedPriceRange[1] == maxArticleRate || selectedPriceRange.length === 0)
     ) {
       console.log("done");
+      let currentText = await AsyncStorage.getItem("searchText");
+
+      // Parse the currentText if it exists
+      if (currentText) {
+        currentText = JSON.parse(currentText);
+
+        // Update the text property with your new value
+        currentText.text = searchText;
+
+        // Store the updated object back in AsyncStorage
+        await AsyncStorage.setItem("searchText", JSON.stringify(currentText));
+      }else {
+        // If "searchText" doesn't exist, create a new object and store it
+        const newObject = { text: searchText };
+        await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
+      }
       setshowarticle(false);
     } else {
       setshowarticle(true);
@@ -365,17 +380,34 @@ export default function HomeScreen(props) {
       }
 
       setFinalData(filtered);
-      
+
+      let currentText = await AsyncStorage.getItem("searchText");
+
+      // Parse the currentText if it exists
+      if (currentText) {
+        currentText = JSON.parse(currentText);
+
+        // Update the text property with your new value
+        currentText.text = searchText;
+
+        // Store the updated object back in AsyncStorage
+        await AsyncStorage.setItem("searchText", JSON.stringify(currentText));
+      } else {
+        // If "searchText" doesn't exist, create a new object and store it
+        const newObject = { text: searchText };
+        await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
+      }
+
     }
-    console.log("done","_+__+");
+    console.log("done", "_+__+");
   };
 
-  const filtercategoriesrange = (categories, priceRange)=>{
+  const filtercategoriesrange = (categories, priceRange) => {
     console.log(categories, priceRange);
-    console.log(minArticleRate,maxArticleRate);
+    console.log(minArticleRate, maxArticleRate);
     if (
       categories.length === 0 &&
-      priceRange[0]==minArticleRate && priceRange[1]==maxArticleRate
+      priceRange[0] == minArticleRate && priceRange[1] == maxArticleRate
     ) {
       console.log("done");
       setshowarticle(false);
@@ -406,9 +438,9 @@ export default function HomeScreen(props) {
       }
 
       setFinalData(filtered);
-      
+
     }
-    console.log("done","_+__+");
+    console.log("done", "_+__+");
   }
   useEffect(() => {
     filterData();
@@ -620,7 +652,7 @@ export default function HomeScreen(props) {
                             marginLeft: width >= 720 ? 15 : 10,
                             marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
-                            marginTop:10
+                            marginTop: 10
                           }}
                         >
                           <View
@@ -629,7 +661,7 @@ export default function HomeScreen(props) {
                               height: width >= 720 ? 280 : 190,
                               borderRadius: 12,
                               backgroundColor: "#FFF",
-                              elevation:2
+                              elevation: 2
                             }}
                           >
                             <View id={item.id} style={styles.producticones}>
@@ -666,7 +698,7 @@ export default function HomeScreen(props) {
                                   width: "100%",
                                   height: width >= 720 ? 280 : 190,
                                   borderRadius: 10,
-                                  resizeMode:"contain"
+                                  resizeMode: "contain"
                                 }}
                               />
                             ) : (
@@ -722,7 +754,7 @@ export default function HomeScreen(props) {
                           color: "#808080",
                         }}
                       >
-                        No Mens Article Found
+                        No Article Found
                       </Text>
                     </View>
                   )
@@ -975,7 +1007,7 @@ export default function HomeScreen(props) {
       )}
       <KeyboardAvoidingView
         behavior={isKeyboardOpen ? "padding" : null}
-        // style={{ flex: 1 }}
+      // style={{ flex: 1 }}
       >
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
@@ -991,70 +1023,70 @@ export default function HomeScreen(props) {
       </KeyboardAvoidingView>
       {isFilterVisible && (
         <>
-        <View
-          style={{
-            backgroundColor: "rgba(0,0,0,0.5)",
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            top: 0,
-            right: 0,
-            left: 0,
-            zIndex: 2,
-          }}
-        >
           <View
             style={{
-              width: "92%",
-              backgroundColor: "white",
+              backgroundColor: "rgba(0,0,0,0.5)",
+              width: "100%",
+              height: "100%",
               position: "absolute",
-              bottom: 0,
-              marginLeft: "4%",
-              padding: 5,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
+              top: 0,
+              right: 0,
+              left: 0,
+              zIndex: 2,
             }}
           >
-            <Filter
-              onFilterChange={handleFilterChange}
-              onCloseFilter={handleCloseFilter}
-              Scategories={selectedCategories}
-              minArticleRate={minArticleRate}
-              maxArticleRate={maxArticleRate}
-              status={true}
-              spr={selectedPriceRange}
-              uniquerates={nameDatas}
-            />
+            <View
+              style={{
+                width: "92%",
+                backgroundColor: "white",
+                position: "absolute",
+                bottom: 0,
+                marginLeft: "4%",
+                padding: 5,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+              }}
+            >
+              <Filter
+                onFilterChange={handleFilterChange}
+                onCloseFilter={handleCloseFilter}
+                Scategories={selectedCategories}
+                minArticleRate={minArticleRate}
+                maxArticleRate={maxArticleRate}
+                status={true}
+                spr={selectedPriceRange}
+                uniquerates={nameDatas}
+              />
+            </View>
           </View>
-        </View>
-      <Modal
-        visible={isCreateAccountVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={closeCreateAccountModal}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-        >
-          <View
-            style={{
-              width: "95%",
-              backgroundColor: "#fff",
-              borderRadius: 10,
-              padding: 10,
-              marginTop: 25,
-              marginBottom: 25,
-            }}
+          <Modal
+            visible={isCreateAccountVisible}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={closeCreateAccountModal}
           >
-            <CreateAccount onClose={closeCreateAccountModal} />
-          </View>
-        </View>
-      </Modal>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(0,0,0,0.5)",
+              }}
+            >
+              <View
+                style={{
+                  width: "95%",
+                  backgroundColor: "#fff",
+                  borderRadius: 10,
+                  padding: 10,
+                  marginTop: 25,
+                  marginBottom: 25,
+                }}
+              >
+                <CreateAccount onClose={closeCreateAccountModal} />
+              </View>
+            </View>
+          </Modal>
         </>
       )}
     </>

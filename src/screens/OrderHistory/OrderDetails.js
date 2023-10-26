@@ -908,7 +908,7 @@ const OrderDetails = (props) => {
                       color: "#FFFFFF",
                     }}
                   >
-                   
+                   {name}
                   </Text>
                 </TouchableOpacity>
                 <Text

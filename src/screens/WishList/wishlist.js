@@ -317,7 +317,7 @@ export default function WishList(props) {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 width: width * 0.4,
                 height: height * 0.06,
@@ -336,9 +336,9 @@ export default function WishList(props) {
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                 }}
               >
-                Continue Shopping
+                Go to home page
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       ) : (
