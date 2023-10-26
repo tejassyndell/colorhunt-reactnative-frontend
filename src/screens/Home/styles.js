@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { color } from "react-native-reanimated";
 
 const { width, height } = Dimensions.get("window");
 console.log(typeof width);
@@ -28,6 +27,7 @@ const styles = StyleSheet.create({
   loader: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor:'#FFF',
     alignItems: "center",
   },
   producticones: {

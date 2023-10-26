@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   Platform,
   Modal,
+  KeyboardAvoidingView,
+  Keyboard,
+  RefreshControl,
 } from "react-native";
 import {
   getProductName,
@@ -43,6 +46,54 @@ export default function CategorisWiseArticle(props) {
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+
+  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    // Perform your data fetching or refreshing logic here
+    // For example, you can call your API to fetch new data
+    // Make sure to set refreshing to false when done.
+
+    setTimeout(() => {
+      // After fetching new data, update your data state
+    
+
+      setRefreshing(false);
+    }, 1000); // Simulating a delay, replace with your API call
+  };
+
+  const fetchMoreData = () => {
+    if (!isLoadingMore) {
+      setIsLoadingMore(true);
+      setPage(page + 1);
+    }
+  };
+
+  // Add a listener to track keyboard visibility
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardOpen(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -82,14 +133,20 @@ export default function CategorisWiseArticle(props) {
 
   const route = useRoute(); // Define route using useRoute hook
   const { item1 } = route.params;
+  const { width, height } = Dimensions.get("window");
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 110
+        : 80
+      : height >= 844
+      ? 110
+      : 65;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
-  const { width, height } = Dimensions.get("window");
-
   // uploard url image
-  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
   console.log(category);
@@ -112,6 +169,8 @@ export default function CategorisWiseArticle(props) {
         setNameDatas(fildata);
         setFinalData(fildata);
         setIsLoading(false);
+        setRefreshing(false)
+
       }
     } catch (error) {
       console.log(error);
@@ -189,24 +248,25 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <TouchableOpacity
-  onPress={() => {
-    isLoggedIn ? navigation.navigate("Profile") : "";
-  }}
->
-  <Image
-    style={{
-      resizeMode: "contain",
-      width: width >= 720 ? 55 : 35,
-      height: width >= 720 ? 55 : 35,
-    }}
-    source={require("../../../assets/Nevbar/Profile.png")}
-  />
-</TouchableOpacity>
-
+            onPress={() => {
+              isLoggedIn ? navigation.navigate("Profile") : "";
+            }}
+          >
+            <Image
+              style={{
+                resizeMode: "contain",
+                width: width >= 720 ? 55 : 35,
+                height: width >= 720 ? 55 : 35,
+              }}
+              source={require("../../../assets/Profileicon/Group8919.png")}
+            />
+          </TouchableOpacity>
         </View>
       ),
-      headerStyle: {
-        height: headerHeight, // Increase the header height here
+        headerStyle: {
+        height: headerHeight,
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
@@ -301,41 +361,17 @@ export default function CategorisWiseArticle(props) {
         style={{
           width: "90%",
           height: 180,
+          flex: 1,
+          marginTop: 10,
+
           justifyContent: "center",
           alignItems: "center",
-          borderRadius: 12,
-          backgroundColor: "#FFF",
-          shadowColor: "#000",
-          shadowOpacity: 0.1,
-          shadowRadius: 1,
-          elevation: 5,
-          marginTop:10
+
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.2)",
+          borderRadius: 10,
         }}
       >
-        {/* { item.Photos?
-          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
-          source={require("../../../assets/demo.png")}
-          style={{
-            width: "90%",
-            height: 180,
-            flex: 1,
-            resizeMode: "contain",
-            borderRadius: 10,
-            zIndex: 1,
-            marginTop: 10,
-          }}
-        />: <Image
-          source={{ uri: baseImageUrl + item.Photos }}
-          style={{
-            width: "90%",
-            height: 180,
-            flex: 1,
-            resizeMode: "contain",
-            borderRadius: 10,
-            zIndex: 1,
-            marginTop: 10,
-          }}
-        />:""} */}
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
@@ -343,8 +379,9 @@ export default function CategorisWiseArticle(props) {
             height: "100%",
             flex: 1,
             resizeMode: "contain",
-            // borderRadius: 10,
+            borderRadius: 10,
             zIndex: 1,
+
             // marginTop: 10,
           }}
         />
@@ -489,31 +526,31 @@ export default function CategorisWiseArticle(props) {
               backgroundColor: "#FFF",
               width: "100%",
               height: "74%",
-              top: 20,
+              top: 10,
               paddingHorizontal: 10,
             }}
           >
             {finalData.length === 0 ? (
               (console.log(nameDatas.length, "ewqewqewqeewq"),
-                (
-                  <View
+              (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
                     style={{
-                      flex: 1,
-                      justifyContent: "center", // Center vertically
-                      alignItems: "center", // Center horizontally
+                      textAlign: "center",
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontSize: 20,
                     }}
                   >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontSize: 20,
-                      }}
-                    >
-                      No Articles Found
-                    </Text>
-                  </View>
-                ))
+                    No Articles Found
+                  </Text>
+                </View>
+              ))
             ) : (
               <FlatList
                 style={{ backgroundColor: "#FFF" }}
@@ -524,17 +561,29 @@ export default function CategorisWiseArticle(props) {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingVertical: 0 }}
                 columnWrapperStyle={{ justifyContent: "space-between" }}
+                onEndReached={fetchMoreData}
+                onEndReachedThreshold={0.1}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
               />
             )}
           </View>
-          {isFilterVisible ? null : (
-            <View
-              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-            >
-              <ButtomNavigation navigation={navigation} page="home" />
-            </View>
-          )}
-
+          <KeyboardAvoidingView
+            behavior={isKeyboardOpen ? "padding" : null}
+            style={{ flex: 1 }}
+          >
+            {isFilterVisible ? null : (
+              <View
+                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+              >
+                <ButtomNavigation navigation={navigation} page="home" />
+              </View>
+            )}
+          </KeyboardAvoidingView>
           {isFilterVisible && (
             <View
               style={{
@@ -593,7 +642,7 @@ export default function CategorisWiseArticle(props) {
         >
           <View
             style={{
-              width: "100%",
+              width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
               padding: 10,

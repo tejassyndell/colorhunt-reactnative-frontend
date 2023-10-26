@@ -29,11 +29,11 @@ import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import Svg, { Path } from "react-native-svg";
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
   const { width: viewportWidth } = Dimensions.get("window");
-  const { width } = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
 
   const route = useRoute();
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
@@ -88,8 +88,13 @@ const DetailsOfArticals = (props) => {
   };
 
   const headerHeight =
-    Platform.OS === "android" ? (viewportWidth >= 720 ? 120 : 86) : 120;
-
+    Platform.OS === "android"
+      ? width >= 720
+        ? 110
+        : 80
+      : height >= 844
+      ? 110
+      : 65;
   const ArticleDetailsData = async () => {
     let data = {
       ArticleId: id,
@@ -97,8 +102,6 @@ const DetailsOfArticals = (props) => {
     };
     try {
       const res = await ArticleDetails(data);
-      console.log(res.data);
-      console.log("dd", res.data.photos);
       setArticlePhotos(res.data.photos);
       setArticleCategory(res.data.calculatedData[0].Category);
       setSubcategory(res.data.calculatedData[0].subcategory);
@@ -166,7 +169,7 @@ const DetailsOfArticals = (props) => {
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
 
-  const addtocart = async ( ArticleId) => {
+  const addtocart = async (ArticleId) => {
     if (!combinedArray) {
       console.log("undefined");
       return;
@@ -211,7 +214,8 @@ const DetailsOfArticals = (props) => {
     return `₹${value.toFixed(2)}`;
   };
   // uploard url image
-  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl =
+    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const imageElements = articlePhotos.map((fileName, index) => (
     <Image
       source={{ uri: baseImageUrl + fileName }}
@@ -259,7 +263,11 @@ const DetailsOfArticals = (props) => {
     <TouchableOpacity onPress={() => openImageZoom(item)}>
       <View style={{ width: "100%", height: "100%" }}>
         <Image
-          style={{ width: "100%", height: width >= 720 ? 500 : 550 }}
+          style={{
+            width: "100%",
+            height: width >= 720 ? "100%" : "100%",
+            resizeMode: "contain",
+          }}
           source={{ uri: baseImageUrl + item }}
         />
       </View>
@@ -276,8 +284,10 @@ const DetailsOfArticals = (props) => {
         />
       ),
       headerTitle: () => <View />,
-      headerStyle: {
-        height: headerHeight, // Increase the header height here
+        headerStyle: {
+        height: headerHeight,
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
@@ -335,15 +345,30 @@ const DetailsOfArticals = (props) => {
                   flex: 1,
                 }}
               >
-                <Carousel
-                  data={articlePhotos}
-                  renderItem={renderImage}
-                  sliderWidth={viewportWidth}
-                  itemWidth={viewportWidth}
-                  loop={true}
-                  autoplay={true}
-                  autoplayInterval={3000}
-                ></Carousel>
+                {articlePhotos && articlePhotos.length > 0 ? (
+                  <Carousel
+                    data={articlePhotos}
+                    renderItem={renderImage}
+                    sliderWidth={viewportWidth}
+                    itemWidth={viewportWidth}
+                    loop={true}
+                    autoplay={true}
+                    autoplayInterval={3000}
+                  ></Carousel>
+                ) : (
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      position: "absolute",
+                    }}
+                  >
+                    <Text style={{ textAlign: "center", fontSize: 25 }}>
+                      No Image
+                    </Text>
+                  </View>
+                )}
                 <View
                   style={{
                     zIndex: 2,
@@ -372,9 +397,9 @@ const DetailsOfArticals = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 40 : 26,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         textAlign: "center",
-                        fontWeight: 'bold',
+                        fontWeight: "bold",
                         color: "black",
                       }}
                     >
@@ -395,9 +420,10 @@ const DetailsOfArticals = (props) => {
                   height: "100%",
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
-                  padding: 12,
-                  shadowColor: "#000000",
-                  shadowOpacity: 1,
+                  padding: 15,
+                  paddingTop: 20,
+                  shadowColor: "grey",
+                  shadowOpacity: 0.4,
                 }}
               >
                 <View>
@@ -413,9 +439,11 @@ const DetailsOfArticals = (props) => {
                       style={{
                         width: "100%",
                         flexDirection:
-                          articleSizeData.length > 3 ? "column" : "row",
+                          articleSizeData && articleSizeData.length > 3
+                            ? "column"
+                            : "row",
                         alignItems:
-                          articleSizeData.length > 3
+                          articleSizeData && articleSizeData.length > 3
                             ? "flex-Start"
                             : "flex-start",
                         marginBottom: 10,
@@ -423,17 +451,26 @@ const DetailsOfArticals = (props) => {
                     >
                       <View
                         style={{
-                          marginRight: articleSizeData.length > 3 ? 0 : 30,
-                          width: articleSizeData.length > 3 ? "auto" : "50%",
-                          marginBottom: articleSizeData.length > 3 ? 10 : 0,
+                          marginRight:
+                            articleSizeData && articleSizeData.length > 3
+                              ? 0
+                              : 30,
+                          width:
+                            articleSizeData && articleSizeData.length > 3
+                              ? "100%"
+                              : "45%",
+                          marginBottom:
+                            articleSizeData && articleSizeData.length > 3
+                              ? 10
+                              : 0,
                         }}
                       >
                         <Text
                           style={{
                             marginBottom: 5,
-                            fontWeight: "bold",
+                            fontWeight: "600",
                             fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           Size
@@ -441,7 +478,9 @@ const DetailsOfArticals = (props) => {
                         <View
                           style={{
                             paddingHorizontal:
-                              articleSizeData.length > 3 ? "6%" : 0,
+                              articleSizeData && articleSizeData.length > 3
+                                ? "6%"
+                                : 0,
                             width: "100%",
                             height: width >= 720 ? 100 : 60,
                             flexDirection: "row",
@@ -452,22 +491,19 @@ const DetailsOfArticals = (props) => {
                             alignItems: "center",
 
                             justifyContent:
-                              articleSizeData.length > 3
-                                ? "flex-start"
+                              articleSizeData && articleSizeData.length > 3
+                                ? "center"
                                 : "center",
                             ...Platform.select({
                               ios: {
                                 shadowColor: "black",
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.2,
+                                shadowOffset: { width: 0, height: 0 },
                                 shadowRadius: 2,
-                            backgroundColor:'#f4f4f4',
-
+                                backgroundColor: "#f4f4f4",
                               },
                               android: {
                                 elevation: 0,
-                            backgroundColor:'#f4f4f4',
-
+                                backgroundColor: "#f4f4f4",
                               },
                             }),
                           }}
@@ -479,7 +515,10 @@ const DetailsOfArticals = (props) => {
                                   styles.size_options,
                                   {
                                     paddingHorizontal:
-                                      articleSizeData.length > 3 ? "1%" : 0,
+                                      articleSizeData &&
+                                      articleSizeData.length > 3
+                                        ? "1%"
+                                        : 0,
                                   },
                                 ]}
                                 key={index}
@@ -500,15 +539,18 @@ const DetailsOfArticals = (props) => {
                       <View
                         style={{
                           // width: "40%",
-                          width: articleSizeData.length > 3 ? "auto" : "40%",
+                          width:
+                            articleSizeData && articleSizeData.length > 3
+                              ? "100%"
+                              : "45%",
                         }}
                       >
                         <Text
                           style={{
                             marginBottom: 5,
-                            fontWeight: "bold",
+                            fontWeight: 600,
                             fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
                           Subcategory
@@ -524,35 +566,37 @@ const DetailsOfArticals = (props) => {
                             padding: 10,
                             alignContent: "center",
                             justifyContent:
-                              articleSizeData.length > 3
-                                ? "flex-start"
+                              articleSizeData && articleSizeData.length > 3
+                                ? "center"
                                 : "center",
 
                             alignItems: "center",
                             ...Platform.select({
                               ios: {
                                 shadowColor: "black",
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.2,
+                                shadowOffset: { width: 0, height: 0 },
                                 shadowRadius: 2,
-                            backgroundColor:'#f4f4f4',
-
+                                backgroundColor: "#f4f4f4",
                               },
                               android: {
                                 elevation: 0,
-                            backgroundColor:'#f4f4f4',
-
+                                backgroundColor: "#f4f4f4",
                               },
                             }),
                           }}
                         >
                           <Text
                             style={{
-                              fontSize: width >= 720 ? 35 : 16,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontSize:
+                                articleSizeData && articleSizeData.length > 3
+                                  ? 30
+                                  : 16,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
                               paddingHorizontal:
-                                articleSizeData.length > 3 ? "10%" : 0,
-                              fontWeight: "400",
+                                articleSizeData && articleSizeData.length > 3
+                                  ? "10%"
+                                  : 0,
+                              fontWeight: "600",
                               textAlign: "center",
                               color: "#000000",
                             }}
@@ -577,8 +621,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 'bold',
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "bold",
                           }}
                         >
                           Color
@@ -588,8 +632,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 'bold',
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "bold",
                           }}
                         >
                           Available in Stock
@@ -599,8 +643,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
-                            fontWeight: 'bold',
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "bold",
                           }}
                         >
                           Add Qty.
@@ -616,7 +660,7 @@ const DetailsOfArticals = (props) => {
                             borderWidth: 1,
                             borderColor: "#0000001d",
                             marginTop: 8,
-                            
+
                             justifyContent: "center",
                             alignContent: "center",
                             alignItems: "center",
@@ -633,7 +677,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
                               fontWeight: "500",
                               color: "#626262",
                             }}
@@ -664,7 +708,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
-                              fontFamily: isFontLoaded ? 'Glory' : undefined,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
                               fontWeight: "500",
                               color: "#626262",
                             }}
@@ -682,16 +726,15 @@ const DetailsOfArticals = (props) => {
                             marginTop: 8,
                             justifyContent: "center",
                             alignContent: "center",
-                            borderRightColor:'#FFF',
-                            borderLeftWidth:0,
-                            borderRightWidth:0,
+                            borderRightColor: "#FFF",
+                            borderLeftWidth: 0,
+                            borderRightWidth: 0,
                             alignItems: "center",
                             backgroundColor: "#FFF",
                             height: width >= 720 ? 70 : 42,
                             elevation: 2,
                             shadowColor: "gray",
                             shadowOpacity: 0,
-
                           }}
                         >
                           <Pressable
@@ -712,7 +755,7 @@ const DetailsOfArticals = (props) => {
                             <Text
                               style={{
                                 fontSize: width >= 720 ? 45 : 24,
-                                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                fontFamily: isFontLoaded ? "Glory" : undefined,
                                 fontWeight: "800",
                               }}
                             >
@@ -723,9 +766,9 @@ const DetailsOfArticals = (props) => {
                             <Text
                               style={{
                                 fontSize: width >= 720 ? 30 : 18,
-                                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                fontFamily: isFontLoaded ? "Glory" : undefined,
                                 textAlign: "center",
-                                fontWeight: 'bold',
+                                fontWeight: "bold",
                                 color: "#000",
                               }}
                             >
@@ -750,7 +793,7 @@ const DetailsOfArticals = (props) => {
                             <Text
                               style={{
                                 fontSize: width >= 720 ? 40 : 21,
-                                fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                fontFamily: isFontLoaded ? "Glory" : undefined,
                                 textAlign: "center",
                                 paddingBottom: 0,
                               }}
@@ -824,7 +867,7 @@ const DetailsOfArticals = (props) => {
                     <Text
                       style={{
                         fontSize: 24,
-                        fontFamily: isFontLoaded ? 'Glory' : undefined,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
                         textAlign: "center",
                         marginBottom: 10,
                         fontWeight: "500",
@@ -859,7 +902,7 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: 18,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                             fontWeight: "700",
                             color: "grey",
                             paddingHorizontal: 15,
@@ -888,7 +931,7 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             fontSize: 18,
-                            fontFamily: isFontLoaded ? 'Glory' : undefined,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
                             fontWeight: "700",
                             color: "white",
                             paddingHorizontal: 15,
@@ -935,9 +978,15 @@ const DetailsOfArticals = (props) => {
           backgroundColor: "#FFF",
         }}
       >
-        <View style={{ flex: 1, justifyContent: "center",paddingBottom:15, }}>
+        <View style={{ flex: 1, justifyContent: "center", paddingBottom: 15 }}>
           <View>
-            <Text style={{ fontSize: width >= 720 ? 15 : 11,  fontFamily: isFontLoaded ? 'Glory' : undefined, fontWeight: "400" }}>
+            <Text
+              style={{
+                fontSize: width >= 720 ? 15 : 11,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontWeight: "400",
+              }}
+            >
               Total Price
             </Text>
           </View>
@@ -945,8 +994,8 @@ const DetailsOfArticals = (props) => {
             <Text
               style={{
                 fontSize: width >= 720 ? 27 : 18,
-                fontFamily: isFontLoaded ? 'Glory' : undefined,
-                fontWeight: '700',
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontWeight: "700",
                 color: "black",
               }}
             >
@@ -977,18 +1026,49 @@ const DetailsOfArticals = (props) => {
                   paddingVertical: 3,
                 }}
               >
-                <Image
-                  source={require("../../../assets/icons/icon.png")}
-                  style={{
-                    width: width >= 720 ? 30 : 20,
-                    height: width >= 720 ? 30 : 20,
-                  }}
-                />
+                <Svg
+                  width={width >= 720 ? 30 : 20}
+                  height={width >= 720 ? 30 : 20}
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  {...props}
+                >
+                  <Path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M12.4373 16.9996H5.21111C2.55676 16.9996 0.520444 16.0778 1.09885 12.3675L1.77234 7.33917C2.1289 5.48783 3.35703 4.7793 4.43462 4.7793H13.2455C14.3389 4.7793 15.4957 5.54116 15.9078 7.33917L16.5812 12.3675C17.0725 15.6588 15.0916 16.9996 12.4373 16.9996Z"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <Path
+                    d="M12.5561 4.59605C12.5561 2.61003 10.8817 1.00003 8.81624 1.00003C7.82163 0.995987 6.86631 1.37306 6.16152 2.04788C5.45674 2.7227 5.06054 3.63968 5.06055 4.59605"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <Path
+                    d="M11.3818 8.34375H11.3438"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <Path
+                    d="M6.33497 8.34375H6.29688"
+                    stroke="white"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </Svg>
                 <Text
                   style={{
                     color: "white",
                     textAlign: "center",
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                     fontSize: width >= 720 ? 30 : 18,
                     marginLeft: width >= 720 ? 20 : 10,
                   }}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet,Dimensions, } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import * as Font from "expo-font";
-
 
 const LoginStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
@@ -21,9 +20,9 @@ const LoginStyles = () => {
     loadCustomFont();
   }, []);
 
-const { width, height } = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       width: width >= 720 ? "100%" : "100%",
@@ -35,25 +34,29 @@ const styles = StyleSheet.create({
       width: width >= 720 ? "100%" : "100%",
       height: width >= 720 ? "100%" : "100%",
       // padding: width >= 720 ? "100%" : "100%",
-      resizeMode: "cover",
+      // resizeMode: "cover",
+    },
+    paginationContainer: {
+      width: "100%",
+      height: 30,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
     },
     paginationDot: {
-        width: 15, // Adjust the width as needed
-        height: 15, // Adjust the height as needed
-        borderRadius: 8, // Make it half of the width to create a circle
-        backgroundColor: "#FFF", // Background color for inactive dots
-        borderWidth: 2, // Border width
-        borderColor: "black", // Border color
-      },
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+      backgroundColor: "white",
+      margin: 5,
+      borderColor: "black",
+      borderWidth: 1,
+    },
 
-   activePaginationDot: {
-    width: 15, // Adjust the width as needed
-    height: 15, // Adjust the height as needed
-    borderRadius: 8, // Make it half of the width to create a circle
-    backgroundColor: "#00000", // Background color for active dot
-    borderWidth: 2, // Border width
-    borderColor: "black", // Border color
-  },
+    activePaginationDot: {
+      backgroundColor: "black",
+      borderColor: "black",
+    },
     button: {
       width: width >= 720 ? 180 : 100,
       height: width >= 720 ? 70 : 50,
@@ -67,9 +70,10 @@ const styles = StyleSheet.create({
     },
     buttonText: {
       color: "white",
-      fontSize: width >= 720 ? 30 : 20,
+      fontSize: width >= 720 ? 40 : 20,
       fontWeight: "bold",
-      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      paddingBottom:5,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
     },
     contain1: {
       position: "absolute",
@@ -96,8 +100,8 @@ const styles = StyleSheet.create({
       alignItems: "center",
     },
     contain4: {
-      position: "absolute",
-      top: "50%",
+      position: 'relative',
+      top: height >= 844 ? "44%":"40%",
       right: "30%",
       width: "100%",
       height: "100%",
@@ -105,17 +109,18 @@ const styles = StyleSheet.create({
     },
     slideText1: {
       color: "black",
-      fontSize: width >= 720 ? 35 : 20,
-      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontSize: width >= 720 ? 30 : 20,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       textAlign: "center",
+      fontWeight: 400,
     },
     slideText2: {
       color: "white",
-      fontSize: width >= 720 ? 40 : 23,
-      fontFamily: isFontLoaded ? 'Glory' : undefined,
+      fontSize: width >= 720 ? 35 : 23,
+      fontFamily: isFontLoaded ? "Glory" : undefined,
       textAlign: "center",
       marginTop: 20,
-      fontWeight: "bold",
+      fontWeight: "500",
     },
   });
 
