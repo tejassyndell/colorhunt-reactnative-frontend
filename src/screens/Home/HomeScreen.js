@@ -967,7 +967,7 @@ export default function HomeScreen(props) {
               Scategories={selectedCategories}
               minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate}
-              status={false}
+              status={true}
               spr={selectedPriceRange}
               uniquerates={nameDatas}
             />
