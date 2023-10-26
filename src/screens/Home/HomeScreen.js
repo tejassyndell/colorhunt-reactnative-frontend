@@ -310,10 +310,12 @@ export default function HomeScreen(props) {
         </View>
       ),
       headerTitle: () => null, // Remove the header title
-      headerStyle: {
+       headerStyle: {
         height: headerHeight,
-        // backgroundColor: "black",
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
+     
     });
   }, []);
 
@@ -472,11 +474,12 @@ export default function HomeScreen(props) {
             marginBottom: width >= 720 ? 10 : 0,
           }}
         >
-          <View style={{ marginTop: 0 }}>
+          <View >
             <View
               style={{
                 height: width >= 720 ? 60 : 40,
                 justifyContent: "center",
+                backgroundColor: "#FFF",
               }}
             >
               <Text
@@ -986,6 +989,7 @@ export default function HomeScreen(props) {
         {/* Other components here */}
       </KeyboardAvoidingView>
       {isFilterVisible && (
+        <>
         <View
           style={{
             backgroundColor: "rgba(0,0,0,0.5)",
@@ -1016,13 +1020,12 @@ export default function HomeScreen(props) {
               Scategories={selectedCategories}
               minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate}
-              status={false}
+              status={true}
               spr={selectedPriceRange}
               uniquerates={nameDatas}
             />
           </View>
         </View>
-      )}
       <Modal
         visible={isCreateAccountVisible}
         animationType="slide"
@@ -1051,6 +1054,8 @@ export default function HomeScreen(props) {
           </View>
         </View>
       </Modal>
+        </>
+      )}
     </>
   );
 }

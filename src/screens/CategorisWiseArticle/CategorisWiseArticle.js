@@ -265,6 +265,8 @@ export default function CategorisWiseArticle(props) {
       ),
       headerStyle: {
         height: headerHeight, // Increase the header height here
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);

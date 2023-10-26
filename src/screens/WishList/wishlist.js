@@ -151,6 +151,8 @@ export default function WishList(props) {
       headerRight: () => <View />,
       headerStyle: {
         height: headerHeight, // Increase the header height here
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);

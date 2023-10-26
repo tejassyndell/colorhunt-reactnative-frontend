@@ -41,8 +41,10 @@ export default function CategoriesScreen(props) {
         />
       ),
       headerRight: () => <View />,
-      headerStyle: {
-        height: headerHeight, // Increase the header height here
+        headerStyle: {
+        height: headerHeight,
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
