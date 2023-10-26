@@ -10,20 +10,16 @@ import {
   Dimensions,
 } from "react-native";
 import Swiper from "react-native-swiper";
-import  SliderStyles  from "./styles";
 
-const { width, height } = Dimensions.get("window");
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
-const SliderScreen = (props) => {
+const SkipSliderScreen = (props) => {
   const { navigation } = props;
 
   const Shopping = () => {
-    navigation.navigate("Home");
+    navigation.navigate("SkipHome");
   };
-  const styles = SliderStyles(); 
-  // Calculate the image width and height based on screen width
-  const imageWidth = width >= 720 ? 280 : 130;
-  const imageHeight = height * 0.2; // 20% of screen height
 
   return (
     <View style={styles.container}>
@@ -32,7 +28,7 @@ const SliderScreen = (props) => {
         showsPagination={true}
         dotStyle={styles.paginationDot}
         activeDotStyle={styles.activePaginationDot}
-        autoplay={true}
+        autoplay={{ delay: 2000 }}
       >
         <ImageBackground
           source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
@@ -43,15 +39,25 @@ const SliderScreen = (props) => {
               source={require("../../../assets/SliderImage/image99.png")}
               resizeMode="contain"
               style={{
-                width: imageWidth,
-                height: imageHeight,
+                width: "100%", // Adjust the width as needed
+                height: "20%",
               }}
             />
 
-            <Text style={[styles.slideText1, { color: "white" }]}>
+            <Text
+              style={[
+                styles.slideText1,
+                { color: "white", fontSize: windowWidth * 0.05 },
+              ]}
+            >
               Smart{"\n"}Formals
             </Text>
-            <Text style={[styles.slideText2, { color: "white" }]}>
+            <Text
+              style={[
+                styles.slideText2,
+                { color: "white", fontSize: windowWidth * 0.06 },
+              ]}
+            >
               MIN {"\n"}30% OFF*
             </Text>
             <TouchableOpacity
@@ -63,7 +69,6 @@ const SliderScreen = (props) => {
           </View>
         </ImageBackground>
 
-        {/* Repeat the same structure for other slides */}
         <ImageBackground
           source={require("../../../assets/SliderImage/low-angle-little-boy-posing.png")}
           style={styles.slide}
@@ -71,14 +76,11 @@ const SliderScreen = (props) => {
           <View style={styles.contain2}>
             <Image
               source={require("../../../assets/SliderImage/image100.png")}
-              resizeMode="contain"
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-              }}
             />
 
-            <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
+            <Text
+              style={[styles.slideText1, { marginTop: 30, fontWeight: "bold" }]}
+            >
               Flat{"\n"}40-50% OFF*
             </Text>
             <TouchableOpacity
@@ -97,18 +99,15 @@ const SliderScreen = (props) => {
           <View style={styles.contain3}>
             <Image
               source={require("../../../assets/SliderImage/image100.png")}
-              resizeMode="contain"
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-              }}
             />
 
             <Text
               style={[
                 styles.slideText1,
                 {
+                  marginTop: 20,
                   fontWeight: "500",
+                  fontSize: windowWidth * 0.06,
                 },
               ]}
             >
@@ -134,15 +133,22 @@ const SliderScreen = (props) => {
           <View style={styles.contain4}>
             <Image
               source={require("../../../assets/SliderImage/image100.png")}
-              resizeMode="contain"
-              style={{
-                width: imageWidth,
-                height: imageHeight,
-              }}
             />
 
-            <Text style={[styles.slideText1]}>BEST{"\n"}PICKS</Text>
-            <Text style={[styles.slideText2, { color: "black" }]}>
+            <Text
+              style={[
+                styles.slideText1,
+                { marginTop: 20, fontSize: windowWidth * 0.05 },
+              ]}
+            >
+              BEST{"\n"}PICKS
+            </Text>
+            <Text
+              style={[
+                styles.slideText2,
+                { color: "black", fontSize: windowWidth * 0.07 },
+              ]}
+            >
               FLAT{"\n"}50% OFF*
             </Text>
             <TouchableOpacity
@@ -164,6 +170,85 @@ const SliderScreen = (props) => {
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  slide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%", // Ensure the image covers the entire width
+    height: "100%", // Ensure the image covers the entire height
+  },
+  paginationDot: {
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    marginBottom: -10,
+  },
+  activePaginationDot: {
+    backgroundColor: "white",
+    marginBottom: -10,
+  },
+  button: {
+    width: windowWidth * 0.2, // Set the width as needed
+    height: windowHeight * 0.05, // Set the height as needed
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    backgroundColor: "black",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: windowWidth * 0.05,
+    fontWeight: "bold",
+  },
+  contain1: {
+    position: "absolute",
+    top: "5%",
+    left: "25%",
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+  },
+  contain2: {
+    position: "absolute",
+    top: "45%",
+    left: "25%",
+    width: "100%",
+    alignItems: "center",
+    height: "100%",
+  },
+  contain3: {
+    position: "absolute",
+    top: "10%",
+    left: "20%",
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+  },
+  contain4: {
+    position: "absolute",
+    top: "45%",
+    right: "30%",
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+  },
+  slideText1: {
+    color: "black",
+    fontSize: 22,
+    textAlign: "center",
+  },
+  slideText2: {
+    color: "white",
+    fontSize: 26,
+    textAlign: "center",
+    marginTop: 20,
+    fontWeight: "bold",
+  },
+});
 
-
-export default SliderScreen;
+export default SkipSliderScreen;

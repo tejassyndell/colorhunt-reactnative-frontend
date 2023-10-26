@@ -8,7 +8,6 @@ import {
   Keyboard,
   Dimensions,
   Image,
-  ScrollView
 } from "react-native";
 import { UserData } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -287,7 +286,6 @@ const CreateAccount = (props) => {
               <Text style={styles.closeText}>X</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView>
           <TextInput
             style={[styles.input, nameError && styles.inputError]}
             placeholder="Name"
@@ -303,7 +301,7 @@ const CreateAccount = (props) => {
             maxLength={500}
             style={[
               styles.input,
-              { height: width >= 720 ? 130 : 90  },
+              { height: width >= 720 ? 130 : 90 },
               addressError && styles.inputError,
             ]}
             placeholder="Address"
@@ -411,8 +409,6 @@ const CreateAccount = (props) => {
               <Text style={styles.submitButtonText}>Submit</Text>
             </TouchableOpacity>
           </View>
-          </ScrollView>
-        
         </>
       ) : (
         <View style={styles.successContainer}>
@@ -434,7 +430,7 @@ const CreateAccount = (props) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
     width: "100%",
     alignItem: "center",
     paddingHorizontal: width >= 720 ? 40 : 15,
@@ -470,20 +466,19 @@ const styles = StyleSheet.create({
     left: 10,
   },
   submitButton: {
-    width: windowWidth >= 720 ? 230 : 150,
+    width: windowWidth * 0.25,
     backgroundColor: "black",
     borderRadius: 5,
-    marginTop: 10,
-    marginBottom:20,
+    marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
     height: windowHeight * 0.06,
   },
   submitButtonText: {
     color: "white",
-    fontWeight: "500",
+    fontWeight: "bold",
     fontFamily: "Glory",
-    fontSize: windowWidth >= 720 ? 45 : 30,
+    fontSize: windowWidth * 0.04,
   },
   closeButton: {
     backgroundColor: "black",

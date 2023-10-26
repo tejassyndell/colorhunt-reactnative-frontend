@@ -3,13 +3,18 @@ import {
   Text,
   View,
   Image,
+  ScrollView,
   FlatList,
   TouchableOpacity,
   Dimensions,
   Platform,
-  RefreshControl 
 } from "react-native";
-import { getProductName, getWishlistData, DeleteWishlist } from "../../api/api";
+import {
+  getProductName,
+  getWishlistData,
+  getAddWishlist,
+  DeleteWishlist,
+} from "../../api/api";
 import styles from "./styles.js";
 import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -26,26 +31,8 @@ export default function WishList(props) {
   const [isLoading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = () => {
-    setRefreshing(true);
-  
-    // Add your refreshing logic here (e.g., fetch new data or update existing data).
-  
-    // Simulate a delay to hide the loading indicator after a few seconds (adjust as needed).
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 3000); // 3 seconds
-  };
-
   const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 110
-        : 80
-      : height >= 844
-      ? 110
-      : 65;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -61,14 +48,13 @@ export default function WishList(props) {
     loadCustomFont();
   }, []);
   // uploard url image
-  const baseImageUrl =
-    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData");
+    let partydata = await AsyncStorage.getItem("UserData")
     partydata = await JSON.parse(partydata);
     console.log(partydata[0].Id, "[][][[][]");
     return partydata[0].Id;
-  };
+  }
 
   // getCategoriesname
   const getCategoriesname = async () => {
@@ -79,7 +65,7 @@ export default function WishList(props) {
   };
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
-    let id = await getpartyid();
+    let id = await getpartyid()
     let data = {
       party_id: id,
       article_id: i.Id,
@@ -106,7 +92,6 @@ export default function WishList(props) {
       console.log(res.data);
       setSelectprd(res.data);
       setIsLoading(false);
-      z;
     });
   };
 
@@ -138,7 +123,7 @@ export default function WishList(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: "700",
               width: "100%",
             }}
@@ -160,113 +145,74 @@ export default function WishList(props) {
       style={{
         alignItems: "center",
         height: "auto",
-        width: width >= 720 ? "22%" : "44.8%",
-        margin: 10,
-        borderRadius: 10,
-        borderColor: "gray",
+        width: width >= 720 ? "22%" : "44%",
+        marginHorizontal: 12,
+        backgroundColor: "#FFFFFF",
+        paddingBottom: 15,
+        marginVertical: 15,
+        paddingTop: width >= 720 ? 10 : 10,
+        borderRadius: 12,
         backgroundColor: "#FFF",
-        shadowColor: "gray",
-        shadowOpacity: 0.4,
-        shadowRadius: 4,
-        elevation: 10,
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+        elevation: 5, // For Android, use elevation
+
       }}
     >
-      <View id={item.id} style={styles.producticones}>
-        {selectedprd.some((i) => i.Id === item.Id) ? (
-          <TouchableOpacity
-            onPress={() => {
-              rmvProductWishlist(item);
-            }}
-          >
-            <FontAwesome
-              name="heart"
-              style={[
-                styles.icon,
-                // isLoggedin === false ? styles.disabledIcon : null,
-              ]}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              addArticleWishlist(item);
-            }}
-          >
-            <FontAwesome
-              name="heart-o"
-              style={[
-                styles.disabledIcon,
-                // isLoggedin === false ? styles.disabledIcon : null,
-              ]}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
-
       <View
+        key={item.id}
         style={{
-          width: "90%",
-          height: 180,
-          flex: 1,
-          marginTop: 10,
-
-          justifyContent: "center",
           alignItems: "center",
-
-          borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.2)",
-          borderRadius: 10,
+          height: "auto",
+          width: width >= 720 ? 180 : 180,
         }}
       >
-        <Image
-          source={{ uri: baseImageUrl + item.Photos }}
+        <View
           style={{
-            width: "90%",
-            height: 180,
-            flex: 1,
-            resizeMode: "contain",
-            borderRadius: 10,
+            width: width >= 720 ? "80%" : "90%",
+            height: width >= 720 ? 200 : 190,
+            borderRadius: 12,
+            backgroundColor: "#FFF",
+            shadowColor: "#000",
+            shadowOpacity: 0.1,
+            shadowRadius: 1,
+            elevation: 5, // For Android, use elevation
+          }}
 
-            marginTop: 10,
-          }}
-        />
-      </View>
-      <View
-        style={{
-          width: "100%",
-          marginBottom: 10,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 0,
-          }}
         >
-          <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
-            <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
-            >
-              {item.ArticleNumber}
-            </Text>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
-              {item.Title}
-            </Text>
-            <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
-            >
-              {"₹" + item.ArticleRate + ".00"}
-            </Text>
+          <View id={item.id} style={styles.producticones}>
+            {selectedprd.some((i) => i.Id === item.Id) ? (
+              <TouchableOpacity
+                onPress={() => {
+                  rmvProductWishlist(item);
+                }}
+              >
+                <FontAwesome
+                  name="heart"
+                  style={[
+                    styles.icon,
+                    // isLoggedin === false ? styles.disabledIcon : null,
+                  ]}
+                />
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
           </View>
-        </TouchableOpacity>
+
+          <Image
+            source={{ uri: baseImageUrl + item.Photos }}
+            style={{ flex: 1, borderRadius: 10 }}
+          />
+        </View>
+        <Text style={{ fontWeight: "700", marginTop: 12, fontSize: width >= 720 ? 20 : 16 }}>
+          {item.ArticleNumber}
+        </Text>
+        <Text style={{ marginTop: 3, fontSize: width >= 720 ? 14 : 12, fontWeight: "400" }}>{item.Title}</Text>
+        <Text style={{ fontWeight: "600", marginTop: 3, fontSize: width >= 720 ? 20 : 16 }}>
+          {"₹" + item.ArticleRate + ".00"}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -297,7 +243,7 @@ export default function WishList(props) {
             <Text
               style={{
                 fontSize: width * 0.1,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 textAlign: "center",
                 fontWeight: "700",
                 color: "#808080",
@@ -326,13 +272,7 @@ export default function WishList(props) {
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: width * 0.035,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
-                }}
-              >
+              <Text style={{ color: "white", fontSize: width * 0.035, fontFamily: isFontLoaded ? 'Glory' : undefined, }}>
                 Continue Shopping
               </Text>
             </TouchableOpacity>
@@ -361,9 +301,6 @@ export default function WishList(props) {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: 10 }}
               columnWrapperStyle={{ justifyContent: "space-between" }}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
             />
           </View>
 

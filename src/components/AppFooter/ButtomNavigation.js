@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Footersvg from "../../jssvgs/Footersvg";
 
 const ButtomNavigation = (props) => {
   const route = useRoute();
@@ -45,8 +44,8 @@ const ButtomNavigation = (props) => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View
         style={{
-          width: width >= 720 ? "70%" : "96%",
-          height: width >= 720 ? 110 : 70,
+          width: "96%",
+          height: width >= 720 ? 120 : 70,
           backgroundColor: "#212121",
           flexDirection: "row",
           marginLeft: "2%",
@@ -65,7 +64,17 @@ const ButtomNavigation = (props) => {
           }}
           onPress={HomePage}
         >
-          <Footersvg val="home" status={page === "home" ? true : false} />
+          <Image
+            source={
+              page === "home"
+                ? require("../../../assets/AppFooterIcons/Home_down_nav_icone.png")
+                : require("../../../assets/deselect_home.png")
+            }
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -76,9 +85,16 @@ const ButtomNavigation = (props) => {
           }}
           onPress={OrderList}
         >
-          <Footersvg
-            val="orderhistory"
-            status={page === "orderhistory" ? true : false}
+          <Image
+            source={
+              page === "orderhistory"
+                ? require("../../../assets/on_orderhistory.png")
+                : require("../../../assets/AppFooterIcons/order_down_nav_icone.png")
+            }
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -90,7 +106,13 @@ const ButtomNavigation = (props) => {
           }}
           onPress={CartPage}
         >
-          <Footersvg val="cart" status={false} />
+          <Image
+            source={require("../../../assets/AppFooterIcons/cart_down_nav_icone.png")}
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -101,9 +123,12 @@ const ButtomNavigation = (props) => {
           }}
           onPress={NotificationPage}
         >
-          <Footersvg
-            val="notification"
-            status={page === "notification" ? true : false}
+          <Image
+            source={require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")}
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -115,7 +140,17 @@ const ButtomNavigation = (props) => {
           }}
           onPress={ProfilePage}
         >
-          <Footersvg val="profile" status={page === "profile" ? true : false} />
+          <Image
+            source={
+              page === "profile"
+                ? require("../../../assets/select_profile.png")
+                : require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")
+            }
+            style={{
+              width: width >= 720 ? 80 : 40,
+              height: width >= 720 ? 80 : 40,
+            }}
+          />
         </TouchableOpacity>
       </View>
     </View>

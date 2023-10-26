@@ -8,10 +8,6 @@ import {
   TouchableOpacity,
   Platform,
   Modal,
-  KeyboardAvoidingView,
-  Keyboard,
-  ScrollView,
-  RefreshControl,
 } from "react-native";
 import {
   getProductName,
@@ -46,67 +42,23 @@ export default function AllArticle(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
   const { width, height } = Dimensions.get("window");
-  const key = "your_storage_key";
-  const key2 = "your_storage_key";
-  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
-  const [page, setPage] = useState(1);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = () => {
-    setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    // 3 seconds
-
-    setIsLoading(false);
-    setRefreshing(false);
-  };
-
-  const fetchMoreData = () => {
-    if (!isLoadingMore) {
-      setIsLoadingMore(true);
-      setPage(page + 1);
-    }
-  };
-
-  // Add a listener to track keyboard visibility
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setKeyboardOpen(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setKeyboardOpen(false);
-      }
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
+  const key = 'your_storage_key';
+  const key2 = 'your_storage_key';
 
   const retrieveStoredCategories = async () => {
     try {
       const serializedCategories = await AsyncStorage.getItem(key);
-      const serrializedPriceRange = await AsyncStorage.getItem(key2);
+      const serrializedPriceRange = await AsyncStorage.getItem(key2)
       if (serializedCategories !== null || selectedPriceRange !== null) {
         const categories = JSON.parse(serializedCategories);
-        const priceRange = JSON.parse(serrializedPriceRange);
+        const priceRange = JSON.parse(serrializedPriceRange)
         setSelectedCategories(categories);
-        setSelectedPriceRange(priceRange);
+        setSelectedPriceRange(priceRange)
       } else {
-        console.log("No data found with the key.");
+        console.log('No data found with the key.');
       }
     } catch (error) {
-      console.error("Error retrieving data:", error);
+      console.error('Error retrieving data:', error);
     }
   };
   const userChecked = async () => {
@@ -131,17 +83,12 @@ export default function AllArticle(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
+
   const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 120
-        : 100
-      : height >= 844
-      ? 100
-      : 65;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 86) : 120;
+
   // uploard url image
-  const baseImageUrl =
-    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+  const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
@@ -159,7 +106,6 @@ export default function AllArticle(props) {
       setNameDatas(res.data);
       setFinalData(res.data);
       setIsLoading(false);
-      setRefreshing(false);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -243,7 +189,7 @@ export default function AllArticle(props) {
                 width: width >= 720 ? 55 : 32,
                 height: width >= 720 ? 55 : 32,
               }}
-              source={require("../../../assets/Profileicon/Group8919.png")}
+              source={require("../../../assets/Nevbar/Profile.png")}
             />
           </TouchableOpacity>
         </View>
@@ -347,22 +293,30 @@ export default function AllArticle(props) {
           </TouchableOpacity>
         )}
       </View>
-
       <View
         style={{
-          width: "90%",
-          height: 180,
-          flex: 1,
-          marginTop: 10,
-
+          width: "100%",
           justifyContent: "center",
           alignItems: "center",
-
-          borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.2)",
+          elevation: 20,
+          borderColor: "gray",
+          shadowColor: "#c0c0c0",
           borderRadius: 10,
         }}
       >
+          {/* { item.Photos?
+          item.Photos.length>0 && item.Photos[0]==="demo"? <Image
+          source={require("../../../assets/demo.png")}
+          style={{
+            width: "90%",
+            height: 180,
+            flex: 1,
+            resizeMode: "contain",
+            borderRadius: 10,
+            zIndex: 1,
+            marginTop: 10,
+          }}
+        />:  */}
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
@@ -371,10 +325,11 @@ export default function AllArticle(props) {
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
-
+            zIndex: 1,
             marginTop: 10,
           }}
         />
+        {/* :""} */}
       </View>
       <View
         style={{
@@ -510,43 +465,26 @@ export default function AllArticle(props) {
                 NO ARTICLES FOUND
               </Text>
             ) : (
-              <ScrollView
-                style={{ flex: 1 }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                  />
-                }
-              >
-                <FlatList
-                  style={{ backgroundColor: "#FFF" }}
-                  data={finalData}
-                  keyExtractor={(item) => item.Id.toString()}
-                  renderItem={renderItem}
-                  numColumns={width >= 720 ? 4 : 2}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingVertical: 0 }}
-                  columnWrapperStyle={{ justifyContent: "space-between" }}
-                  onEndReached={fetchMoreData}
-                  onEndReachedThreshold={0.1}
-                />
-              </ScrollView>
+              <FlatList
+                style={{ backgroundColor: "#FFF" }}
+                data={finalData}
+                keyExtractor={(item) => item.Id.toString()}
+                renderItem={renderItem}
+                numColumns={width >= 720 ? 4 : 2}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingVertical: 0 }}
+                columnWrapperStyle={{ justifyContent: "space-between" }}
+              />
             )}
           </View>
           {/* {/ </ScrollView> /} */}
-          <KeyboardAvoidingView
-            behavior={isKeyboardOpen ? "padding" : null}
-            style={{ flex: 1 }}
-          >
-            {isFilterVisible ? null : (
-              <View
-                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-              >
-                <ButtomNavigation navigation={navigation} page="home" />
-              </View>
-            )}
-          </KeyboardAvoidingView>
+          {isFilterVisible ? null : (
+            <View
+              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+            >
+              <ButtomNavigation navigation={navigation} page="home" />
+            </View>
+          )}
 
           {isFilterVisible && (
             <View
@@ -606,7 +544,7 @@ export default function AllArticle(props) {
         >
           <View
             style={{
-              width: "95%",
+              width: "100%",
               backgroundColor: "#fff",
               borderRadius: 10,
               padding: 10,

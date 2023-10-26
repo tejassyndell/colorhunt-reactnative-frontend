@@ -8,8 +8,6 @@ import {
   Dimensions,
   Pressable,
   Platform,
-  RefreshControl,
-  Keyboard 
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -25,34 +23,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { ImageZoomProps } from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
-import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg";
-const baseImageUrl =
-  "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
+
+const baseImageUrl = "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
 const AddToCart = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(true);
   const windowwidthe = parseInt(Dimensions.get("window").width);
   const windowheight = parseInt(Dimensions.get("window").height);
-  const [isFontLoaded, setIsFontLoaded] = useState(false);
-  const { width, height } = Dimensions.get("window");
-
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
-  };
+  const [isFontLoaded, setIsFontLoaded] = useState(false)
+  const { width, height } = Dimensions.get("window");;
 
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -68,47 +48,9 @@ const AddToCart = (props) => {
 
     loadCustomFont();
   }, []);
-  const deletsvg = (
-    <Svg width="100%" height="100%" viewBox="0 0 15 17" fill="none">
-      <Path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M14.3829 2.69815C14.7065 2.69815 14.976 2.96688 14.976 3.30883V3.62499C14.976 3.95861 14.7065 4.23567 14.3829 4.23567H0.593923C0.269452 4.23567 0 3.95861 0 3.62499V3.30883C0 2.96688 0.269452 2.69815 0.593923 2.69815H3.0198C3.51258 2.69815 3.94143 2.34788 4.05229 1.85368L4.17933 1.28626C4.37677 0.513336 5.02653 0 5.77014 0H9.20583C9.9414 0 10.5984 0.513336 10.7885 1.2455L10.9245 1.85285C11.0346 2.34788 11.4634 2.69815 11.957 2.69815H14.3829ZM13.1504 14.2555C13.4037 11.8952 13.8471 6.28752 13.8471 6.23096C13.8633 6.05956 13.8075 5.89732 13.6966 5.7667C13.5777 5.6444 13.4271 5.57201 13.2613 5.57201H1.72101C1.55433 5.57201 1.39573 5.64440 1.28568 5.7667C1.17402 5.89732 1.11899 6.05956 1.12709 6.23096C1.12857 6.24135 1.14448 6.43887 1.17108 6.76907C1.28925 8.23613 1.61838 12.3221 1.83106 14.2555C1.98156 15.6799 2.91614 16.5751 4.26987 16.6076C5.31451 16.6317 6.39068 16.64 7.49116 16.64C8.52767 16.64 9.5804 16.6317 10.6574 16.6076C12.0581 16.5834 12.9918 15.7040 13.1504 14.2555Z"
-        fill="#212121"
-      />
-    </Svg>
-  );
 
-  const editesvg = (
-    <Svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 19 19"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <G id="edit (5) 1">
-        <Path
-          id="Path 2689"
-          d="M6.03789 17.1004C5.47099 17.1004 4.92731 16.8752 4.52645 16.4743C4.12559 16.0735 3.90039 15.5298 3.90039 14.9629V4.03789C3.90039 3.47099 4.12559 2.92731 4.52645 2.52645C4.92731 2.12559 5.47099 1.90039 6.03789 1.90039H12.9254C13.1144 1.90039 13.2956 1.97546 13.4292 2.10908C13.5628 2.2427 13.6379 2.42392 13.6379 2.61289C13.6379 2.80186 13.5628 2.98309 13.4292 3.11671C13.2956 3.25032 13.1144 3.32539 12.9254 3.32539H6.03789C5.94432 3.32539 5.85167 3.34382 5.76523 3.37963C5.67878 3.41543 5.60024 3.46792 5.53408 3.53408C5.46792 3.60024 5.41543 3.67878 5.37963 3.76523C5.34382 3.85167 5.32539 3.94432 5.32539 4.03789V14.9629C5.32539 15.0565 5.34382 15.1491 5.37963 15.2356C5.41543 15.322 5.46792 15.4005 5.53408 15.4667C5.60024 15.5329 5.67878 15.5853 5.76523 15.6212C5.85167 15.657 5.94432 15.6754 6.03789 15.6754H16.9629C17.1519 15.6754 17.3331 15.6003 17.4667 15.4667C17.6003 15.3331 17.6754 15.1519 17.6754 14.9629V8.31289C17.6754 8.12392 17.7505 7.9427 17.8841 7.80908C18.0177 7.67546 18.1989 7.60039 18.3879 7.60039C18.5769 7.60039 18.7581 7.67546 18.8917 7.80908C19.0253 7.9427 19.1004 8.12392 19.1004 8.31289V14.9629C19.1004 15.5298 18.8752 16.0735 18.4743 16.4743C18.0735 16.8752 17.5298 17.1004 16.9629 17.1004H6.03789ZM7.59827 12.9837L8.10018 10.0443C8.09957 10.0422 8.09957 10.04 8.10018 10.0379L11.4568 6.68127L15.8245 2.3176C15.9566 2.18514 16.1135 2.08008 16.2863 2.00848C16.4591 1.93688 16.6444 1.90015 16.8315 1.90039C17.0199 1.90024 17.2065 1.93722 17.3807 2.00921C17.5548 2.08121 17.7131 2.1868 17.8464 2.31998L18.2636 2.73718L18.6832 3.15677C18.9503 3.42399 19.1003 3.78634 19.1003 4.16416C19.1003 4.54198 18.9503 4.90434 18.6832 5.17156L14.3163 9.53918L10.9613 12.8958C10.9592 12.8964 10.957 12.8964 10.9549 12.8958L8.01547 13.397C7.99508 13.4006 7.97443 13.4024 7.95372 13.4025C7.9015 13.4024 7.84993 13.3909 7.80257 13.3689C7.7552 13.3469 7.71318 13.3149 7.67938 13.2751C7.64559 13.2353 7.62084 13.1886 7.60683 13.1383C7.59283 13.088 7.58991 13.0353 7.59827 12.9837ZM12.4662 7.69143L9.42622 10.7314L9.25285 11.7448L10.2662 11.5714L13.3062 8.53139L17.6754 4.16535L17.2558 3.74577L16.8362 3.32618L12.4662 7.69143Z"
-          fill="#212121"
-        />
-      </G>
-      <Defs>
-        <ClipPath id="clip0_304_1302">
-          <Rect width={19} height={19} fill="white" />
-        </ClipPath>
-      </Defs>
-    </Svg>
-  );
   const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 110
-        : 80
-      : height >= 844
-      ? 110
-      : 65;
+    Platform.OS === "android" ? (windowwidthe >= 720 ? 120 : 86) : 120;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -133,8 +75,9 @@ const AddToCart = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 45 : 25,
-              fontFamily: "Glory",
+              fontSize: width >= 720 ? 35 : 25,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
+              fontWeight: "700",
               width: "100%",
             }}
           >
@@ -161,7 +104,6 @@ const AddToCart = (props) => {
       console.log(res.data.data);
       setcompreInward(res.data.data);
       TotalPrice(parsedOrderItems, res.data.data);
-      setIsLoading(false);
     });
   };
   const cartDetails = async () => {
@@ -179,6 +121,7 @@ const AddToCart = (props) => {
 
         console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
         setOrderItems(parsedOrderItems);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Error fetching data:", error);
@@ -204,7 +147,6 @@ const AddToCart = (props) => {
 
   const handleAddMoreItems = () => {
     navigation.navigate("Home");
-    Keyboard.dismiss(none);
   };
   cartIsEmpty;
   const handleGoBack = () => {
@@ -255,8 +197,7 @@ const AddToCart = (props) => {
           const quntitynumber = item.Quantity.split(",").map((num) =>
             parseInt(num.trim())
           );
-          let outofstockcount = 0;
-          let status = false;
+          let outofstockcount =0;
           for (let i = 0; i < stringNumbers.length; i++) {
             for (let j = 0; j < quntitynumber.length; j++) {
               const e = stringNumbers[i];
@@ -266,7 +207,6 @@ const AddToCart = (props) => {
                 parseInt(e) < parseInt(f) &&
                 it.ArticleId === item.article_id
               ) {
-                status = false;
                 listOfOutOfProduct = listOfOutOfProduct.filter((item) => {
                   if (item !== it.ArticleId) {
                     return item;
@@ -276,17 +216,12 @@ const AddToCart = (props) => {
               } else {
                 if (!listOfOutOfProduct.includes(item.article_id)) {
                   // listOfOutOfProduct.push(item.article_id);
-                  // outofstockcount+=1;
-                  status = true;
+                  outofstockcount+=1;
                 }
               }
             }
-            if (status == true) {
-              outofstockcount += 1;
-            }
           }
-          // console.log(outofstockcount,stringNumbers.length,"{}{}{}{}");
-          if (outofstockcount > 0) {
+          if(outofstockcount===stringNumbers.length){
             listOfOutOfProduct.push(item.article_id);
           }
         } else {
@@ -373,12 +308,12 @@ const AddToCart = (props) => {
         ) {
           // outOfStock = true;
           // break; // Exit the loop
-          outofstokecount += 1;
+          outofstokecount +=1;
         }
       }
 
-      if (outofstokecount === stringNumbers.length) {
-        outOfStock = true;
+      if(outofstokecount===stringNumbers.length){
+        outOfStock = true
       }
       if (outOfStock) {
         return (
@@ -386,7 +321,7 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: "500",
               color: "red",
               textAlign: "right",
@@ -407,7 +342,7 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
+              fontFamily: isFontLoaded ? 'Glory' : undefined,
               fontWeight: "400",
               color: "red",
             }}
@@ -475,20 +410,25 @@ const AddToCart = (props) => {
         <View
           style={{
             flex: 1,
+            backgroundColor: "#FFF",
+            borderTopColor: "#828282",
+            borderTopWidth: 0.5,
           }}
         >
           <View
             style={{
-              height: "80%",
-              justifyContent: "center",
+              flex: 1,
+              justifyContent: "flex-end",
+              alignContent: "center",
+              alignItems: "center",
             }}
           >
             <Text
               style={{
                 fontSize: windowwidthe * 0.1,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontFamily: isFontLoaded ? 'Glory' : undefined,
                 textAlign: "center",
-                fontWeight: 700,
+                fontWeight: "700",
                 color: "#808080",
               }}
             >
@@ -497,8 +437,9 @@ const AddToCart = (props) => {
           </View>
           <View
             style={{
-              height: "20%",
+              flex: 1,
               justifyContent: "center",
+              alignContent: "center",
               alignItems: "center",
             }}
           >
@@ -508,18 +449,13 @@ const AddToCart = (props) => {
                 height: windowheight * 0.06,
                 borderRadius: 10,
                 backgroundColor: "black",
-                justifyContent: "center",
                 alignItems: "center",
+                justifyContent: "center",
+                // marginTop: "100%",
               }}
               onPress={() => navigation.navigate("Home")}
             >
-              <Text
-                style={{
-                  color: "white",
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
-                  fontSize: width >= 720 ? 45 : 25,
-                }}
-              >
+              <Text style={{ color: "white", fontFamily: isFontLoaded ? 'Glory' : undefined, fontSize: windowwidthe * 0.035 }}>
                 Create Order
               </Text>
             </TouchableOpacity>
@@ -534,14 +470,14 @@ const AddToCart = (props) => {
             nestedScrollEnabled={true}
             contentContainerStyle={{ flex: 1 }}
             keyboardShouldPersistTaps="handled"
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
           >
             <View
               style={{
                 flex: 1,
                 backgroundColor: "#FFF",
+                borderTopColor: "#828282",
+                borderTopWidth: 1,
+
               }}
             >
               <View style={{ width: "100%", backgroundColor: "#FFF" }}>
@@ -558,8 +494,7 @@ const AddToCart = (props) => {
                       style={{
                         backgroundColor: "#FFF",
                         height: "auto",
-                        // maxHeight: windowwidthe * 1,
-                        maxHeight: "100%",
+                        maxHeight: windowwidthe * 1,
                       }}
                     >
                       <View
@@ -579,9 +514,10 @@ const AddToCart = (props) => {
                                   style={{
                                     flexDirection: "row",
                                     width: "94%",
-
+                                    shadowColor: "gray",
                                     shadowOpacity: 0.5,
-                                    elevation: 5, // For Android, use elevation
+                                    height: windowheight * 0.142,
+                                    elevation: 4, // For Android, use elevation
                                     shadowOffset: {
                                       width: 1,
                                       height: 1,
@@ -591,30 +527,30 @@ const AddToCart = (props) => {
                                     borderRadius: 10,
                                     paddingVertical: "1.5%",
                                     backgroundColor: "#FFF",
-                                    paddingHorizontal: 3,
-                                    borderWidth: 1,
-                                    borderColor: "rgba(0,0,0,0.3)",
                                   }}
                                 >
                                   <View
                                     style={{
-                                      marginHorizontal: 10,
-                                      borderRadius: 10,
-                                      shadowColor: "#000",
-                                      shadowOffset: {
-                                        width: 1,
-                                        height: 1,
-                                      },
-                                      shadowOpacity: 0.1,
+                                      width:
+                                        windowwidthe >= 720 ? "21%" : "31%",
+                                      paddingHorizontal:
+                                        windowwidthe >= 720 ? "4%" : "2%",
+                                      paddingVertical: windowwidthe >= 720 ? "2%" : "1%",
+                                      // backgroundColor:'red'
                                     }}
                                   >
                                     <TouchableOpacity
                                       style={{
-                                        width: windowwidthe >= 720 ? 150 : 100,
-                                        height: windowwidthe >= 720 ? 140 : 110,
+                                        width: windowwidthe >= 720 ? 120 : 100,
+                                        height: windowwidthe >= 720 ? 140 : 100,
                                         borderRadius: 12,
-                                        borderColor: "rgba(0,0,0,0.2)",
-                                        borderWidth: 1,
+                                        backgroundColor: "#FFF",
+                                        shadowColor: "#000",
+                                        shadowOpacity: 0.1,
+                                        shadowRadius: 1,
+                                        elevation: 5, // For Android, use elevation
+
+
                                       }}
                                       onPress={() =>
                                         handleEditOrder(
@@ -626,7 +562,7 @@ const AddToCart = (props) => {
                                       <Image
                                         style={{
                                           flex: 1,
-                                          // resizeMode: "contain",
+                                          resizeMode: "contain",
                                           height: "100%",
                                           width: "100%",
                                           borderRadius: 10,
@@ -654,10 +590,8 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: width >= 720 ? 20 : 18,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
-                                          fontWeight: 600,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         {item.ArticleNumber}
@@ -665,10 +599,8 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: width >= 720 ? 16 : 14,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
-                                          fontWeight: 400,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         {item.StyleDescription}
@@ -680,13 +612,14 @@ const AddToCart = (props) => {
                                         justifyContent: "center",
                                         paddingTop: "2.5%",
                                         position: "relative",
+                                        height: "45%",
                                       }}
                                     >
                                       <Text
                                         style={{
                                           fontSize: width >= 720 ? 16 : 14,
-                                          fontFamily: "Glory",
-                                          fontWeight: 400,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "400",
                                         }}
                                       >
                                         Rate
@@ -694,11 +627,16 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: width >= 720 ? 19 : 17,
-                                          fontFamily: "Glory",
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         ₹{item.rate}.00
                                       </Text>
+                                      {/* {compreInward ? compreInward.map((it) => (
+                                                                            checkOutOfStock(it, item)
+                                                                            // console.log(it.SalesNoPacks)
+                                                                        )) : ""} */}
                                     </View>
                                   </View>
                                   <View
@@ -706,6 +644,7 @@ const AddToCart = (props) => {
                                       width: "15%",
                                       display: "flex",
                                       flexDirection: "column",
+                                      height: "100%",
                                     }}
                                   >
                                     <View
@@ -714,11 +653,11 @@ const AddToCart = (props) => {
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "flex-end",
-                                        gap: windowwidthe * 0.01,
+                                        gap: windowwidthe * 0.02,
                                         paddingRight: "5%",
                                         marginVertical: "5%",
                                         borderRadius: 10,
-                                        // height: "auto",
+                                        height: "auto",
                                       }}
                                     >
                                       <TouchableOpacity
@@ -729,22 +668,38 @@ const AddToCart = (props) => {
                                           )
                                         }
                                         style={{
-                                          width: width >= 720 ? 30 : 15,
-                                          height: width >= 720 ? 30 : 15,
+                                          width: windowwidthe * 0.038,
+                                          height: windowheight * 0.038,
                                         }}
                                       >
-                                        {editesvg}
+                                        <Image
+                                          alt="edite"
+                                          style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            resizeMode: "contain",
+                                          }}
+                                          source={require("../../../assets/edite1.png")}
+                                        ></Image>
                                       </TouchableOpacity>
                                       <TouchableOpacity
                                         onPress={() =>
                                           handleDeleteOrder(item.article_id)
                                         }
                                         style={{
-                                          width: width >= 720 ? 30 : 15,
-                                          height: width >= 720 ? 30 : 15,
+                                          width: windowwidthe * 0.038,
+                                          height: windowheight * 0.038,
                                         }}
                                       >
-                                        {deletsvg}
+                                        <Image
+                                          alt="Delete"
+                                          style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            resizeMode: "contain",
+                                          }}
+                                          source={require("../../../assets/delete1.png")}
+                                        ></Image>
                                       </TouchableOpacity>
                                     </View>
                                   </View>
@@ -757,7 +712,7 @@ const AddToCart = (props) => {
                                     flexDirection: "row",
                                     width: "90%",
                                     backgroundColor: "#FFF",
-                                    elevation: 1,
+                                    elevation: 5,
                                     shadowColor: "gray",
                                     shadowOpacity: 0.5,
                                     marginHorizontal: "5%",
@@ -820,11 +775,9 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.035,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
-                                          fontWeight: 600,
+                                          fontWeight: "700",
                                         }}
                                       >
                                         {item.ArticleNumber}
@@ -832,9 +785,7 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.025,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
                                           fontWeight: "400",
                                         }}
@@ -854,9 +805,7 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.025,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
                                           fontWeight: "400",
                                         }}
@@ -866,15 +815,17 @@ const AddToCart = (props) => {
                                       <Text
                                         style={{
                                           fontSize: windowwidthe * 0.035,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
+                                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                                           color: "#00000040",
                                           fontWeight: "700",
                                         }}
                                       >
                                         ₹{item.rate}.00
                                       </Text>
+                                      {/* {compreInward ? compreInward.map((it) => (
+                                                                            checkOutOfStock(it, item)
+                                                                            // console.log(it.SalesNoPacks)
+                                                                        )) : ""} */}
                                     </View>
                                   </View>
                                   <View
@@ -910,7 +861,15 @@ const AddToCart = (props) => {
                                           height: windowheight * 0.038,
                                         }}
                                       >
-                                        {editesvg}
+                                        <Image
+                                          alt="edite"
+                                          style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            resizeMode: "contain",
+                                          }}
+                                          source={require("../../../assets/edite1.png")}
+                                        ></Image>
                                       </TouchableOpacity>
                                       <TouchableOpacity
                                         onPress={() =>
@@ -921,7 +880,15 @@ const AddToCart = (props) => {
                                           height: windowheight * 0.038,
                                         }}
                                       >
-                                        {deletsvg}
+                                        <Image
+                                          alt="Delete"
+                                          style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            resizeMode: "contain",
+                                          }}
+                                          source={require("../../../assets/delete1.png")}
+                                        ></Image>
                                       </TouchableOpacity>
                                     </View>
                                     <View
@@ -932,19 +899,12 @@ const AddToCart = (props) => {
                                         paddingRight: "5%",
                                       }}
                                     >
-                                      <Text
-                                        style={{
-                                          fontSize: windowwidthe * 0.035,
-                                          fontFamily: isFontLoaded
-                                            ? "Glory"
-                                            : undefined,
-                                          fontWeight: "500",
-                                          color: "red",
-                                          textAlign: "right",
-                                        }}
-                                      >
-                                        Out of stock
-                                      </Text>
+                                      {compreInward
+                                        ? compreInward.map(
+                                          (it) => checkOutOfStock(it, item)
+                                          // console.log(it.SalesNoPacks)
+                                        )
+                                        : ""}
                                     </View>
                                   </View>
                                 </View>
@@ -959,7 +919,6 @@ const AddToCart = (props) => {
                                   backgroundColor: "#FFF",
                                   elevation: 5,
                                   shadowColor: "gray",
-
                                   shadowOpacity: 0.5,
                                   marginHorizontal: "5%",
                                   marginTop: "5%",
@@ -1018,9 +977,7 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.035,
-                                        fontFamily: isFontLoaded
-                                          ? "Glory"
-                                          : undefined,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
                                         fontWeight: "700",
                                       }}
@@ -1030,9 +987,7 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.025,
-                                        fontFamily: isFontLoaded
-                                          ? "Glory"
-                                          : undefined,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
                                         fontWeight: "400",
                                       }}
@@ -1052,9 +1007,7 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.025,
-                                        fontFamily: isFontLoaded
-                                          ? "Glory"
-                                          : undefined,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
                                         fontWeight: "400",
                                       }}
@@ -1064,15 +1017,17 @@ const AddToCart = (props) => {
                                     <Text
                                       style={{
                                         fontSize: windowwidthe * 0.035,
-                                        fontFamily: isFontLoaded
-                                          ? "Glory"
-                                          : undefined,
+                                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                                         color: "#00000040",
                                         fontWeight: "700",
                                       }}
                                     >
                                       ₹{item.rate}.00
                                     </Text>
+                                    {/* {compreInward ? compreInward.map((it) => (
+                                                                            checkOutOfStock(it, item)
+                                                                            // console.log(it.SalesNoPacks)
+                                                                        )) : ""} */}
                                   </View>
                                 </View>
                                 <View
@@ -1108,7 +1063,15 @@ const AddToCart = (props) => {
                                         height: windowheight * 0.038,
                                       }}
                                     >
-                                      {editesvg}
+                                      <Image
+                                        alt="edite"
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          resizeMode: "contain",
+                                        }}
+                                        source={require("../../../assets/edite1.png")}
+                                      ></Image>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                       onPress={() =>
@@ -1119,7 +1082,15 @@ const AddToCart = (props) => {
                                         height: windowheight * 0.038,
                                       }}
                                     >
-                                      {deletsvg}
+                                      <Image
+                                        alt="Delete"
+                                        style={{
+                                          width: "100%",
+                                          height: "100%",
+                                          resizeMode: "contain",
+                                        }}
+                                        source={require("../../../assets/delete1.png")}
+                                      ></Image>
                                     </TouchableOpacity>
                                   </View>
                                   <View
@@ -1130,19 +1101,12 @@ const AddToCart = (props) => {
                                       paddingRight: "5%",
                                     }}
                                   >
-                                    <Text
-                                      style={{
-                                        fontSize: windowwidthe * 0.035,
-                                        fontFamily: isFontLoaded
-                                          ? "Glory"
-                                          : undefined,
-                                        fontWeight: "500",
-                                        color: "red",
-                                        textAlign: "right",
-                                      }}
-                                    >
-                                      Out of stock
-                                    </Text>
+                                    {compreInward
+                                      ? compreInward.map(
+                                        (it) => checkOutOfStock(it, item)
+                                        // console.log(it.SalesNoPacks)
+                                      )
+                                      : ""}
                                   </View>
                                 </View>
                               </View>
@@ -1154,32 +1118,37 @@ const AddToCart = (props) => {
                   </View>
                 </ScrollView>
                 <View>
-                  <View style={{ width: "100%", backgroundColor: "#FFF" }}>
-                    <View style={{ marginHorizontal: "3%" }}>
+                  <View
+                    nestedScrollEnabled={true}
+                    style={{ width: "100%", backgroundColor: "#FFF" }}
+                  >
+                    <View style={{ padding: "2.5%" }}>
                       <TextInput
                         value={promoCode}
                         onChange={handlePromoCodeChange}
                         style={{
                           width: "100%",
-                          height: width >= 720 ? 90 : 60,
-
+                          height:
+                            windowwidthe >= 720
+                              ? windowwidthe * 0.1
+                              : windowwidthe * 0.14,
                           borderWidth: 1,
                           paddingLeft: "5%",
                           borderRadius: 10,
-                          fontSize: width >= 720 ? 40 : 18,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontSize:
+                            width >= 720 ? 20 : 18,
+                          fontFamily: isFontLoaded ? 'Glory' : undefined,
                           backgroundColor: "#EEE",
                           borderColor: "#E4E7EA",
                         }}
+                        keyboardType="default"
                         placeholder="Promo Code"
                       ></TextInput>
                       <View
                         style={{
                           width: "100%",
                           position: "absolute",
-                          top: width >= 720 ? 14 : 7,
-                          right: width >= 720 ? 10 : 10,
-                          position: "absolute",
+                          top: windowwidthe < 720 ? "30.5%" : "37%",
                           justifyContent: "flex-end",
                           alignItems: "flex-end",
                         }}
@@ -1188,17 +1157,23 @@ const AddToCart = (props) => {
                           onPress={handleApplyPromoCode}
                           style={{
                             backgroundColor: "#212121",
-                            borderRadius: 10,
-                            width: width >= 720 ? 150 : 100,
-                            height: width >= 720 ? 60 : 45,
-                            justifyContent: "center",
+                            borderRadius: 7.6,
+                            width:
+                              windowwidthe < 720
+                                ? windowwidthe * 0.25
+                                : windowwidthe * 0.2,
+                            paddingHorizontal:
+                              windowwidthe >= 720 ? "3%" : "6%",
+                            paddingVertical:
+                              windowwidthe >= 720 ? "2%" : "2.5%",
                           }}
                         >
                           <Text
                             style={{
                               color: "white",
-                              fontSize: width >= 720 ? 35 : 25,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontSize:
+                                width >= 720 ? 20 : 18,
+                              fontFamily: isFontLoaded ? 'Glory' : undefined,
                               fontWeight: "600",
                               textAlign: "center",
                             }}
@@ -1235,15 +1210,16 @@ const AddToCart = (props) => {
                       marginRight: "2.5%",
                       backgroundColor: "#212121",
                       borderRadius: 7.6,
-                      width: width >= 720 ? 200 : 100,
+                      width: windowwidthe < 720 ? windowwidthe * 0.35 : "30%",
                       paddingVertical: windowwidthe >= 720 ? "2%" : "2.5%",
                     }}
                   >
                     <Text
                       style={{
                         color: "white",
-                        fontSize: width >= 720 ? 35 : 18,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontSize:
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                         fontWeight: "600",
                         textAlign: "center",
                       }}
@@ -1266,8 +1242,8 @@ const AddToCart = (props) => {
                 >
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 20 : 11,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontSize: width >= 720 ? 13 : 11,
+                      fontFamily: isFontLoaded ? 'Glory' : undefined,
                       fontWeight: "700",
                       color: "#AAAAAA",
                     }}
@@ -1291,8 +1267,9 @@ const AddToCart = (props) => {
                   >
                     <Text
                       style={{
-                        fontSize: width >= 720 ? 25 : 18,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontSize:
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                         fontWeight: "600",
                         color: "#585656",
                       }}
@@ -1313,8 +1290,9 @@ const AddToCart = (props) => {
                   >
                     <Text
                       style={{
-                        fontSize: width >= 720 ? 30 : 18,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontSize:
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                         fontWeight: "800",
                         color: "#000",
                       }}
@@ -1339,8 +1317,9 @@ const AddToCart = (props) => {
                     <Text
                       style={{
                         color: "white",
-                        fontSize: width >= 720 ? 35 : 18,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontSize:
+                          width >= 720 ? 20 : 18,
+                        fontFamily: isFontLoaded ? 'Glory' : undefined,
                         fontWeight: "600",
                         textAlign: "left",
                       }}
@@ -1356,42 +1335,14 @@ const AddToCart = (props) => {
                         right: "3%",
                       }}
                     >
-                      {/* <Image
+                      <Image
                         style={{
                           width: "100%",
                           height: "100%",
                           resizeMode: "contain",
                         }}
                         source={require("../../../assets/arrow(1).png")}
-                      ></Image> */}
-                      <Svg
-                        width="100%"
-                        height="100%"
-                        viewBox="0 0 30 30"
-                        fill="none"
-                        {...props}
-                      >
-                        <G id="arrow">
-                          <G id="BG">
-                            <Rect
-                              id="Rectangle_45"
-                              width={30}
-                              height={30}
-                              rx={7}
-                              fill="white"
-                            />
-                          </G>
-                          <G id="icon">
-                            <Path
-                              id="Vector"
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M13.5292 15.0055L13.5305 15.3006C13.5406 16.471 13.6112 17.5152 13.7328 18.177C13.7328 18.1889 13.8656 18.8453 13.9501 19.0637C14.0828 19.3795 14.3228 19.6475 14.6238 19.8173C14.8647 19.9385 15.1173 20 15.3819 20C15.5898 19.9903 15.9328 19.8858 16.1776 19.798L16.381 19.72C17.7282 19.1848 20.3037 17.4362 21.29 16.3668L21.3628 16.2921L21.6873 15.9418C21.8918 15.6738 22 15.3461 22 14.9936C22 14.6778 21.9037 14.362 21.7109 14.1068C21.6532 14.0242 21.5603 13.9181 21.4776 13.8285L21.1617 13.4978C20.0746 12.3964 17.721 10.8515 16.501 10.3396C16.501 10.3286 15.7428 10.0119 15.3819 10H15.3337C14.7801 10 14.2628 10.3158 13.9982 10.8261C13.926 10.9657 13.8567 11.239 13.804 11.479L13.7092 11.9323C13.601 12.6611 13.5292 13.7792 13.5292 15.0055ZM8.25271 13.7347C7.5609 13.7347 7 14.3011 7 14.9997C7 15.6982 7.5609 16.2646 8.25271 16.2646L11.3354 15.9919C11.8781 15.9919 12.3181 15.5486 12.3181 14.9997C12.3181 14.4516 11.8781 14.0073 11.3354 14.0073L8.25271 13.7347Z"
-                              fill="black"
-                            />
-                          </G>
-                        </G>
-                      </Svg>
+                      ></Image>
                     </View>
                   </TouchableOpacity>
                 </View>
