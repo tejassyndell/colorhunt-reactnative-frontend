@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { ThemeProvider, useRoute } from "@react-navigation/native";
 import { Table, Row, Rows } from "react-native-table-component";
 import Textarea from "react-native-textarea";
+import Loader from "../../components/Loader/Loader"
 import { getSoArticleDetails, getcompleteoutwordDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
@@ -534,7 +535,7 @@ const OrderDetails = (props) => {
             alignItems: "center",
           }}
         >
-          <ActivityIndicator size="large" color="black" />
+         <Loader/>
         </View>
       ) : (
         <View

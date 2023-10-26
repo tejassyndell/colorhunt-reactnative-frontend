@@ -25,6 +25,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { ImageZoomProps } from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
+import Loader from "../../components/Loader/Loader"
 import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg";
 const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -469,9 +470,10 @@ const AddToCart = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            backgroundColor:'#FFF'
           }}
         >
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : orderItems.length === 0 ? (
         <View

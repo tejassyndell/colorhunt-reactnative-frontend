@@ -14,6 +14,7 @@ import {
   TextInput,
   RefreshControl,
 } from "react-native-gesture-handler";
+import Loader from "../../components/Loader/Loader"
 import { getCompletedSoDetails, getsonumber } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
@@ -257,9 +258,10 @@ const OrderHistory = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            backgroundColor:'#FFF'
           }}
         >
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : (
         <View style={styles.container}>
@@ -459,7 +461,7 @@ const OrderHistory = (props) => {
             )
           ) : isLoadingsodetails ? (
             <View style={orderstyles.loader}>
-              <ActivityIndicator size="large" color="black" />
+               <Loader/>
             </View>
           ) : outworddatanotfount ? (
             <View style={orderstyles.nodataContainer}>

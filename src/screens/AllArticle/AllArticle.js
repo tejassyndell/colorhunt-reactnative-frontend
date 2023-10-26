@@ -28,6 +28,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ActivityIndicator } from "react-native";
+import Loader from "../../components/Loader/Loader"
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 
 export default function AllArticle(props) {
@@ -446,7 +447,7 @@ export default function AllArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : (
         <View

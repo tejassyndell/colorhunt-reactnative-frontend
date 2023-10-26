@@ -69,6 +69,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "right",
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gif: {
+    width: 200,
+    height: 200,
+  },
 });
 
 export default styles;

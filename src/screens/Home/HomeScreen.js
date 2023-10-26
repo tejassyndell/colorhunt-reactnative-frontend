@@ -31,6 +31,7 @@ import * as Font from "expo-font";
 import Svg, { Circle, Path } from "react-native-svg";
 import SidebarSvg from "../../jssvgs/Sidebarsvg";
 import ProfileSvg from "../../jssvgs/ProfileSvg";
+import Loader from "../../components/Loader/Loader"
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -313,12 +314,10 @@ export default function HomeScreen(props) {
         </View>
       ),
       headerTitle: () => null, // Remove the header title
-       headerStyle: {
+      headerStyle: {
         height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+        // backgroundColor: "black",
       },
-     
     });
   }, []);
 
@@ -415,8 +414,8 @@ export default function HomeScreen(props) {
   return (
     <>
       {isLoading ? (
-        <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+         <View style={styles.loader}>
+         <Loader/>
         </View>
       ) : (
         <View
@@ -428,12 +427,11 @@ export default function HomeScreen(props) {
             marginBottom: width >= 720 ? 10 : 0,
           }}
         >
-          <View >
+          <View style={{ marginTop: 0 }}>
             <View
               style={{
                 height: width >= 720 ? 60 : 40,
                 justifyContent: "center",
-                backgroundColor: "#FFF",
               }}
             >
               <Text
@@ -925,7 +923,7 @@ export default function HomeScreen(props) {
       )}
       <KeyboardAvoidingView
         behavior={isKeyboardOpen ? "padding" : null}
-        style={{ flex: 1 }}
+     
       >
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
@@ -940,7 +938,6 @@ export default function HomeScreen(props) {
         {/* Other components here */}
       </KeyboardAvoidingView>
       {isFilterVisible && (
-        <>
         <View
           style={{
             backgroundColor: "rgba(0,0,0,0.5)",
@@ -971,12 +968,13 @@ export default function HomeScreen(props) {
               Scategories={selectedCategories}
               minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate}
-              status={true}
+              status={false}
               spr={selectedPriceRange}
               uniquerates={nameDatas}
             />
           </View>
         </View>
+      )}
       <Modal
         visible={isCreateAccountVisible}
         animationType="slide"
@@ -1005,8 +1003,6 @@ export default function HomeScreen(props) {
           </View>
         </View>
       </Modal>
-        </>
-      )}
     </>
   );
 }

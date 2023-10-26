@@ -18,6 +18,7 @@ import { PixelRatio } from "react-native";
 import { useEffect } from "react";
 import LoginStyles from "./styles.js";
 import Svg, { Path, G } from "react-native-svg";
+import Loader from "../../components/Loader/Loader"
 const { width, height } = Dimensions.get("window");
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -341,7 +342,7 @@ const Login = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <ActivityIndicator size="large" color="black" />
+                    <Loader/>
                   </View>
                 ) : (
                   <View style={{ width: "100%", alignItems: "center" }}>

@@ -14,7 +14,7 @@ import styles from "./styles.js";
 import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import Loader from "../../components/Loader/Loader"
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
 
@@ -277,7 +277,7 @@ export default function WishList(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : selectedprd.length === 0 ? (
         <View

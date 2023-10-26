@@ -28,6 +28,7 @@ import { ActivityIndicator } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
+import Loader from "../../components/Loader/Loader"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Svg, { Path } from "react-native-svg";
 const DetailsOfArticals = (props) => {
@@ -332,7 +333,7 @@ const DetailsOfArticals = (props) => {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : (
         <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>

@@ -19,6 +19,7 @@ import {
   DeleteWishlist,
 } from "../../api/api";
 import styles from "./styles";
+import Loader from "../../components/Loader/Loader"
 import { useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
@@ -469,7 +470,7 @@ export default function CategorisWiseArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : (
         <View
