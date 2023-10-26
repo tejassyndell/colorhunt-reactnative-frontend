@@ -45,16 +45,6 @@ const SliderScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          width: "100%",
-          height: 50,
-          backgroundColor: "#FFF",
-          position: "absolute",
-          bottom: 0,
-          zIndex: 0,
-        }}
-      ></View>
       <Swiper
         loop={false}
         showsPagination={true}

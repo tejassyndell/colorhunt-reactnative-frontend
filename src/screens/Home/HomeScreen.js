@@ -121,7 +121,7 @@ export default function HomeScreen(props) {
   };
   useEffect(() => {
     // Set isLoading to true initially
-    setIsLoading(true);
+    // setIsLoading(true);
     // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
@@ -729,7 +729,7 @@ export default function HomeScreen(props) {
                 ) : (
                   nameData.map((item, index) => (
                     <View
-                      key={item.id}
+                      key={index}
                       style={{
                         alignItems: "center",
                         height: "auto",
@@ -768,6 +768,7 @@ export default function HomeScreen(props) {
                                 width: "100%",
                                 height: width >= 720 ? 280 : 190,
                                 borderRadius: 10,
+
                               }}
                             />
                           ) : (
@@ -974,7 +975,7 @@ export default function HomeScreen(props) {
       )}
       <KeyboardAvoidingView
         behavior={isKeyboardOpen ? "padding" : null}
-        style={{ flex: 1 }}
+        // style={{ flex: 1 }}
       >
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
