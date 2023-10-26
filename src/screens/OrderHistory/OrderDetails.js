@@ -420,7 +420,7 @@ const OrderDetails = (props) => {
     <table border="1" cellspacing="0" cellpadding="10" width="100%">
       
         <tr>
-            <td colspan="12" style="text-align: center; background-color: black; color: black;font-weight: bold">
+            <td colspan="12" style="text-align: center; background-color: black; color: white;font-weight: bold">
                 COLORHUNT
             </td>
         </tr>
@@ -446,7 +446,7 @@ const OrderDetails = (props) => {
                 }
             </td>
             <td style="text-transform: uppercase" colspan="1">
-                <strong>SO NO:</strong>
+                <strong>${OutwardNumber!==0?"OUTWARD NO": "SO NO:"}</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">
                ${`${name}${
@@ -781,7 +781,6 @@ const OrderDetails = (props) => {
                         {/* Fixed Header Row */}
                         <Row
                           data={tableData ? tableData.tableHead : ""}
-                          key={value}
                           textStyle={{
                             textAlign: "center",
                             fontWeight: "bold",
@@ -810,7 +809,6 @@ const OrderDetails = (props) => {
                           {/* Data Rows */}
                           <Rows
                             data={tableData ? tableData.tableData : ""}
-                            key={value}
                             textStyle={{
                               margin: 6,
                               textAlign: "center",
@@ -1027,7 +1025,7 @@ const OrderDetails = (props) => {
                           color: "#808080",
                         }}
                       >
-                        SoNumber:
+                       { OutwardNumber!==0? "Outward Number":"SoNumber"}
                       </Text>
                     </View>
                     <View style={{ flex: 1 }}>
@@ -1180,7 +1178,6 @@ const OrderDetails = (props) => {
                             {/* Fixed Header Row */}
                             <Row
                               data={tableData ? tableData.tableHead : ""}
-                              key={value}
                               textStyle={{
                                 textAlign: "center",
                                 fontWeight: "bold",
@@ -1209,7 +1206,6 @@ const OrderDetails = (props) => {
                             {/* Data Rows */}
                             <Rows
                               data={tableData ? tableData.tableData : ""}
-                              key={value}
                               textStyle={{
                                 margin: 6,
                                 textAlign: "center",
