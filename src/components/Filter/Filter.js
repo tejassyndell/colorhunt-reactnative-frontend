@@ -313,7 +313,7 @@ export default function Filter({
           </View>
         </View>
         <View style={styles.buttonsContainer}>
-          {status === false ? (
+          
             <TouchableOpacity
               style={[
                 styles.resetButton,
@@ -335,11 +335,8 @@ export default function Filter({
                 Reset
               </Text>
             </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={[]} onPress={resetFilters}>
-              <Text></Text>
-            </TouchableOpacity>
-          )}
+     
+         
 
           <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
             <Text style={styles.buttonText}>Apply</Text>

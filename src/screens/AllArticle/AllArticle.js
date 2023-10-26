@@ -249,7 +249,9 @@ export default function AllArticle(props) {
         </View>
       ),
       headerStyle: {
-        height: headerHeight, // Increase the header height here
+        height: headerHeight,
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);

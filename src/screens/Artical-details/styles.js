@@ -455,6 +455,8 @@ const detailsOfArtStyles = () => {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor:'#FFF',
+
     },
     modalContainer: {
       flex: 1,
