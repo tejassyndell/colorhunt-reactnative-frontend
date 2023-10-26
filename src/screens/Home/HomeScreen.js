@@ -321,10 +321,11 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = () => {
+    console.log(searchText,selectedCategories,selectedPriceRange);
     if (
-      searchText === "" &&
+      searchText==""  &&
       selectedCategories.length === 0 &&
-      selectedPriceRange[0]==minArticleRate && selectedPriceRange[1]==maxArticleRate
+      (selectedPriceRange[0]==minArticleRate && selectedPriceRange[1]==maxArticleRate || selectedPriceRange.length === 0)
     ) {
       console.log("done");
       setshowarticle(false);
