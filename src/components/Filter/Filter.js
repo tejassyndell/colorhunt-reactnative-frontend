@@ -9,10 +9,12 @@ import {
   PanResponder,
   Animated,
   Easing,
+  ScrollView
 } from "react-native";
 import { getCategories } from "../../api/api";
 import { useRef } from "react";
 const { width, height } = Dimensions.get("window");
+
 
 export default function Filter({
   onFilterChange,
@@ -48,6 +50,7 @@ export default function Filter({
   const sliderlenghtinPercent = 60;
   const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
   const { width, height } = Dimensions.get("window");
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
   const getCategoriesname = async () => {
     try {
       const result1 = await getCategories();
@@ -58,6 +61,20 @@ export default function Filter({
       console.error(error);
     }
   };
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
+      }
+    };
+
+    loadCustomFont();
+  }, []);
 
   useEffect(() => {
     getCategoriesname();
@@ -196,6 +213,7 @@ export default function Filter({
           ""
         )}
         {status === false ? (
+          <ScrollView style={{width:'100%',height: height >= 844 ? 360 : 250}}>
           <View style={styles.categoriesContainer}>
             {data.map((item,index) => (
               <TouchableOpacity
@@ -233,6 +251,7 @@ export default function Filter({
               </TouchableOpacity>
             ))}
           </View>
+        </ScrollView>
         ) : (
           ""
         )}
@@ -257,6 +276,7 @@ export default function Filter({
                 style={{
                   textAlign: "left",
                   fontSize: width >= 720 ? 25 : 15,
+                 fontFamily: "Glory",
                   paddingRight: 10,
                   paddingBottom: 5,
                 }}
@@ -304,6 +324,7 @@ export default function Filter({
                 style={{
                   textAlign: width >= 720 ? "right" : "left",
                   fontSize: width >= 720 ? 25 : 15,
+                 fontFamily: "Glory",
                   paddingLeft: 30,
                 }}
               >
@@ -328,7 +349,8 @@ export default function Filter({
               <Text
                 style={{
                   color: selectedCategories.length > 0 ? "white" : "black",
-                  fontWeight: "bold",
+                  fontWeight: "600",
+                 fontFamily: "Glory",
                   fontSize: 18, // Add this line for bold text
                 }}
               >
@@ -359,13 +381,14 @@ const styles = StyleSheet.create({
   headertrue: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 25,
     width: "100%",
     height: width >= 720 ? 80 : 40,
     justifyContent: "space-between",
   },
   headerText: {
     fontSize: width >= 720 ? 30 : 22,
+   fontFamily: "Glory",
     fontWeight: "bold",
   },
   closeIcon: {
@@ -417,6 +440,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: width >= 720 ? 16 : 12,
+   fontFamily: "Glory",
     marginLeft: 3,
     width: "80%",
     paddingVertical: 5,
@@ -427,7 +451,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 25,
+    marginTop: 40,
   },
   button: {
     backgroundColor: "black",
@@ -443,6 +467,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: width >= 720 ? 30 : 22,
+   fontFamily: "Glory",
     marginBottom: 10,
     fontWeight: "700",
     height: 50,
@@ -463,6 +488,7 @@ const styles = StyleSheet.create({
     height: width >= 720 ? 42 : 38,
     width: width >= 720 ? 120 : 76,
     fontSize: width >= 720 ? 42 : 24,
+   fontFamily: "Glory",
     fontWeight: "700",
     alignItems: "center",
     justifyContent: "center",
@@ -478,6 +504,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 20 : 18,
+   fontFamily: "Glory",
     paddingBottom:3,
     fontWeight: "600",
   },
@@ -493,6 +520,7 @@ const styles = StyleSheet.create({
     top: 20,
     color: "black",
     fontSize: 16,
+   fontFamily: "Glory",
   },
 });
 
@@ -539,6 +567,7 @@ const styleslider = StyleSheet.create({
     top: 15,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
+   fontFamily: "Glory",
     fontWeight: "500",
   },
 });
