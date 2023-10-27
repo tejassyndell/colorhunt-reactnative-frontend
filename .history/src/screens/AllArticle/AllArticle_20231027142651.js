@@ -574,7 +574,7 @@ export default function AllArticle(props) {
                   width: "94%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: height >= 844 ? "15%" : "10%",
+                  bottom: height >= 844 ? "20%" : "10%",
                   left: 0,
                   right: 0,
 

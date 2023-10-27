@@ -574,13 +574,13 @@ export default function AllArticle(props) {
                   width: "94%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: height >= 844 ? "15%" : "10%",
+                  bottom: "10%",
                   left: 0,
-                  right: 0,
-
-                  marginLeft: "3%",
+                  right: 0, // To make it span the full width
+                  marginLeft: "3%", // Margin on the left side
                   padding: 10,
-                  borderRadius: 10,
+                  borderTopLeftRadius: 10, // Adjust the radius as needed
+                  borderTopRightRadius: 10,
                 }}
               >
                 <Filter

@@ -213,7 +213,7 @@ export default function Filter({
         )}
         {status === false ? (
           <ScrollView
-            style={{ width: "100%", height: height >= 844 ? 350 : 250 }}
+            style={{ width: "100%", height: height >= 844 ? 300 : 400 }}
           >
             <View style={styles.categoriesContainer}>
               {data.map((item) => (

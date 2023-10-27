@@ -9,7 +9,6 @@ import {
   PanResponder,
   Animated,
   Easing,
-  ScrollView,
 } from "react-native";
 import { getCategories } from "../../api/api";
 import { useRef } from "react";
@@ -49,7 +48,6 @@ export default function Filter({
   const sliderlenghtinPercent = 60;
   const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
   const { width, height } = Dimensions.get("window");
-  const [isFontLoaded, setIsFontLoaded] = useState(false);
   const getCategoriesname = async () => {
     try {
       const result1 = await getCategories();
@@ -60,20 +58,6 @@ export default function Filter({
       console.error(error);
     }
   };
-  useEffect(() => {
-    const loadCustomFont = async () => {
-      try {
-        await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory.ttf"),
-        });
-        setIsFontLoaded(true);
-      } catch (error) {
-        console.error("Error loading custom font:", error);
-      }
-    };
-
-    loadCustomFont();
-  }, []);
 
   useEffect(() => {
     getCategoriesname();
@@ -212,47 +196,43 @@ export default function Filter({
           ""
         )}
         {status === false ? (
-          <ScrollView
-            style={{ width: "100%", height: height >= 844 ? 350 : 250 }}
-          >
-            <View style={styles.categoriesContainer}>
-              {data.map((item) => (
-                <TouchableOpacity
-                  key={item.Id}
+          <View style={styles.categoriesContainer}>
+            {data.map((item) => (
+              <TouchableOpacity
+                key={item.Id}
+                style={[
+                  styles.categoryItem,
+                  selectedCategories.includes(item.Category) && {
+                    backgroundColor: "black",
+                  },
+                ]}
+                onPress={() => handleCategorySelect(item.Category)}
+              >
+                <Text
                   style={[
-                    styles.categoryItem,
+                    styles.categoryText,
                     selectedCategories.includes(item.Category) && {
-                      backgroundColor: "black",
+                      color: "#FFF",
                     },
                   ]}
-                  onPress={() => handleCategorySelect(item.Category)}
                 >
-                  <Text
-                    style={[
-                      styles.categoryText,
-                      selectedCategories.includes(item.Category) && {
-                        color: "#FFF",
-                      },
-                    ]}
-                  >
-                    {item.Category}
-                  </Text>
-                  <View
-                    style={[
-                      styles.radioButton,
-                      selectedCategories.includes(item.Category) && {
-                        backgroundColor: "white",
-                      },
-                    ]}
-                  >
-                    {selectedCategories.includes(item.Category) && (
-                      <View style={styles.radioInnerCircle} />
-                    )}
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+                  {item.Category}
+                </Text>
+                <View
+                  style={[
+                    styles.radioButton,
+                    selectedCategories.includes(item.Category) && {
+                      backgroundColor: "white",
+                    },
+                  ]}
+                >
+                  {selectedCategories.includes(item.Category) && (
+                    <View style={styles.radioInnerCircle} />
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         ) : (
           ""
         )}
@@ -277,7 +257,6 @@ export default function Filter({
                 style={{
                   textAlign: "left",
                   fontSize: width >= 720 ? 25 : 15,
-                  fontFamily: "Glory",
                   paddingRight: 10,
                   paddingBottom: 5,
                 }}
@@ -325,7 +304,6 @@ export default function Filter({
                 style={{
                   textAlign: width >= 720 ? "right" : "left",
                   fontSize: width >= 720 ? 25 : 15,
-                  fontFamily: "Glory",
                   paddingLeft: 30,
                 }}
               >
@@ -335,28 +313,33 @@ export default function Filter({
           </View>
         </View>
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={[
-              styles.resetButton,
-              {
-                backgroundColor:
-                  selectedCategories.length > 0 ? "black" : "white",
-                color: selectedCategories.length > 0 ? "white" : "black",
-              },
-            ]}
-            onPress={resetFilters}
-          >
-            <Text
-              style={{
-                color: selectedCategories.length > 0 ? "white" : "black",
-                fontWeight: "bold",
-                fontFamily: "Glory",
-                fontSize: 18, // Add this line for bold text
-              }}
+          {status === false ? (
+            <TouchableOpacity
+              style={[
+                styles.resetButton,
+                {
+                  backgroundColor:
+                    selectedCategories.length > 0 ? "black" : "white",
+                  color: selectedCategories.length > 0 ? "white" : "black",
+                },
+              ]}
+              onPress={resetFilters}
             >
-              Reset
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  color: selectedCategories.length > 0 ? "white" : "black",
+                  fontWeight: "bold",
+                  fontSize: 18, // Add this line for bold text
+                }}
+              >
+                Reset
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={[]} onPress={resetFilters}>
+              <Text></Text>
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
             <Text style={styles.buttonText}>Apply</Text>
@@ -379,14 +362,13 @@ const styles = StyleSheet.create({
   headertrue: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 25,
+    marginBottom: 15,
     width: "100%",
     height: width >= 720 ? 80 : 40,
     justifyContent: "space-between",
   },
   headerText: {
     fontSize: width >= 720 ? 30 : 22,
-    fontFamily: "Glory",
     fontWeight: "bold",
   },
   closeIcon: {
@@ -438,7 +420,6 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: width >= 720 ? 16 : 12,
-    fontFamily: "Glory",
     marginLeft: 3,
     width: "80%",
     paddingVertical: 5,
@@ -449,7 +430,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 40,
+    marginTop: 25,
   },
   button: {
     backgroundColor: "black",
@@ -465,7 +446,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: width >= 720 ? 30 : 22,
-    fontFamily: "Glory",
     marginBottom: 10,
     fontWeight: "700",
     height: 50,
@@ -486,7 +466,6 @@ const styles = StyleSheet.create({
     height: width >= 720 ? 42 : 38,
     width: width >= 720 ? 120 : 76,
     fontSize: width >= 720 ? 42 : 24,
-    fontFamily: "Glory",
     fontWeight: "700",
     alignItems: "center",
     justifyContent: "center",
@@ -502,8 +481,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 20 : 18,
-    fontFamily: "Glory",
-    paddingBottom: 3,
+    paddingBottom:3,
     fontWeight: "600",
   },
   tooltipContainer: {
@@ -518,7 +496,6 @@ const styles = StyleSheet.create({
     top: 20,
     color: "black",
     fontSize: 16,
-    fontFamily: "Glory",
   },
 });
 
@@ -565,7 +542,6 @@ const styleslider = StyleSheet.create({
     top: 15,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
-    fontFamily: "Glory",
     fontWeight: "500",
   },
 });

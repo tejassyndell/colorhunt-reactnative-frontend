@@ -212,9 +212,7 @@ export default function Filter({
           ""
         )}
         {status === false ? (
-          <ScrollView
-            style={{ width: "100%", height: height >= 844 ? 350 : 250 }}
-          >
+          <ScrollView style={{ width: "100%", height: 300 }}>
             <View style={styles.categoriesContainer}>
               {data.map((item) => (
                 <TouchableOpacity
