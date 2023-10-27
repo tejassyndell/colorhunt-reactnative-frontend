@@ -19,6 +19,7 @@ import { SendMail } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import ResponsiveImage from "react-native-responsive-image";
 import * as Font from "expo-font";
+import Loader from "../../components/Loader/Loader"
 import Contactsvg from "../../jssvgs/Contactsvg";
 
 export default function Contact(props) {
@@ -159,10 +160,10 @@ export default function Contact(props) {
           </Text>
         </View>
       ),
-        headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+      headerStyle: {
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -192,7 +193,7 @@ export default function Contact(props) {
         justifyContent:'center',
         alignItems:'center'
       }}>
-        <ActivityIndicator size="large" color="black" />
+         <Loader/>
       </View>
     ) : (
      

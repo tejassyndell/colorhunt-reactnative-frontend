@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor:'#FFF',
     alignItems: "center",
+    zIndex:3
   },
   producticones: {
     // Add your styles for the container view here
@@ -87,6 +88,24 @@ const styles = StyleSheet.create({
       marginRight: 5,
       borderRadius: 10,
     },
+    container: {
+      flex: 1,
+      backgroundColor: '#151719',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    waviy: {
+      flexDirection: 'row',
+    },
+    char: {
+      fontFamily: 'Alfa Slab One',
+      color: '#fff',
+      textTransform: 'uppercase',
+      fontSize: 60,
+    },
+    
+
+
   },
 });
 

@@ -38,7 +38,10 @@ const LoginStyles = () => {
     },
     paginationContainer: {
       width: "100%",
-      height: 30,
+      position:'absolute',
+      bottom:0,
+      height: 50,
+   // Transparent background
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",

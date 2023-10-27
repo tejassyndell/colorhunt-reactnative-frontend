@@ -22,6 +22,7 @@ const baseImageUrl =
 import { TouchableWithoutFeedback } from "react-native";
 import * as Font from "expo-font";
 import Svg, { G, Path } from 'react-native-svg';
+import Loader from "../../components/Loader/Loader"
 import Ordersuccessful from "../../jssvgs/Ordersucseccful";
 const Orderlist = (props) => {
   const { navigation } = props;
@@ -234,10 +235,10 @@ const Orderlist = (props) => {
         //     </TouchableOpacity>
         <View />
       ),
-        headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+      headerStyle: {
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -273,9 +274,10 @@ const Orderlist = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            backgroundColor:'#FFF'
           }}
         >
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : (
         <View
@@ -702,7 +704,7 @@ const Orderlist = (props) => {
                       padding: 5,
                     }}
                   >
-                    <ActivityIndicator size="large" color="black" />
+                     <Loader/>
                   </View>
                 </View>
               )}

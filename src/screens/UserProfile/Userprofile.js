@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Svg, { G, Circle, Path } from "react-native-svg";
+import Loader from "../../components/Loader/Loader"
 export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
@@ -114,8 +115,9 @@ export default function Userprofile(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight,
-        backgroundColor: "black",
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -124,7 +126,7 @@ export default function Userprofile(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : (
         <>

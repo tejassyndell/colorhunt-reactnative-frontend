@@ -26,6 +26,7 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loader from "../../components/Loader/Loader";
 
 import { ActivityIndicator } from "react-native";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
@@ -170,7 +171,12 @@ export default function AllArticle(props) {
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist();
+          // getWishlist();
+          let selectedlist = selectedprd;
+          selectedlist = selectedlist.filter((item) => {
+            return item.Id !== i.Id;
+          });
+          setSelectprd(selectedlist);
         }
       });
     } catch (error) {
@@ -178,10 +184,21 @@ export default function AllArticle(props) {
     }
   };
 
+  const setsearchtextfromstorage = async () => {
+    let currentText = await AsyncStorage.getItem("searchText");
+
+    // Parse the currentText if it exists
+    if (currentText) {
+      currentText = JSON.parse(currentText);
+      setSearchText(currentText.text);
+    }
+  };
+
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -193,9 +210,11 @@ export default function AllArticle(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
+    // setSelectprd((prevSelectprd) => [...prevSelectprd, {"Id":  i.Id}]);
     try {
       await getAddWishlist(data).then((res) => {
-        getWishlist();
+        // getWishlist();
+        setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
       });
     } catch (error) {
       console.log(error);
@@ -211,6 +230,7 @@ export default function AllArticle(props) {
   useEffect(() => {
     getCategoriesname();
     getWishlist();
+    setsearchtextfromstorage();
   }, []);
 
   useLayoutEffect(() => {
@@ -249,9 +269,9 @@ export default function AllArticle(props) {
         </View>
       ),
       headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -264,32 +284,45 @@ export default function AllArticle(props) {
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange.length === 0
+      selectedPriceRange[0] == minArticleRate &&
+      selectedPriceRange[1] == maxArticleRate
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
-      const filtered = nameDatas.filter(
-        (item) =>
-          (searchText === "" || // Check if searchText is empty or matches any criteria
-            item.ArticleNumber.toString().includes(searchText.toString()) ||
-            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(
-              searchText.toLowerCase()
-            ) ||
-            item.Subcategory.toLowerCase().includes(
-              searchText.toLowerCase()
-            )) &&
-          (selectedCategories.length === 0 ||
-            selectedCategories.includes(item.Category)) &&
-          (selectedPriceRange.length === 0 ||
-            (item.ArticleRate >= selectedPriceRange[0] &&
-              item.ArticleRate <= selectedPriceRange[1]))
-      );
+      const batchSize = 10; // Define the batch size
+      const filteredData = []; // Create an array to store the filtered data
 
-      setFinalData(filtered);
+      for (let i = 0; i < nameDatas.length; i += batchSize) {
+        // Slice the data into batches of size batchSize
+        const batch = nameDatas.slice(i, i + batchSize);
 
-      setNoArticlesFound(filtered.length === 0);
+        const batchFiltered = batch.filter(
+          (item) =>
+            (searchText === "" ||
+              item.ArticleNumber.toString().includes(searchText.toString()) ||
+              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+              item.ArticleRate.toString().includes(searchText.toString()) ||
+              item.StyleDescription.toLowerCase().includes(
+                searchText.toLowerCase()
+              ) ||
+              item.Subcategory.toLowerCase().includes(
+                searchText.toLowerCase()
+              )) &&
+            (selectedCategories.length === 0 ||
+              selectedCategories.includes(item.Category)) &&
+            (selectedPriceRange.length === 0 ||
+              (item.ArticleRate >= selectedPriceRange[0] &&
+                item.ArticleRate <= selectedPriceRange[1]))
+        );
+
+        // Append the batchFiltered data to the filteredData array
+        filteredData.push(...batchFiltered);
+      }
+
+      // Set the final filtered data
+      setFinalData(filteredData);
+
+      setNoArticlesFound(filteredData.length === 0);
     }
   };
 
@@ -318,41 +351,37 @@ export default function AllArticle(props) {
         },
       }}
     >
-      {isLoggedIn ? (
-        <View id={item.id} style={styles.producticones}>
-          {selectedprd.some((i) => i.Id === item.Id) ? (
-            <TouchableOpacity
-              onPress={() => {
-                rmvProductWishlist(item);
-              }}
-            >
-              <FontAwesome
-                name="heart"
-                style={[
-                  styles.icon,
-                  // isLoggedin === false ? styles.disabledIcon : null,
-                ]}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                addArticleWishlist(item);
-              }}
-            >
-              <FontAwesome
-                name="heart-o"
-                style={[
-                  styles.disabledIcon,
-                  // isLoggedin === false ? styles.disabledIcon : null,
-                ]}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      ) : (
-        <></>
-      )}
+      <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart-o"
+              style={[
+                styles.disabledIcon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
 
       <View
         style={{
@@ -410,7 +439,7 @@ export default function AllArticle(props) {
             <Text
               style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
             >
-              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
+              {"₹" + item.ArticleRate + ".00"}
             </Text>
           </View>
         </TouchableOpacity>
@@ -450,7 +479,7 @@ export default function AllArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+          <Loader />
         </View>
       ) : (
         <View
@@ -516,15 +545,17 @@ export default function AllArticle(props) {
                 NO ARTICLES FOUND
               </Text>
             ) : (
-              <ScrollView
-                style={{ flex: 1 }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                  />
-                }
-              >
+              <View>
+                <ScrollView
+                  style={{ flex: 1 }}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                ></ScrollView>
+
                 <FlatList
                   style={{ backgroundColor: "#FFF" }}
                   data={finalData}
@@ -537,7 +568,7 @@ export default function AllArticle(props) {
                   onEndReached={fetchMoreData}
                   onEndReachedThreshold={0.1}
                 />
-              </ScrollView>
+              </View>
             )}
           </View>
           {/* {/ </ScrollView> /} */}
@@ -545,14 +576,12 @@ export default function AllArticle(props) {
             behavior={isKeyboardOpen ? "padding" : null}
             style={{ flex: 1 }}
           >
-            {isLoggedIn ? (
+            {isFilterVisible ? null : (
               <View
                 style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
               >
                 <ButtomNavigation navigation={navigation} page="home" />
               </View>
-            ) : (
-              <View></View>
             )}
           </KeyboardAvoidingView>
 
@@ -574,13 +603,13 @@ export default function AllArticle(props) {
                   width: "94%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: height >= 844 ? "15%" : "10%",
+                  bottom: 0,
                   left: 0,
-                  right: 0,
-
-                  marginLeft: "3%",
+                  right: 0, // To make it span the full width
+                  marginLeft: "3%", // Margin on the left side
                   padding: 10,
-                  borderRadius: 10,
+                  borderTopLeftRadius: 10, // Adjust the radius as needed
+                  borderTopRightRadius: 10,
                 }}
               >
                 <Filter

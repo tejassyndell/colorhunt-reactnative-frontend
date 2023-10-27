@@ -31,6 +31,7 @@ import * as Font from "expo-font";
 import Svg, { Circle, Path } from "react-native-svg";
 import SidebarSvg from "../../jssvgs/Sidebarsvg";
 import ProfileSvg from "../../jssvgs/ProfileSvg";
+import Loader from "../../components/Loader/Loader";
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -121,7 +122,7 @@ export default function HomeScreen(props) {
   };
   useEffect(() => {
     // Set isLoading to true initially
-    setIsLoading(true);
+    // setIsLoading(true);
     // Use setTimeout to change isLoading to false after a delay (e.g., 2000 milliseconds or 2 seconds)
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
@@ -136,6 +137,11 @@ export default function HomeScreen(props) {
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
+
+  const openCreateAccountModal = () => {
+    setCreateAccountVisible(true);
+  };
+
   const checkUserLoginforheader = async () => {
     try {
       const data = await AsyncStorage.getItem("UserData");
@@ -150,11 +156,6 @@ export default function HomeScreen(props) {
     }
   };
 
-  const openCreateAccountModal = () => {
-    console.log("done");
-    setCreateAccountVisible(true);
-  };
-
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
@@ -162,8 +163,10 @@ export default function HomeScreen(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
+      console.log(res.data);
       setSelectprd(res.data);
     });
   };
@@ -184,7 +187,6 @@ export default function HomeScreen(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
-    console.log("............111", data);
     try {
       await getAddWishlist(data).then((res) => {
         getWishlist();
@@ -195,12 +197,10 @@ export default function HomeScreen(props) {
   };
 
   const rmvProductWishlist = async (i) => {
-    console.log(i, "r");
     let data = {
       party_id: await getpartyid(),
       article_id: i.Id,
     };
-    console.log(data);
 
     try {
       await DeleteWishlist(data).then((res) => {
@@ -255,7 +255,6 @@ export default function HomeScreen(props) {
       const serrializedPriceRange = JSON.stringify(selectedPriceRange);
       await AsyncStorage.setItem(key, serializedCategories);
       await AsyncStorage.setItem(key2, serrializedPriceRange);
-      console.log("Data stored successfully.");
     } catch (error) {
       console.error("Error storing data:", error);
     }
@@ -313,9 +312,9 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -323,58 +322,144 @@ export default function HomeScreen(props) {
   const handlePress = (item) => {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
-  const filterData = () => {
-    console.log(
-      searchText,
-      selectedCategories,
-      selectedPriceRange,
-      "filters in home "
-    );
+  const filterData = async () => {
     if (
-      searchText === "" &&
+      searchText == "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange.length === 0
+      ((selectedPriceRange[0] == minArticleRate &&
+        selectedPriceRange[1] == maxArticleRate) ||
+        selectedPriceRange.length === 0)
     ) {
+      console.log("done");
+      let currentText = await AsyncStorage.getItem("searchText");
+
+      // Parse the currentText if it exists
+      if (currentText) {
+        currentText = JSON.parse(currentText);
+
+        // Update the text property with your new value
+        currentText.text = searchText;
+
+        // Store the updated object back in AsyncStorage
+        await AsyncStorage.setItem("searchText", JSON.stringify(currentText));
+      } else {
+        // If "searchText" doesn't exist, create a new object and store it
+        const newObject = { text: searchText };
+        await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
+      }
       setshowarticle(false);
     } else {
       setshowarticle(true);
-      const filtered = nameDatas.filter(
-        (item) =>
-          (searchText === "" || // Check if searchText is empty or matches any criteria
-            item.ArticleNumber.toString().includes(searchText.toString()) ||
-            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(
-              searchText.toLowerCase()
-            ) ||
-            item.Subcategory.toLowerCase().includes(
-              searchText.toLowerCase()
-            )) &&
-          (selectedCategories.length === 0 ||
-            selectedCategories.includes(item.Category)) &&
-          (selectedPriceRange.length === 0 ||
-            (item.ArticleRate >= selectedPriceRange[0] &&
-              item.ArticleRate <= selectedPriceRange[1]))
-      );
+      const chunkSize = 10; // Define the size of each chunk
+      const totalChunks = Math.ceil(nameDatas.length / chunkSize);
+      let filtered = [];
+
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize;
+        const end = (i + 1) * chunkSize;
+        const chunk = nameDatas.slice(start, end);
+
+        const chunkResult = chunk.filter(
+          (item) =>
+            (searchText === "" ||
+              item.ArticleNumber.toString().includes(searchText.toString()) ||
+              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+              item.ArticleRate.toString().includes(searchText.toString()) ||
+              item.StyleDescription.toLowerCase().includes(
+                searchText.toLowerCase()
+              ) ||
+              item.Subcategory.toLowerCase().includes(
+                searchText.toLowerCase()
+              )) &&
+            (selectedCategories.length === 0 ||
+              selectedCategories.includes(item.Category)) &&
+            (selectedPriceRange.length === 0 ||
+              (item.ArticleRate >= selectedPriceRange[0] &&
+                item.ArticleRate <= selectedPriceRange[1]))
+        );
+
+        if (chunkResult.length > 0) {
+          filtered = [...filtered, ...chunkResult];
+          break; // Stop after the first matching chunk
+        }
+      }
+
+      setFinalData(filtered);
+
+      let currentText = await AsyncStorage.getItem("searchText");
+
+      // Parse the currentText if it exists
+      if (currentText) {
+        currentText = JSON.parse(currentText);
+
+        // Update the text property with your new value
+        currentText.text = searchText;
+
+        // Store the updated object back in AsyncStorage
+        await AsyncStorage.setItem("searchText", JSON.stringify(currentText));
+      } else {
+        // If "searchText" doesn't exist, create a new object and store it
+        const newObject = { text: searchText };
+        await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
+      }
+    }
+    console.log("done", "_+__+");
+  };
+
+  const filtercategoriesrange = (categories, priceRange) => {
+    console.log(categories, priceRange);
+    console.log(minArticleRate, maxArticleRate);
+    if (
+      categories.length === 0 &&
+      priceRange[0] == minArticleRate &&
+      priceRange[1] == maxArticleRate
+    ) {
+      console.log("done");
+      setshowarticle(false);
+    } else {
+      setshowarticle(true);
+      const chunkSize = 10; // Define the size of each chunk
+      const totalChunks = Math.ceil(nameDatas.length / chunkSize);
+      let filtered = [];
+
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * chunkSize;
+        const end = (i + 1) * chunkSize;
+        const chunk = nameDatas.slice(start, end);
+
+        const chunkResult = chunk.filter(
+          (item) =>
+            (categories.length === 0 || categories.includes(item.Category)) &&
+            (priceRange.length === 0 ||
+              (item.ArticleRate >= priceRange[0] &&
+                item.ArticleRate <= priceRange[1]))
+        );
+
+        if (chunkResult.length > 0) {
+          filtered = [...filtered, ...chunkResult];
+          break; // Stop after the first matching chunk
+        }
+      }
 
       setFinalData(filtered);
     }
+    console.log("done", "_+__+");
   };
-
   useEffect(() => {
     filterData();
   }, [searchText]);
 
   const handleFilterChange = (categories, priceRange) => {
+    // console.log(categories, priceRange);
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
     setSearchText("");
-    filterData();
+    filtercategoriesrange(categories, priceRange);
   };
 
-  useEffect(() => {
-    filterData();
-  }, [searchText, nameDatas, selectedCategories, selectedPriceRange]);
+  // useEffect(() => {
+  //   filterData();
+  // }, [searchText, selectedCategories, selectedPriceRange]);
 
   const handleCloseFilter = (isClosed) => {
     setIsFilterVisible(isClosed);
@@ -399,10 +484,8 @@ export default function HomeScreen(props) {
     const token = await AsyncStorage.getItem("UserData");
 
     if (token) {
-      console.log(token, "------------");
       setIsLoggedIn(true);
     } else {
-      console.log(token, "()()()()(");
       setIsLoggedIn(false);
     }
   };
@@ -414,14 +497,7 @@ export default function HomeScreen(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <Image
-            source={require("../../../assets/Profileicon/Group8919.png")} // Replace 'path_to_your_image' with the actual image path
-            style={{
-              width: 50, // Set the width as needed
-              height: 50,
-            }} // Define the style for your image
-          />
-          <ActivityIndicator size={100} color="black" />
+          <Loader />
         </View>
       ) : (
         <View
@@ -433,12 +509,11 @@ export default function HomeScreen(props) {
             marginBottom: width >= 720 ? 10 : 0,
           }}
         >
-          <View>
+          <View style={{ marginTop: 0 }}>
             <View
               style={{
                 height: width >= 720 ? 60 : 40,
                 justifyContent: "center",
-                backgroundColor: "#FFF",
               }}
             >
               <Text
@@ -558,7 +633,6 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-                {console.log(setshowarticle, "setshwo")}
                 {showarticle ? (
                   finalData.length > 0 ? (
                     finalData.map((item, index) => (
@@ -579,6 +653,7 @@ export default function HomeScreen(props) {
                             marginLeft: width >= 720 ? 15 : 10,
                             marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
+                            marginTop: 10,
                           }}
                         >
                           <View
@@ -587,6 +662,7 @@ export default function HomeScreen(props) {
                               height: width >= 720 ? 280 : 190,
                               borderRadius: 12,
                               backgroundColor: "#FFF",
+                              elevation: 2,
                             }}
                           >
                             <View id={item.id} style={styles.producticones}>
@@ -623,6 +699,7 @@ export default function HomeScreen(props) {
                                   width: "100%",
                                   height: width >= 720 ? 280 : 190,
                                   borderRadius: 10,
+                                  resizeMode: "contain",
                                 }}
                               />
                             ) : (
@@ -678,14 +755,14 @@ export default function HomeScreen(props) {
                           color: "#808080",
                         }}
                       >
-                        No Mens Article Found
+                        No Article Found
                       </Text>
                     </View>
                   )
                 ) : (
                   nameData.map((item, index) => (
                     <View
-                      key={item.id}
+                      key={index}
                       style={{
                         alignItems: "center",
                         height: "auto",
@@ -928,10 +1005,7 @@ export default function HomeScreen(props) {
           </ScrollView>
         </View>
       )}
-      <KeyboardAvoidingView
-        behavior={isKeyboardOpen ? "padding" : null}
-        style={{ flex: 1 }}
-      >
+      <KeyboardAvoidingView behavior={isKeyboardOpen ? "padding" : null}>
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation
@@ -945,7 +1019,18 @@ export default function HomeScreen(props) {
         {/* Other components here */}
       </KeyboardAvoidingView>
       {isFilterVisible && (
-        <>
+        <View
+          style={{
+            backgroundColor: "rgba(0,0,0,0.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            left: 0,
+            zIndex: 2,
+          }}
+        >
           <View
             style={{
               backgroundColor: "rgba(0,0,0,0.5)",
@@ -958,60 +1043,47 @@ export default function HomeScreen(props) {
               zIndex: 2,
             }}
           >
-            <View
-              style={{
-                width: "92%",
-                backgroundColor: "white",
-                position: "absolute",
-                bottom: 0,
-                marginLeft: "4%",
-                padding: 5,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-              }}
-            >
-              <Filter
-                onFilterChange={handleFilterChange}
-                onCloseFilter={handleCloseFilter}
-                Scategories={selectedCategories}
-                minArticleRate={minArticleRate}
-                maxArticleRate={maxArticleRate}
-                status={true}
-                spr={selectedPriceRange}
-                uniquerates={nameDatas}
-              />
-            </View>
+            <Filter
+              onFilterChange={handleFilterChange}
+              onCloseFilter={handleCloseFilter}
+              Scategories={selectedCategories}
+              minArticleRate={minArticleRate}
+              maxArticleRate={maxArticleRate}
+              status={false}
+              spr={selectedPriceRange}
+              uniquerates={nameDatas}
+            />
           </View>
-          <Modal
-            visible={isCreateAccountVisible}
-            animationType="slide"
-            transparent={true}
-            onRequestClose={closeCreateAccountModal}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(0,0,0,0.5)",
-              }}
-            >
-              <View
-                style={{
-                  width: "95%",
-                  backgroundColor: "#fff",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginTop: 25,
-                  marginBottom: 25,
-                }}
-              >
-                <CreateAccount onClose={closeCreateAccountModal} />
-              </View>
-            </View>
-          </Modal>
-        </>
+        </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "95%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }

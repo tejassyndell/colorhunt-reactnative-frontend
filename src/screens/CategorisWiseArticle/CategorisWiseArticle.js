@@ -28,6 +28,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
+import Loader from "../../components/Loader/Loader";
 
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
@@ -162,7 +163,6 @@ export default function CategorisWiseArticle(props) {
     try {
       const res = await getProductName();
       if (res.status === 200) {
-        console.log(res.data);
         const sdPrds = res.data.slice();
         const fildata = sdPrds.filter((item) => item.Category === category);
         setNameDatas(fildata);
@@ -194,6 +194,7 @@ export default function CategorisWiseArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -262,9 +263,9 @@ export default function CategorisWiseArticle(props) {
         </View>
       ),
       headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -281,27 +282,38 @@ export default function CategorisWiseArticle(props) {
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
-      const filtered = nameDatas.filter(
-        (item) =>
-          (searchText === "" || // Check if searchText is empty or matches any criteria
-            item.ArticleNumber.toString().includes(searchText.toString()) ||
-            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(
-              searchText.toLowerCase()
-            ) ||
-            item.Subcategory.toLowerCase().includes(
-              searchText.toLowerCase()
-            )) &&
-          (selectedCategories.length === 0 ||
-            selectedCategories.includes(item.Category)) &&
-          (selectedPriceRange.length === 0 ||
-            (item.ArticleRate >= selectedPriceRange[0] &&
-              item.ArticleRate <= selectedPriceRange[1]))
-      );
+      const batchSize = 10; // Define the batch size
+      const filteredData = []; // Create an array to store the filtered data
 
-      setFinalData(filtered);
-      setNoArticlesFound(filtered.length === 0);
+      for (let i = 0; i < nameDatas.length; i += batchSize) {
+        // Slice the data into batches of size batchSize
+        const batch = nameDatas.slice(i, i + batchSize);
+
+        const batchFiltered = batch.filter(
+          (item) =>
+            (searchText === "" ||
+              item.ArticleNumber.toString().includes(searchText.toString()) ||
+              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+              item.ArticleRate.toString().includes(searchText.toString()) ||
+              item.StyleDescription.toLowerCase().includes(
+                searchText.toLowerCase()
+              ) ||
+              item.Subcategory.toLowerCase().includes(
+                searchText.toLowerCase()
+              )) &&
+            (selectedCategories.length === 0 ||
+              selectedCategories.includes(item.Category)) &&
+            (selectedPriceRange.length === 0 ||
+              (item.ArticleRate >= selectedPriceRange[0] &&
+                item.ArticleRate <= selectedPriceRange[1]))
+        );
+
+        // Append the batchFiltered data to the filteredData array
+        filteredData.push(...batchFiltered);
+      }
+
+      setFinalData(filteredData);
+      setNoArticlesFound(filteredData.length === 0);
     }
   };
 
@@ -330,35 +342,31 @@ export default function CategorisWiseArticle(props) {
         },
       }}
     >
-      {isLoggedIn ? (
-        <View id={item.id} style={styles.producticones}>
-          {selectedprd.some((i) => i.Id === item.Id) ? (
-            <TouchableOpacity
-              onPress={() => {
-                rmvProductWishlist(item);
-              }}
-            >
-              <FontAwesome
-                name="heart"
-                style={[
-                  styles.icon,
-                  // isLoggedin === false ? styles.disabledIcon : null,
-                ]}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                addArticleWishlist(item);
-              }}
-            >
-              <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
-            </TouchableOpacity>
-          )}
-        </View>
-      ) : (
-        <></>
-      )}
+      <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
+          </TouchableOpacity>
+        )}
+      </View>
       <View
         style={{
           width: "90%",
@@ -471,7 +479,7 @@ export default function CategorisWiseArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+          <Loader />
         </View>
       ) : (
         <View
@@ -578,14 +586,12 @@ export default function CategorisWiseArticle(props) {
             behavior={isKeyboardOpen ? "padding" : null}
             style={{ flex: 1 }}
           >
-            {isLoggedIn ? (
+            {isFilterVisible ? null : (
               <View
                 style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
               >
                 <ButtomNavigation navigation={navigation} page="home" />
               </View>
-            ) : (
-              <View></View>
             )}
           </KeyboardAvoidingView>
           {isFilterVisible && (
