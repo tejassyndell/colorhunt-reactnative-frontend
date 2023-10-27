@@ -87,7 +87,7 @@ export default function Notification(props) {
                 shadowOpacity: 1, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 5, // Increased elevation
+                elevation: 2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,
@@ -123,7 +123,7 @@ export default function Notification(props) {
                 shadowOpacity: 1, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 5, // Increased elevation
+                elevation: 2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,
@@ -159,7 +159,7 @@ export default function Notification(props) {
                 shadowOpacity: 1, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 5, // Increased elevation
+                elevation: 2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,
@@ -195,7 +195,7 @@ export default function Notification(props) {
                 shadowOpacity: 1, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 5, // Increased elevation
+                elevation: 2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,
@@ -231,7 +231,7 @@ export default function Notification(props) {
                 shadowOpacity: 1, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 5, // Increased elevation
+                elevation: 2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,
@@ -303,7 +303,7 @@ export default function Notification(props) {
                 shadowOpacity: 1, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 5, // Increased elevation
+                elevation: 2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,
@@ -339,7 +339,7 @@ export default function Notification(props) {
                 shadowOpacity: 1, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 5, // Increased elevation
+                elevation: 2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,

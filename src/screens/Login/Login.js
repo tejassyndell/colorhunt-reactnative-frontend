@@ -37,11 +37,29 @@ const Login = (props) => {
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
   const styles = LoginStyles();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingSplace, setIsLoadingSplace] = useState(true);
 
   const initialLogoSize = Math.min(width, height) * 0.5;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
-  const [isLoading, setIsLoading] = useState(true);
+
+
+  useEffect(() => {
+    // This is the code that runs after the component mounts
+    // Start a timer with a delay of 2000 milliseconds (2 seconds)
+    const timeoutId = setTimeout(() => {
+      // Perform actions you want after the timeout (e.g., change loading state)
+      setIsLoadingSplace(false);
+    }, 5000);
+
+    // Return a cleanup function to clear the timer if the component unmounts
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []); 
+
+
   const requestUserPermission = async () => {
     const status = await requestPermissionsAsync();
     try {
@@ -271,8 +289,20 @@ const Login = (props) => {
   };
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
+
+  const gifImageSource = require("../../../assets/Loader/Newfile.gif");
   return (
-    <KeyboardAvoidingView
+    <>
+     {isLoadingSplace ? (
+       <View style={{width: '100%', height: '100%',backgroundColor:'#FFF',alignItems:'center',justifyContent:'center'}}>
+       {/* <Image
+               source={gifImageSource}
+               style={{resizeMode:'contain',width:'90%'}}
+             
+             /> */}
+       </View>
+     ):(
+      <KeyboardAvoidingView
       style={{ flex: 1, justifyContent: "center" }} // You might need to adjust the style as per your layout
       behavior={Platform.OS === "ios" ? "padding" : null}
     >
@@ -378,6 +408,11 @@ const Login = (props) => {
         </View>
       </View>
     </KeyboardAvoidingView>
+     )}
+   
+    
+   
+    </>
   );
 };
 
