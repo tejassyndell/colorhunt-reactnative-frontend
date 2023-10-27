@@ -51,7 +51,7 @@ const Login = (props) => {
     const timeoutId = setTimeout(() => {
       // Perform actions you want after the timeout (e.g., change loading state)
       setIsLoadingSplace(false);
-    }, 5000);
+    }, 2050);
 
     // Return a cleanup function to clear the timer if the component unmounts
     return () => {
@@ -60,110 +60,110 @@ const Login = (props) => {
   }, []); 
 
 
-  const requestUserPermission = async () => {
-    const status = await requestPermissionsAsync();
-    try {
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  // const requestUserPermission = async () => {
+  //   const status = await requestPermissionsAsync();
+  //   try {
+  //     const authStatus = await messaging().requestPermission();
+  //     const enabled =
+  //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      console.log('Authorization status:', authStatus, enabled);
-      return enabled;
-    } catch (error) {
-      console.error('Error requesting permission:', error);
-      return false;
-    }
-  }
-  useEffect(() => {
-    const getTokenAndSubscribe = async () => {
-      const permissionGranted = await requestUserPermission();
+  //     console.log('Authorization status:', authStatus, enabled);
+  //     return enabled;
+  //   } catch (error) {
+  //     console.error('Error requesting permission:', error);
+  //     return false;
+  //   }
+  // }
+  // useEffect(() => {
+  //   const getTokenAndSubscribe = async () => {
+  //     const permissionGranted = await requestUserPermission();
 
-      if (permissionGranted) {
-        const fcmToken = await messaging().getToken();
-        setToken(fcmToken);
-        console.log('FCM Token:', fcmToken);
-      } else {
-        console.log('Permission not granted for notifications.');
-      }
+  //     if (permissionGranted) {
+  //       const fcmToken = await messaging().getToken();
+  //       setToken(fcmToken);
+  //       console.log('FCM Token:', fcmToken);
+  //     } else {
+  //       console.log('Permission not granted for notifications.');
+  //     }
 
-      // Rest of your code for handling notifications
-      messaging()
-        .getInitialNotification()
-        .then(async (remoteMessage) => {
-          if (remoteMessage) {
-            console.log(
-              'Notification caused app to open from quit state:',
-              remoteMessage.notification,
-            );
-          }
-        });
-      // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  //     // Rest of your code for handling notifications
+  //     messaging()
+  //       .getInitialNotification()
+  //       .then(async (remoteMessage) => {
+  //         if (remoteMessage) {
+  //           console.log(
+  //             'Notification caused app to open from quit state:',
+  //             remoteMessage.notification,
+  //           );
+  //         }
+  //       });
+  //     // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-      messaging().onNotificationOpenedApp(async (remoteMessage) => {
-        console.log(
-          'Notification caused app to open from background state:',
-          remoteMessage.notification,
-        );
-      });
-      // Register background handler
-      messaging().setBackgroundMessageHandler(async remoteMessage => {
-        console.log('Message handled in the background!', remoteMessage);
-        const channelId = 'colorhuntmobileapp';
-        const channelConfig = {
-          channelId,
-          channelName: 'colorhuntmobileapp Notification Channel',
-          channelDescription: 'colorhuntmobileapp custom notification channel',
-          soundName: 'default',
-          importance: 4, // Notification Importance (0-4), where 4 is the highest
-          vibrate: true,
-        };
+  //     messaging().onNotificationOpenedApp(async (remoteMessage) => {
+  //       console.log(
+  //         'Notification caused app to open from background state:',
+  //         remoteMessage.notification,
+  //       );
+  //     });
+  //     // Register background handler
+  //     messaging().setBackgroundMessageHandler(async remoteMessage => {
+  //       console.log('Message handled in the background!', remoteMessage);
+  //       const channelId = 'colorhuntmobileapp';
+  //       const channelConfig = {
+  //         channelId,
+  //         channelName: 'colorhuntmobileapp Notification Channel',
+  //         channelDescription: 'colorhuntmobileapp custom notification channel',
+  //         soundName: 'default',
+  //         importance: 4, // Notification Importance (0-4), where 4 is the highest
+  //         vibrate: true,
+  //       };
   
-        // Create the channel
-        PushNotification.createChannel(channelConfig);
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //       // Create the channel
+  //       PushNotification.createChannel(channelConfig);
+  //       const unsubscribe = messaging().onMessage(async remoteMessage => {
   
-          PushNotification.localNotification({
-            channelId: "colorhuntmobileapp",
-            title: remoteMessage.notification.title,
-            message: remoteMessage.notification.body
-          })
-        });
-        // return unsubscribe;
-      });
-      // Listen for incoming FCM messages
-      // Define the channel settings
-      const channelId = 'colorhuntmobileapp';
-      const channelConfig = {
-        channelId,
-        channelName: 'colorhuntmobileapp Notification Channel',
-        channelDescription: 'colorhuntmobileapp custom notification channel',
-        soundName: 'default',
-        importance: 4, // Notification Importance (0-4), where 4 is the highest
-        vibrate: true,
-      };
+  //         PushNotification.localNotification({
+  //           channelId: "colorhuntmobileapp",
+  //           title: remoteMessage.notification.title,
+  //           message: remoteMessage.notification.body
+  //         })
+  //       });
+  //       // return unsubscribe;
+  //     });
+  //     // Listen for incoming FCM messages
+  //     // Define the channel settings
+  //     const channelId = 'colorhuntmobileapp';
+  //     const channelConfig = {
+  //       channelId,
+  //       channelName: 'colorhuntmobileapp Notification Channel',
+  //       channelDescription: 'colorhuntmobileapp custom notification channel',
+  //       soundName: 'default',
+  //       importance: 4, // Notification Importance (0-4), where 4 is the highest
+  //       vibrate: true,
+  //     };
 
-      // Create the channel
-      PushNotification.createChannel(channelConfig);
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     // Create the channel
+  //     PushNotification.createChannel(channelConfig);
+  //     const unsubscribe = messaging().onMessage(async remoteMessage => {
 
-        PushNotification.localNotification({
-          channelId: "colorhuntmobileapp",
-          title: remoteMessage.notification.title,
-          message: remoteMessage.notification.body
-        })
-      });
+  //       PushNotification.localNotification({
+  //         channelId: "colorhuntmobileapp",
+  //         title: remoteMessage.notification.title,
+  //         message: remoteMessage.notification.body
+  //       })
+  //     });
 
 
-      return unsubscribe;
-    };
+  //     return unsubscribe;
+  //   };
 
-    getTokenAndSubscribe();
+  //   getTokenAndSubscribe();
 
-    // Check whether an initial notification is available
+  //   // Check whether an initial notification is available
 
-    // getNotificationPermission();
-  }, []);
+  //   // getNotificationPermission();
+  // }, []);
   const keyboardDidShow = () => {
     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
     setLogoSize(newSize);
@@ -290,16 +290,16 @@ const Login = (props) => {
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
 
-  const gifImageSource = require("../../../assets/Loader/Newfile.gif");
+  const gifImageSource = require("../../../assets/Loader/Screen.gif");
   return (
     <>
      {isLoadingSplace ? (
        <View style={{width: '100%', height: '100%',backgroundColor:'#FFF',alignItems:'center',justifyContent:'center'}}>
-       {/* <Image
+       <Image
                source={gifImageSource}
                style={{resizeMode:'contain',width:'90%'}}
              
-             /> */}
+             />
        </View>
      ):(
       <KeyboardAvoidingView

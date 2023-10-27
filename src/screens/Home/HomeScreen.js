@@ -403,18 +403,18 @@ export default function HomeScreen(props) {
         await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
       }
     }
-    console.log("done", "_+__+");
+    // console.log("done", "_+__+");
   };
 
   const filtercategoriesrange = (categories, priceRange) => {
-    console.log(categories, priceRange);
-    console.log(minArticleRate, maxArticleRate);
+    // console.log(categories, priceRange);
+    // console.log(minArticleRate, maxArticleRate);
     if (
       categories.length === 0 &&
       priceRange[0] == minArticleRate &&
       priceRange[1] == maxArticleRate
     ) {
-      console.log("done");
+      // console.log("done");
       setshowarticle(false);
     } else {
       setshowarticle(true);
@@ -443,7 +443,7 @@ export default function HomeScreen(props) {
 
       setFinalData(filtered);
     }
-    console.log("done", "_+__+");
+    // console.log("done", "_+__+");
   };
   useEffect(() => {
     filterData();
@@ -1019,42 +1019,42 @@ export default function HomeScreen(props) {
         {/* Other components here */}
       </KeyboardAvoidingView>
       {isFilterVisible && (
-        <View
-          style={{
-            backgroundColor: "rgba(0,0,0,0.5)",
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            top: 0,
-            right: 0,
-            left: 0,
-            zIndex: 2,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "rgba(0,0,0,0.5)",
-              width: "100%",
-              height: "100%",
-              position: "absolute",
-              top: 0,
-              right: 0,
-              left: 0,
-              zIndex: 2,
-            }}
-          >
-            <Filter
-              onFilterChange={handleFilterChange}
-              onCloseFilter={handleCloseFilter}
-              Scategories={selectedCategories}
-              minArticleRate={minArticleRate}
-              maxArticleRate={maxArticleRate}
-              status={false}
-              spr={selectedPriceRange}
-              uniquerates={nameDatas}
-            />
-          </View>
-        </View>
+         <View
+         style={{
+           backgroundColor: "rgba(0,0,0,0.5)",
+           width: "100%",
+           height: "100%",
+           position: "absolute",
+           top:0,
+           right: 0,
+           left: 0,
+           zIndex: 2,
+         }}
+       >
+         <View
+           style={{
+             width: "92%",
+             backgroundColor: "white",
+             position: "absolute",
+             bottom: '2%',
+             marginLeft: "4%",
+             padding: 5,
+             borderRadius: 20,
+            
+           }}
+         >
+           <Filter
+             onFilterChange={handleFilterChange}
+             onCloseFilter={handleCloseFilter}
+             Scategories={selectedCategories}
+             minArticleRate={minArticleRate}
+             maxArticleRate={maxArticleRate}
+             status={true}
+             spr={selectedPriceRange}
+             uniquerates={nameDatas}
+           />
+         </View>
+       </View>
       )}
       <Modal
         visible={isCreateAccountVisible}

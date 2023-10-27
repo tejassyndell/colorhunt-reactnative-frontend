@@ -191,7 +191,8 @@ export default function Contact(props) {
       <View style={{
         flex:1,
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        backgroundColor:"#FFFFFF"
       }}>
          <Loader/>
       </View>

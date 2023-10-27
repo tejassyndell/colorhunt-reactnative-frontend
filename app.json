@@ -17,8 +17,6 @@
       "color": "#007AFF"
     },
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {

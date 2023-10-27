@@ -215,9 +215,9 @@ export default function Filter({
         {status === false ? (
           <ScrollView style={{width:'100%',height: height >= 844 ? 360 : 250}}>
           <View style={styles.categoriesContainer}>
-            {data.map((item,index) => (
+            {data.map((item) => (
               <TouchableOpacity
-                key={index}
+                key={item.Id}
                 style={[
                   styles.categoryItem,
                   selectedCategories.includes(item.Category) && {

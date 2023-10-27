@@ -610,15 +610,13 @@ export default function CategorisWiseArticle(props) {
               <View
                 style={{
                   width: "92%",
-                  backgroundColor: "#FFF",
+                  backgroundColor: "white",
                   position: "absolute",
-                  bottom: 0,
-                  left: 1,
-                  right: 0, // To make it span the full width
-                  marginLeft: "4%", // Margin on the left side
-                  padding: 10,
-                  borderTopLeftRadius: 10, // Adjust the radius as needed
-                  borderTopRightRadius: 10,
+                  bottom: '2%',
+                  marginLeft: "4%",
+                  padding: 5,
+                  borderRadius: 20,
+                 
                 }}
               >
                 <Filter
