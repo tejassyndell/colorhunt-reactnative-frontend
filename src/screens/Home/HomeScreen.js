@@ -31,7 +31,7 @@ import * as Font from "expo-font";
 import Svg, { Circle, Path } from "react-native-svg";
 import SidebarSvg from "../../jssvgs/Sidebarsvg";
 import ProfileSvg from "../../jssvgs/ProfileSvg";
-import Loader from "../../components/Loader/Loader"
+import Loader from "../../components/Loader/Loader";
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -109,8 +109,8 @@ export default function HomeScreen(props) {
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 
@@ -163,11 +163,11 @@ export default function HomeScreen(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
-      status: "false"
+      status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
       console.log(res.data);
-      setSelectprd(res.data)
+      setSelectprd(res.data);
     });
   };
   function convertToTitleCase(str) {
@@ -326,7 +326,9 @@ export default function HomeScreen(props) {
     if (
       searchText == "" &&
       selectedCategories.length === 0 &&
-      (selectedPriceRange[0] == minArticleRate && selectedPriceRange[1] == maxArticleRate || selectedPriceRange.length === 0)
+      ((selectedPriceRange[0] == minArticleRate &&
+        selectedPriceRange[1] == maxArticleRate) ||
+        selectedPriceRange.length === 0)
     ) {
       console.log("done");
       let currentText = await AsyncStorage.getItem("searchText");
@@ -340,7 +342,7 @@ export default function HomeScreen(props) {
 
         // Store the updated object back in AsyncStorage
         await AsyncStorage.setItem("searchText", JSON.stringify(currentText));
-      }else {
+      } else {
         // If "searchText" doesn't exist, create a new object and store it
         const newObject = { text: searchText };
         await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
@@ -363,9 +365,12 @@ export default function HomeScreen(props) {
               item.ArticleNumber.toString().includes(searchText.toString()) ||
               item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
               item.ArticleRate.toString().includes(searchText.toString()) ||
-              item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.Subcategory.toLowerCase().includes(searchText.toLowerCase())
-            ) &&
+              item.StyleDescription.toLowerCase().includes(
+                searchText.toLowerCase()
+              ) ||
+              item.Subcategory.toLowerCase().includes(
+                searchText.toLowerCase()
+              )) &&
             (selectedCategories.length === 0 ||
               selectedCategories.includes(item.Category)) &&
             (selectedPriceRange.length === 0 ||
@@ -397,7 +402,6 @@ export default function HomeScreen(props) {
         const newObject = { text: searchText };
         await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
       }
-
     }
     console.log("done", "_+__+");
   };
@@ -407,7 +411,8 @@ export default function HomeScreen(props) {
     console.log(minArticleRate, maxArticleRate);
     if (
       categories.length === 0 &&
-      priceRange[0] == minArticleRate && priceRange[1] == maxArticleRate
+      priceRange[0] == minArticleRate &&
+      priceRange[1] == maxArticleRate
     ) {
       console.log("done");
       setshowarticle(false);
@@ -424,8 +429,7 @@ export default function HomeScreen(props) {
 
         const chunkResult = chunk.filter(
           (item) =>
-            (categories.length === 0 ||
-              categories.includes(item.Category)) &&
+            (categories.length === 0 || categories.includes(item.Category)) &&
             (priceRange.length === 0 ||
               (item.ArticleRate >= priceRange[0] &&
                 item.ArticleRate <= priceRange[1]))
@@ -438,10 +442,9 @@ export default function HomeScreen(props) {
       }
 
       setFinalData(filtered);
-
     }
     console.log("done", "_+__+");
-  }
+  };
   useEffect(() => {
     filterData();
   }, [searchText]);
@@ -493,8 +496,8 @@ export default function HomeScreen(props) {
   return (
     <>
       {isLoading ? (
-         <View style={styles.loader}>
-         <Loader/>
+        <View style={styles.loader}>
+          <Loader />
         </View>
       ) : (
         <View
@@ -630,7 +633,6 @@ export default function HomeScreen(props) {
                 showsHorizontalScrollIndicator={false}
                 style={{ flex: 1, overflow: "hidden" }}
               >
-
                 {showarticle ? (
                   finalData.length > 0 ? (
                     finalData.map((item, index) => (
@@ -651,7 +653,7 @@ export default function HomeScreen(props) {
                             marginLeft: width >= 720 ? 15 : 10,
                             marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
-                            marginTop: 10
+                            marginTop: 10,
                           }}
                         >
                           <View
@@ -660,7 +662,7 @@ export default function HomeScreen(props) {
                               height: width >= 720 ? 280 : 190,
                               borderRadius: 12,
                               backgroundColor: "#FFF",
-                              elevation: 2
+                              elevation: 2,
                             }}
                           >
                             <View id={item.id} style={styles.producticones}>
@@ -697,7 +699,7 @@ export default function HomeScreen(props) {
                                   width: "100%",
                                   height: width >= 720 ? 280 : 190,
                                   borderRadius: 10,
-                                  resizeMode: "contain"
+                                  resizeMode: "contain",
                                 }}
                               />
                             ) : (
@@ -799,7 +801,6 @@ export default function HomeScreen(props) {
                                 width: "100%",
                                 height: width >= 720 ? 280 : 190,
                                 borderRadius: 10,
-
                               }}
                             />
                           ) : (
@@ -1004,10 +1005,7 @@ export default function HomeScreen(props) {
           </ScrollView>
         </View>
       )}
-      <KeyboardAvoidingView
-        behavior={isKeyboardOpen ? "padding" : null}
-     
-      >
+      <KeyboardAvoidingView behavior={isKeyboardOpen ? "padding" : null}>
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation

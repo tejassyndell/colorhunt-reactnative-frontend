@@ -26,7 +26,7 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loader from "../../components/Loader/Loader"
+import Loader from "../../components/Loader/Loader";
 
 import { ActivityIndicator } from "react-native";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
@@ -92,7 +92,6 @@ export default function AllArticle(props) {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-
   }, []);
 
   const retrieveStoredCategories = async () => {
@@ -112,7 +111,6 @@ export default function AllArticle(props) {
     }
   };
   const userChecked = async () => {
-
     const token = await AsyncStorage.getItem("UserData");
 
     if (token) {
@@ -140,8 +138,8 @@ export default function AllArticle(props) {
         ? 120
         : 100
       : height >= 844
-        ? 100
-        : 65;
+      ? 100
+      : 65;
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -175,9 +173,10 @@ export default function AllArticle(props) {
         if (res.status === 200) {
           // getWishlist();
           let selectedlist = selectedprd;
-          selectedlist = selectedlist.filter((item)=>{return item.Id!==i.Id})
-        setSelectprd(selectedlist);
-
+          selectedlist = selectedlist.filter((item) => {
+            return item.Id !== i.Id;
+          });
+          setSelectprd(selectedlist);
         }
       });
     } catch (error) {
@@ -185,22 +184,21 @@ export default function AllArticle(props) {
     }
   };
 
-  const setsearchtextfromstorage = async()=>{
+  const setsearchtextfromstorage = async () => {
     let currentText = await AsyncStorage.getItem("searchText");
 
     // Parse the currentText if it exists
     if (currentText) {
       currentText = JSON.parse(currentText);
-      setSearchText(currentText.text)
+      setSearchText(currentText.text);
     }
-  }
+  };
 
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
- 
     const data = {
       party_id: await getpartyid(),
-      status: "false"
+      status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -216,7 +214,7 @@ export default function AllArticle(props) {
     try {
       await getAddWishlist(data).then((res) => {
         // getWishlist();
-        setSelectprd((prevSelectprd) => [...prevSelectprd, {"Id":  i.Id}]);
+        setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
       });
     } catch (error) {
       console.log(error);
@@ -286,7 +284,8 @@ export default function AllArticle(props) {
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange[0] == minArticleRate && selectedPriceRange[1] == maxArticleRate
+      selectedPriceRange[0] == minArticleRate &&
+      selectedPriceRange[1] == maxArticleRate
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
@@ -297,18 +296,23 @@ export default function AllArticle(props) {
         // Slice the data into batches of size batchSize
         const batch = nameDatas.slice(i, i + batchSize);
 
-        const batchFiltered = batch.filter((item) =>
-          (searchText === "" ||
-            item.ArticleNumber.toString().includes(searchText.toString()) ||
-            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.Subcategory.toLowerCase().includes(searchText.toLowerCase())) &&
-          (selectedCategories.length === 0 ||
-            selectedCategories.includes(item.Category)) &&
-          (selectedPriceRange.length === 0 ||
-            (item.ArticleRate >= selectedPriceRange[0] &&
-              item.ArticleRate <= selectedPriceRange[1]))
+        const batchFiltered = batch.filter(
+          (item) =>
+            (searchText === "" ||
+              item.ArticleNumber.toString().includes(searchText.toString()) ||
+              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+              item.ArticleRate.toString().includes(searchText.toString()) ||
+              item.StyleDescription.toLowerCase().includes(
+                searchText.toLowerCase()
+              ) ||
+              item.Subcategory.toLowerCase().includes(
+                searchText.toLowerCase()
+              )) &&
+            (selectedCategories.length === 0 ||
+              selectedCategories.includes(item.Category)) &&
+            (selectedPriceRange.length === 0 ||
+              (item.ArticleRate >= selectedPriceRange[0] &&
+                item.ArticleRate <= selectedPriceRange[1]))
         );
 
         // Append the batchFiltered data to the filteredData array
@@ -475,8 +479,8 @@ export default function AllArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-        <Loader/>
-     </View>
+          <Loader />
+        </View>
       ) : (
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
@@ -550,8 +554,7 @@ export default function AllArticle(props) {
                       onRefresh={onRefresh}
                     />
                   }
-                >
-                </ScrollView>
+                ></ScrollView>
 
                 <FlatList
                   style={{ backgroundColor: "#FFF" }}

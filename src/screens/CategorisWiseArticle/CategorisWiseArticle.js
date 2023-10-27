@@ -28,7 +28,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
-import Loader from "../../components/Loader/Loader"
+import Loader from "../../components/Loader/Loader";
 
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
@@ -62,7 +62,6 @@ export default function CategorisWiseArticle(props) {
 
     setTimeout(() => {
       // After fetching new data, update your data state
-    
 
       setRefreshing(false);
     }, 1000); // Simulating a delay, replace with your API call
@@ -169,8 +168,7 @@ export default function CategorisWiseArticle(props) {
         setNameDatas(fildata);
         setFinalData(fildata);
         setIsLoading(false);
-        setRefreshing(false)
-
+        setRefreshing(false);
       }
     } catch (error) {
       console.log(error);
@@ -196,7 +194,7 @@ export default function CategorisWiseArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
-      status:"false"
+      status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -286,25 +284,30 @@ export default function CategorisWiseArticle(props) {
     } else {
       const batchSize = 10; // Define the batch size
       const filteredData = []; // Create an array to store the filtered data
-      
+
       for (let i = 0; i < nameDatas.length; i += batchSize) {
         // Slice the data into batches of size batchSize
         const batch = nameDatas.slice(i, i + batchSize);
-      
-        const batchFiltered = batch.filter((item) =>
-          (searchText === "" ||
-            item.ArticleNumber.toString().includes(searchText.toString()) ||
-            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.Subcategory.toLowerCase().includes(searchText.toLowerCase())) &&
-          (selectedCategories.length === 0 ||
-            selectedCategories.includes(item.Category)) &&
-          (selectedPriceRange.length === 0 ||
-            (item.ArticleRate >= selectedPriceRange[0] &&
-              item.ArticleRate <= selectedPriceRange[1]))
+
+        const batchFiltered = batch.filter(
+          (item) =>
+            (searchText === "" ||
+              item.ArticleNumber.toString().includes(searchText.toString()) ||
+              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+              item.ArticleRate.toString().includes(searchText.toString()) ||
+              item.StyleDescription.toLowerCase().includes(
+                searchText.toLowerCase()
+              ) ||
+              item.Subcategory.toLowerCase().includes(
+                searchText.toLowerCase()
+              )) &&
+            (selectedCategories.length === 0 ||
+              selectedCategories.includes(item.Category)) &&
+            (selectedPriceRange.length === 0 ||
+              (item.ArticleRate >= selectedPriceRange[0] &&
+                item.ArticleRate <= selectedPriceRange[1]))
         );
-      
+
         // Append the batchFiltered data to the filteredData array
         filteredData.push(...batchFiltered);
       }
@@ -476,8 +479,8 @@ export default function CategorisWiseArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-        <Loader/>
-     </View>
+          <Loader />
+        </View>
       ) : (
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
