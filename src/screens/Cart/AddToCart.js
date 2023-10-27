@@ -26,6 +26,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { ImageZoomProps } from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
 import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg";
+import Loader from "../../components/Loader/Loader"
+
 const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
@@ -145,6 +147,8 @@ const AddToCart = (props) => {
       headerRight: () => <View />,
       headerStyle: {
         height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -462,15 +466,16 @@ const AddToCart = (props) => {
   return (
     <>
       {isLoading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ActivityIndicator size="large" color="black" />
-        </View>
+         <View
+         style={{
+           flex: 1,
+           justifyContent: "center",
+           alignItems: "center",
+           backgroundColor:'#FFF'
+         }}
+       >
+          <Loader/>
+       </View>
       ) : orderItems.length === 0 ? (
         <View
           style={{

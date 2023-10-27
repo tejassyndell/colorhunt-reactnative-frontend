@@ -46,6 +46,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor:'#FFF',
+
   },
   producticones: {
     width: "20%",
@@ -66,6 +68,15 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 20,
     textAlign: "right",
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gif: {
+    width: 200,
+    height: 200,
   },
 });
 

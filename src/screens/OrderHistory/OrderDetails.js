@@ -23,6 +23,7 @@ import { shareAsync } from "expo-sharing";
 import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
+import Loader from "../../components/Loader/Loader"
 
 const OrderDetails = (props) => {
   const { navigation } = props;
@@ -108,6 +109,8 @@ const OrderDetails = (props) => {
       headerRight: () => <View />,
       headerStyle: {
         height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -525,15 +528,15 @@ const OrderDetails = (props) => {
   return (
     <>
       {isloading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ActivityIndicator size="large" color="black" />
-        </View>
+         <View
+         style={{
+           flex: 1,
+           justifyContent: "center",
+           alignItems: "center",
+         }}
+       >
+          <Loader/>
+       </View>
       ) : (
         <View
           style={{

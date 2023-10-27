@@ -22,6 +22,8 @@ import { Modal } from "react-native-paper";
 import Calendersvg from "../../jssvgs/Calendersvg";
 import CompletedOrderHistory from "../../jssvgs/Completedorderhistory";
 import PendingSvg from "../../jssvgs/Pendingsvg";
+import Loader from "../../components/Loader/Loader"
+
 const { width, height } = Dimensions.get("window");
 
 const OrderHistory = (props) => {
@@ -174,6 +176,8 @@ const OrderHistory = (props) => {
       headerRight: () => <View />,
       headerStyle: {
         height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -250,15 +254,16 @@ const OrderHistory = (props) => {
   return (
     <>
       {isloading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ActivityIndicator size="large" color="black" />
-        </View>
+         <View
+         style={{
+           flex: 1,
+           justifyContent: "center",
+           alignItems: "center",
+           backgroundColor:'#FFF'
+         }}
+       >
+          <Loader/>
+       </View>
       ) : (
         <View style={styles.container}>
           <View style={styles.first_cnt}>

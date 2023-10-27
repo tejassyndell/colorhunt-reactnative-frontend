@@ -19,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Svg, { G, Circle, Path } from "react-native-svg";
+import Loader from "../../components/Loader/Loader"
 export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
@@ -124,7 +125,7 @@ export default function Userprofile(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+           <Loader/>
         </View>
       ) : (
         <>

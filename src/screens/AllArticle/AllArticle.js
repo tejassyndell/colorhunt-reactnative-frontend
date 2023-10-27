@@ -26,6 +26,7 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loader from "../../components/Loader/Loader"
 
 import { ActivityIndicator } from "react-native";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
@@ -271,8 +272,8 @@ export default function AllArticle(props) {
       ),
       headerStyle: {
         height: headerHeight, // Increase the header height here
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -474,8 +475,8 @@ export default function AllArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
-        </View>
+        <Loader/>
+     </View>
       ) : (
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}

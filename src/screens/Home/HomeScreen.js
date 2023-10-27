@@ -31,6 +31,7 @@ import * as Font from "expo-font";
 import Svg, { Circle, Path } from "react-native-svg";
 import SidebarSvg from "../../jssvgs/Sidebarsvg";
 import ProfileSvg from "../../jssvgs/ProfileSvg";
+import Loader from "../../components/Loader/Loader"
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -311,11 +312,10 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
-
     });
   }, []);
 
@@ -493,8 +493,8 @@ export default function HomeScreen(props) {
   return (
     <>
       {isLoading ? (
-        <View style={styles.loader}>
-          <ActivityIndicator size="large" color="black" />
+         <View style={styles.loader}>
+         <Loader/>
         </View>
       ) : (
         <View
@@ -506,12 +506,11 @@ export default function HomeScreen(props) {
             marginBottom: width >= 720 ? 10 : 0,
           }}
         >
-          <View >
+          <View style={{ marginTop: 0 }}>
             <View
               style={{
                 height: width >= 720 ? 60 : 40,
                 justifyContent: "center",
-                backgroundColor: "#FFF",
               }}
             >
               <Text
@@ -1007,7 +1006,7 @@ export default function HomeScreen(props) {
       )}
       <KeyboardAvoidingView
         behavior={isKeyboardOpen ? "padding" : null}
-      // style={{ flex: 1 }}
+     
       >
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
@@ -1022,7 +1021,18 @@ export default function HomeScreen(props) {
         {/* Other components here */}
       </KeyboardAvoidingView>
       {isFilterVisible && (
-        <>
+        <View
+          style={{
+            backgroundColor: "rgba(0,0,0,0.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            left: 0,
+            zIndex: 2,
+          }}
+        >
           <View
             style={{
               backgroundColor: "rgba(0,0,0,0.5)",
@@ -1035,60 +1045,47 @@ export default function HomeScreen(props) {
               zIndex: 2,
             }}
           >
-            <View
-              style={{
-                width: "92%",
-                backgroundColor: "white",
-                position: "absolute",
-                bottom: 0,
-                marginLeft: "4%",
-                padding: 5,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-              }}
-            >
-              <Filter
-                onFilterChange={handleFilterChange}
-                onCloseFilter={handleCloseFilter}
-                Scategories={selectedCategories}
-                minArticleRate={minArticleRate}
-                maxArticleRate={maxArticleRate}
-                status={true}
-                spr={selectedPriceRange}
-                uniquerates={nameDatas}
-              />
-            </View>
+            <Filter
+              onFilterChange={handleFilterChange}
+              onCloseFilter={handleCloseFilter}
+              Scategories={selectedCategories}
+              minArticleRate={minArticleRate}
+              maxArticleRate={maxArticleRate}
+              status={false}
+              spr={selectedPriceRange}
+              uniquerates={nameDatas}
+            />
           </View>
-          <Modal
-            visible={isCreateAccountVisible}
-            animationType="slide"
-            transparent={true}
-            onRequestClose={closeCreateAccountModal}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(0,0,0,0.5)",
-              }}
-            >
-              <View
-                style={{
-                  width: "95%",
-                  backgroundColor: "#fff",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginTop: 25,
-                  marginBottom: 25,
-                }}
-              >
-                <CreateAccount onClose={closeCreateAccountModal} />
-              </View>
-            </View>
-          </Modal>
-        </>
+        </View>
       )}
+      <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "95%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
