@@ -436,9 +436,9 @@ const CreateAccount = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "98%",
+    width: "100%",
     alignItem: "center",
-    paddingHorizontal: width >= 720 ? 40 : 15,
+    paddingHorizontal: width >= 720 ? 40 : 1,
     paddingVertical: width >= 720 ? 60 : 15,
     justifyContent: "center",
   },

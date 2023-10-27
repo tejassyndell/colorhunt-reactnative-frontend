@@ -332,7 +332,7 @@ const CreateAccount = (props) => {
                   style={[
                     styles.input,
                     stateError && styles.inputError,
-                    { marginRight: 5 },
+                    { marginRight: 0 },
                   ]}
                   placeholder="State"
                   value={state}
@@ -436,7 +436,7 @@ const CreateAccount = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "98%",
+    width: "100%",
     alignItem: "center",
     paddingHorizontal: width >= 720 ? 40 : 15,
     paddingVertical: width >= 720 ? 60 : 15,

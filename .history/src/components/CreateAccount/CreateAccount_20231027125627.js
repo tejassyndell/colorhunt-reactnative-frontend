@@ -436,7 +436,7 @@ const CreateAccount = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "98%",
+    width: "100%",
     alignItem: "center",
     paddingHorizontal: width >= 720 ? 40 : 15,
     paddingVertical: width >= 720 ? 60 : 15,
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
-    paddingLeft: windowWidth * 0.02,
+    // paddingLeft: windowWidth * 0.02,
     fontSize: windowWidth * 0.04,
   },
   inputError: {

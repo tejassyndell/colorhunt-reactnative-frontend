@@ -436,7 +436,7 @@ const CreateAccount = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "98%",
+    width: "100%",
     alignItem: "center",
     paddingHorizontal: width >= 720 ? 40 : 15,
     paddingVertical: width >= 720 ? 60 : 15,
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   flex1: {
-    flex: 1,
+    // flex: 1,
   },
   successContainer: {
     alignItems: "center",
