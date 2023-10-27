@@ -115,8 +115,9 @@ export default function Userprofile(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight,
-        backgroundColor: "black",
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
