@@ -1,8 +1,13 @@
-import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
-import React from "react";
+import { View, Text, TouchableOpacity, Image, Modal, Dimensions } from "react-native";
+import React, { useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import Footersvg from "../../jssvgs/Footersvg";
+import CreateAccount from "../CreateAccount/CreateAccount";
 
 const ButtomNavigation = (props) => {
+
+  const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
+
   const route = useRoute();
   const {} = props;
   // const {navigation , page , isLoggedIn} = props;
@@ -11,28 +16,39 @@ const ButtomNavigation = (props) => {
   console.log(isLoggedIn, "+++++");
   //   const navigation = useNavigation();
 
+ 
+
+  const openCreateAccountModal = () => {
+    console.log("done");
+    setCreateAccountVisible(true);
+  };
+
+
+  const closeCreateAccountModal = () => {
+    setCreateAccountVisible(false);
+  };
   const HomePage = () => {
-    isLoggedIn ? navigation.navigate("Home") : "";
+    isLoggedIn ? navigation.navigate("Home") :  openCreateAccountModal();
     // navigation.navigate("Home")
   };
 
   const OrderList = () => {
-    isLoggedIn ? navigation.navigate("ordershistroy") : "";
+    isLoggedIn ? navigation.navigate("ordershistroy") : openCreateAccountModal();
     // navigation.navigate("")
   };
 
   const CartPage = () => {
-    isLoggedIn ? navigation.navigate("cart_list") : "";
+    isLoggedIn ? navigation.navigate("cart_list") :  openCreateAccountModal();
     // navigation.navigate("cart_list")
   };
 
   const NotificationPage = () => {
-    isLoggedIn ? navigation.navigate("Notification") : "";
+    isLoggedIn ? navigation.navigate("Notification") :  openCreateAccountModal();
     // navigation.navigate("")
   };
 
   const ProfilePage = () => {
-    isLoggedIn ? navigation.navigate("Profile") : "";
+    isLoggedIn ? navigation.navigate("Profile") : openCreateAccountModal();
     // navigation.navigate("Profile")
   };
   const windowWidth = Dimensions.get("window").width;
@@ -41,11 +57,12 @@ const ButtomNavigation = (props) => {
   const { width, height } = Dimensions.get("window");
 
   return (
+    <>
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View
         style={{
-          width: "96%",
-          height: width >= 720 ? 120 : 70,
+          width: width >= 720 ? "70%" : "96%",
+          height: width >= 720 ? 110 : 70,
           backgroundColor: "#212121",
           flexDirection: "row",
           marginLeft: "2%",
@@ -64,17 +81,7 @@ const ButtomNavigation = (props) => {
           }}
           onPress={HomePage}
         >
-          <Image
-            source={
-              page === "home"
-                ? require("../../../assets/AppFooterIcons/Home_down_nav_icone.png")
-                : require("../../../assets/deselect_home.png")
-            }
-            style={{
-              width: width >= 720 ? 80 : 40,
-              height: width >= 720 ? 80 : 40,
-            }}
-          />
+          <Footersvg val="home" status={page === "home" ? true : false} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -85,16 +92,9 @@ const ButtomNavigation = (props) => {
           }}
           onPress={OrderList}
         >
-          <Image
-            source={
-              page === "orderhistory"
-                ? require("../../../assets/on_orderhistory.png")
-                : require("../../../assets/AppFooterIcons/order_down_nav_icone.png")
-            }
-            style={{
-              width: width >= 720 ? 80 : 40,
-              height: width >= 720 ? 80 : 40,
-            }}
+          <Footersvg
+            val="orderhistory"
+            status={page === "orderhistory" ? true : false}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -106,13 +106,7 @@ const ButtomNavigation = (props) => {
           }}
           onPress={CartPage}
         >
-          <Image
-            source={require("../../../assets/AppFooterIcons/cart_down_nav_icone.png")}
-            style={{
-              width: width >= 720 ? 80 : 40,
-              height: width >= 720 ? 80 : 40,
-            }}
-          />
+          <Footersvg val="cart" status={false} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -123,12 +117,9 @@ const ButtomNavigation = (props) => {
           }}
           onPress={NotificationPage}
         >
-          <Image
-            source={require("../../../assets/AppFooterIcons/Notification_down_nav_icone.png")}
-            style={{
-              width: width >= 720 ? 80 : 40,
-              height: width >= 720 ? 80 : 40,
-            }}
+          <Footersvg
+            val="notification"
+            status={page === "notification" ? true : false}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -140,20 +131,41 @@ const ButtomNavigation = (props) => {
           }}
           onPress={ProfilePage}
         >
-          <Image
-            source={
-              page === "profile"
-                ? require("../../../assets/select_profile.png")
-                : require("../../../assets/AppFooterIcons/Profile_down_nav_icone.png")
-            }
-            style={{
-              width: width >= 720 ? 80 : 40,
-              height: width >= 720 ? 80 : 40,
-            }}
-          />
+          <Footersvg val="profile" status={page === "profile" ? true : false} />
         </TouchableOpacity>
       </View>
     </View>
+    <Modal
+        visible={isCreateAccountVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeCreateAccountModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "95%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 25,
+              marginBottom: 25,
+            }}
+          >
+            <CreateAccount onClose={closeCreateAccountModal} />
+          </View>
+        </View>
+      </Modal>
+    </>
+    
+    
   );
 };
 
