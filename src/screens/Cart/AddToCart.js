@@ -1159,7 +1159,7 @@ const AddToCart = (props) => {
                   </View>
                 </ScrollView>
                 <View>
-                  <View style={{ width: "100%", backgroundColor: "#FFF" }}>
+                  <View style={{ width: "100%",maxHeight:"70%" ,justifyContent:"center",alignContent:"flex-end"}}>
                     <View style={{ marginHorizontal: "3%" }}>
                       <TextInput
                         value={promoCode}

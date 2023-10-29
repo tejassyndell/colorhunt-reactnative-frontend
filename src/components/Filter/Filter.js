@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { getCategories } from "../../api/api";
 import { useRef } from "react";
+import { Svg, G, Path, Circle } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
 
 
@@ -200,58 +201,64 @@ export default function Filter({
         }}
       >
         {status === false ? (
-          <View style={status === false ? styles.header : styles.categoryx}>
+          <View style={status === false ? styles.header : styles.category}>
             <Text style={styles.headerText}>Categories</Text>
             <TouchableOpacity onPress={closeFilter}>
-              <Image
-                source={require("../../../assets/FilterIcon/Close.png")}
-                style={styles.closeIcon}
-              />
+              <Svg style={styles.closeIcon} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <G id="Group 1000010296">
+                  <Circle id="Ellipse 1234" cx="16" cy="16" r="16" fill="#212121" />
+                  <G id="Group 1000010293">
+                    <Path id="Vector 8" d="M21.7666 21.668L10.0993 10.0007" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    <Path id="Vector 9" d="M21.7666 10L10.0993 21.6673" stroke="white" stroke-width="2" stroke-linecap="round" />
+                  </G>
+                </G>
+              </Svg>
+
             </TouchableOpacity>
           </View>
         ) : (
           ""
         )}
         {status === false ? (
-          <ScrollView style={{width:'100%',height: height >= 844 ? 360 : 250}}>
-          <View style={styles.categoriesContainer}>
-            {data.map((item) => (
-              <TouchableOpacity
-                key={item.Id}
-                style={[
-                  styles.categoryItem,
-                  selectedCategories.includes(item.Category) && {
-                    backgroundColor: "black",
-                  },
-                ]}
-                onPress={() => handleCategorySelect(item.Category)}
-              >
-                <Text
+          <ScrollView style={{ width: '100%', height: height >= 844 ? 360 : 250 }}>
+            <View style={styles.categoriesContainer}>
+              {data.map((item) => (
+                <TouchableOpacity
+                  key={item.Id}
                   style={[
-                    styles.categoryText,
+                    styles.categoryItem,
                     selectedCategories.includes(item.Category) && {
-                      color: "#FFF",
+                      backgroundColor: "black",
                     },
                   ]}
+                  onPress={() => handleCategorySelect(item.Category)}
                 >
-                  {item.Category}
-                </Text>
-                <View
-                  style={[
-                    styles.radioButton,
-                    selectedCategories.includes(item.Category) && {
-                      backgroundColor: "white",
-                    },
-                  ]}
-                >
-                  {selectedCategories.includes(item.Category) && (
-                    <View style={styles.radioInnerCircle} />
-                  )}
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
+                  <Text
+                    style={[
+                      styles.categoryText,
+                      selectedCategories.includes(item.Category) && {
+                        color: "#FFF",
+                      },
+                    ]}
+                  >
+                    {item.Category}
+                  </Text>
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedCategories.includes(item.Category) && {
+                        backgroundColor: "white",
+                      },
+                    ]}
+                  >
+                    {selectedCategories.includes(item.Category) && (
+                      <View style={styles.radioInnerCircle} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         ) : (
           ""
         )}
@@ -260,10 +267,15 @@ export default function Filter({
             <View style={styles.headertrue}>
               <Text style={styles.headerText}>Price Range </Text>
               <TouchableOpacity onPress={closeFilter}>
-                <Image
-                  source={require("../../../assets/FilterIcon/Close.png")}
-                  style={styles.closeIcon}
-                />
+                <Svg style={styles.closeIcon} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <G id="Group 1000010296">
+                    <Circle id="Ellipse 1234" cx="16" cy="16" r="16" fill="#212121" />
+                    <G id="Group 1000010293">
+                      <Path id="Vector 8" d="M21.7666 21.668L10.0993 10.0007" stroke="white" stroke-width="2" stroke-linecap="round" />
+                      <Path id="Vector 9" d="M21.7666 10L10.0993 21.6673" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </G>
+                  </G>
+                </Svg>
               </TouchableOpacity>
             </View>
           ) : (
@@ -276,7 +288,7 @@ export default function Filter({
                 style={{
                   textAlign: "left",
                   fontSize: width >= 720 ? 25 : 15,
-                 fontFamily: "Glory",
+                  fontFamily: "Glory",
                   paddingRight: 10,
                   paddingBottom: 5,
                 }}
@@ -324,7 +336,7 @@ export default function Filter({
                 style={{
                   textAlign: width >= 720 ? "right" : "left",
                   fontSize: width >= 720 ? 25 : 15,
-                 fontFamily: "Glory",
+                  fontFamily: "Glory",
                   paddingLeft: 30,
                 }}
               >
@@ -334,31 +346,31 @@ export default function Filter({
           </View>
         </View>
         <View style={styles.buttonsContainer}>
-          
-            <TouchableOpacity
-              style={[
-                styles.resetButton,
-                {
-                  backgroundColor:
-                    selectedCategories.length > 0 ? "black" : "white",
-                  color: selectedCategories.length > 0 ? "white" : "black",
-                },
-              ]}
-              onPress={resetFilters}
+
+          <TouchableOpacity
+            style={[
+              styles.resetButton,
+              {
+                backgroundColor:
+                  selectedCategories.length > 0 ? "black" : "white",
+                color: selectedCategories.length > 0 ? "white" : "black",
+              },
+            ]}
+            onPress={resetFilters}
+          >
+            <Text
+              style={{
+                color: selectedCategories.length > 0 ? "white" : "black",
+                fontWeight: "600",
+                fontFamily: "Glory",
+                fontSize: 18, // Add this line for bold text
+              }}
             >
-              <Text
-                style={{
-                  color: selectedCategories.length > 0 ? "white" : "black",
-                  fontWeight: "600",
-                 fontFamily: "Glory",
-                  fontSize: 18, // Add this line for bold text
-                }}
-              >
-                Reset
-              </Text>
-            </TouchableOpacity>
-     
-         
+              Reset
+            </Text>
+          </TouchableOpacity>
+
+
 
           <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
             <Text style={styles.buttonText}>Apply</Text>
@@ -388,7 +400,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: width >= 720 ? 30 : 22,
-   fontFamily: "Glory",
+    fontFamily: "Glory",
     fontWeight: "bold",
   },
   closeIcon: {
@@ -440,7 +452,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: width >= 720 ? 16 : 12,
-   fontFamily: "Glory",
+    fontFamily: "Glory",
     marginLeft: 3,
     width: "80%",
     paddingVertical: 5,
@@ -467,7 +479,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: width >= 720 ? 30 : 22,
-   fontFamily: "Glory",
+    fontFamily: "Glory",
     marginBottom: 10,
     fontWeight: "700",
     height: 50,
@@ -488,7 +500,7 @@ const styles = StyleSheet.create({
     height: width >= 720 ? 42 : 38,
     width: width >= 720 ? 120 : 76,
     fontSize: width >= 720 ? 42 : 24,
-   fontFamily: "Glory",
+    fontFamily: "Glory",
     fontWeight: "700",
     alignItems: "center",
     justifyContent: "center",
@@ -504,8 +516,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 20 : 18,
-   fontFamily: "Glory",
-    paddingBottom:3,
+    fontFamily: "Glory",
+    paddingBottom: 3,
     fontWeight: "600",
   },
   tooltipContainer: {
@@ -520,7 +532,7 @@ const styles = StyleSheet.create({
     top: 20,
     color: "black",
     fontSize: 16,
-   fontFamily: "Glory",
+    fontFamily: "Glory",
   },
 });
 
@@ -567,7 +579,7 @@ const styleslider = StyleSheet.create({
     top: 15,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
-   fontFamily: "Glory",
+    fontFamily: "Glory",
     fontWeight: "500",
   },
 });

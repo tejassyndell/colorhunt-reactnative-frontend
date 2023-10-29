@@ -52,7 +52,6 @@ export default function HomeScreen(props) {
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
-
   const onRefresh = () => {
     setRefreshing(true);
 
@@ -136,6 +135,7 @@ export default function HomeScreen(props) {
   }, []);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev);
+    Keyboard.dismiss();
   };
 
   const openCreateAccountModal = () => {
@@ -187,9 +187,10 @@ export default function HomeScreen(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
+    setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
     try {
       await getAddWishlist(data).then((res) => {
-        getWishlist();
+        // getWishlist();
       });
     } catch (error) {
       console.log(error);
@@ -201,11 +202,15 @@ export default function HomeScreen(props) {
       party_id: await getpartyid(),
       article_id: i.Id,
     };
-
+    let selectedlist = selectedprd;
+    selectedlist = selectedlist.filter((item) => {
+      return item.Id !== i.Id;
+    });
+    setSelectprd(selectedlist);
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist();
+          // getWishlist();
         }
       });
     } catch (error) {
@@ -263,6 +268,7 @@ export default function HomeScreen(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
+        
         <View
           style={{
             marginLeft: 5,
@@ -275,6 +281,7 @@ export default function HomeScreen(props) {
         >
           <TouchableOpacity
             onPress={() => {
+              Keyboard.dismiss();
               navigation.openDrawer();
             }}
           >
@@ -1043,6 +1050,7 @@ export default function HomeScreen(props) {
             
            }}
          >
+          
            <Filter
              onFilterChange={handleFilterChange}
              onCloseFilter={handleCloseFilter}
@@ -1053,6 +1061,7 @@ export default function HomeScreen(props) {
              spr={selectedPriceRange}
              uniquerates={nameDatas}
            />
+     
          </View>
        </View>
       )}
