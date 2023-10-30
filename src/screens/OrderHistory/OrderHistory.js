@@ -50,7 +50,8 @@ const OrderHistory = (props) => {
   const [filtercurrentPage, setFiltercurrentPage] = useState(0);
   const [outwardcurrentPage, setOutwardcurrentPage] = useState(0);
   const [filteroutwardcurrentPage, setFilteroutwardcurrentPage] = useState(0);
-
+  const [filterosstatus, setFilterosstatus] = useState(false);
+  const [filteroutwardstatus, setFilteroutwardstatus] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
 
@@ -91,10 +92,10 @@ const OrderHistory = (props) => {
       console.log({ PartyId: userdata[0].Id, page: nextPage, pageSize: 10, filterdate: formattedDate });
       await FilterSoNumber({ PartyId: userdata[0].Id, page: nextPage, pageSize: 10, filterdate: formattedDate }).then((res) => {
         if (res.status == 200) {
-          if (hasMore) {
+          if (res.data.hasMore) {
             setFiltercurrentPage(nextPage)
             setSoNumberData(prevData => [...prevData, ...res.data.data]);
-            handleScroll()
+            handlefilterscroll()
           }
           else {
             console.log(res.data);
@@ -122,7 +123,7 @@ const OrderHistory = (props) => {
             if (res.data.hasMore) {
               setFilteroutwardcurrentPage(nextPage)
               setcompletedsodata(prevData => [...prevData, ...res.data.data]);
-              handleScroll()
+              handlefilterscroll()
             }
             else {
               console.log("second time");
@@ -195,15 +196,32 @@ const OrderHistory = (props) => {
     const { contentOffset, contentSize, layoutMeasurement } = nativeEvent;
     const isEndOfList = contentOffset.y + layoutMeasurement.height + 1 >= contentSize.height;
 
+
     if (isEndOfList) {
       // User has reached the end of the list, load the next page
+
       if (orderstatus) {
-        getSonumber();
+        if (filterosstatus == false) {
+          getSonumber();
+        }
       } else {
-        getCompleteData();
+        if (filteroutwardstatus == false) {
+          getCompleteData();
+        }
       }
     }
   };
+  const handlefilterscroll = () => {
+    if (orderstatus) {
+      if (filterosstatus == true) {
+        filterOsDataByDate();
+      }
+    } else {
+      if (filteroutwardstatus == true) {
+        filterdataOfcompleted();
+      }
+    }
+  }
   const getSonumber = async () => {
     const nextPage = currentPage + 1;
     let data = await AsyncStorage.getItem("UserData");
@@ -368,7 +386,10 @@ const OrderHistory = (props) => {
                       onRefresh={onRefresh}
                     />
                   }
-                  onScroll={handleScroll}
+                  onScroll={(event) => {
+                    handleScroll(event);
+                  }}
+
                 >
                   {sonumberdata
                     ? sonumberdata.map((item, index) =>
@@ -698,9 +719,13 @@ const OrderHistory = (props) => {
                   <TouchableOpacity
                     onPress={() => {
                       toggleCalendar();
-                      orderstatus ?
-                        setSelectedDate("DD/MM/YYYY") :
+                      if (orderstatus) {
+                        setFilterosstatus(false)
+                        setSelectedDate("DD/MM/YYYY")
+                      } else {
+                        setFilteroutwardstatus(false)
                         setSelectedDateIncompleted("DD/MM/YYYY")
+                      }
                       orderstatus ?
                         setSoNumberData(oldDataOfso) :
                         setcompletedsodata(olddataofcompleted)
@@ -742,9 +767,14 @@ const OrderHistory = (props) => {
                       justifyContent: "center",
                     }}
                     onPress={() => {
-                      orderstatus
-                        ? filterOsDataByDate()
-                        : filterdataOfcompleted();
+                      if (orderstatus) {
+                        setFilterosstatus(true)
+                        filterOsDataByDate()
+                      }
+                      else {
+                        setFilteroutwardstatus(true)
+                        filterdataOfcompleted()
+                      }
                       toggleCalendar();
                     }}
                   >
