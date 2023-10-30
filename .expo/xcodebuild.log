@@ -14,8 +14,8 @@ note: Target dependency graph (1 target)
 GatherProvisioningInputs
 
 CreateBuildDescription
-Build description signature: 65d9ee16a162a031bb059a05cdeaf36b
-Build description path: /Users/syndell-068/Library/Developer/Xcode/DerivedData/ColorHunt-bizosntrxudmcscvnwrblpfjozth/Build/Intermediates.noindex/XCBuildData/65d9ee16a162a031bb059a05cdeaf36b.xcbuilddata
+Build description signature: b6a9c589e5fe871ad1997745188732da
+Build description path: /Users/syndell-068/Library/Developer/Xcode/DerivedData/ColorHunt-bizosntrxudmcscvnwrblpfjozth/Build/Intermediates.noindex/XCBuildData/b6a9c589e5fe871ad1997745188732da.xcbuilddata
 
 /Users/syndell-068/Documents/GitHub/colorhunt-reactnative-frontend/ios/Pods/Target Support Files/Pods-ColorHunt/Pods-ColorHunt.debug.xcconfig:1:1: error: unable to open configuration settings file
 warning: Run script build phase 'Start Packager' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'ColorHunt' from project 'ColorHunt')

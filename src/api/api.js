@@ -51,7 +51,6 @@ export const getAddWishlist = async (data) => {
 };
 /////////getWishlistData
 export const getWishlistData = async (data) => {
-  console.log(data);
   try {
     return await axios.post(`${url}/getWishlist`, data);
   } catch (error) {
@@ -200,6 +199,7 @@ export const CollectInwardForCartArticals = async (data) => {
 };
 
 export const getsonumber = async (data) => {
+  console.log(data);
   try {
     return await axios.post(`${url}/getsonumber`, data);
   } catch (err) {
@@ -250,3 +250,19 @@ export const getCompletedSoDetails = async (data) => {
     console.log(err);
   }
 };
+
+export const FilterSoNumber = async(data)=>{
+  try {
+    return await axios.post(`${url}/filtersonumber`, data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const FilteroutwardNumber = async(data)=>{
+  try {
+    return await axios.post(`${url}/filteroutwardnumber`, data);
+  } catch (err) {
+    console.log(err);
+  }
+}

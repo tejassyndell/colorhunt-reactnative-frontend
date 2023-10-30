@@ -15,6 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "../../components/Loader/Loader"
+
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
 
@@ -101,12 +102,13 @@ export default function WishList(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status:"true"
     };
     const result = await getWishlistData(data).then((res) => {
       console.log(res.data);
       setSelectprd(res.data);
       setIsLoading(false);
-      z;
+      
     });
   };
 
@@ -148,10 +150,10 @@ export default function WishList(props) {
         </View>
       ),
       headerRight: () => <View />,
-        headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+      headerStyle: {
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -276,9 +278,9 @@ export default function WishList(props) {
   return (
     <>
       {isLoading ? (
-        <View style={styles.loader}>
-           <Loader/>
-        </View>
+         <View style={styles.loader}>
+         <Loader/>
+      </View>
       ) : selectedprd.length === 0 ? (
         <View
           style={{
@@ -316,7 +318,7 @@ export default function WishList(props) {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 width: width * 0.4,
                 height: height * 0.06,
@@ -335,9 +337,9 @@ export default function WishList(props) {
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                 }}
               >
-                Continue Shopping
+                Go to home page
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       ) : (

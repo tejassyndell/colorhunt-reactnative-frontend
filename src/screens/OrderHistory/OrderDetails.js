@@ -15,7 +15,6 @@ import React, { useState } from "react";
 import { ThemeProvider, useRoute } from "@react-navigation/native";
 import { Table, Row, Rows } from "react-native-table-component";
 import Textarea from "react-native-textarea";
-import Loader from "../../components/Loader/Loader"
 import { getSoArticleDetails, getcompleteoutwordDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
@@ -24,6 +23,7 @@ import { shareAsync } from "expo-sharing";
 import * as Location from "expo-location";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
+import Loader from "../../components/Loader/Loader"
 
 const OrderDetails = (props) => {
   const { navigation } = props;
@@ -107,10 +107,10 @@ const OrderDetails = (props) => {
         </View>
       ),
       headerRight: () => <View />,
-        headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+      headerStyle: {
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -423,7 +423,7 @@ const OrderDetails = (props) => {
     <table border="1" cellspacing="0" cellpadding="10" width="100%">
       
         <tr>
-            <td colspan="12" style="text-align: center; background-color: black; color: black;font-weight: bold">
+            <td colspan="12" style="text-align: center; background-color: black; color: white;font-weight: bold">
                 COLORHUNT
             </td>
         </tr>
@@ -449,7 +449,7 @@ const OrderDetails = (props) => {
                 }
             </td>
             <td style="text-transform: uppercase" colspan="1">
-                <strong>SO NO:</strong>
+                <strong>${OutwardNumber!==0?"OUTWARD NO": "SO NO:"}</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">
                ${`${name}${
@@ -528,15 +528,16 @@ const OrderDetails = (props) => {
   return (
     <>
       {isloading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-         <Loader/>
-        </View>
+         <View
+         style={{
+           flex: 1,
+           justifyContent: "center",
+           alignItems: "center",
+           backgroundColor:"#FFFFFF"
+         }}
+       >
+          <Loader/>
+       </View>
       ) : (
         <View
           style={{
@@ -784,7 +785,6 @@ const OrderDetails = (props) => {
                         {/* Fixed Header Row */}
                         <Row
                           data={tableData ? tableData.tableHead : ""}
-                          key={value}
                           textStyle={{
                             textAlign: "center",
                             fontWeight: "bold",
@@ -813,7 +813,6 @@ const OrderDetails = (props) => {
                           {/* Data Rows */}
                           <Rows
                             data={tableData ? tableData.tableData : ""}
-                            key={value}
                             textStyle={{
                               margin: 6,
                               textAlign: "center",
@@ -903,6 +902,7 @@ const OrderDetails = (props) => {
                     padding: 8,
                     borderTopRightRadius: 10,
                     borderBottomRightRadius: 10,
+                    backgroundColor:"black"
                   }}
                 >
                   <Text
@@ -913,7 +913,7 @@ const OrderDetails = (props) => {
                       color: "#FFFFFF",
                     }}
                   >
-                   
+                   {name}
                   </Text>
                 </TouchableOpacity>
                 <Text
@@ -1030,7 +1030,7 @@ const OrderDetails = (props) => {
                           color: "#808080",
                         }}
                       >
-                        SoNumber:
+                       { OutwardNumber!==0? "Outward Number":"SoNumber"}
                       </Text>
                     </View>
                     <View style={{ flex: 1 }}>
@@ -1183,7 +1183,6 @@ const OrderDetails = (props) => {
                             {/* Fixed Header Row */}
                             <Row
                               data={tableData ? tableData.tableHead : ""}
-                              key={value}
                               textStyle={{
                                 textAlign: "center",
                                 fontWeight: "bold",
@@ -1212,7 +1211,6 @@ const OrderDetails = (props) => {
                             {/* Data Rows */}
                             <Rows
                               data={tableData ? tableData.tableData : ""}
-                              key={value}
                               textStyle={{
                                 margin: 6,
                                 textAlign: "center",

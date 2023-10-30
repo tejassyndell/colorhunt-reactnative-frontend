@@ -58,10 +58,10 @@ export default function Notification(props) {
           </Text>
         </View>
       ),
-        headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+      headerStyle: {
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);

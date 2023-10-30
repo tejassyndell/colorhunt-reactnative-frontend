@@ -9,7 +9,7 @@ import {
   Pressable,
   Platform,
   RefreshControl,
-  Keyboard 
+  Keyboard,
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -25,8 +25,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { ImageZoomProps } from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
-import Loader from "../../components/Loader/Loader"
 import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg";
+import Loader from "../../components/Loader/Loader";
+
 const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
@@ -144,10 +145,10 @@ const AddToCart = (props) => {
         </View>
       ),
       headerRight: () => <View />,
-        headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+      headerStyle: {
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -470,10 +471,10 @@ const AddToCart = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor:'#FFF'
+            backgroundColor: "#FFF",
           }}
         >
-           <Loader/>
+          <Loader />
         </View>
       ) : orderItems.length === 0 ? (
         <View
@@ -1158,7 +1159,7 @@ const AddToCart = (props) => {
                   </View>
                 </ScrollView>
                 <View>
-                  <View style={{ width: "100%", backgroundColor: "#FFF" }}>
+                  <View style={{ width: "100%",maxHeight:"70%" ,justifyContent:"center",alignContent:"flex-end"}}>
                     <View style={{ marginHorizontal: "3%" }}>
                       <TextInput
                         value={promoCode}
