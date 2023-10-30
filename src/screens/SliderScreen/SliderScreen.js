@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -13,11 +13,31 @@ import Swiper from "react-native-swiper";
 import SliderStyles from "./styles";
 import Blacklogo from "../../jssvgs/Blacklogo";
 import Sliderwhitelog from "../../jssvgs/Sliderwhitelog";
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 const { width, height } = Dimensions.get("window");
 
+
 const SliderScreen = (props) => {
   const { navigation } = props;
+  const showNavigation = async () => {
+    if (SystemNavigationBar && SystemNavigationBar.navigationHide) {
+      try {
+        const result = await SystemNavigationBar.navigationHide();
+        console.log("Show Navigation Bar:", result);
+      } catch (error) {
+        console.error("Error showing navigation bar:", error);
+      }
+    } else {
+      console.error("SystemNavigationBar or immersive function is not available.");
+    }
+  };
+  
+    useEffect(() => {
+      showNavigation(); // Call this function to hide the navigation bar when the component mounts
+    }, []);
+
+
 
   const Shopping = () => {
     navigation.navigate("Home");

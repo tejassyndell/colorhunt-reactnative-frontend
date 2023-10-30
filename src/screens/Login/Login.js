@@ -227,11 +227,13 @@ const Login = (props) => {
         try {
           if (!phoneNumber) {
             getstatus(false);
+
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
             navigation.navigate("Slider", { isLoggedIn: false });
             return;
           } else {
+
           }
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
