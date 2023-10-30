@@ -9,11 +9,13 @@ import {
   PanResponder,
   Animated,
   Easing,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import { getCategories } from "../../api/api";
 import { useRef } from "react";
+import { Svg, G, Path, Circle } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
+
 
 export default function Filter({
   onFilterChange,
@@ -199,22 +201,26 @@ export default function Filter({
         }}
       >
         {status === false ? (
-          <View style={status === false ? styles.header : styles.categoryx}>
+          <View style={status === false ? styles.header : styles.category}>
             <Text style={styles.headerText}>Categories</Text>
             <TouchableOpacity onPress={closeFilter}>
-              <Image
-                source={require("../../../assets/FilterIcon/Close.png")}
-                style={styles.closeIcon}
-              />
+              <Svg style={styles.closeIcon} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <G id="Group 1000010296">
+                  <Circle id="Ellipse 1234" cx="16" cy="16" r="16" fill="#212121" />
+                  <G id="Group 1000010293">
+                    <Path id="Vector 8" d="M21.7666 21.668L10.0993 10.0007" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    <Path id="Vector 9" d="M21.7666 10L10.0993 21.6673" stroke="white" stroke-width="2" stroke-linecap="round" />
+                  </G>
+                </G>
+              </Svg>
+
             </TouchableOpacity>
           </View>
         ) : (
           ""
         )}
         {status === false ? (
-          <ScrollView
-            style={{ width: "100%", height: height >= 844 ? 350 : 250 }}
-          >
+          <ScrollView style={{ width: '100%', height: height >= 844 ? 360 : 250 }}>
             <View style={styles.categoriesContainer}>
               {data.map((item) => (
                 <TouchableOpacity
@@ -261,10 +267,15 @@ export default function Filter({
             <View style={styles.headertrue}>
               <Text style={styles.headerText}>Price Range </Text>
               <TouchableOpacity onPress={closeFilter}>
-                <Image
-                  source={require("../../../assets/FilterIcon/Close.png")}
-                  style={styles.closeIcon}
-                />
+                <Svg style={styles.closeIcon} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <G id="Group 1000010296">
+                    <Circle id="Ellipse 1234" cx="16" cy="16" r="16" fill="#212121" />
+                    <G id="Group 1000010293">
+                      <Path id="Vector 8" d="M21.7666 21.668L10.0993 10.0007" stroke="white" stroke-width="2" stroke-linecap="round" />
+                      <Path id="Vector 9" d="M21.7666 10L10.0993 21.6673" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </G>
+                  </G>
+                </Svg>
               </TouchableOpacity>
             </View>
           ) : (
@@ -335,6 +346,7 @@ export default function Filter({
           </View>
         </View>
         <View style={styles.buttonsContainer}>
+
           <TouchableOpacity
             style={[
               styles.resetButton,
@@ -349,7 +361,7 @@ export default function Filter({
             <Text
               style={{
                 color: selectedCategories.length > 0 ? "white" : "black",
-                fontWeight: "bold",
+                fontWeight: "600",
                 fontFamily: "Glory",
                 fontSize: 18, // Add this line for bold text
               }}
@@ -357,6 +369,8 @@ export default function Filter({
               Reset
             </Text>
           </TouchableOpacity>
+
+
 
           <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
             <Text style={styles.buttonText}>Apply</Text>

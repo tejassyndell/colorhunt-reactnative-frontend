@@ -550,7 +550,7 @@ const AddToCart = (props) => {
               }}
             >
               <View style={{ width: "100%", backgroundColor: "#FFF" }}>
-                <ScrollView nestedScrollEnabled={true}>
+                <ScrollView  nestedScrollEnabled={true}>
                   <View
                     style={{
                       width: "100%",
@@ -563,8 +563,7 @@ const AddToCart = (props) => {
                       style={{
                         backgroundColor: "#FFF",
                         height: "auto",
-                        // maxHeight: windowwidthe * 1,
-                        maxHeight: "100%",
+                        maxHeight: windowwidthe * 1.1,
                       }}
                     >
                       <View
@@ -1159,7 +1158,7 @@ const AddToCart = (props) => {
                   </View>
                 </ScrollView>
                 <View>
-                  <View style={{ width: "100%", backgroundColor: "#FFF" }}>
+                  <View style={{ width: "100%" }}>
                     <View style={{ marginHorizontal: "3%" }}>
                       <TextInput
                         value={promoCode}

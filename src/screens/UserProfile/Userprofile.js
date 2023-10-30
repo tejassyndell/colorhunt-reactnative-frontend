@@ -118,7 +118,9 @@ export default function Userprofile(props) {
         height: headerHeight, // Increase the header height here
         elevation: 0, // Remove the shadow on Android
         shadowOpacity: 0, // Remove the shadow on iOS
+        backgroundColor:"black"
       },
+
     });
   }, []);
 

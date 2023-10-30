@@ -533,6 +533,7 @@ const OrderDetails = (props) => {
            flex: 1,
            justifyContent: "center",
            alignItems: "center",
+           backgroundColor:"#FFFFFF"
          }}
        >
           <Loader/>
@@ -901,6 +902,7 @@ const OrderDetails = (props) => {
                     padding: 8,
                     borderTopRightRadius: 10,
                     borderBottomRightRadius: 10,
+                    backgroundColor:"black"
                   }}
                 >
                   <Text
