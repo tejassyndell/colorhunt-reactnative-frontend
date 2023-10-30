@@ -1,9 +1,7 @@
 import React from "react";
 import "firebase/auth";
 import AppContainer from "./src/navigations/AppNavigation";
-import messaging from "@react-native-firebase/messaging";
 import "firebase/messaging";
-import { Alert } from "react-native";
 
 export default function App() {
   useEffect(() => {
