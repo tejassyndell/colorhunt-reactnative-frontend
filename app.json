@@ -14,9 +14,9 @@
       "color": "#007AFF"
     },
     "splash": {
-      "image": "./assets/Login/ScreenFlash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#000000"
+  
+      
+      "backgroundColor": "#FFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

@@ -51,7 +51,7 @@ const Login = (props) => {
     const timeoutId = setTimeout(() => {
       // Perform actions you want after the timeout (e.g., change loading state)
       setIsLoadingSplace(false);
-    }, 5000);
+    }, 2050);
 
     // Return a cleanup function to clear the timer if the component unmounts
     return () => {
@@ -290,16 +290,16 @@ const Login = (props) => {
 
   const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
 
-  const gifImageSource = require("../../../assets/Loader/Newfile.gif");
+  const gifImageSource = require("../../../assets/Loader/Screen.gif");
   return (
     <>
      {isLoadingSplace ? (
        <View style={{width: '100%', height: '100%',backgroundColor:'#FFF',alignItems:'center',justifyContent:'center'}}>
-       {/* <Image
+       <Image
                source={gifImageSource}
                style={{resizeMode:'contain',width:'90%'}}
              
-             /> */}
+             />
        </View>
      ):(
       <KeyboardAvoidingView

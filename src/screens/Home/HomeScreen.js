@@ -316,6 +316,9 @@ export default function HomeScreen(props) {
       headerTitle: () => null, // Remove the header title
       headerStyle: {
         height: headerHeight,
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0, 
+   
         // backgroundColor: "black",
       },
     });
@@ -955,11 +958,11 @@ export default function HomeScreen(props) {
               width: "92%",
               backgroundColor: "white",
               position: "absolute",
-              bottom: 0,
+              bottom: '40%',
               marginLeft: "4%",
               padding: 5,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
+              borderRadius: 20,
+             
             }}
           >
             <Filter
@@ -968,7 +971,7 @@ export default function HomeScreen(props) {
               Scategories={selectedCategories}
               minArticleRate={minArticleRate}
               maxArticleRate={maxArticleRate}
-              status={false}
+              status={true}
               spr={selectedPriceRange}
               uniquerates={nameDatas}
             />

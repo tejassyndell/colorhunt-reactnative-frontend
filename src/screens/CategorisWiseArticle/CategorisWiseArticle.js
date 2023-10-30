@@ -603,13 +603,12 @@ export default function CategorisWiseArticle(props) {
                   width: "92%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: 0,
+                  bottom: '40%',
                   left: 1,
                   right: 0, // To make it span the full width
                   marginLeft: "4%", // Margin on the left side
                   padding: 10,
-                  borderTopLeftRadius: 10, // Adjust the radius as needed
-                  borderTopRightRadius: 10,
+                  borderRadius: 10, // Adjust the radius as needed
                 }}
               >
                 <Filter

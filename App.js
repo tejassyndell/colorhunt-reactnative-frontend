@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "firebase/auth";
 import AppContainer from "./src/navigations/AppNavigation";
 import "firebase/messaging";
-import { StatusBar, Text, View, Modal, Image } from "react-native";
-import NetInfo from "@react-native-community/netinfo";
+import { StatusBar, SafeAreaView,TouchableOpacity } from "react-native";
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 export default function App() {
   // const [isOffline, setOfflineStatus] = useState(false);
@@ -25,6 +25,9 @@ export default function App() {
 
   return (
     <>
+     <SafeAreaView>
+      <TouchableOpacity onPress={() => changeNavigationBarColor('red')} />
+    </SafeAreaView>
       <StatusBar
         barStyle="dark-content"
         hidden={false}
