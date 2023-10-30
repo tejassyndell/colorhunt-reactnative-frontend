@@ -330,7 +330,7 @@ export default function DrawerContainer(props) {
               <TouchableOpacity
                 style={{
                   flexDirection: "row",
-                  marginLeft: 10,
+                  marginLeft: 14,
                   marginTop: 50,
                   width: "100%",
                 }}
