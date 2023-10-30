@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   RefreshControl,
+  Alert,
 } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -229,19 +230,46 @@ export default function HomeScreen(props) {
   const getCategoriesname = async () => {
     try {
       const result1 = await getcateGorywithphotos();
-      if (result1.status === 200) {
+      if (result1 && result1.status === 200) {
         setNameData(result1.data);
+      }else{
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getCategoriesname();
+              },
+            },
+          ]
+        );
       }
       const result2 = await getProductName();
-      if (result2.status === 200) {
+      if (result2 && result2.status === 200) {
         setNameDatas(result2.data);
         setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
+        setIsLoading(false);
+        setRefreshing(false);
       }
-      setIsLoading(false);
-      setRefreshing(false);
+      else{
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getCategoriesname();
+              },
+            },
+          ]
+        );
+      }
+      // console.log(result2,"|{{|{{|{{|{{|");
     } catch (error) {
       console.error(error);
-      setIsLoading(false);
       setRefreshing(false);
     }
   };

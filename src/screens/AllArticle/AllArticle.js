@@ -12,6 +12,7 @@ import {
   Keyboard,
   ScrollView,
   RefreshControl,
+  Alert,
 } from "react-native";
 import {
   getProductName,
@@ -157,12 +158,25 @@ export default function AllArticle(props) {
   const getCategoriesname = async () => {
     retrieveStoredCategories();
     const res = await getProductName();
-    if (res.status === 200) {
+    if (res && res.status === 200) {
       // console.log(res.data);
       setNameDatas(res.data);
       setFinalData(res.data);
       setIsLoading(false);
       setRefreshing(false);
+    }else{
+      Alert.alert(
+        "Server is not responding",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              // Call namdemo function when the user clicks 'OK'
+              getCategoriesname();
+            },
+          },
+        ]
+      );
     }
   };
   const rmvProductWishlist = async (i) => {

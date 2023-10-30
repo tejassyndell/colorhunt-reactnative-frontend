@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -255,6 +256,8 @@ const Login = (props) => {
               setShowLogin(false); // Switch to OTP view
               setIsLoading(false);
             } else {
+              console.log(res,"error");
+              Alert.alert("Server is not responding")
             }
           });
         } catch (error) {
