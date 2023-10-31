@@ -231,14 +231,20 @@ export default function HomeScreen(props) {
       const result1 = await getcateGorywithphotos();
       if (result1.status === 200) {
         setNameData(result1.data);
+        setTimeout(() => {
+          setIsLoading(false);
+          setRefreshing(false);
+        }, 2000)
       }
       const result2 = await getProductName();
       if (result2.status === 200) {
         setNameDatas(result2.data);
         setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
       }
-      setIsLoading(false);
-      setRefreshing(false);
+      setTimeout(() => {
+        setIsLoading(false);
+        setRefreshing(false);
+      }, 2000)
     } catch (error) {
       console.error(error);
       setIsLoading(false);

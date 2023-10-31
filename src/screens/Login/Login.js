@@ -327,12 +327,28 @@ const Login = (props) => {
             </View>
           </ImageBackground>
           <View style={styles.contentContainer}>
-            <Text style={styles.title}>Welcome!</Text>
-            <Text style={styles.subtitle}>
-              {showLogin
-                ? "Please Login To Continue"
-                : "Please Login To Continue"}
-            </Text>
+            {showLogin ? (
+               <View style={{width:'100%',alignItems:'center',height:140}}>
+
+               <Text style={styles.title}>Welcome!</Text>
+               <Text style={styles.subtitle}>
+                 {showLogin
+                   ? "Please Login To Continue"
+                   : "Please Login To Continue"}
+               </Text>
+               </View>
+            ):(
+              <View style={{width:'100%',alignItems:'center',height:'31%'}}>
+
+              <Text style={styles.title}>Welcome!</Text>
+              <Text style={styles.subtitle}>
+                {showLogin
+                  ? "Please Login To Continue"
+                  : "Please Login To Continue"}
+              </Text>
+              </View>
+            )}
+           
             {showLogin ? (
               <View style={styles.inputContainer}>
                 <View style={styles.phoneIconContainer}>
