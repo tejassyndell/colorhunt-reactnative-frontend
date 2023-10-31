@@ -4,10 +4,28 @@ import AppContainer from "./src/navigations/AppNavigation";
 import "firebase/messaging";
 import { StatusBar, Text, View, Modal, Image } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
+import { AccessibilityInfo } from "react-native";
 
 export default function App() {
   const [isOffline, setOfflineStatus] = useState(false);
   const [showNetworkError, setShowNetworkError] = useState(false);
+
+  // Function to enable/disable font scaling for a specific Text component
+  const setFontScaling = (textComponent, allowFontScaling) => {
+    AccessibilityInfo.setAccessibilityContentSizeMultipliers({
+      extraSmall: allowFontScaling ? 0.8 : 1.0,
+      small: allowFontScaling ? 0.8  : 1.0,
+      medium: allowFontScaling ? 1.0 : 1.0,
+      large: allowFontScaling ? 1.3 : 1.0,
+      extraLarge: allowFontScaling ? 1.45 : 1.0,
+      extraExtraLarge: allowFontScaling ? 1.6 : 1.0,
+      extraExtraExtraLarge: allowFontScaling ? 1.8 : 1.0,
+    });
+
+    textComponent.setNativeProps({
+      style: { fontSize: textComponent.props.style.fontSize },
+    });
+  };
 
   useEffect(() => {
     const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
@@ -22,6 +40,9 @@ export default function App() {
       } else {
         setShowNetworkError(false);
       }
+
+      // Call the setFontScaling function to disable font scaling
+      setFontScaling(Text, false);
     });
 
     return () => removeNetInfoSubscription();
@@ -49,7 +70,6 @@ export default function App() {
       {/* Network Error Popup */}
       <Modal
         animationType="slide"
-       
         visible={showNetworkError}
         onRequestClose={() => {
           // Handle modal close if needed
@@ -57,39 +77,41 @@ export default function App() {
         }}
       >
         <View
-        style={{
-          backgroundColor: "rgba(0,0,0,0.5)",
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          top:0,
-          right: 0,
-          left: 0,
-          zIndex: 2,
-        }}
-        >
-        <View
           style={{
-            width: "70%",
-             backgroundColor: "white",
-             position: "absolute",
-             bottom: '45%',
-             marginLeft: "13%",
-             padding: 5,
-             borderRadius: 20, // Set the background color to white
+            backgroundColor: "rgba(0,0,0,0.5)",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            left: 0,
+            zIndex: 2,
           }}
         >
-          <Image
-            source={require("./assets/wifiSignal.png")}
+          <View
             style={{
-              width: 50, // Adjust the width as needed
-              height: 50, // Adjust the height as needed
-              borderRadius: 5,
-              left:'42%'
+              width: "70%",
+              backgroundColor: "white",
+              position: "absolute",
+              bottom: "45%",
+              marginLeft: "13%",
+              padding: 5,
+              borderRadius: 20, // Set the background color to white
             }}
-          ></Image>
-          <Text style={{ marginTop: 10,left:'26%' }}>No Internet Connection</Text>
-        </View>
+          >
+            <Image
+              source={require("./assets/wifiSignal.png")}
+              style={{
+                width: 50, // Adjust the width as needed
+                height: 50, // Adjust the height as needed
+                borderRadius: 5,
+                left: "42%",
+              }}
+            ></Image>
+            <Text style={{ marginTop: 10, left: "26%" }}>
+              No Internet Connection
+            </Text>
+          </View>
         </View>
       </Modal>
     </>
