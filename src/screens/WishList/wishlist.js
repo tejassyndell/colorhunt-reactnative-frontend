@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  RefreshControl 
+  RefreshControl, 
+  Alert
 } from "react-native";
 import { getProductName, getWishlistData, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
@@ -77,6 +78,20 @@ export default function WishList(props) {
     if (res.status === 200) {
       setNameDatas(res.data);
     }
+    else{
+      Alert.alert(
+        "Server is not responding",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              // Call namdemo function when the user clicks 'OK'
+              getCategoriesname();
+            },
+          },
+        ]
+      );
+    }
   };
   const rmvProductWishlist = async (i) => {
     console.log(i, "r");
@@ -105,9 +120,24 @@ export default function WishList(props) {
       status:"true"
     };
     const result = await getWishlistData(data).then((res) => {
+      if(res.status==200){
       console.log(res.data);
       setSelectprd(res.data);
       setIsLoading(false);
+      }else{
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getWishlist();
+              },
+            },
+          ]
+        );
+      }
       
     });
   };

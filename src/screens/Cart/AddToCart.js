@@ -10,6 +10,7 @@ import {
   Platform,
   RefreshControl,
   Keyboard,
+  Alert,
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -109,8 +110,8 @@ const AddToCart = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -173,16 +174,33 @@ const AddToCart = (props) => {
     data = await JSON.parse(data);
     await cartdetails({ party_id: data[0].Id })
       .then((response) => {
-        console.log("Api response :", response.data[0]);
-        let arr1 = response.data.map((item) => item.article_id);
-        const parsedOrderItems = response.data.map((item) => ({
-          ...item,
-          Quantity: JSON.parse(item.Quantity),
-        }));
-        getDetailsOfInward(arr1, parsedOrderItems);
+        console.log(response);
+        if (response.status == 200) {
+            console.log("Api response :", response.data[0]);
+            let arr1 = response.data.map((item) => item.article_id);
+            const parsedOrderItems = response.data.map((item) => ({
+              ...item,
+              Quantity: JSON.parse(item.Quantity),
+            }));
+            getDetailsOfInward(arr1, parsedOrderItems);
 
-        console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
-        setOrderItems(parsedOrderItems);
+            console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
+            setOrderItems(parsedOrderItems);
+        }
+        else {
+          Alert.alert(
+            "Server is not responding",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  // Call namdemo function when the user clicks 'OK'
+                  cartDetails();
+                },
+              },
+            ]
+          );
+        }
       })
       .catch((error) => {
         console.log("Error fetching data:", error);
@@ -563,8 +581,7 @@ const AddToCart = (props) => {
                       style={{
                         backgroundColor: "#FFF",
                         height: "auto",
-                        // maxHeight: windowwidthe * 1,
-                        maxHeight: "100%",
+                        maxHeight: windowwidthe * 1.1,
                       }}
                     >
                       <View
@@ -1159,7 +1176,7 @@ const AddToCart = (props) => {
                   </View>
                 </ScrollView>
                 <View>
-                  <View style={{ width: "100%",maxHeight:"70%" ,justifyContent:"center",alignContent:"flex-end"}}>
+                  <View style={{ width: "100%" }}>
                     <View style={{ marginHorizontal: "3%" }}>
                       <TextInput
                         value={promoCode}

@@ -4,6 +4,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -15,7 +16,12 @@ import {
   TextInput,
   RefreshControl,
 } from "react-native-gesture-handler";
-import { FilterSoNumber, FilteroutwardNumber, getCompletedSoDetails, getsonumber } from "../../api/api";
+import {
+  FilterSoNumber,
+  FilteroutwardNumber,
+  getCompletedSoDetails,
+  getsonumber,
+} from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { Calendar } from "react-native-calendars";
@@ -23,7 +29,7 @@ import { Modal } from "react-native-paper";
 import Calendersvg from "../../jssvgs/Calendersvg";
 import CompletedOrderHistory from "../../jssvgs/Completedorderhistory";
 import PendingSvg from "../../jssvgs/Pendingsvg";
-import Loader from "../../components/Loader/Loader"
+import Loader from "../../components/Loader/Loader";
 
 const { width, height } = Dimensions.get("window");
 
@@ -50,7 +56,8 @@ const OrderHistory = (props) => {
   const [filtercurrentPage, setFiltercurrentPage] = useState(0);
   const [outwardcurrentPage, setOutwardcurrentPage] = useState(0);
   const [filteroutwardcurrentPage, setFilteroutwardcurrentPage] = useState(0);
-
+  const [filterosstatus, setFilterosstatus] = useState(false);
+  const [filteroutwardstatus, setFilteroutwardstatus] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
 
@@ -72,12 +79,11 @@ const OrderHistory = (props) => {
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
   const toggleCalendar = () => {
     setCalendarVisible(!isCalendarVisible);
   };
-
 
   const filterOsDataByDate = async () => {
     const nextPage = filtercurrentPage + 1;
@@ -87,22 +93,39 @@ const OrderHistory = (props) => {
       const dateParts = selectedDate.split("/");
 
       // Create a new Date object with the parts and format it as "YYYY-MM-DD"
-      const formattedDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`).toISOString().split('T')[0];
-      console.log({ PartyId: userdata[0].Id, page: nextPage, pageSize: 10, filterdate: formattedDate });
-      await FilterSoNumber({ PartyId: userdata[0].Id, page: nextPage, pageSize: 10, filterdate: formattedDate }).then((res) => {
+      const formattedDate = new Date(
+        `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
+      )
+        .toISOString()
+        .split("T")[0];
+      console.log({
+        PartyId: userdata[0].Id,
+        page: nextPage,
+        pageSize: 10,
+        filterdate: formattedDate,
+      });
+      await FilterSoNumber({
+        PartyId: userdata[0].Id,
+        page: nextPage,
+        pageSize: 10,
+        filterdate: formattedDate,
+      }).then((res) => {
         if (res.status == 200) {
-          if (hasMore) {
-            setFiltercurrentPage(nextPage)
-            setSoNumberData(prevData => [...prevData, ...res.data.data]);
-            handleScroll()
-          }
-          else {
-            console.log(res.data);
-            setFiltercurrentPage(0)
-            setSoNumberData(res.data.data);
+          if (res.data.data.length <= 0) {
+            setSodatanotfount(true);
+          } else {
+            if (res.data.hasMore) {
+              setFiltercurrentPage(nextPage);
+              setSoNumberData((prevData) => [...prevData, ...res.data.data]);
+              handlefilterscroll();
+            } else {
+              console.log(res.data);
+              setFiltercurrentPage(0);
+              setSoNumberData(res.data.data);
+            }
           }
         }
-      })
+      });
     }
   };
   const filterdataOfcompleted = async () => {
@@ -113,24 +136,35 @@ const OrderHistory = (props) => {
       const dateParts = selectedDateIncompleted.split("/");
 
       // Create a new Date object with the parts and format it as "YYYY-MM-DD"
-      const formattedDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`).toISOString().split('T')[0];
+      const formattedDate = new Date(
+        `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
+      )
+        .toISOString()
+        .split("T")[0];
       console.log(formattedDate);
 
-      await FilteroutwardNumber({ PartyId: userdata[0].Id, page: nextPage, pageSize: 10, filterdate: formattedDate })
-        .then((res) => {
-          if (res.status == 200) {
+      await FilteroutwardNumber({
+        PartyId: userdata[0].Id,
+        page: nextPage,
+        pageSize: 10,
+        filterdate: formattedDate,
+      }).then((res) => {
+        if (res.status == 200) {
+          if (res.data.data.length <= 0) {
+            setOutworddatanotfount(true);
+          } else {
             if (res.data.hasMore) {
-              setFilteroutwardcurrentPage(nextPage)
-              setcompletedsodata(prevData => [...prevData, ...res.data.data]);
-              handleScroll()
-            }
-            else {
+              setFilteroutwardcurrentPage(nextPage);
+              setcompletedsodata((prevData) => [...prevData, ...res.data.data]);
+              handlefilterscroll();
+            } else {
               console.log("second time");
-              setFilteroutwardcurrentPage(0)
+              setFilteroutwardcurrentPage(0);
               setcompletedsodata(res.data.data);
             }
           }
-        })
+        }
+      });
     }
   };
 
@@ -193,14 +227,31 @@ const OrderHistory = (props) => {
   }, []);
   const handleScroll = ({ nativeEvent }) => {
     const { contentOffset, contentSize, layoutMeasurement } = nativeEvent;
-    const isEndOfList = contentOffset.y + layoutMeasurement.height + 1 >= contentSize.height;
+    const isEndOfList =
+      contentOffset.y + layoutMeasurement.height + 1 >= contentSize.height;
 
     if (isEndOfList) {
       // User has reached the end of the list, load the next page
+
       if (orderstatus) {
-        getSonumber();
+        if (filterosstatus == false) {
+          getSonumber();
+        }
       } else {
-        getCompleteData();
+        if (filteroutwardstatus == false) {
+          getCompleteData();
+        }
+      }
+    }
+  };
+  const handlefilterscroll = () => {
+    if (orderstatus) {
+      if (filterosstatus == true) {
+        filterOsDataByDate();
+      }
+    } else {
+      if (filteroutwardstatus == true) {
+        filterdataOfcompleted();
       }
     }
   };
@@ -209,14 +260,32 @@ const OrderHistory = (props) => {
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: 10 }).then((res) => {
-      if (res.data.length <= 0) {
-        setSodatanotfount(true);
+      if(res && res.status==200){
+        if (res.data.data.length <= 0) {
+          setSodatanotfount(true);
+        }
+        else if (res.data.hasMore) {
+          setSoNumberData(prevData => [...prevData, ...res.data.data]);
+          setOldDateOfso(prevData => [...prevData, ...res.data.data]);
+          setCurrentPage(nextPage);
+        }
       }
-      if (res.data.hasMore) {
-        setSoNumberData(prevData => [...prevData, ...res.data.data]);
-        setOldDateOfso(prevData => [...prevData, ...res.data.data]);
-        setCurrentPage(nextPage);
+      else{
+        console.log(res,"_+_+_+");
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getSonumber();
+              },
+            },
+          ]
+        );
       }
+     
       setIsLoading(false);
       setRefreshing(false);
     });
@@ -263,29 +332,47 @@ const OrderHistory = (props) => {
   const getCompleteData = async () => {
     const nextPage = outwardcurrentPage + 1;
 
-
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
 
-    await getCompletedSoDetails({ PartyId: data[0].Id, page: nextPage, pageSize: 10 }).then((res) => {
-      if (res.data.length <= 0) {
+    await getCompletedSoDetails({
+      PartyId: data[0].Id,
+      page: nextPage,
+      pageSize: 10,
+    }).then((res) => {
+    if(res && res.status == 200){
+      if (res.data.data.length <= 0) {
         setOutworddatanotfount(true);
+        setIsLoadingsodetails(false);
       }
-      if (res.data.hasMore) {
-
+      else if ( res.data.hasMore) {
         if (nextPage == 1) {
           console.log("first time");
           setcompletedsodata(res.data.data);
           setOldDataOfCompleted(res.data.data);
         } else {
           console.log("second time");
-          setcompletedsodata(prevData => [...prevData, ...res.data.data]);
-          setOldDataOfCompleted(prevData => [...prevData, ...res.data.data]);
+          setcompletedsodata((prevData) => [...prevData, ...res.data.data]);
+          setOldDataOfCompleted((prevData) => [...prevData, ...res.data.data]);
         }
 
         setOutwardcurrentPage(nextPage);
+        setIsLoadingsodetails(false);
       }
-      setIsLoadingsodetails(false);
+    }else{
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getCompleteData();
+              },
+            },
+          ]
+        );
+      }
     });
   };
   return (
@@ -296,7 +383,7 @@ const OrderHistory = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: '#FFF'
+            backgroundColor: "#FFF",
           }}
         >
           <Loader />
@@ -368,23 +455,174 @@ const OrderHistory = (props) => {
                       onRefresh={onRefresh}
                     />
                   }
-                  onScroll={handleScroll}
+                  onScroll={(event) => {
+                    handleScroll(event);
+                  }}
                 >
                   {sonumberdata
                     ? sonumberdata.map((item, index) =>
-                      item.status === 0 ? (
+                        item.status === 0 ? (
+                          <TouchableOpacity
+                            key={index}
+                            style={orderstyles.data_cnt}
+                            onPress={() => {
+                              navigation.navigate("orderdetails", {
+                                sonumber: item.SoNumber,
+                                CreatedDate: item.CreatedDate,
+                                remarks: item.Remarks,
+                                transport: item.Transporter,
+                                name: item.UserName,
+                                startyear: item.StartYear,
+                                endyear: item.EndYear,
+                              });
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "60%",
+                                paddingVertical: "2%",
+
+                                paddingLeft: "2%",
+                              }}
+                            >
+                              <View style={{ gap: 8 }}>
+                                <View style={orderstyles.text_cnt}>
+                                  <Text style={orderstyles.txt_titile}>
+                                    SO No :
+                                  </Text>
+                                  <Text style={orderstyles.txt_val}>
+                                    {`${item.UserName}${item.SoNumber}/${item.StartYear}-${item.EndYear}`}
+                                  </Text>
+                                </View>
+                                <View>
+                                  <View style={orderstyles.text_cnt}>
+                                    <Text style={orderstyles.txt_titile}>
+                                      Pieces :
+                                    </Text>
+                                    <Text style={orderstyles.txt_val}>
+                                      {item.OutwardNoPacks[0] !== null
+                                        ? totalpices(item.OutwardNoPacks)
+                                        : "0"}
+                                    </Text>
+                                  </View>
+                                </View>
+                                <View>
+                                  <View
+                                    style={[
+                                      orderstyles.text_cnt,
+                                      { marginBottom: 10 },
+                                    ]}
+                                  >
+                                    <Text style={orderstyles.txt_titile}>
+                                      Total Amount :
+                                    </Text>
+                                    <Text style={orderstyles.txt_val}>
+                                      {item.OutwardNoPacks[0] !== null
+                                        ? calculateTotalAmount(
+                                            item.OutwardNoPacks,
+                                            item.ArticleRate
+                                          )
+                                        : "0"}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </View>
+                            </View>
+                            <View
+                              style={{
+                                width: "40%",
+                                paddingVertical: "2%",
+                                paddingRight: "2%",
+                              }}
+                            >
+                              <View style={{ height: "53%" }}>
+                                <View
+                                  style={[
+                                    orderstyles.text_cnt,
+                                    { justifyContent: "flex-end" },
+                                  ]}
+                                >
+                                  <Text style={orderstyles.txt_titile}>
+                                    Date :
+                                  </Text>
+                                  <Text style={orderstyles.txt_val}>
+                                    {new Date(item.SoDate).toLocaleDateString(
+                                      "en-GB",
+                                      {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                      }
+                                    )}
+                                  </Text>
+                                </View>
+                              </View>
+                              <View style={orderstyles.pending_icon}>
+                                <View style={orderstyles.pending_icon_text}>
+                                  <View
+                                    style={{
+                                      width: width < 720 ? 15 : 20,
+                                      height: width < 720 ? 16 : 22,
+                                    }}
+                                  >
+                                    <PendingSvg />
+                                  </View>
+                                  <Text
+                                    style={{
+                                      fontSize: width < 720 ? 10.854 : 16.854,
+                                      fontWeight: "700",
+                                      color: "#FF0203",
+                                    }}
+                                  >
+                                    Pending
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                        ) : (
+                          ""
+                        )
+                      )
+                    : ""}
+                </ScrollView>
+              </View>
+            )
+          ) : isLoadingsodetails ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FFF",
+              }}
+            >
+              <Loader />
+            </View>
+          ) : outworddatanotfount ? (
+            <View style={orderstyles.nodataContainer}>
+              <Text style={orderstyles.nodataText}>NO DATA AVAILABLE</Text>
+            </View>
+          ) : (
+            <View style={orderstyles.order_cnt}>
+              <ScrollView nestedScrollEnabled={true} onScroll={handleScroll}>
+                {completedsodata
+                  ? completedsodata.map((item) =>
+                      item.status === 1 ? (
                         <TouchableOpacity
-                          key={index}
                           style={orderstyles.data_cnt}
                           onPress={() => {
                             navigation.navigate("orderdetails", {
                               sonumber: item.SoNumber,
                               CreatedDate: item.CreatedDate,
-                              remarks: item.Remarks,
+                              // remarks: item.Remarks,
                               transport: item.Transporter,
                               name: item.UserName,
+                              OutwardNumber: item.OutwardNumber,
                               startyear: item.StartYear,
                               endyear: item.EndYear,
+                              outwardArticleId: item.outwardArticleId,
+                              OutwardNumberId: item.OutwardNumberId,
                             });
                           }}
                         >
@@ -392,17 +630,19 @@ const OrderHistory = (props) => {
                             style={{
                               width: "60%",
                               paddingVertical: "2%",
-
                               paddingLeft: "2%",
                             }}
                           >
                             <View style={{ gap: 8 }}>
                               <View style={orderstyles.text_cnt}>
                                 <Text style={orderstyles.txt_titile}>
-                                  SO No :
+                                  Outward No :
                                 </Text>
-                                <Text style={orderstyles.txt_val}>
-                                  {`${item.UserName}${item.SoNumber}/${item.StartYear}-${item.EndYear}`}
+                                <Text
+                                  style={orderstyles.txt_val}
+                                  adjustsFontSizeToFit={true}
+                                >
+                                  {`${item.OutwardNumber}/${item.StartYear}-${item.EndYear}`}
                                 </Text>
                               </View>
                               <View>
@@ -430,9 +670,9 @@ const OrderHistory = (props) => {
                                   <Text style={orderstyles.txt_val}>
                                     {item.OutwardNoPacks[0] !== null
                                       ? calculateTotalAmount(
-                                        item.OutwardNoPacks,
-                                        item.ArticleRate
-                                      )
+                                          item.OutwardNoPacks,
+                                          item.ArticleRate
+                                        )
                                       : "0"}
                                   </Text>
                                 </View>
@@ -457,35 +697,34 @@ const OrderHistory = (props) => {
                                   Date :
                                 </Text>
                                 <Text style={orderstyles.txt_val}>
-                                  {new Date(item.SoDate).toLocaleDateString(
-                                    "en-GB",
-                                    {
-                                      day: "2-digit",
-                                      month: "2-digit",
-                                      year: "numeric",
-                                    }
-                                  )}
+                                  {new Date(
+                                    item.CreatedDate
+                                  ).toLocaleDateString("en-GB", {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
+                                  })}
                                 </Text>
                               </View>
                             </View>
                             <View style={orderstyles.pending_icon}>
-                              <View style={orderstyles.pending_icon_text}>
+                              <View style={orderstyles.complete_icon_text}>
                                 <View
                                   style={{
                                     width: width < 720 ? 15 : 20,
                                     height: width < 720 ? 16 : 22,
                                   }}
                                 >
-                                  <PendingSvg />
+                                  <CompletedOrderHistory />
                                 </View>
                                 <Text
                                   style={{
                                     fontSize: width < 720 ? 10.854 : 16.854,
                                     fontWeight: "700",
-                                    color: "#FF0203",
+                                    color: "#7AC848",
                                   }}
                                 >
-                                  Pending
+                                  Completed
                                 </Text>
                               </View>
                             </View>
@@ -495,157 +734,6 @@ const OrderHistory = (props) => {
                         ""
                       )
                     )
-                    : ""}
-                </ScrollView>
-              </View>
-            )
-          ) : isLoadingsodetails ? (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: '#FFF'
-              }}
-            >
-              <Loader />
-            </View>
-          ) : outworddatanotfount ? (
-            <View style={orderstyles.nodataContainer}>
-              <Text style={orderstyles.nodataText}>NO DATA AVAILABLE</Text>
-            </View>
-          ) : (
-            <View style={orderstyles.order_cnt}>
-              <ScrollView nestedScrollEnabled={true} onScroll={handleScroll}>
-                {completedsodata
-                  ? completedsodata.map((item) =>
-                    item.status === 1 ? (
-                      <TouchableOpacity
-                        style={orderstyles.data_cnt}
-                        onPress={() => {
-                          navigation.navigate("orderdetails", {
-                            sonumber: item.SoNumber,
-                            CreatedDate: item.CreatedDate,
-                            // remarks: item.Remarks,
-                            transport: item.Transporter,
-                            name: item.UserName,
-                            OutwardNumber: item.OutwardNumber,
-                            startyear: item.StartYear,
-                            endyear: item.EndYear,
-                            outwardArticleId: item.outwardArticleId,
-                            OutwardNumberId: item.OutwardNumberId,
-                          });
-                        }}
-                      >
-                        <View
-                          style={{
-                            width: "60%",
-                            paddingVertical: "2%",
-                            paddingLeft: "2%",
-                          }}
-                        >
-                          <View style={{ gap: 8 }}>
-                            <View style={orderstyles.text_cnt}>
-                              <Text style={orderstyles.txt_titile}>
-                                Outward No :
-                              </Text>
-                              <Text
-                                style={orderstyles.txt_val}
-                                adjustsFontSizeToFit={true}
-                              >
-                                {`${item.OutwardNumber}/${item.StartYear}-${item.EndYear}`}
-                              </Text>
-                            </View>
-                            <View>
-                              <View style={orderstyles.text_cnt}>
-                                <Text style={orderstyles.txt_titile}>
-                                  Pieces :
-                                </Text>
-                                <Text style={orderstyles.txt_val}>
-                                  {item.OutwardNoPacks[0] !== null
-                                    ? totalpices(item.OutwardNoPacks)
-                                    : "0"}
-                                </Text>
-                              </View>
-                            </View>
-                            <View>
-                              <View
-                                style={[
-                                  orderstyles.text_cnt,
-                                  { marginBottom: 10 },
-                                ]}
-                              >
-                                <Text style={orderstyles.txt_titile}>
-                                  Total Amount :
-                                </Text>
-                                <Text style={orderstyles.txt_val}>
-                                  {item.OutwardNoPacks[0] !== null
-                                    ? calculateTotalAmount(
-                                      item.OutwardNoPacks,
-                                      item.ArticleRate
-                                    )
-                                    : "0"}
-                                </Text>
-                              </View>
-                            </View>
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            width: "40%",
-                            paddingVertical: "2%",
-                            paddingRight: "2%",
-                          }}
-                        >
-                          <View style={{ height: "53%" }}>
-                            <View
-                              style={[
-                                orderstyles.text_cnt,
-                                { justifyContent: "flex-end" },
-                              ]}
-                            >
-                              <Text style={orderstyles.txt_titile}>
-                                Date :
-                              </Text>
-                              <Text style={orderstyles.txt_val}>
-                                {new Date(item.CreatedDate).toLocaleDateString(
-                                  "en-GB",
-                                  {
-                                    day: "2-digit",
-                                    month: "2-digit",
-                                    year: "numeric",
-                                  }
-                                )}
-                              </Text>
-                            </View>
-                          </View>
-                          <View style={orderstyles.pending_icon}>
-                            <View style={orderstyles.complete_icon_text}>
-                              <View
-                                style={{
-                                  width: width < 720 ? 15 : 20,
-                                  height: width < 720 ? 16 : 22,
-                                }}
-                              >
-                                <CompletedOrderHistory />
-                              </View>
-                              <Text
-                                style={{
-                                  fontSize: width < 720 ? 10.854 : 16.854,
-                                  fontWeight: "700",
-                                  color: "#7AC848",
-                                }}
-                              >
-                                Completed
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    ) : (
-                      ""
-                    )
-                  )
                   : ""}
               </ScrollView>
             </View>
@@ -698,13 +786,18 @@ const OrderHistory = (props) => {
                   <TouchableOpacity
                     onPress={() => {
                       toggleCalendar();
-                      orderstatus ?
-                        setSelectedDate("DD/MM/YYYY") :
-                        setSelectedDateIncompleted("DD/MM/YYYY")
-                      orderstatus ?
-                        setSoNumberData(oldDataOfso) :
-                        setcompletedsodata(olddataofcompleted)
-
+                      if (orderstatus) {
+                        setSodatanotfount(false);
+                        setFilterosstatus(false);
+                        setSelectedDate("DD/MM/YYYY");
+                      } else {
+                        setOutworddatanotfount(false);
+                        setFilteroutwardstatus(false);
+                        setSelectedDateIncompleted("DD/MM/YYYY");
+                      }
+                      orderstatus
+                        ? setSoNumberData(oldDataOfso)
+                        : setcompletedsodata(olddataofcompleted);
                     }}
                   >
                     <Image
@@ -742,9 +835,13 @@ const OrderHistory = (props) => {
                       justifyContent: "center",
                     }}
                     onPress={() => {
-                      orderstatus
-                        ? filterOsDataByDate()
-                        : filterdataOfcompleted();
+                      if (orderstatus) {
+                        setFilterosstatus(true);
+                        filterOsDataByDate();
+                      } else {
+                        setFilteroutwardstatus(true);
+                        filterdataOfcompleted();
+                      }
                       toggleCalendar();
                     }}
                   >
@@ -911,7 +1008,7 @@ const orderstyles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     flexWrap: "wrap",
-    marginBottom: 8
+    marginBottom: 8,
   },
   txt_titile: {
     fontSize: width < 720 ? 14 : 20,

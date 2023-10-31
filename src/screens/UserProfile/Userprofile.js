@@ -9,6 +9,7 @@ import {
   StatusBar,
   ScrollView,
   RefreshControl,
+  Alert,
 } from "react-native";
 import styles from "./style2";
 import { Profiledata } from "../../api/api";
@@ -60,12 +61,18 @@ export default function Userprofile(props) {
     try {
       let partyData = await AsyncStorage.getItem("UserData");
       partyData = JSON.parse(partyData);
-      console.log(partyData);
+      // console.log(partyData);
       const data = { party_id: partyData[0].Id };
-      const response = await Profiledata(data);
-      setprofile(response.data);
-      setIsLoading(false);
-      setRefreshing(false);
+      const response = await Profiledata(data)
+      // console.log(response,"{}{}{][");
+      if(response){
+        setprofile(response.data);
+        setIsLoading(false);
+        setRefreshing(false);
+      }
+    else{
+      Alert.alert("Server is not responding")
+    }
     } catch (err) {
       console.log(err, "error in fetching data");
     }
@@ -118,7 +125,9 @@ export default function Userprofile(props) {
         height: headerHeight, // Increase the header height here
         elevation: 0, // Remove the shadow on Android
         shadowOpacity: 0, // Remove the shadow on iOS
+        backgroundColor:"black"
       },
+
     });
   }, []);
 
