@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
     width: "98%",
     alignItem: "center",
     paddingHorizontal: width >= 720 ? 40 : 15,
-    paddingVertical: width >= 720 ? 60 : 25,
+    paddingVertical: width >= 720 ? 60 : 20,
     justifyContent: "center",
   },
   header: {

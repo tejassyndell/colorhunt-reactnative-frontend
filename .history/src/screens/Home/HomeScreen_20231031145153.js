@@ -672,28 +672,28 @@ export default function HomeScreen(props) {
                           });
                         }}
                       >
-                        <View
-                          key={index}
-                          style={{
-                            alignItems: "center",
-                            width: width >= 720 ? 300 : 155,
-                            height: width >= 720 ? 280 : 280,
-                            marginLeft: width >= 720 ? 15 : 10,
-                            marginRight: width >= 720 ? 15 : 5,
-                            borderRadius: 10,
-                            marginTop: 10,
-                          }}
-                        >
+                        {isLoggedIn ? (
                           <View
+                            key={index}
                             style={{
+                              alignItems: "center",
                               width: width >= 720 ? 300 : 155,
-                              height: width >= 720 ? 280 : 190,
-                              borderRadius: 12,
-                              backgroundColor: "#FFF",
-                              elevation: 2,
+                              height: width >= 720 ? 280 : 280,
+                              marginLeft: width >= 720 ? 15 : 10,
+                              marginRight: width >= 720 ? 15 : 5,
+                              borderRadius: 10,
+                              marginTop: 10,
                             }}
                           >
-                            {isLoggedIn ? (
+                            <View
+                              style={{
+                                width: width >= 720 ? 300 : 155,
+                                height: width >= 720 ? 280 : 190,
+                                borderRadius: 12,
+                                backgroundColor: "#FFF",
+                                elevation: 2,
+                              }}
+                            >
                               <View id={item.id} style={styles.producticones}>
                                 {selectedprd.some((i) => i.Id === item.Id) ? (
                                   <TouchableOpacity
@@ -721,51 +721,51 @@ export default function HomeScreen(props) {
                                   </TouchableOpacity>
                                 )}
                               </View>
-                            ) : null}
-                            {item.Photos ? (
-                              <Image
-                                source={{ uri: baseImageUrl + item.Photos }}
-                                style={{
-                                  width: "100%",
-                                  height: width >= 720 ? 280 : 190,
-                                  borderRadius: 10,
-                                  resizeMode: "contain",
-                                }}
-                              />
-                            ) : (
-                              <Image
-                                source={require("../../../assets/demo.png")}
-                                style={{
-                                  width: "100%",
-                                  height: width >= 720 ? 280 : 190,
-                                  borderRadius: 10,
-                                }}
-                              />
-                            )}
-                          </View>
+                              {item.Photos ? (
+                                <Image
+                                  source={{ uri: baseImageUrl + item.Photos }}
+                                  style={{
+                                    width: "100%",
+                                    height: width >= 720 ? 280 : 190,
+                                    borderRadius: 10,
+                                    resizeMode: "contain",
+                                  }}
+                                />
+                              ) : (
+                                <Image
+                                  source={require("../../../assets/demo.png")}
+                                  style={{
+                                    width: "100%",
+                                    height: width >= 720 ? 280 : 190,
+                                    borderRadius: 10,
+                                  }}
+                                />
+                              )}
+                            </View>
 
-                          <Text
-                            style={{
-                              fontWeight: "bold",
-                              marginTop: 10,
-                              fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                            }}
-                          >
-                            {item.ArticleNumber}
-                          </Text>
-                          <Text style={{ fontSize: width >= 720 ? 16 : 14 }}>
-                            {convertToTitleCase(item.Category)}
-                          </Text>
-                          <Text
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: width >= 720 ? 20 : 16,
-                            }}
-                          >
-                            {isLoggedIn ? "₹" + item.ArticleRate + ".00" : null}
-                          </Text>
-                        </View>
+                            <Text
+                              style={{
+                                fontWeight: "bold",
+                                marginTop: 10,
+                                fontSize: width >= 720 ? 20 : 16,
+                                fontFamily: isFontLoaded ? "Glory" : undefined,
+                              }}
+                            >
+                              {item.ArticleNumber}
+                            </Text>
+                            <Text style={{ fontSize: width >= 720 ? 16 : 14 }}>
+                              {convertToTitleCase(item.Category)}
+                            </Text>
+                            <Text
+                              style={{
+                                fontWeight: "bold",
+                                fontSize: width >= 720 ? 20 : 16,
+                              }}
+                            >
+                              {"₹" + item.ArticleRate + ".00"}
+                            </Text>
+                          </View>
+                        ) : null}
                       </TouchableOpacity>
                     ))
                   ) : (

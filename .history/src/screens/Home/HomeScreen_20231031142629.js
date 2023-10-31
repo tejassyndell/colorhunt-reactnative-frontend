@@ -693,35 +693,33 @@ export default function HomeScreen(props) {
                               elevation: 2,
                             }}
                           >
-                            {isLoggedIn ? (
-                              <View id={item.id} style={styles.producticones}>
-                                {selectedprd.some((i) => i.Id === item.Id) ? (
-                                  <TouchableOpacity
-                                    onPress={() => {
-                                      rmvProductWishlist(item);
-                                    }}
-                                  >
-                                    <FontAwesome
-                                      name="heart"
-                                      style={[styles.icon]}
-                                    />
-                                  </TouchableOpacity>
-                                ) : (
-                                  <TouchableOpacity
-                                    onPress={() => {
-                                      isLoggedIn
-                                        ? addArticleWishlist(item)
-                                        : openCreateAccountModal();
-                                    }}
-                                  >
-                                    <FontAwesome
-                                      name="heart-o"
-                                      style={[styles.disabledIcon]}
-                                    />
-                                  </TouchableOpacity>
-                                )}
-                              </View>
-                            ) : null}
+                            <View id={item.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    rmvProductWishlist(item);
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart"
+                                    style={[styles.icon]}
+                                  />
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? addArticleWishlist(item)
+                                      : openCreateAccountModal();
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart-o"
+                                    style={[styles.disabledIcon]}
+                                  />
+                                </TouchableOpacity>
+                              )}
+                            </View>
                             {item.Photos ? (
                               <Image
                                 source={{ uri: baseImageUrl + item.Photos }}
@@ -763,7 +761,7 @@ export default function HomeScreen(props) {
                               fontSize: width >= 720 ? 20 : 16,
                             }}
                           >
-                            {isLoggedIn ? "₹" + item.ArticleRate + ".00" : null}
+                            {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
                       </TouchableOpacity>

@@ -10,8 +10,8 @@ import {
   Modal,
   KeyboardAvoidingView,
   Keyboard,
-  ScrollView,
   RefreshControl,
+  Alert,
 } from "react-native";
 import {
   getProductName,
@@ -20,19 +20,19 @@ import {
   DeleteWishlist,
 } from "../../api/api";
 import styles from "./styles";
+import Loader from "../../components/Loader/Loader";
+import { useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loader from "../../components/Loader/Loader";
-
 import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
+import { Svg, Path, Circle } from "react-native-svg";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
-import Svg, { Circle, Path } from "react-native-svg";
-
-export default function AllArticle(props) {
+export default function CategorisWiseArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
@@ -44,27 +44,28 @@ export default function AllArticle(props) {
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
-  const [noArticlesFound, setNoArticlesFound] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
-  const { width, height } = Dimensions.get("window");
-  const key = "your_storage_key";
-  const key2 = "your_storage_key";
+
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
   const onRefresh = () => {
     setRefreshing(true);
 
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
+    // Perform your data fetching or refreshing logic here
+    // For example, you can call your API to fetch new data
+    // Make sure to set refreshing to false when done.
 
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    // 3 seconds
+    setTimeout(() => {
+      // After fetching new data, update your data state
 
-    setIsLoading(false);
-    setRefreshing(false);
+      setRefreshing(false);
+    }, 1000); // Simulating a delay, replace with your API call
   };
 
   const fetchMoreData = () => {
@@ -95,35 +96,32 @@ export default function AllArticle(props) {
     };
   }, []);
 
-  const retrieveStoredCategories = async () => {
-    try {
-      const serializedCategories = await AsyncStorage.getItem(key);
-      const serrializedPriceRange = await AsyncStorage.getItem(key2);
-      if (serializedCategories !== null || selectedPriceRange !== null) {
-        const categories = JSON.parse(serializedCategories);
-        const priceRange = JSON.parse(serrializedPriceRange);
-        setSelectedCategories(categories);
-        setSelectedPriceRange(priceRange);
-      } else {
-        console.log("No data found with the key.");
+  useEffect(() => {
+    const loadCustomFont = async () => {
+      try {
+        await Font.loadAsync({
+          Glory: require("../../../assets/Fonts/Glory.ttf"),
+        });
+        setIsFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading custom font:", error);
       }
-    } catch (error) {
-      console.error("Error retrieving data:", error);
-    }
-  };
-  const userChecked = async () => {
-    const token = await AsyncStorage.getItem("UserData");
+    };
 
-    if (token) {
+    loadCustomFont();
+  }, []);
+
+  const CheckUser = async () => {
+    const user = await AsyncStorage.getItem("UserData");
+    if (user) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   };
-
   useEffect(() => {
-    userChecked();
-  });
+    CheckUser();
+  }, []);
 
   const openCreateAccountModal = () => {
     console.log("done");
@@ -133,20 +131,27 @@ export default function AllArticle(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
+
+  const route = useRoute(); // Define route using useRoute hook
+  const { item1 } = route.params;
+  const { width, height } = Dimensions.get("window");
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
-        ? 120
-        : 100
+        ? 110
+        : 80
       : height >= 844
-      ? 100
+      ? 110
       : 65;
+  const [noArticlesFound, setNoArticlesFound] = useState(false);
+
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
-
+  const category = item1.Category;
+  // const titlename = convertToTitleCase(category);
+  console.log(category);
   const openFilter = () => {
-    Keyboard.dismiss();
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
@@ -154,15 +159,31 @@ export default function AllArticle(props) {
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   };
-  const getCategoriesname = async () => {
-    retrieveStoredCategories();
-    const res = await getProductName();
-    if (res.status === 200) {
-      // console.log(res.data);
-      setNameDatas(res.data);
-      setFinalData(res.data);
-      setIsLoading(false);
-      setRefreshing(false);
+
+  const getproductnamess = async () => {
+    try {
+      const res = await getProductName();
+      if (res.status === 200) {
+        // console.log(res.data);
+        const sdPrds = res.data.slice();
+        const fildata = sdPrds.filter((item) => item.Category === category);
+        setNameDatas(fildata);
+        setFinalData(fildata);
+        setIsLoading(false);
+        setRefreshing(false);
+      } else {
+        Alert.alert("Server is not responding", [
+          {
+            text: "OK",
+            onPress: () => {
+              // Call namdemo function when the user clicks 'OK'
+              getproductnamess();
+            },
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -186,16 +207,6 @@ export default function AllArticle(props) {
     }
   };
 
-  const setsearchtextfromstorage = async () => {
-    let currentText = await AsyncStorage.getItem("searchText");
-
-    // Parse the currentText if it exists
-    if (currentText) {
-      currentText = JSON.parse(currentText);
-      setSearchText(currentText.text);
-    }
-  };
-
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
@@ -213,10 +224,10 @@ export default function AllArticle(props) {
       article_id: i.Id,
     };
     setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
+
     try {
       await getAddWishlist(data).then((res) => {
         // getWishlist();
-        // setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
       });
     } catch (error) {
       console.log(error);
@@ -230,9 +241,9 @@ export default function AllArticle(props) {
       .join("-"); // Join the words with hyphens
   };
   useEffect(() => {
-    getCategoriesname();
+    // getCategoriesname();
     getWishlist();
-    setsearchtextfromstorage();
+    getproductnamess();
   }, []);
 
   useLayoutEffect(() => {
@@ -256,14 +267,14 @@ export default function AllArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile");
+              isLoggedIn ? navigation.navigate("Profile") : "";
             }}
           >
             <Image
               style={{
                 resizeMode: "contain",
-                width: width >= 720 ? 55 : 32,
-                height: width >= 720 ? 55 : 32,
+                width: width >= 720 ? 55 : 35,
+                height: width >= 720 ? 55 : 35,
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />
@@ -271,9 +282,9 @@ export default function AllArticle(props) {
         </View>
       ),
       headerStyle: {
-        height: headerHeight, // Increase the header height here
-        elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        height: headerHeight,
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
@@ -286,8 +297,7 @@ export default function AllArticle(props) {
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange[0] == minArticleRate &&
-      selectedPriceRange[1] == maxArticleRate
+      selectedPriceRange.length === 0
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
@@ -300,7 +310,7 @@ export default function AllArticle(props) {
 
         const batchFiltered = batch.filter(
           (item) =>
-            (searchText === "" ||
+            (searchText === "" || // Check if searchText is empty or matches any criteria
               item.ArticleNumber.toString().includes(searchText.toString()) ||
               item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
               item.ArticleRate.toString().includes(searchText.toString()) ||
@@ -321,9 +331,7 @@ export default function AllArticle(props) {
         filteredData.push(...batchFiltered);
       }
 
-      // Set the final filtered data
       setFinalData(filteredData);
-
       setNoArticlesFound(filteredData.length === 0);
     }
   };
@@ -353,40 +361,31 @@ export default function AllArticle(props) {
         },
       }}
     >
-      {isLoggedIn ? (
-        <View id={item.id} style={styles.producticones}>
-          {selectedprd.some((i) => i.Id === item.Id) ? (
-            <TouchableOpacity
-              onPress={() => {
-                rmvProductWishlist(item);
-              }}
-            >
-              <FontAwesome
-                name="heart"
-                style={[
-                  styles.icon,
-                  // isLoggedin === false ? styles.disabledIcon : null,
-                ]}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                addArticleWishlist(item);
-              }}
-            >
-              <FontAwesome
-                name="heart-o"
-                style={[
-                  styles.disabledIcon,
-                  // isLoggedin === false ? styles.disabledIcon : null,
-                ]}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      ) : null}
-
+      <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
+          </TouchableOpacity>
+        )}
+      </View>
       <View
         style={{
           width: "90%",
@@ -405,13 +404,14 @@ export default function AllArticle(props) {
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
-            width: "90%",
-            height: 180,
+            width: "100%",
+            height: "100%",
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
+            zIndex: 1,
 
-            marginTop: 10,
+            // marginTop: 10,
           }}
         />
       </View>
@@ -433,15 +433,21 @@ export default function AllArticle(props) {
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+            <Text style={{ fontFamily: isFontLoaded ? "Glory" : undefined }}>
               {convertToTitleCase(item.Category)}
             </Text>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{
+                fontWeight: "bold",
+                fontFamily: isFontLoaded ? "Glory" : undefined,
+              }}
             >
               {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
             </Text>
@@ -453,16 +459,25 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
     filterData();
   };
-
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
+
+  useEffect(() => {
+    const abc = nameDatas.filter(
+      (item) =>
+        (!selectedCategories.length ||
+          selectedCategories.includes(item.Category)) &&
+        item.ArticleRate >= selectedPriceRange[0] &&
+        item.ArticleRate <= selectedPriceRange[1]
+    );
+    setFinalData(abc);
+  }, [selectedCategories, selectedPriceRange]);
 
   useEffect(() => {
     const minRate = nameDatas.reduce((min, item) => {
@@ -478,7 +493,7 @@ export default function AllArticle(props) {
     setMinArticleRate(minRate);
 
     setMaxArticleRate(maxRate);
-  }, [finalData]);
+  }, [nameDatas]);
   return (
     <>
       {isLoading ? (
@@ -504,12 +519,14 @@ export default function AllArticle(props) {
               setSearchPhrase={setSearchText}
             />
             <TouchableOpacity
-              style={{ width: "10%", alignItems: "flex-end" }}
-              onPress={openFilter}
+              style={{ width: "10%", alignItems: "flex-end", paddingEnd: 0 }}
+              onPress={() => {
+                isLoggedIn ? openFilter() : "";
+              }}
             >
               <Svg
-                width={width >= 720 ? 65 : 42}
-                height={width >= 720 ? 65 : 42}
+                width={width >= 720 ? 65 : 40}
+                height={width >= 720 ? 65 : 40}
                 viewBox="0 0 40 40"
                 fill="none"
                 xmlns="http://www.w3.org/2000/Svg"
@@ -541,6 +558,7 @@ export default function AllArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 15,
+                fontFamily: isFontLoaded ? "Glory" : undefined,
                 fontWeight: "700",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
@@ -548,7 +566,7 @@ export default function AllArticle(props) {
                 marginTop: 10,
               }}
             >
-              ALL Articles
+              Men's {convertToTitleCase(category)}
             </Text>
           </View>
           <View
@@ -557,44 +575,52 @@ export default function AllArticle(props) {
               backgroundColor: "#FFF",
               width: "100%",
               height: "74%",
-              top: 20,
+              top: 10,
               paddingHorizontal: 10,
             }}
           >
-            {noArticlesFound ? (
-              <Text
-                style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}
-              >
-                NO ARTICLES FOUND
-              </Text>
+            {finalData.length === 0 ? (
+              (console.log(nameDatas.length, "ewqewqewqeewq"),
+              (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontSize: 20,
+                    }}
+                  >
+                    No Articles Found
+                  </Text>
+                </View>
+              ))
             ) : (
-              <View>
-                <ScrollView
-                  style={{ flex: 1 }}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={refreshing}
-                      onRefresh={onRefresh}
-                    />
-                  }
-                ></ScrollView>
-
-                <FlatList
-                  style={{ backgroundColor: "#FFF" }}
-                  data={finalData}
-                  keyExtractor={(item) => item.Id.toString()}
-                  renderItem={renderItem}
-                  numColumns={width >= 720 ? 4 : 2}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingVertical: 0 }}
-                  columnWrapperStyle={{ justifyContent: "space-between" }}
-                  onEndReached={fetchMoreData}
-                  onEndReachedThreshold={0.1}
-                />
-              </View>
+              <FlatList
+                style={{ backgroundColor: "#FFF" }}
+                data={finalData}
+                keyExtractor={(item) => item.Id}
+                renderItem={renderItem}
+                numColumns={width >= 720 ? 4 : 2}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingVertical: 0 }}
+                columnWrapperStyle={{ justifyContent: "space-between" }}
+                onEndReached={fetchMoreData}
+                onEndReachedThreshold={0.1}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+              />
             )}
           </View>
-          {/* {/ </ScrollView> /} */}
           <KeyboardAvoidingView
             behavior={isKeyboardOpen ? "padding" : null}
             style={{ flex: 1 }}
@@ -607,7 +633,6 @@ export default function AllArticle(props) {
               </View>
             )}
           </KeyboardAvoidingView>
-
           {isFilterVisible && (
             <View
               style={{
@@ -623,25 +648,24 @@ export default function AllArticle(props) {
             >
               <View
                 style={{
-                  width: "94%",
+                  width: "92%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: 0,
-                  left: 0,
+                  bottom: "40%",
+                  left: 1,
                   right: 0, // To make it span the full width
-                  marginLeft: "3%", // Margin on the left side
+                  marginLeft: "4%", // Margin on the left side
                   padding: 10,
-                  borderTopLeftRadius: 10, // Adjust the radius as needed
-                  borderTopRightRadius: 10,
+                  borderRadius: 10, // Adjust the radius as needed
                 }}
               >
                 <Filter
+                  status={true}
                   onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter}
                   Scategories={selectedCategories}
                   minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate}
-                  status={false}
                   spr={selectedPriceRange}
                   uniquerates={nameDatas}
                 />

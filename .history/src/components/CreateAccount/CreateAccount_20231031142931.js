@@ -442,13 +442,13 @@ const styles = StyleSheet.create({
     width: "98%",
     alignItem: "center",
     paddingHorizontal: width >= 720 ? 40 : 15,
-    paddingVertical: width >= 720 ? 60 : 25,
+    paddingVertical: width >= 720 ? 60 : 15,
     justifyContent: "center",
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: width >= 720 ? 35 : 30,
+    marginBottom: width >= 720 ? 30 : 30,
   },
   title: {
     fontSize: width >= 720 ? 30 : 25,

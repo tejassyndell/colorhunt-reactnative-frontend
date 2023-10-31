@@ -763,7 +763,7 @@ export default function HomeScreen(props) {
                               fontSize: width >= 720 ? 20 : 16,
                             }}
                           >
-                            {isLoggedIn ? "₹" + item.ArticleRate + ".00" : null}
+                            {"₹" + item.ArticleRate + ".00"}
                           </Text>
                         </View>
                       </TouchableOpacity>

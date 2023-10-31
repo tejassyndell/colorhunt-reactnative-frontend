@@ -44,8 +44,8 @@ export default function App() {
         networkActivityIndicatorVisible={true}
       />
       {/* Render your AppContainer with network error handling */}
-      {/* {isOffline ? <AppContainer /> : <AppContainer />} */}
-      <AppContainer />
+      {isOffline ? <AppContainer /> : <AppContainer />}
+
       {/* Network Error Popup */}
       {/* <Modal
         animationType="slide"

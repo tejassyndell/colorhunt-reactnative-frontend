@@ -443,7 +443,7 @@ export default function AllArticle(props) {
             <Text
               style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
             >
-              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
+              {"₹" + item.ArticleRate + ".00"}
             </Text>
           </View>
         </TouchableOpacity>

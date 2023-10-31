@@ -353,39 +353,37 @@ export default function AllArticle(props) {
         },
       }}
     >
-      {isLoggedIn ? (
-        <View id={item.id} style={styles.producticones}>
-          {selectedprd.some((i) => i.Id === item.Id) ? (
-            <TouchableOpacity
-              onPress={() => {
-                rmvProductWishlist(item);
-              }}
-            >
-              <FontAwesome
-                name="heart"
-                style={[
-                  styles.icon,
-                  // isLoggedin === false ? styles.disabledIcon : null,
-                ]}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => {
-                addArticleWishlist(item);
-              }}
-            >
-              <FontAwesome
-                name="heart-o"
-                style={[
-                  styles.disabledIcon,
-                  // isLoggedin === false ? styles.disabledIcon : null,
-                ]}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      ) : null}
+      <View id={item.id} style={styles.producticones}>
+        {selectedprd.some((i) => i.Id === item.Id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              rmvProductWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart"
+              style={[
+                styles.icon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              addArticleWishlist(item);
+            }}
+          >
+            <FontAwesome
+              name="heart-o"
+              style={[
+                styles.disabledIcon,
+                // isLoggedin === false ? styles.disabledIcon : null,
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
 
       <View
         style={{
@@ -443,7 +441,7 @@ export default function AllArticle(props) {
             <Text
               style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
             >
-              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
+              {"₹" + item.ArticleRate + ".00"}
             </Text>
           </View>
         </TouchableOpacity>
