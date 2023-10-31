@@ -409,7 +409,10 @@ export default function HomeScreen(props) {
 
         if (chunkResult.length > 0) {
           filtered = [...filtered, ...chunkResult];
-          break; // Stop after the first matching chunk
+          if(parseInt(filtered.length)>=4){
+            console.log(filtered.length,typeof 4);
+            break; // Stop after the first matching chunk
+          }
         }
       }
 
