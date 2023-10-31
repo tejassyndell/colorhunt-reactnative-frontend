@@ -331,13 +331,13 @@ export default function Filter({
                 </View>
               </View>
             </View>
-            <View style={{ width: width >= 720 ? "11.6%" : 150 }}>
+            <View style={{ width: width >= 720 ? "11.6%" : 150 ,marginLeft:20}}>
               <Text
                 style={{
                   textAlign: width >= 720 ? "right" : "left",
                   fontSize: width >= 720 ? 25 : 15,
                   fontFamily: "Glory",
-                  paddingLeft: 30,
+                  paddingLeft: 16,
                 }}
               >
                 {maxArticleRate}

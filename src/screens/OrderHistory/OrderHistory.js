@@ -258,19 +258,21 @@ const OrderHistory = (props) => {
     const nextPage = currentPage + 1;
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
-    await getsonumber({
-      PartyId: data[0].Id,
-      page: nextPage,
-      pageSize: 10,
-    }).then((res) => {
-      if (res.data.data.length <= 0) {
-        setSodatanotfount(true);
+    await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: 10 }).then((res) => {
+      if(res.status==200){
+        if (res.data.data.length <= 0) {
+          setSodatanotfount(true);
+        }
+        if (res.data.hasMore) {
+          setSoNumberData(prevData => [...prevData, ...res.data.data]);
+          setOldDateOfso(prevData => [...prevData, ...res.data.data]);
+          setCurrentPage(nextPage);
+        }
       }
-      if (res.data.hasMore) {
-        setSoNumberData((prevData) => [...prevData, ...res.data.data]);
-        setOldDateOfso((prevData) => [...prevData, ...res.data.data]);
-        setCurrentPage(nextPage);
+      else{
+        console.log(res,"_+_+_+");
       }
+     
       setIsLoading(false);
       setRefreshing(false);
     });

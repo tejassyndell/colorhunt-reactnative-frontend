@@ -113,7 +113,7 @@ export const Profiledata = async (data) => {
     return await axios.post(`${url}/getparty`, data);
   } catch (err) {
     console.log(err, "err in react api");
-    throw err;
+    // throw err;
   }
 };
 export const addto_cart = async (data) => {
