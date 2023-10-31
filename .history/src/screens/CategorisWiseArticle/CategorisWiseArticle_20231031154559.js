@@ -696,10 +696,9 @@ export default function CategorisWiseArticle(props) {
               width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
-              padding: 12,
+              padding: 10,
               marginTop: 25,
               marginBottom: 25,
-              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

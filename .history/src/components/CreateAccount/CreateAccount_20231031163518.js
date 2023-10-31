@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
   container: {
     width: "98%",
     alignItem: "center",
-    paddingHorizontal: width >= 720 ? 40 : 10,
+    marginHorizontal: width >= 720 ? 40 : 10,
     paddingVertical: width >= 720 ? 60 : 25,
     justifyContent: "center",
   },

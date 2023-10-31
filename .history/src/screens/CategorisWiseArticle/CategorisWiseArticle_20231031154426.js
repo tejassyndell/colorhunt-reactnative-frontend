@@ -32,6 +32,7 @@ import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
 import { Svg, Path, Circle } from "react-native-svg";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
+import { log } from "console";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
@@ -267,7 +268,7 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              isLoggedIn ? navigation.navigate("Profile") : null;
+              isLoggedIn ? navigation.navigate("Profile") : "";
               console.log(isLoggedIn);
             }}
           >
@@ -696,10 +697,9 @@ export default function CategorisWiseArticle(props) {
               width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
-              padding: 12,
+              padding: 10,
               marginTop: 25,
               marginBottom: 25,
-              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

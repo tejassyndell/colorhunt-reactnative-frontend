@@ -62,14 +62,13 @@ export default function WishList(props) {
     loadCustomFont();
   }, []);
   // uploard url image
-  const baseImageUrl =
-    "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
-  const getpartyid = async () => {
-    let partydata = await AsyncStorage.getItem("UserData");
-    partydata = await JSON.parse(partydata);
-    console.log(partydata[0].Id, "[][][[][]");
-    return partydata[0].Id;
-  };
+  const baseImageUrl = "https://colorhunt.in/colorHuntApi/public/uploads/";
+
+  // const getpartyid = async () => {
+  //   let partydata = await AsyncStorage.getItem("UserData");
+  //   partydata = await JSON.parse(partydata);
+  //   return partydata[0].Id;
+  // };
 
   // getCategoriesname
   const getCategoriesname = async () => {
@@ -248,21 +247,22 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + item.article_photos }}
           style={{
             width: "90%",
             height: 180,
             flex: 1,
-            // resizeMode: "contain",
+            resizeMode: "contain",
             borderRadius: 10,
 
             marginTop: 10,
           }}
           onError={() => {
             console.log(
-              "Error loading image +++++++++++++=================>>>>>>>>>>>.:",
-              JSON.parse(item.Photos)
+              "Error loading image ================?>>>>>>>>>>>>>>>>>>>>>>.:",
+              baseImageUrl + item.article_photos
             );
+            // You can display a placeholder image or error message here.
           }}
         />
       </View>

@@ -488,7 +488,7 @@ export default function DrawerContainer(props) {
           <View
             style={{
               position: "absolute",
-              bottom: 50,
+              bottom: 40,
               alignItems: "center",
               width: "100%",
               right: 20,

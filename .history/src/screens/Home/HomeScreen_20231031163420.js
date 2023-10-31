@@ -1107,10 +1107,10 @@ export default function HomeScreen(props) {
               width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
-              padding: 12,
+              padding: 15,
               marginTop: 25,
               marginBottom: 25,
-              height: "90%",
+              height: "80%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

@@ -248,21 +248,15 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + item.Photos }}
           style={{
-            width: "90%",
             height: 180,
             flex: 1,
-            // resizeMode: "contain",
+            resizeMode: "contain",
             borderRadius: 10,
+            zIndex: 1,
 
             marginTop: 10,
-          }}
-          onError={() => {
-            console.log(
-              "Error loading image +++++++++++++=================>>>>>>>>>>>.:",
-              JSON.parse(item.Photos)
-            );
           }}
         />
       </View>

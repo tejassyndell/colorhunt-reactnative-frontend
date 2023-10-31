@@ -1110,7 +1110,7 @@ export default function HomeScreen(props) {
               padding: 12,
               marginTop: 25,
               marginBottom: 25,
-              height: "90%",
+              height: "85%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

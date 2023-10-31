@@ -8,17 +8,16 @@ import {
   Dimensions,
   Platform,
   RefreshControl,
-  Alert,
 } from "react-native";
 import { getProductName, getWishlistData, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
 import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loader from "../../components/Loader/Loader";
 
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
+
 export default function WishList(props) {
   const { navigation } = props;
 
@@ -76,16 +75,6 @@ export default function WishList(props) {
     const res = await getProductName();
     if (res.status === 200) {
       setNameDatas(res.data);
-    } else {
-      Alert.alert("Server is not responding", [
-        {
-          text: "OK",
-          onPress: () => {
-            // Call namdemo function when the user clicks 'OK'
-            getCategoriesname();
-          },
-        },
-      ]);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -112,24 +101,12 @@ export default function WishList(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
-      status: "true",
     };
     const result = await getWishlistData(data).then((res) => {
-      if (res.status == 200) {
-        console.log(res.data);
-        setSelectprd(res.data);
-        setIsLoading(false);
-      } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getWishlist();
-            },
-          },
-        ]);
-      }
+      console.log(res.data);
+      setSelectprd(res.data);
+      setIsLoading(false);
+      z;
     });
   };
 
@@ -173,8 +150,6 @@ export default function WishList(props) {
       headerRight: () => <View />,
       headerStyle: {
         height: headerHeight, // Increase the header height here
-        elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -248,21 +223,15 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + item.Photos }}
           style={{
             width: "90%",
             height: 180,
             flex: 1,
-            // resizeMode: "contain",
+            resizeMode: "contain",
             borderRadius: 10,
 
             marginTop: 10,
-          }}
-          onError={() => {
-            console.log(
-              "Error loading image +++++++++++++=================>>>>>>>>>>>.:",
-              JSON.parse(item.Photos)
-            );
           }}
         />
       </View>
@@ -306,7 +275,7 @@ export default function WishList(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <Loader />
+          <ActivityIndicator size="large" color="black" />
         </View>
       ) : selectedprd.length === 0 ? (
         <View
@@ -345,7 +314,7 @@ export default function WishList(props) {
               alignItems: "center",
             }}
           >
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={{
                 width: width * 0.4,
                 height: height * 0.06,
@@ -364,9 +333,9 @@ export default function WishList(props) {
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                 }}
               >
-                Go to home page
+                Continue Shopping
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </View>
       ) : (

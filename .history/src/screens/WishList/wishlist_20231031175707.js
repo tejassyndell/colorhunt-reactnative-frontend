@@ -67,7 +67,6 @@ export default function WishList(props) {
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
-    console.log(partydata[0].Id, "[][][[][]");
     return partydata[0].Id;
   };
 
@@ -248,21 +247,22 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + item.article_photos }}
           style={{
             width: "90%",
             height: 180,
             flex: 1,
-            // resizeMode: "contain",
+            resizeMode: "contain",
             borderRadius: 10,
 
             marginTop: 10,
           }}
           onError={() => {
             console.log(
-              "Error loading image +++++++++++++=================>>>>>>>>>>>.:",
-              JSON.parse(item.Photos)
+              "Error loading image ================?>>>>>>>>>>>>>>>>>>>>>>.:",
+              baseImageUrl + item.article_photos
             );
+            // You can display a placeholder image or error message here.
           }}
         />
       </View>

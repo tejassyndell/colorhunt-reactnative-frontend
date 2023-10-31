@@ -267,8 +267,7 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              isLoggedIn ? navigation.navigate("Profile") : null;
-              console.log(isLoggedIn);
+              isLoggedIn ? navigation.navigate("Profile") : "";
             }}
           >
             <Image
@@ -696,10 +695,9 @@ export default function CategorisWiseArticle(props) {
               width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
-              padding: 12,
+              padding: 10,
               marginTop: 25,
               marginBottom: 25,
-              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

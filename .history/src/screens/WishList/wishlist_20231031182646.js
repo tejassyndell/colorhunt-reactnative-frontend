@@ -248,7 +248,7 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + item.Photos[0].photo }}
           style={{
             width: "90%",
             height: 180,
@@ -261,7 +261,7 @@ export default function WishList(props) {
           onError={() => {
             console.log(
               "Error loading image +++++++++++++=================>>>>>>>>>>>.:",
-              JSON.parse(item.Photos)
+              JSON.parse(item.Photos[0])
             );
           }}
         />

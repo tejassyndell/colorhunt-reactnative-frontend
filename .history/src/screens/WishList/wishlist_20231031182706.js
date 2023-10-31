@@ -248,7 +248,7 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + item.Photos[0].photo }}
           style={{
             width: "90%",
             height: 180,

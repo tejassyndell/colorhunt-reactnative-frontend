@@ -62,10 +62,6 @@ export default function Filter({
       isLoggedIn(false);
     }
   };
-  useEffect(() => {
-    UserCheck();
-  }, []);
-
   const getCategoriesname = async () => {
     try {
       const result1 = await getCategories();
@@ -300,120 +296,114 @@ export default function Filter({
         ) : (
           ""
         )}
-        {isLoggedIn ? (
-          <View style={styles.container2}>
-            {status ? (
-              <View style={styles.headertrue}>
-                <Text style={styles.headerText}>Price Range </Text>
-                <TouchableOpacity onPress={closeFilter}>
-                  <Svg
-                    style={styles.closeIcon}
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <G id="Group 1000010296">
-                      <Circle
-                        id="Ellipse 1234"
-                        cx="16"
-                        cy="16"
-                        r="16"
-                        fill="#212121"
-                      />
-                      <G id="Group 1000010293">
-                        <Path
-                          id="Vector 8"
-                          d="M21.7666 21.668L10.0993 10.0007"
-                          stroke="white"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                        />
-                        <Path
-                          id="Vector 9"
-                          d="M21.7666 10L10.0993 21.6673"
-                          stroke="white"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                        />
-                      </G>
-                    </G>
-                  </Svg>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <Text style={styles.label}>Price Range</Text>
-            )}
-
-            <View style={styles.sliderContainer}>
-              <View style={{ width: width >= 720 ? "8%" : 40 }}>
-                <Text
-                  style={{
-                    textAlign: "left",
-                    fontSize: width >= 720 ? 25 : 15,
-                    fontFamily: "Glory",
-                    paddingRight: 10,
-                    paddingBottom: 5,
-                  }}
+        <View style={styles.container2}>
+          {status ? (
+            <View style={styles.headertrue}>
+              <Text style={styles.headerText}>Price Range </Text>
+              <TouchableOpacity onPress={closeFilter}>
+                <Svg
+                  style={styles.closeIcon}
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  {minArticleRate}
-                </Text>
-              </View>
-              <View
-                style={{ width: width >= 720 ? "80%" : "70%", marginTop: 3 }}
+                  <G id="Group 1000010296">
+                    <Circle
+                      id="Ellipse 1234"
+                      cx="16"
+                      cy="16"
+                      r="16"
+                      fill="#212121"
+                    />
+                    <G id="Group 1000010293">
+                      <Path
+                        id="Vector 8"
+                        d="M21.7666 21.668L10.0993 10.0007"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <Path
+                        id="Vector 9"
+                        d="M21.7666 10L10.0993 21.6673"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </G>
+                  </G>
+                </Svg>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <Text style={styles.label}>Price Range</Text>
+          )}
+
+          <View style={styles.sliderContainer}>
+            <View style={{ width: width >= 720 ? "8%" : 40 }}>
+              <Text
+                style={{
+                  textAlign: "left",
+                  fontSize: width >= 720 ? 25 : 15,
+                  fontFamily: "Glory",
+                  paddingRight: 10,
+                  paddingBottom: 5,
+                }}
               >
-                <View style={styles.sliderContainer}>
-                  <View style={{ width: "100%" }}>
-                    <View style={styleslider.sliderContainer}>
-                      <View style={styleslider.slider}>
-                        <View style={styleslider.border} />
-                        <View
-                          style={[
-                            styleslider.thumb,
-                            {
-                              left: `${(leftValue / maxArticleRate) * 100}%`,
-                              borderColor: "black",
-                            }, // Adjust the left handle's position here
-                          ]}
-                          {...panResponderLeft.panHandlers} // Attach the panResponderLeft here
-                        >
-                          <Text style={styleslider.thumbText}>{leftValue}</Text>
-                        </View>
-                        <View
-                          style={[
-                            styleslider.thumb,
-                            {
-                              left: `${(rightValue / maxArticleRate) * 100}%`,
-                              borderColor: "black",
-                            },
-                          ]}
-                          {...panResponderRight.panHandlers}
-                        >
-                          <Text style={styleslider.thumbText}>
-                            {rightValue}
-                          </Text>
-                        </View>
+                {minArticleRate}
+              </Text>
+            </View>
+            <View style={{ width: width >= 720 ? "80%" : "70%", marginTop: 3 }}>
+              <View style={styles.sliderContainer}>
+                <View style={{ width: "100%" }}>
+                  <View style={styleslider.sliderContainer}>
+                    <View style={styleslider.slider}>
+                      <View style={styleslider.border} />
+                      <View
+                        style={[
+                          styleslider.thumb,
+                          {
+                            left: `${(leftValue / maxArticleRate) * 100}%`,
+                            borderColor: "black",
+                          }, // Adjust the left handle's position here
+                        ]}
+                        {...panResponderLeft.panHandlers} // Attach the panResponderLeft here
+                      >
+                        <Text style={styleslider.thumbText}>{leftValue}</Text>
+                      </View>
+                      <View
+                        style={[
+                          styleslider.thumb,
+                          {
+                            left: `${(rightValue / maxArticleRate) * 100}%`,
+                            borderColor: "black",
+                          },
+                        ]}
+                        {...panResponderRight.panHandlers}
+                      >
+                        <Text style={styleslider.thumbText}>{rightValue}</Text>
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
-              <View
-                style={{ width: width >= 720 ? "11.6%" : 150, marginLeft: 20 }}
+            </View>
+            <View
+              style={{ width: width >= 720 ? "11.6%" : 150, marginLeft: 20 }}
+            >
+              <Text
+                style={{
+                  textAlign: width >= 720 ? "right" : "left",
+                  fontSize: width >= 720 ? 25 : 15,
+                  fontFamily: "Glory",
+                  paddingLeft: 16,
+                }}
               >
-                <Text
-                  style={{
-                    textAlign: width >= 720 ? "right" : "left",
-                    fontSize: width >= 720 ? 25 : 15,
-                    fontFamily: "Glory",
-                    paddingLeft: 16,
-                  }}
-                >
-                  {maxArticleRate}
-                </Text>
-              </View>
+                {maxArticleRate}
+              </Text>
             </View>
           </View>
-        ) : null}
+        </View>
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[

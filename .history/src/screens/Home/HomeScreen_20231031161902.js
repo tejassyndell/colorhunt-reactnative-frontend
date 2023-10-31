@@ -557,22 +557,22 @@ export default function HomeScreen(props) {
               </Text>
             </View>
 
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <SearchBar
-                searchPhrase={searchText}
-                setSearchPhrase={setSearchText}
-              />
-              {isLoggedIn ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <SearchBar
+                  searchPhrase={searchText}
+                  setSearchPhrase={setSearchText}
+                />
+                            {isLoggedIn ? (
                 <TouchableOpacity
                   style={{ width: "10%", alignItems: "flex-end" }}
                   onPress={() => {
-                    openFilter();
+                    isLoggedIn ? openFilter() : openCreateAccountModal();
                   }}
                 >
                   <Svg
@@ -604,8 +604,8 @@ export default function HomeScreen(props) {
                     />
                   </Svg>
                 </TouchableOpacity>
-              ) : null}
-            </View>
+              </View>
+            ) : null}
           </View>
           <ScrollView
             showsHorizontalScrollIndicator={false}
@@ -1107,10 +1107,9 @@ export default function HomeScreen(props) {
               width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
-              padding: 12,
+              padding: 10,
               marginTop: 25,
               marginBottom: 25,
-              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

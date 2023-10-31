@@ -7,18 +7,19 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  RefreshControl,
-  Alert,
+  RefreshControl, 
+  Alert
 } from "react-native";
 import { getProductName, getWishlistData, DeleteWishlist } from "../../api/api";
 import styles from "./styles.js";
 import { FontAwesome } from "@expo/vector-icons";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/Loader/Loader"
 
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
+
 export default function WishList(props) {
   const { navigation } = props;
 
@@ -30,9 +31,9 @@ export default function WishList(props) {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
-
+  
     // Add your refreshing logic here (e.g., fetch new data or update existing data).
-
+  
     // Simulate a delay to hide the loading indicator after a few seconds (adjust as needed).
     setTimeout(() => {
       setRefreshing(false);
@@ -76,16 +77,20 @@ export default function WishList(props) {
     const res = await getProductName();
     if (res.status === 200) {
       setNameDatas(res.data);
-    } else {
-      Alert.alert("Server is not responding", [
-        {
-          text: "OK",
-          onPress: () => {
-            // Call namdemo function when the user clicks 'OK'
-            getCategoriesname();
+    }
+    else{
+      Alert.alert(
+        "Server is not responding",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              // Call namdemo function when the user clicks 'OK'
+              getCategoriesname();
+            },
           },
-        },
-      ]);
+        ]
+      );
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -112,24 +117,28 @@ export default function WishList(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
-      status: "true",
+      status:"true"
     };
     const result = await getWishlistData(data).then((res) => {
-      if (res.status == 200) {
-        console.log(res.data);
-        setSelectprd(res.data);
-        setIsLoading(false);
-      } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getWishlist();
+      if(res.status==200){
+      console.log(res.data);
+      setSelectprd(res.data);
+      setIsLoading(false);
+      }else{
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getWishlist();
+              },
             },
-          },
-        ]);
+          ]
+        );
       }
+      
     });
   };
 
@@ -248,21 +257,15 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + item.Photos }}
           style={{
             width: "90%",
             height: 180,
             flex: 1,
-            // resizeMode: "contain",
+            resizeMode: "contain",
             borderRadius: 10,
 
             marginTop: 10,
-          }}
-          onError={() => {
-            console.log(
-              "Error loading image +++++++++++++=================>>>>>>>>>>>.:",
-              JSON.parse(item.Photos)
-            );
           }}
         />
       </View>
@@ -305,9 +308,9 @@ export default function WishList(props) {
   return (
     <>
       {isLoading ? (
-        <View style={styles.loader}>
-          <Loader />
-        </View>
+         <View style={styles.loader}>
+         <Loader/>
+      </View>
       ) : selectedprd.length === 0 ? (
         <View
           style={{

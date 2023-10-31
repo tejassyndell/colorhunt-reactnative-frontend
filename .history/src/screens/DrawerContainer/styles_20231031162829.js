@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(33, 33, 33, 9)",
+    backgroundColor: "black",
   },
   container: {
     flex: 1,

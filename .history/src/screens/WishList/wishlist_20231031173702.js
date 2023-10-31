@@ -136,6 +136,7 @@ export default function WishList(props) {
   useEffect(() => {
     getCategoriesname();
     getWishlist();
+    // result()
   }, []);
 
   useLayoutEffect(() => {
@@ -178,6 +179,8 @@ export default function WishList(props) {
       },
     });
   }, []);
+  const photos = JSON.parse(item.Photos); // Parse the JSON string into an array
+  const imageSource = photos[0].photo;
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -248,21 +251,22 @@ export default function WishList(props) {
         }}
       >
         <Image
-          source={{ uri: baseImageUrl + JSON.parse(item.Photos)[0].photo }}
+          source={{ uri: baseImageUrl + imageSource }}
           style={{
             width: "90%",
             height: 180,
             flex: 1,
-            // resizeMode: "contain",
+            resizeMode: "contain",
             borderRadius: 10,
 
             marginTop: 10,
           }}
           onError={() => {
             console.log(
-              "Error loading image +++++++++++++=================>>>>>>>>>>>.:",
-              JSON.parse(item.Photos)
+              "Error loading image:",
+              baseImageUrl + item.Photos[0].photo
             );
+            // You can display a placeholder image or error message here.
           }}
         />
       </View>
