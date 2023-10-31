@@ -421,9 +421,6 @@ const OrderDetails = (props) => {
     <body>
     <table border="1" cellspacing="0" cellpadding="10" width="100%">
         <tr>
-            <td colspan="12" style="text-align: center; font-weight: bold">SALES ORDER</td>
-        </tr>
-        <tr>
             <td colspan="12" style="text-align: center; background-color: black; color: white;font-weight: bold">
                 COLORHUNT
             </td>
