@@ -30,7 +30,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
-import { Svg,Path,Circle } from "react-native-svg";
+import { Svg, Path, Circle } from "react-native-svg";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
@@ -63,7 +63,7 @@ export default function CategorisWiseArticle(props) {
 
     setTimeout(() => {
       // After fetching new data, update your data state
-    
+
 
       setRefreshing(false);
     }, 1000); // Simulating a delay, replace with your API call
@@ -195,10 +195,15 @@ export default function CategorisWiseArticle(props) {
       party_id: await getpartyid(),
       article_id: i.Id,
     };
+    let selectedlist = selectedprd;
+    selectedlist = selectedlist.filter((item) => {
+      return item.Id !== i.Id;
+    });
+    setSelectprd(selectedlist);
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist();
+          // getWishlist();
         }
       });
     } catch (error) {
@@ -210,6 +215,7 @@ export default function CategorisWiseArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status:"false"
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -221,9 +227,11 @@ export default function CategorisWiseArticle(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
+    setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
+
     try {
       await getAddWishlist(data).then((res) => {
-        getWishlist();
+        // getWishlist();
       });
     } catch (error) {
       console.log(error);
@@ -277,7 +285,7 @@ export default function CategorisWiseArticle(props) {
           </TouchableOpacity>
         </View>
       ),
-        headerStyle: {
+      headerStyle: {
         height: headerHeight,
         borderBottomWidth: 1, // Adjust the width as needed
         borderBottomColor: "#FFF", // Increase the header height here
@@ -297,27 +305,33 @@ export default function CategorisWiseArticle(props) {
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
-      const filtered = nameDatas.filter(
-        (item) =>
+      const batchSize = 10; // Define the batch size
+      const filteredData = []; // Create an array to store the filtered data
+
+      for (let i = 0; i < nameDatas.length; i += batchSize) {
+        // Slice the data into batches of size batchSize
+        const batch = nameDatas.slice(i, i + batchSize);
+
+        const batchFiltered = batch.filter((item) =>
           (searchText === "" || // Check if searchText is empty or matches any criteria
             item.ArticleNumber.toString().includes(searchText.toString()) ||
             item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
             item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(
-              searchText.toLowerCase()
-            ) ||
-            item.Subcategory.toLowerCase().includes(
-              searchText.toLowerCase()
-            )) &&
+            item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.Subcategory.toLowerCase().includes(searchText.toLowerCase())) &&
           (selectedCategories.length === 0 ||
             selectedCategories.includes(item.Category)) &&
           (selectedPriceRange.length === 0 ||
             (item.ArticleRate >= selectedPriceRange[0] &&
               item.ArticleRate <= selectedPriceRange[1]))
-      );
+        );
 
-      setFinalData(filtered);
-      setNoArticlesFound(filtered.length === 0);
+        // Append the batchFiltered data to the filteredData array
+        filteredData.push(...batchFiltered);
+      }
+
+      setFinalData(filteredData);
+      setNoArticlesFound(filteredData.length === 0);
     }
   };
 
@@ -483,7 +497,7 @@ export default function CategorisWiseArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-           <Loader/>
+          <Loader />
         </View>
       ) : (
         <View

@@ -139,8 +139,8 @@ export default function AllArticle(props) {
         ? 120
         : 100
       : height >= 844
-      ? 100
-      : 65;
+        ? 100
+        : 65;
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -162,7 +162,7 @@ export default function AllArticle(props) {
       setFinalData(res.data);
       setIsLoading(false);
       setRefreshing(false);
-    }else{
+    } else {
       Alert.alert(
         "Server is not responding",
         [
@@ -182,10 +182,15 @@ export default function AllArticle(props) {
       party_id: await getpartyid(),
       article_id: i.Id,
     };
+    let selectedlist = selectedprd;
+    selectedlist = selectedlist.filter((item) => {
+      return item.Id !== i.Id;
+    });
+    setSelectprd(selectedlist);
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          getWishlist();
+          // getWishlist();
         }
       });
     } catch (error) {
@@ -197,6 +202,7 @@ export default function AllArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
+      status:"false"
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -208,9 +214,10 @@ export default function AllArticle(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
+    setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
     try {
       await getAddWishlist(data).then((res) => {
-        getWishlist();
+        // getWishlist();
       });
     } catch (error) {
       console.log(error);
@@ -223,9 +230,21 @@ export default function AllArticle(props) {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join("-"); // Join the words with hyphens
   };
+  const getsearchtext = async () => {
+    let currentText = await AsyncStorage.getItem("searchText");
+    // Parse the currentText if it exists
+    if (currentText) {
+      currentText = JSON.parse(currentText);
+      // Update the text property with your new value
+      setSearchText(currentText.text)
+      // Store the updated object back in AsyncStorage
+      // await AsyncStorage.setItem("searchText", JSON.stringify(currentText));
+    }
+  }
   useEffect(() => {
     getCategoriesname();
     getWishlist();
+    getsearchtext();
   }, []);
 
   useLayoutEffect(() => {
@@ -279,32 +298,39 @@ export default function AllArticle(props) {
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange.length === 0
+      selectedPriceRange[0]==minArticleRate&&selectedPriceRange[1]==maxArticleRate
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
-      const filtered = nameDatas.filter(
-        (item) =>
-          (searchText === "" || // Check if searchText is empty or matches any criteria
+      const batchSize = 10; // Define the batch size
+      const filteredData = []; // Create an array to store the filtered data
+
+      for (let i = 0; i < nameDatas.length; i += batchSize) {
+        // Slice the data into batches of size batchSize
+        const batch = nameDatas.slice(i, i + batchSize);
+
+        const batchFiltered = batch.filter((item) =>
+          (searchText === "" ||// Check if searchText is empty or matches any criteria
             item.ArticleNumber.toString().includes(searchText.toString()) ||
             item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
             item.ArticleRate.toString().includes(searchText.toString()) ||
-            item.StyleDescription.toLowerCase().includes(
-              searchText.toLowerCase()
-            ) ||
-            item.Subcategory.toLowerCase().includes(
-              searchText.toLowerCase()
-            )) &&
+            item.StyleDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.Subcategory.toLowerCase().includes(searchText.toLowerCase())) &&
           (selectedCategories.length === 0 ||
             selectedCategories.includes(item.Category)) &&
           (selectedPriceRange.length === 0 ||
             (item.ArticleRate >= selectedPriceRange[0] &&
               item.ArticleRate <= selectedPriceRange[1]))
-      );
+        );
 
-      setFinalData(filtered);
+        // Append the batchFiltered data to the filteredData array
+        filteredData.push(...batchFiltered);
+      }
 
-      setNoArticlesFound(filtered.length === 0);
+      // Set the final filtered data
+      setFinalData(filteredData);
+
+      setNoArticlesFound(filteredData.length === 0);
     }
   };
 
@@ -461,7 +487,7 @@ export default function AllArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-           <Loader/>
+          <Loader />
         </View>
       ) : (
         <View
@@ -583,7 +609,7 @@ export default function AllArticle(props) {
                   width: "94%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: height >= 844 ? '10%':'3%',
+                  bottom: height >= 844 ? '10%' : '3%',
                   left: 0,
                   right: 0, // To make it span the full width
                   marginLeft: "3%", // Margin on the left side
