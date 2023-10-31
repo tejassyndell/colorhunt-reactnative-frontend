@@ -346,9 +346,11 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight, // Increase the header height here
+        height: headerHeight,
         elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        shadowOpacity: 0, 
+   
+        // backgroundColor: "black",
       },
     });
   }, []);

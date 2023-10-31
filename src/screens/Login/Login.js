@@ -87,60 +87,60 @@ const Login = (props) => {
   //     }
 
   //     // Rest of your code for handling notifications
-  //     messaging()
-  //       .getInitialNotification()
-  //       .then(async (remoteMessage) => {
-  //         if (remoteMessage) {
-  //           console.log(
-  //             'Notification caused app to open from quit state:',
-  //             remoteMessage.notification,
-  //           );
-  //         }
-  //       });
+  //     // messaging()
+  //     //   .getInitialNotification()
+  //     //   .then(async (remoteMessage) => {
+  //     //     if (remoteMessage) {
+  //     //       console.log(
+  //     //         'Notification caused app to open from quit state:',
+  //     //         remoteMessage.notification,
+  //     //       );
+  //     //     }
+  //     //   });
   //     // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-  //     messaging().onNotificationOpenedApp(async (remoteMessage) => {
-  //       console.log(
-  //         'Notification caused app to open from background state:',
-  //         remoteMessage.notification,
-  //       );
-  //     });
-  //     // Register background handler
-  //     messaging().setBackgroundMessageHandler(async remoteMessage => {
-  //       console.log('Message handled in the background!', remoteMessage);
-  //       const channelId = 'colorhuntmobileapp';
-  //       const channelConfig = {
-  //         channelId,
-  //         channelName: 'colorhuntmobileapp Notification Channel',
-  //         channelDescription: 'colorhuntmobileapp custom notification channel',
-  //         soundName: 'default',
-  //         importance: 4, // Notification Importance (0-4), where 4 is the highest
-  //         vibrate: true,
-  //       };
+  // //     messaging().onNotificationOpenedApp(async (remoteMessage) => {
+  // //       console.log(
+  // //         'Notification caused app to open from background state:',
+  // //         remoteMessage.notification,
+  // //       );
+  // //     });
+  // //     // Register background handler
+  // //     messaging().setBackgroundMessageHandler(async remoteMessage => {
+  // //       console.log('Message handled in the background!', remoteMessage);
+  // //       const channelId = 'colorhuntmobileapp';
+  // //       const channelConfig = {
+  // //         channelId,
+  // //         channelName: 'colorhuntmobileapp Notification Channel',
+  // //         channelDescription: 'colorhuntmobileapp custom notification channel',
+  // //         soundName: 'default',
+  // //         importance: 4, // Notification Importance (0-4), where 4 is the highest
+  // //         vibrate: true,
+  // //       };
 
-  //       // Create the channel
-  //       PushNotification.createChannel(channelConfig);
-  //       const unsubscribe = messaging().onMessage(async remoteMessage => {
+  // //       // Create the channel
+  // //       PushNotification.createChannel(channelConfig);
+  // //       const unsubscribe = messaging().onMessage(async remoteMessage => {
 
-  //         PushNotification.localNotification({
-  //           channelId: "colorhuntmobileapp",
-  //           title: remoteMessage.notification.title,
-  //           message: remoteMessage.notification.body
-  //         })
-  //       });
-  //       // return unsubscribe;
-  //     });
-  //     // Listen for incoming FCM messages
-  //     // Define the channel settings
-  //     const channelId = 'colorhuntmobileapp';
-  //     const channelConfig = {
-  //       channelId,
-  //       channelName: 'colorhuntmobileapp Notification Channel',
-  //       channelDescription: 'colorhuntmobileapp custom notification channel',
-  //       soundName: 'default',
-  //       importance: 4, // Notification Importance (0-4), where 4 is the highest
-  //       vibrate: true,
-  //     };
+  // //         PushNotification.localNotification({
+  // //           channelId: "colorhuntmobileapp",
+  // //           title: remoteMessage.notification.title,
+  // //           message: remoteMessage.notification.body
+  // //         })
+  // //       });
+  // //       // return unsubscribe;
+  // //     });
+  // //     // Listen for incoming FCM messages
+  // //     // Define the channel settings
+  // //     const channelId = 'colorhuntmobileapp';
+  // //     const channelConfig = {
+  // //       channelId,
+  // //       channelName: 'colorhuntmobileapp Notification Channel',
+  // //       channelDescription: 'colorhuntmobileapp custom notification channel',
+  // //       soundName: 'default',
+  // //       importance: 4, // Notification Importance (0-4), where 4 is the highest
+  // //       vibrate: true,
+  // //     };
 
   //     // Create the channel
   //     PushNotification.createChannel(channelConfig);
@@ -153,8 +153,8 @@ const Login = (props) => {
   //       })
   //     });
 
-  //     return unsubscribe;
-  //   };
+  // //     return unsubscribe;
+  // //   };
 
   //   getTokenAndSubscribe();
 
@@ -225,11 +225,13 @@ const Login = (props) => {
         try {
           if (!phoneNumber) {
             getstatus(false);
+
             // Skip phone number validation and navigate to Home
             await AsyncStorage.removeItem("UserData");
             navigation.navigate("Slider", { isLoggedIn: false });
             return;
           } else {
+
           }
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({

@@ -20,6 +20,7 @@ import {
   DeleteWishlist,
 } from "../../api/api";
 import styles from "./styles";
+import Loader from "../../components/Loader/Loader"
 import { useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
@@ -29,8 +30,6 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
-import Loader from "../../components/Loader/Loader";
-import Svg, { Circle, Path } from "react-native-svg";
 
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
@@ -64,6 +63,7 @@ export default function CategorisWiseArticle(props) {
 
     setTimeout(() => {
       // After fetching new data, update your data state
+    
 
       setRefreshing(false);
     }, 1000); // Simulating a delay, replace with your API call
@@ -153,7 +153,6 @@ export default function CategorisWiseArticle(props) {
   // const titlename = convertToTitleCase(category);
   console.log(category);
   const openFilter = () => {
-    Keyboard.dismiss();
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
@@ -165,7 +164,8 @@ export default function CategorisWiseArticle(props) {
   const getproductnamess = async () => {
     try {
       const res = await getProductName();
-      if (res && res.status === 200) {
+      if (res.status === 200) {
+        // console.log(res.data);
         const sdPrds = res.data.slice();
         const fildata = sdPrds.filter((item) => item.Category === category);
         setNameDatas(fildata);
@@ -195,15 +195,10 @@ export default function CategorisWiseArticle(props) {
       party_id: await getpartyid(),
       article_id: i.Id,
     };
-    let selectedlist = selectedprd;
-    selectedlist = selectedlist.filter((item) => {
-      return item.Id !== i.Id;
-    });
-    setSelectprd(selectedlist);
     try {
       await DeleteWishlist(data).then((res) => {
         if (res.status === 200) {
-          // getWishlist();
+          getWishlist();
         }
       });
     } catch (error) {
@@ -215,7 +210,6 @@ export default function CategorisWiseArticle(props) {
   const getWishlist = async () => {
     const data = {
       party_id: await getpartyid(),
-      status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
       setSelectprd(res.data);
@@ -227,10 +221,9 @@ export default function CategorisWiseArticle(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
-    setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
     try {
       await getAddWishlist(data).then((res) => {
-        // getWishlist();
+        getWishlist();
       });
     } catch (error) {
       console.log(error);
@@ -284,10 +277,10 @@ export default function CategorisWiseArticle(props) {
           </TouchableOpacity>
         </View>
       ),
-      headerStyle: {
-        height: headerHeight, // Increase the header height here
-        elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        headerStyle: {
+        height: headerHeight,
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
@@ -304,38 +297,27 @@ export default function CategorisWiseArticle(props) {
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
-      const batchSize = 10; // Define the batch size
-      const filteredData = []; // Create an array to store the filtered data
+      const filtered = nameDatas.filter(
+        (item) =>
+          (searchText === "" || // Check if searchText is empty or matches any criteria
+            item.ArticleNumber.toString().includes(searchText.toString()) ||
+            item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.ArticleRate.toString().includes(searchText.toString()) ||
+            item.StyleDescription.toLowerCase().includes(
+              searchText.toLowerCase()
+            ) ||
+            item.Subcategory.toLowerCase().includes(
+              searchText.toLowerCase()
+            )) &&
+          (selectedCategories.length === 0 ||
+            selectedCategories.includes(item.Category)) &&
+          (selectedPriceRange.length === 0 ||
+            (item.ArticleRate >= selectedPriceRange[0] &&
+              item.ArticleRate <= selectedPriceRange[1]))
+      );
 
-      for (let i = 0; i < nameDatas.length; i += batchSize) {
-        // Slice the data into batches of size batchSize
-        const batch = nameDatas.slice(i, i + batchSize);
-
-        const batchFiltered = batch.filter(
-          (item) =>
-            (searchText === "" ||
-              item.ArticleNumber.toString().includes(searchText.toString()) ||
-              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.ArticleRate.toString().includes(searchText.toString()) ||
-              item.StyleDescription.toLowerCase().includes(
-                searchText.toLowerCase()
-              ) ||
-              item.Subcategory.toLowerCase().includes(
-                searchText.toLowerCase()
-              )) &&
-            (selectedCategories.length === 0 ||
-              selectedCategories.includes(item.Category)) &&
-            (selectedPriceRange.length === 0 ||
-              (item.ArticleRate >= selectedPriceRange[0] &&
-                item.ArticleRate <= selectedPriceRange[1]))
-        );
-
-        // Append the batchFiltered data to the filteredData array
-        filteredData.push(...batchFiltered);
-      }
-
-      setFinalData(filteredData);
-      setNoArticlesFound(filteredData.length === 0);
+      setFinalData(filtered);
+      setNoArticlesFound(filtered.length === 0);
     }
   };
 
@@ -501,7 +483,7 @@ export default function CategorisWiseArticle(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <Loader />
+           <Loader/>
         </View>
       ) : (
         <View
@@ -652,13 +634,14 @@ export default function CategorisWiseArticle(props) {
               <View
                 style={{
                   width: "92%",
-                  backgroundColor: "white",
+                  backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: '2%',
-                  marginLeft: "4%",
-                  padding: 5,
-                  borderRadius: 20,
-
+                  bottom: '40%',
+                  left: 1,
+                  right: 0, // To make it span the full width
+                  marginLeft: "4%", // Margin on the left side
+                  padding: 10,
+                  borderRadius: 10, // Adjust the radius as needed
                 }}
               >
                 <Filter

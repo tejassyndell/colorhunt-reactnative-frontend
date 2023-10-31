@@ -17,7 +17,9 @@
       "color": "#007AFF"
     },
     "splash": {
-      "backgroundColor": "#ffffff"
+  
+      
+      "backgroundColor": "#FFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
