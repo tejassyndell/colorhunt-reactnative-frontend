@@ -4,6 +4,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -259,11 +260,11 @@ const OrderHistory = (props) => {
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: 10 }).then((res) => {
-      if(res.status==200){
+      if(res && res.status==200){
         if (res.data.data.length <= 0) {
           setSodatanotfount(true);
         }
-        if (res.data.hasMore) {
+        else if (res.data.hasMore) {
           setSoNumberData(prevData => [...prevData, ...res.data.data]);
           setOldDateOfso(prevData => [...prevData, ...res.data.data]);
           setCurrentPage(nextPage);
@@ -271,6 +272,18 @@ const OrderHistory = (props) => {
       }
       else{
         console.log(res,"_+_+_+");
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getSonumber();
+              },
+            },
+          ]
+        );
       }
      
       setIsLoading(false);
@@ -327,10 +340,12 @@ const OrderHistory = (props) => {
       page: nextPage,
       pageSize: 10,
     }).then((res) => {
+    if(res && res.status == 200){
       if (res.data.data.length <= 0) {
         setOutworddatanotfount(true);
+        setIsLoadingsodetails(false);
       }
-      if (res.data.hasMore) {
+      else if ( res.data.hasMore) {
         if (nextPage == 1) {
           console.log("first time");
           setcompletedsodata(res.data.data);
@@ -342,8 +357,22 @@ const OrderHistory = (props) => {
         }
 
         setOutwardcurrentPage(nextPage);
+        setIsLoadingsodetails(false);
       }
-      setIsLoadingsodetails(false);
+    }else{
+        Alert.alert(
+          "Server is not responding",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Call namdemo function when the user clicks 'OK'
+                getCompleteData();
+              },
+            },
+          ]
+        );
+      }
     });
   };
   return (

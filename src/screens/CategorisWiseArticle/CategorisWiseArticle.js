@@ -30,7 +30,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
-
+import { Svg,Path,Circle } from "react-native-svg";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
