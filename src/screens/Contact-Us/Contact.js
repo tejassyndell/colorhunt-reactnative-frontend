@@ -93,9 +93,16 @@ export default function Contact(props) {
     loadCustomFont();
   }, []);
 
+
+
   const handleSubmit = async () => {
     console.log("Hello", username, email, subject, message);
     if (!username || !email || !subject || !message) {
+      setShowValidationErrors(true);
+      return;
+    } 
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z]{2,4}$/i;
+    if (!emailRegex.test(email)) { // Use emailRegex to test the email
       setShowValidationErrors(true);
       return;
     } else {
@@ -104,12 +111,13 @@ export default function Contact(props) {
         { text: "OK", onPress: () => console.log("Alert dismissed") },
       ]);
       mail();
-      setusername("");
+      setUsername("");
       setEmail("");
       setSubject("");
       setMessage("");
     }
   };
+  
 
   const mail = async () => {
     console.log(username, email, subject, message);
@@ -267,7 +275,7 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}
@@ -301,12 +309,24 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}
               >
                 This field is required
+              </Text>
+            )}
+            {showValidationErrors && email && (
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 12,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
+                Email Not Valid
               </Text>
             )}
           </View>
@@ -335,7 +355,7 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}
@@ -374,7 +394,7 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}

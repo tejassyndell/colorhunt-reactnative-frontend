@@ -617,7 +617,7 @@ const Orderlist = (props) => {
                           </TouchableOpacity>
                           <View
                             style={{
-                              width: "60%",
+                              width: "75%",
                               marginHorizontal: "3%",
                               marginBottom: "1%",
                               justifyContent: "center",
@@ -765,7 +765,7 @@ const Orderlist = (props) => {
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 50,
+                          height: 'auto',
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
@@ -844,7 +844,7 @@ const Orderlist = (props) => {
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 50,
+                          height: 'auto',
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
@@ -1122,7 +1122,7 @@ const Orderlist = (props) => {
                 <View style={{ paddingBottom: 2 }}>
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 22 : 12,
+                      fontSize: width >= 720 ? 22 : 14,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontWeight: "500",
                     }}
@@ -1133,7 +1133,7 @@ const Orderlist = (props) => {
                 <View style={{}}>
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 22 : 12,
+                      fontSize: width >= 720 ? 22 : 16,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontWeight: "700",
                     }}

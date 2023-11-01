@@ -290,7 +290,7 @@ const CreateAccount = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <ScrollView>
+          <ScrollView style={{ paddingHorizontal: 10,}}>
             <TextInput
               style={[styles.input, nameError && styles.inputError]}
               placeholder="Name"

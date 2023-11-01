@@ -220,7 +220,7 @@ export default function Filter({
           ""
         )}
         {status === false ? (
-          <ScrollView style={{ width: '100%', height: height >= 844 ? 360 : 250 }}>
+          <ScrollView style={{ width: '100%', backgroundColor:'#FFF', height: height >= 844 ? 360 : 250 }}>
             <View style={styles.categoriesContainer}>
               {data.map((item) => (
                 <TouchableOpacity
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 2,
-    elevation: 20, // For Android
+    // For Android
   },
 
   radioButton: {

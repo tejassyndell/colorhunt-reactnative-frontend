@@ -331,7 +331,7 @@ export default function DrawerContainer(props) {
                 style={{
                   flexDirection: "row",
                   marginLeft: 14,
-                  marginTop: 50,
+                  marginTop: 40,
                   width: "100%",
                 }}
                 onPress={() => {
@@ -456,7 +456,7 @@ export default function DrawerContainer(props) {
                 style={{
                   flexDirection: "row",
                   marginLeft: 10,
-                  marginTop: 60,
+                  marginTop: 29,
                   width: "100%",
                 }}
                 onPress={() => {
@@ -488,7 +488,7 @@ export default function DrawerContainer(props) {
           <View
             style={{
               position: "absolute",
-              bottom: 20,
+              bottom: '4%',
               alignItems: "center",
               width: "100%",
               right: 20,

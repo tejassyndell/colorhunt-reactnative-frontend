@@ -761,7 +761,7 @@ const OrderHistory = (props) => {
                     paddingLeft: 20,
                   }}
                 >
-                  <View style={{ height: 25, width: 25 }}>
+                  <View style={{ height: 35, width: 35 }}>
                     <Image
                       style={{
                         height: "100%",
