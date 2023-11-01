@@ -69,8 +69,8 @@ const OrderDetails = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
 
   console.log(newPrint);
 
@@ -121,11 +121,11 @@ const OrderDetails = (props) => {
   // Calculate column-wise total
   const columnTotals = tableData
     ? tableData.tableData.reduce((totals, rowData) => {
-        for (let i = 0; i < rowData.length; i++) {
-          totals[i] = (totals[i] || 0) + parseFloat(rowData[i] || 0);
-        }
-        return totals;
-      }, [])
+      for (let i = 0; i < rowData.length; i++) {
+        totals[i] = (totals[i] || 0) + parseFloat(rowData[i] || 0);
+      }
+      return totals;
+    }, [])
     : "";
 
   const transformArticleSize = (articleSize) => {
@@ -139,8 +139,8 @@ const OrderDetails = (props) => {
       const sizes =
         item.ArticleSize.length > 0
           ? JSON.parse(item.ArticleSize)
-              .map((sizeObj) => sizeObj.Name)
-              .join(", ")
+            .map((sizeObj) => sizeObj.Name)
+            .join(", ")
           : "";
 
       // Parse ArticleColor JSON string to extract color names
@@ -150,7 +150,7 @@ const OrderDetails = (props) => {
           : "";
 
       // Split OutwardNoPacks by commas and map to integers
-      const outwardNoPacksArray = item.OutwardNoPacks.split(",").map((value) =>
+      const outwardNoPacksArray =  item.NoPacks.split(",").map((value) =>
         parseInt(value, 10)
       );
 
@@ -205,7 +205,7 @@ const OrderDetails = (props) => {
     let totalRate = 0;
 
     sodetails.forEach((item) => {
-      const outwardNoPacksArray = item.OutwardNoPacks.split(",").map((value) =>
+      const outwardNoPacksArray = item.NoPacks.split(",").map((value) =>
         parseInt(value, 10)
       );
       const articleRate = parseInt(item.ArticleRate);
@@ -227,7 +227,7 @@ const OrderDetails = (props) => {
     let totalOutwardNoPacks = 0;
 
     sodetails.forEach((item) => {
-      const outwardNoPacksArray = item.OutwardNoPacks.split(",").map((value) =>
+      const outwardNoPacksArray = item.NoPacks.split(",").map((value) =>
         parseInt(value, 10)
       );
 
@@ -248,7 +248,8 @@ const OrderDetails = (props) => {
     console.log(typeof val);
     let gsttotal = val * 0.05;
     let totalamount = val + gsttotal;
-    return parseInt(totalamount);
+    let roundedAmount = totalamount.toFixed(2);
+    return roundedAmount;
   };
   const orderdetils = async () => {
     let ptdata = await AsyncStorage.getItem("UserData");
@@ -312,7 +313,6 @@ const OrderDetails = (props) => {
         }
       });
     } else {
-      console.log("jdjjdjdjjdjdjdjdjdjdjjdjdjdjddjdjdjj");
       await getSoArticleDetails(data).then((res) => {
         if (res.status === 200) {
           setTableData({
@@ -328,13 +328,10 @@ const OrderDetails = (props) => {
             ],
             tableData: sodetails ? transformSodetailsToTableData(res.data) : [],
           });
-
           settotle(res.data);
           settotalqut(res.data);
           setsodetials(res.data);
           setIsLoading(false);
-
-          // console.log(res.data);
         }
       });
     }
@@ -361,13 +358,19 @@ const OrderDetails = (props) => {
           <td colspan="5" style="text-align: end; font-weight: bold"></td>
           <td colspan="1"></td>
           <td colspan="1">GST 5%</td>
-          <td colspan="1">${`₹${parseInt(totalval * 0.05)}.00`}</td>
+          <td colspan="1">${`₹${(totalval * 0.05).toFixed(2)}`}</td>
         </tr>
+        <tr>
+        <td colspan="5" style="text-align: end; font-weight: bold"></td>
+        <td colspan="1"></td>
+        <td colspan="1"> Adjust Amount</td>
+        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+      </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
         <td colspan="1"></td>
-        <td colspan="1">${`₹${getgstamount(totalval)}.00`}</td>
+        <td colspan="1">${`₹${(Math.ceil(getgstamount(totalval)))}.00`}</td>
     </tr>`;
       } else if (partydata[0].GSTType === "IGST") {
         return ` 
@@ -375,19 +378,25 @@ const OrderDetails = (props) => {
           <td colspan="5" style="text-align: end; font-weight: bold"></td>
           <td colspan="1"></td>
           <td colspan="1">SGST 2.5%</td>
-          <td colspan="1">${`₹${parseInt(totalval * 0.025)}.00`}</td>
+          <td colspan="1">${`₹${(totalval * 0.025).toFixed(2)}`}</td>
         </tr>
         <tr>
           <td colspan="5" style="text-align: end; font-weight: bold"></td>
           <td colspan="1"></td>
           <td colspan="1">CGST 2.5%</td>
-          <td colspan="1">${`₹${parseInt(totalval * 0.025)}.00`}</td>
+          <td colspan="1">${`₹${(totalval * 0.025).toFixed(2)}`}</td>
         </tr>
+        <tr>
+        <td colspan="5" style="text-align: end; font-weight: bold"></td>
+        <td colspan="1"></td>
+        <td colspan="1"> Adjust Amount</td>
+        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+      </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
         <td colspan="1"></td>
-        <td colspan="1">${`₹${getgstamount(totalval)}.00`}</td>
+        <td colspan="1">${`₹${(Math.ceil(getgstamount(totalval)))}.00`}</td>
     </tr>`;
       } else {
         return ""; // Return an empty string if no GSTType match
@@ -400,8 +409,8 @@ const OrderDetails = (props) => {
   const GSThtmlContent = GSThtmltable();
   const htmlTableData = tableData.tableData
     ? tableData.tableData.map((rowData) => {
-        console.log(rowData[4]);
-        return `
+      console.log(rowData[4]);
+      return `
         <tr>
           <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>
           <td colspan="1" style="text-transform: uppercase">${rowData[1]}</td>
@@ -413,7 +422,7 @@ const OrderDetails = (props) => {
           <td colspan="1" style="text-transform: uppercase">${rowData[7]}</td>
         </tr>
       `;
-      })
+    })
     : [];
 
   const html = `
@@ -433,43 +442,39 @@ const OrderDetails = (props) => {
                 <strong>DATE:</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">${new Date(
-              CreatedDate
-            ).toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-            })}</td>
+    CreatedDate
+  ).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })}</td>
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="9">
-                <strong>ADDRESS:</strong>${
-                  partydata ? partydata[0].Address : "Address"
-                }
+                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode}.` : ""
+    }
             </td>
             <td style="text-transform: uppercase" colspan="1">
                 <strong>SO NO:</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">
-               ${`${name}${
-                 OutwardNumber !== 0 ? OutwardNumber : sonumber
-               }/${startyear}-${endyear}`}
+               ${`${name}${OutwardNumber !== 0 ? OutwardNumber : sonumber
+    }/${startyear}-${endyear}`}
             </td>
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="12">
-                <strong>TRANSPORT:</strong>${
-                  transport !== null ? transport : "Transport"
-                }
+                <strong>TRANSPORT:</strong>${transport !== null ? transport : "Transport"
+    }
             </td>
         </tr>
         <tr>
-            <td colspan="12"><strong>GST:</strong>${
-              partydata
-                ? partydata[0].GSTNumber !== null
-                  ? partydata[0].GSTNumber
-                  : "GST"
-                : "GST"
-            }</td>
+            <td colspan="12"><strong>GST:</strong>${partydata
+      ? partydata[0].GSTNumber !== null
+        ? partydata[0].GSTNumber
+        : "GST"
+      : "GST"
+    }</td>
         </tr>
     </table>
     <br />
@@ -488,7 +493,7 @@ const OrderDetails = (props) => {
         ${htmlTableData.join("")}
         <tr>
             <td colspan="5" style="text-align: end; font-weight: bold">SUBTOTAL</td>
-            <td colspan="1"></td>
+            <td colspan="1">${totalqty}</td>
             <td colspan="1"></td>
             <td colspan="1">${`₹${totalval}.00`}</td>
         </tr>
@@ -531,10 +536,10 @@ const OrderDetails = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor:'#FFF'
+            backgroundColor: '#FFF'
           }}
         >
-            <Loader />
+          <Loader />
         </View>
       ) : (
         <View
@@ -910,7 +915,7 @@ const OrderDetails = (props) => {
                       color: "#FFFFFF",
                     }}
                   >
-                   
+
                   </Text>
                 </TouchableOpacity>
                 <Text
@@ -951,7 +956,7 @@ const OrderDetails = (props) => {
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "500",
                         color: "#808080",
-                        
+
                       }}
                     >
                       Name:
@@ -1012,9 +1017,8 @@ const OrderDetails = (props) => {
                       }}
                     >
                       {partydata
-                        ? `${partydata[0].Address},${partydata[0].City} ${partydata[0].State} , PinCode${partydata[0].PinCode},`
+                        ? `${partydata[0].Address}, ${partydata[0].City} ${partydata[0].State} , ${partydata[0].PinCode}.`
                         : "Address"}
-                      {console.log(partydata, "skhvchgvsacjvsjdc hasvcjvsdc")}
                     </Text>
                   </View>
                   <View style={{ marginTop: 10, flexDirection: "row" }}>
@@ -1027,8 +1031,8 @@ const OrderDetails = (props) => {
                           color: "#808080",
                         }}
                       >
-                        { OutwardNumber !== 0 ? "OutwardNumber" : "SoNumber:"}
-                        
+                        {OutwardNumber !== 0 ? "OutwardNumber" : "SoNumber:"}
+
                       </Text>
                     </View>
                     <View style={{ flex: 1 }}>
@@ -1070,9 +1074,8 @@ const OrderDetails = (props) => {
                         }}
                         adjustsFontSizeToFit={true}
                         numberOfLines={1}
-                      >{`${name}${
-                        OutwardNumber !== 0 ? OutwardNumber : sonumber
-                      }/${startyear}-${endyear}`}</Text>
+                      >{`${name}${OutwardNumber !== 0 ? OutwardNumber : sonumber
+                        }/${startyear}-${endyear}`}</Text>
                     </View>
 
                     <View
@@ -1183,7 +1186,7 @@ const OrderDetails = (props) => {
                       maxWidth: "100%",
                       backgroundColor: "#fff",
                       marginBottom: 280,
-                      marginTop:20,
+                      marginTop: 20,
                     }}
                   >
                     <ScrollView
@@ -1309,7 +1312,33 @@ const OrderDetails = (props) => {
                                   <Text
                                     style={styles.collamGst5Per}
                                   >
-                                    ₹{parseInt(totalval * 0.05)}.00
+                                    ₹{(totalval * 0.05).toFixed(2)}
+                                  </Text>
+                                </View>
+                                <View  style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    height: 40,
+                                    borderColor: "#000000",
+                                    borderWidth: 1,
+                                    borderTopWidth: 1,
+                                  }}>
+                                <Text
+                                    style={styles.fastRowContent}
+                                  >
+                                  </Text>
+                                  <Text
+                                    style={styles.secondCollam}
+                                  ></Text>
+                                  <Text
+                                    style={styles.thurdCollam}
+                                  >
+                                    Adjust Amount
+                                  </Text>
+                                  <Text
+                                    style={styles.collamGst5Per}
+                                  >
+                                    +{(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}
                                   </Text>
                                 </View>
                                 <View
@@ -1322,6 +1351,7 @@ const OrderDetails = (props) => {
                                     borderTopWidth: 1,
                                   }}
                                 >
+                                 
                                   <Text
                                     style={styles.fastRowContent}
                                   >
@@ -1336,7 +1366,7 @@ const OrderDetails = (props) => {
                                   <Text
                                     style={styles.collamGst5Per}
                                   >
-                                    ₹{getgstamount(totalval)}.00
+                                    ₹{Math.ceil(getgstamount(totalval))}.00
                                   </Text>
                                 </View>
                               </ScrollView>
@@ -1398,7 +1428,7 @@ const OrderDetails = (props) => {
                                       paddingTop: width >= 720 ? 10 : 9,
                                     }}
                                   >
-                                    ₹{parseInt(totalval * 0.025)}.00
+                                    ₹{(totalval * 0.025).toFixed(2)}
                                   </Text>
                                 </View>
                                 <View
@@ -1450,7 +1480,33 @@ const OrderDetails = (props) => {
                                       paddingTop: width >= 720 ? 10 : 9,
                                     }}
                                   >
-                                    ₹{parseInt(totalval * 0.025)}.00
+                                    ₹{(totalval * 0.025).toFixed(2)}
+                                  </Text>
+                                </View>
+                                <View  style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    height: 40,
+                                    borderColor: "#000000",
+                                    borderWidth: 1,
+                                    borderTopWidth: 1,
+                                  }}>
+                                <Text
+                                    style={styles.fastRowContent}
+                                  >
+                                  </Text>
+                                  <Text
+                                    style={styles.secondCollam}
+                                  ></Text>
+                                  <Text
+                                    style={styles.thurdCollam}
+                                  >
+                                    Adjust Amount
+                                  </Text>
+                                  <Text
+                                    style={styles.collamGst5Per}
+                                  >
+                                    +{(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}
                                   </Text>
                                 </View>
                                 <ScrollView>
@@ -1501,7 +1557,7 @@ const OrderDetails = (props) => {
                                         paddingTop: width >= 720 ? 10 : 9,
                                       }}
                                     >
-                                      ₹{getgstamount(totalval)}.00
+                                      ₹{Math.ceil(getgstamount(totalval))}.00
                                     </Text>
                                   </View>
                                 </ScrollView>

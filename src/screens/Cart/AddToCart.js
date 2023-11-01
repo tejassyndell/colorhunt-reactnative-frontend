@@ -176,16 +176,16 @@ const AddToCart = (props) => {
       .then((response) => {
         console.log(response);
         if (response.status == 200) {
-            console.log("Api response :", response.data[0]);
-            let arr1 = response.data.map((item) => item.article_id);
-            const parsedOrderItems = response.data.map((item) => ({
-              ...item,
-              Quantity: JSON.parse(item.Quantity),
-            }));
-            getDetailsOfInward(arr1, parsedOrderItems);
+          console.log("Api response :", response.data[0]);
+          let arr1 = response.data.map((item) => item.article_id);
+          const parsedOrderItems = response.data.map((item) => ({
+            ...item,
+            Quantity: JSON.parse(item.Quantity),
+          }));
+          getDetailsOfInward(arr1, parsedOrderItems);
 
-            console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
-            setOrderItems(parsedOrderItems);
+          console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
+          setOrderItems(parsedOrderItems);
         }
         else {
           Alert.alert(
@@ -259,7 +259,6 @@ const AddToCart = (props) => {
       navigation.navigate("Orderlist");
     }
   };
-
   const TotalPrice = (orderItems, compreInward) => {
     let listOfOutOfProduct = [];
 

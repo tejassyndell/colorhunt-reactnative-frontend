@@ -58,9 +58,10 @@ const OrderHistory = (props) => {
   const [filteroutwardcurrentPage, setFilteroutwardcurrentPage] = useState(0);
   const [filterosstatus, setFilterosstatus] = useState(false);
   const [filteroutwardstatus, setFilteroutwardstatus] = useState(false);
-  const [handlerstop,sethandlerstop]=useState(false);
-  const [handleroutwardstop,sethandleroutwardstop]=useState(false);
-
+  const [handlerstop, sethandlerstop] = useState(false);
+  const [handleroutwardstop, sethandleroutwardstop] = useState(false);
+const [Ispendingsoloading,setIspendingsoloading]=useState(false);
+const [Iscompletesoloading,setIscompletesoloading]=useState(false);
   const onRefresh = () => {
     setRefreshing(true);
 
@@ -237,11 +238,13 @@ const OrderHistory = (props) => {
       // User has reached the end of the list, load the next page
 
       if (orderstatus) {
-        if (filterosstatus == false && handlerstop==false) {
+        if (filterosstatus == false && handlerstop == false) {
+          setIspendingsoloading(true);
           getSonumber();
         }
       } else {
-        if (filteroutwardstatus == false && handleroutwardstop==false) {
+        if (filteroutwardstatus == false && handleroutwardstop == false) {
+          setIscompletesoloading(true);
           getCompleteData();
         }
       }
@@ -262,20 +265,29 @@ const OrderHistory = (props) => {
     const nextPage = currentPage + 1;
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
-    await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: 10 }).then((res) => {
+    let pageSize;
+    if(nextPage==1)
+    {
+      pageSize=100;
+    }else{
+      pageSize=20;
+    }
+
+    await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: pageSize }).then((res) => {
       if (res && res.status == 200) {
+        console.log(res.data.hasMore, nextPage, res.data.data.length);
         if (res.data.data.length <= 0) {
           console.log(res.data.data);
           setSodatanotfount(true);
         }
         else {
-          if (res.data.hasMore==false) {
+          if (res.data.hasMore == false) {
             sethandlerstop(true)
+          setIspendingsoloading(false);
           }
-            setSoNumberData(prevData => [...prevData, ...res.data.data]);
-            setOldDateOfso(prevData => [...prevData, ...res.data.data]);
-            setCurrentPage(nextPage);
-          
+          setSoNumberData(prevData => [...prevData, ...res.data.data]);
+          setOldDateOfso(prevData => [...prevData, ...res.data.data]);
+          setCurrentPage(nextPage);
         }
       }
       else {
@@ -300,7 +312,8 @@ const OrderHistory = (props) => {
   };
   useEffect(() => {
     getSonumber();
-    setOutwardcurrentPage(0);
+    getCompleteData();
+    // setOutwardcurrentPage(0);
   }, []);
   const calculateTotalArticleRate = (articleRate, outwardNoPacks) => {
     return articleRate.reduce(
@@ -343,13 +356,19 @@ const OrderHistory = (props) => {
 
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
-
+    let pageSize;
+    if(nextPage==1)
+    {
+      pageSize=100;
+    }else{
+      pageSize=20;
+    }
     await getCompletedSoDetails({
       PartyId: data[0].Id,
       page: nextPage,
-      pageSize: 10,
+      pageSize: pageSize,
     }).then((res) => {
-      console.log(res.data.data.length, res.data.hasMore, res.data.hasMore,nextPage, "{}{}{{}{}{}{}");
+      console.log(res.data.data.length, res.data.hasMore, res.data.hasMore, nextPage, "{}{}{{}{}{}{}");
       if (res && res.status == 200) {
         if (res.data.data.length <= 0) {
           setOutworddatanotfount(true);
@@ -357,21 +376,20 @@ const OrderHistory = (props) => {
         }
         else {
           if (nextPage == 1) {
-            console.log("first time");
             setcompletedsodata(res.data.data);
             setOldDataOfCompleted(res.data.data);
           } else {
-            if(res.data.hasMore==false){
+            if (res.data.hasMore == false) {
               sethandleroutwardstop(true);
+              setIscompletesoloading(false);
             }
-            console.log("second time");
             setcompletedsodata((prevData) => [...prevData, ...res.data.data]);
             setOldDataOfCompleted((prevData) => [...prevData, ...res.data.data]);
           }
 
-          if(res.data.hasMore==false){
-          setOutwardcurrentPage(0);
-          }else{
+          if (res.data.hasMore == false) {
+            setOutwardcurrentPage(0);
+          } else {
             setOutwardcurrentPage(nextPage);
           }
           setIsLoadingsodetails(false);
@@ -431,8 +449,8 @@ const OrderHistory = (props) => {
                   onPress={() => {
                     setToggle(!toggle);
                     setOrderstatus(false);
-                    getCompleteData();
-                    setIsLoadingsodetails(true);
+                    // getCompleteData();
+                    // setIsLoadingsodetails(true);
                   }}
                 >
                   <Text
@@ -602,7 +620,23 @@ const OrderHistory = (props) => {
                       )
                     )
                     : ""}
+                    {
+                      Ispendingsoloading?
+                      <View style={{
+                        marginBottom: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}>
+                        <ActivityIndicator
+                          size="large"
+                          color="black"
+                        />
+                      </View>
+                      :""
+                    }
+                
                 </ScrollView>
+
               </View>
             )
           ) : isLoadingsodetails ? (
@@ -752,6 +786,20 @@ const OrderHistory = (props) => {
                     )
                   )
                   : ""}
+                   {
+                      Iscompletesoloading?
+                      <View style={{
+                        marginBottom: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}>
+                        <ActivityIndicator
+                          size="large"
+                          color="black"
+                        />
+                      </View>
+                      :""
+                    }
               </ScrollView>
             </View>
           )}

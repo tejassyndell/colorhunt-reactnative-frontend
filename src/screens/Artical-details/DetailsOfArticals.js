@@ -969,8 +969,8 @@ const DetailsOfArticals = (props) => {
             <Image
               source={require("../../../assets/FilterIcon/Close.png")}
               style={{
-                width: width >= 720 ? 90 : 60,
-                height: width >= 720 ? 90 : 60,
+                width: width >= 720 ? 40 : 30,
+                height: width >= 720 ? 40 : 30,
               }}
             />
           </TouchableOpacity>
