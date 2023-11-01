@@ -18,12 +18,13 @@ import Textarea from "react-native-textarea";
 import { getSoArticleDetails, getcompleteoutwordDetails } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
+import styles from "./styles";
 import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import * as Location from "expo-location";
+import Loader from "../../components/Loader/Loader";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
-import Loader from "../../components/Loader/Loader"
 
 const OrderDetails = (props) => {
   const { navigation } = props;
@@ -109,8 +110,6 @@ const OrderDetails = (props) => {
       headerRight: () => <View />,
       headerStyle: {
         height: headerHeight, // Increase the header height here
-        elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
       },
     });
   }, []);
@@ -421,7 +420,6 @@ const OrderDetails = (props) => {
     <html>
     <body>
     <table border="1" cellspacing="0" cellpadding="10" width="100%">
-      
         <tr>
             <td colspan="12" style="text-align: center; background-color: black; color: white;font-weight: bold">
                 COLORHUNT
@@ -449,7 +447,7 @@ const OrderDetails = (props) => {
                 }
             </td>
             <td style="text-transform: uppercase" colspan="1">
-                <strong>${OutwardNumber!==0?"OUTWARD NO": "SO NO:"}</strong>
+                <strong>SO NO:</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">
                ${`${name}${
@@ -528,16 +526,16 @@ const OrderDetails = (props) => {
   return (
     <>
       {isloading ? (
-         <View
-         style={{
-           flex: 1,
-           justifyContent: "center",
-           alignItems: "center",
-           backgroundColor:"#FFFFFF"
-         }}
-       >
-          <Loader/>
-       </View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor:'#FFF'
+          }}
+        >
+            <Loader />
+        </View>
       ) : (
         <View
           style={{
@@ -902,7 +900,6 @@ const OrderDetails = (props) => {
                     padding: 8,
                     borderTopRightRadius: 10,
                     borderBottomRightRadius: 10,
-                    backgroundColor:"black"
                   }}
                 >
                   <Text
@@ -913,7 +910,7 @@ const OrderDetails = (props) => {
                       color: "#FFFFFF",
                     }}
                   >
-                   {name}
+                   
                   </Text>
                 </TouchableOpacity>
                 <Text
@@ -1015,7 +1012,7 @@ const OrderDetails = (props) => {
                       }}
                     >
                       {partydata
-                        ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode},`
+                        ? `${partydata[0].Address},${partydata[0].City} ${partydata[0].State} , PinCode${partydata[0].PinCode},`
                         : "Address"}
                       {console.log(partydata, "skhvchgvsacjvsjdc hasvcjvsdc")}
                     </Text>
@@ -1030,7 +1027,8 @@ const OrderDetails = (props) => {
                           color: "#808080",
                         }}
                       >
-                       { OutwardNumber!==0? "Outward Number":"SoNumber"}
+                        { OutwardNumber !== 0 ? "OutwardNumber" : "SoNumber:"}
+                        
                       </Text>
                     </View>
                     <View style={{ flex: 1 }}>
@@ -1155,6 +1153,26 @@ const OrderDetails = (props) => {
                           : "GST"}
                       </Text>
                     </View>
+
+                    {/* <View
+                                        style={{
+                                            height: width >= 720 ? 45 : 35,
+                                            width: '48%',
+                                            borderWidth: 2,
+                                            borderRadius: 6,
+                                            borderColor: remarks !== "" ? "black" : '#808080',
+                                            paddingStart: 10,
+                                            justifyContent: 'center'
+                                        }}
+                                    // value='NIRAV SIR'
+                                    >
+                                        <Text style={{
+                                            fontSize: width >= 720 ? 20 : 16,
+                                            color: '#000000',
+                                            fontWeight: 'bold',
+                                            color: remarks !== "" ? "black" : "#00000080"
+                                        }}>{remarks !== "" ? remarks : "Remarks"}</Text>
+                                    </View> */}
                   </View>
                 </View>
                 <View>
@@ -1228,63 +1246,45 @@ const OrderDetails = (props) => {
                           </Table>
                           {/* </ScrollView> */}
 
-                          <View
-                            style={{
-                              flex: 1,
-                              flexDirection: "row",
-                              height: 40,
-                              borderColor: "#000000",
-                              borderWidth: 1,
-                              borderTopWidth: 2,
-                            }}
-                          >
-                            <Text
+                          <ScrollView>
+                            <View
                               style={{
-                                width: width >= 720 ? 650 : 600,
-                                borderRightWidth: 2,
+                                flex: 1,
+                                flexDirection: "row",
+                                height: 40,
                                 borderColor: "#000000",
-                                fontWeight: "bold",
-                                paddingLeft: 3,
-                                paddingTop: width >= 720 ? 10 : 9,
-                              }}
-                            >
-                              SUBTOTAL
-                            </Text>
-                            <Text
-                              style={{
-                                width: width >= 720 ? 100 : 92,
-                                borderWidth: 2,
-
-                                borderColor: "#000000",
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                paddingTop: width >= 720 ? 10 : 9,
-                              }}
-                            >
-                              {totalqty}
-                            </Text>
-                            <Text
-                              style={{
-                                width: 100,
-                                borderRightWidth: 2,
-                                borderColor: "#000000",
-                              }}
-                            ></Text>
-                            <Text
-                              style={{
-                                width: 100,
                                 borderWidth: 1,
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                paddingTop: width >= 720 ? 10 : 9,
+                                borderTopWidth: 2,
                               }}
                             >
-                              ₹{totalval}.00
-                            </Text>
-                          </View>
+                              <Text
+                                style={styles.fastRowContent}
+                              >
+                                SUBTOTAL
+                              </Text>
+                              <Text
+                                style={styles.secondCollam}
+                              >
+                                {totalqty}
+                              </Text>
+                              <Text
+                                style={styles.thurdCollam}
+                              ></Text>
+                              <Text
+                                style={{
+                                  width: 98,
+                                  textAlign: "center",
+                                  fontWeight: "bold",
+                                  paddingTop: width >= 720 ? 10 : 9,
+                                }}
+                              >
+                                ₹{totalval}.00
+                              </Text>
+                            </View>
+                          </ScrollView>
                           {partydata.length > 0 ? (
                             partydata[0].GSTType === "GST" ? (
-                              <View>
+                              <ScrollView>
                                 <View
                                   style={{
                                     flex: 1,
@@ -1296,45 +1296,18 @@ const OrderDetails = (props) => {
                                   }}
                                 >
                                   <Text
-                                    style={{
-                                      width: width >= 720 ? 650 : 600,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                      fontWeight: "bold",
-                                      paddingLeft: 3,
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
+                                    style={styles.fastRowContent}
                                   ></Text>
                                   <Text
-                                    style={{
-                                      width: width >= 720 ? 100 : 90,
-                                      borderRightWidth: 1,
-                                      borderColor: "#000000",
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 10,
-                                    }}
+                                    style={styles.secondCollam}
                                   ></Text>
                                   <Text
-                                    style={{
-                                      width: 103,
-                                      borderWidth: 1,
-                                      borderColor: "#000000",
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
+                                    style={styles.collamGst}
                                   >
                                     GST 5%
                                   </Text>
                                   <Text
-                                    style={{
-                                      width: 98,
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
+                                    style={styles.collamGst5Per}
                                   >
                                     ₹{parseInt(totalval * 0.05)}.00
                                   </Text>
@@ -1350,47 +1323,23 @@ const OrderDetails = (props) => {
                                   }}
                                 >
                                   <Text
-                                    style={{
-                                      width: width >= 720 ? 650 : 600,
-                                      borderRightWidth: 1,
-                                      borderColor: "#000000",
-                                      fontWeight: "bold",
-                                      paddingLeft: 3,
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
+                                    style={styles.fastRowContent}
                                   >
                                     TOTAL
                                   </Text>
                                   <Text
-                                    style={{
-                                      width: width >= 720 ? 100 : 90,
-                                      borderRightWidth: 1,
-                                      borderColor: "#000000",
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
+                                    style={styles.secondCollam}
                                   ></Text>
                                   <Text
-                                    style={{
-                                      width: 100,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                    }}
+                                    style={styles.thurdCollam}
                                   ></Text>
                                   <Text
-                                    style={{
-                                      width: 102,
-                                      borderWidth: 1,
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
+                                    style={styles.collamGst5Per}
                                   >
                                     ₹{getgstamount(totalval)}.00
                                   </Text>
                                 </View>
-                              </View>
+                              </ScrollView>
                             ) : (
                               ""
                             )

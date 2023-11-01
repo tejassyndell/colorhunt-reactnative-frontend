@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   RefreshControl,
+  Alert,
 } from "react-native";
 import styles from "./styles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -229,19 +230,39 @@ export default function HomeScreen(props) {
   const getCategoriesname = async () => {
     try {
       const result1 = await getcateGorywithphotos();
-      if (result1.status === 200) {
+      if (result1 && result1.status === 200) {
         setNameData(result1.data);
+      } else {
+        Alert.alert("Server is not responding", [
+          {
+            text: "OK",
+            onPress: () => {
+              // Call namdemo function when the user clicks 'OK'
+              getCategoriesname();
+            },
+          },
+        ]);
       }
       const result2 = await getProductName();
-      if (result2.status === 200) {
+      if (result2 && result2.status === 200) {
         setNameDatas(result2.data);
         setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
+        setIsLoading(false);
+        setRefreshing(false);
+      } else {
+        Alert.alert("Server is not responding", [
+          {
+            text: "OK",
+            onPress: () => {
+              // Call namdemo function when the user clicks 'OK'
+              getCategoriesname();
+            },
+          },
+        ]);
       }
-      setIsLoading(false);
-      setRefreshing(false);
+      // console.log(result2,"|{{|{{|{{|{{|");
     } catch (error) {
       console.error(error);
-      setIsLoading(false);
       setRefreshing(false);
     }
   };
@@ -318,9 +339,11 @@ export default function HomeScreen(props) {
       ),
       headerTitle: () => null, // Remove the header title
       headerStyle: {
-        height: headerHeight, // Increase the header height here
+        height: headerHeight,
         elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        shadowOpacity: 0,
+
+        // backgroundColor: "black",
       },
     });
   }, []);
@@ -386,7 +409,10 @@ export default function HomeScreen(props) {
 
         if (chunkResult.length > 0) {
           filtered = [...filtered, ...chunkResult];
-          break; // Stop after the first matching chunk
+          if(parseInt(filtered.length)>=4){
+            console.log(filtered.length,typeof 4);
+            break; // Stop after the first matching chunk
+          }
         }
       }
 
@@ -533,6 +559,7 @@ export default function HomeScreen(props) {
                 Welcome
               </Text>
             </View>
+
             <View
               style={{
                 flexDirection: "row",
@@ -544,41 +571,43 @@ export default function HomeScreen(props) {
                 searchPhrase={searchText}
                 setSearchPhrase={setSearchText}
               />
-              <TouchableOpacity
-                style={{ width: "10%", alignItems: "flex-end" }}
-                onPress={() => {
-                  openFilter();
-                }}
-              >
-                <Svg
-                  width={width >= 720 ? 60 : 35}
-                  height={width >= 720 ? 60 : 35}
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/Svg"
-                  {...props}
+              {isLoggedIn ? (
+                <TouchableOpacity
+                  style={{ width: "10%", alignItems: "flex-end" }}
+                  onPress={() => {
+                    openFilter();
+                  }}
                 >
-                  <Circle cx={20} cy={20} r={20} fill="#212121" />
-                  <Path
-                    opacity={0.4}
-                    d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
-                    fill="white"
-                  />
-                  <Path
-                    opacity={0.4}
-                    d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
-                    fill="white"
-                  />
-                  <Path
-                    d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
-                    fill="white"
-                  />
-                  <Path
-                    d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
-                    fill="white"
-                  />
-                </Svg>
-              </TouchableOpacity>
+                  <Svg
+                    width={width >= 720 ? 60 : 35}
+                    height={width >= 720 ? 60 : 35}
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/Svg"
+                    {...props}
+                  >
+                    <Circle cx={20} cy={20} r={20} fill="#212121" />
+                    <Path
+                      opacity={0.4}
+                      d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
+                      fill="white"
+                    />
+                    <Path
+                      opacity={0.4}
+                      d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
+                      fill="white"
+                    />
+                    <Path
+                      d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
+                      fill="white"
+                    />
+                    <Path
+                      d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
+                      fill="white"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              ) : null}
             </View>
           </View>
           <ScrollView
@@ -670,33 +699,35 @@ export default function HomeScreen(props) {
                               elevation: 2,
                             }}
                           >
-                            <View id={item.id} style={styles.producticones}>
-                              {selectedprd.some((i) => i.Id === item.Id) ? (
-                                <TouchableOpacity
-                                  onPress={() => {
-                                    rmvProductWishlist(item);
-                                  }}
-                                >
-                                  <FontAwesome
-                                    name="heart"
-                                    style={[styles.icon]}
-                                  />
-                                </TouchableOpacity>
-                              ) : (
-                                <TouchableOpacity
-                                  onPress={() => {
-                                    isLoggedIn
-                                      ? addArticleWishlist(item)
-                                      : openCreateAccountModal();
-                                  }}
-                                >
-                                  <FontAwesome
-                                    name="heart-o"
-                                    style={[styles.disabledIcon]}
-                                  />
-                                </TouchableOpacity>
-                              )}
-                            </View>
+                            {isLoggedIn ? (
+                              <View id={item.id} style={styles.producticones}>
+                                {selectedprd.some((i) => i.Id === item.Id) ? (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      rmvProductWishlist(item);
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart"
+                                      style={[styles.icon]}
+                                    />
+                                  </TouchableOpacity>
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      isLoggedIn
+                                        ? addArticleWishlist(item)
+                                        : openCreateAccountModal();
+                                    }}
+                                  >
+                                    <FontAwesome
+                                      name="heart-o"
+                                      style={[styles.disabledIcon]}
+                                    />
+                                  </TouchableOpacity>
+                                )}
+                              </View>
+                            ) : null}
                             {item.Photos ? (
                               <Image
                                 source={{ uri: baseImageUrl + item.Photos }}
@@ -738,7 +769,7 @@ export default function HomeScreen(props) {
                               fontSize: width >= 720 ? 20 : 16,
                             }}
                           >
-                            {"₹" + item.ArticleRate + ".00"}
+                            {isLoggedIn ? "₹" + item.ArticleRate + ".00" : null}
                           </Text>
                         </View>
                       </TouchableOpacity>
@@ -1041,7 +1072,7 @@ export default function HomeScreen(props) {
               width: "92%",
               backgroundColor: "white",
               position: "absolute",
-              bottom: "2%",
+              bottom: "3%",
               marginLeft: "4%",
               padding: 5,
               borderRadius: 20,
@@ -1079,9 +1110,10 @@ export default function HomeScreen(props) {
               width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
-              padding: 10,
+              padding: 12,
               marginTop: 25,
               marginBottom: 25,
+              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   RefreshControl,
+  Alert,
 } from "react-native";
 import {
   getProductName,
@@ -19,6 +20,7 @@ import {
   DeleteWishlist,
 } from "../../api/api";
 import styles from "./styles";
+import Loader from "../../components/Loader/Loader";
 import { useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
@@ -28,9 +30,7 @@ import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
-import Loader from "../../components/Loader/Loader";
-import Svg, { Circle, Path } from "react-native-svg";
-
+import { Svg, Path, Circle } from "react-native-svg";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
@@ -152,7 +152,6 @@ export default function CategorisWiseArticle(props) {
   // const titlename = convertToTitleCase(category);
   console.log(category);
   const openFilter = () => {
-    Keyboard.dismiss();
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
@@ -165,12 +164,23 @@ export default function CategorisWiseArticle(props) {
     try {
       const res = await getProductName();
       if (res.status === 200) {
+        // console.log(res.data);
         const sdPrds = res.data.slice();
         const fildata = sdPrds.filter((item) => item.Category === category);
         setNameDatas(fildata);
         setFinalData(fildata);
         setIsLoading(false);
         setRefreshing(false);
+      } else {
+        Alert.alert("Server is not responding", [
+          {
+            text: "OK",
+            onPress: () => {
+              // Call namdemo function when the user clicks 'OK'
+              getproductnamess();
+            },
+          },
+        ]);
       }
     } catch (error) {
       console.log(error);
@@ -214,6 +224,7 @@ export default function CategorisWiseArticle(props) {
       article_id: i.Id,
     };
     setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
+
     try {
       await getAddWishlist(data).then((res) => {
         // getWishlist();
@@ -256,7 +267,8 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              isLoggedIn ? navigation.navigate("Profile") : "";
+              isLoggedIn ? navigation.navigate("Profile") : null;
+              console.log(isLoggedIn);
             }}
           >
             <Image
@@ -271,9 +283,9 @@ export default function CategorisWiseArticle(props) {
         </View>
       ),
       headerStyle: {
-        height: headerHeight, // Increase the header height here
-        elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        height: headerHeight,
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
@@ -299,7 +311,7 @@ export default function CategorisWiseArticle(props) {
 
         const batchFiltered = batch.filter(
           (item) =>
-            (searchText === "" ||
+            (searchText === "" || // Check if searchText is empty or matches any criteria
               item.ArticleNumber.toString().includes(searchText.toString()) ||
               item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
               item.ArticleRate.toString().includes(searchText.toString()) ||
@@ -371,7 +383,9 @@ export default function CategorisWiseArticle(props) {
               addArticleWishlist(item);
             }}
           >
-            <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
+            {isLoggedIn ? (
+              <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
+            ) : null}
           </TouchableOpacity>
         )}
       </View>
@@ -514,33 +528,33 @@ export default function CategorisWiseArticle(props) {
               }}
             >
               <Svg
-                  width={width >= 720 ? 65 : 40}
-                  height={width >= 720 ? 65 : 40}
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/Svg"
-                  {...props}
-                >
-                  <Circle cx={20} cy={20} r={20} fill="#212121" />
-                  <Path
-                    opacity={0.4}
-                    d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
-                    fill="white"
-                  />
-                  <Path
-                    opacity={0.4}
-                    d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
-                    fill="white"
-                  />
-                  <Path
-                    d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
-                    fill="white"
-                  />
-                  <Path
-                    d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
-                    fill="white"
-                  />
-                </Svg>
+                width={width >= 720 ? 65 : 40}
+                height={width >= 720 ? 65 : 40}
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/Svg"
+                {...props}
+              >
+                <Circle cx={20} cy={20} r={20} fill="#212121" />
+                <Path
+                  opacity={0.4}
+                  d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
+                  fill="white"
+                />
+                <Path
+                  opacity={0.4}
+                  d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
+                  fill="white"
+                />
+                <Path
+                  d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
+                  fill="white"
+                />
+                <Path
+                  d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
+                  fill="white"
+                />
+              </Svg>
             </TouchableOpacity>
           </View>
           <View>
@@ -638,13 +652,14 @@ export default function CategorisWiseArticle(props) {
               <View
                 style={{
                   width: "92%",
-                  backgroundColor: "white",
+                  backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: '2%',
-                  marginLeft: "4%",
-                  padding: 5,
-                  borderRadius: 20,
-                 
+                  bottom: "3%",
+                  left: 1,
+                  right: 0, // To make it span the full width
+                  marginLeft: "4%", // Margin on the left side
+                  padding: 10,
+                  borderRadius: 10, // Adjust the radius as needed
                 }}
               >
                 <Filter
@@ -681,9 +696,10 @@ export default function CategorisWiseArticle(props) {
               width: "95%",
               backgroundColor: "#fff",
               borderRadius: 10,
-              padding: 10,
+              padding: 12,
               marginTop: 25,
               marginBottom: 25,
+              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />
