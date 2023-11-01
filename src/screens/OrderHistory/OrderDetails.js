@@ -92,6 +92,9 @@ const OrderDetails = (props) => {
             flexDirection: "row",
             width: "100%",
             marginLeft: 14,
+            height:35,
+            marginBottom:20
+            
           }}
         >
           <Text
@@ -1222,7 +1225,7 @@ const OrderDetails = (props) => {
                           > */}
                           <Table
                             borderStyle={{
-                              borderWidth: 2,
+                              borderWidth: 1.5,
                               borderColor: "#000000",
                             }}
                           >
@@ -1254,7 +1257,6 @@ const OrderDetails = (props) => {
                                 height: 40,
                                 borderColor: "#000000",
                                 borderWidth: 1,
-                                borderTopWidth: 2,
                               }}
                             >
                               <Text
@@ -1292,7 +1294,6 @@ const OrderDetails = (props) => {
                                     height: 40,
                                     borderColor: "#000000",
                                     borderWidth: 1,
-                                    borderTopWidth: 2,
                                   }}
                                 >
                                   <Text

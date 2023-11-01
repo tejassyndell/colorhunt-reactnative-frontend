@@ -155,6 +155,8 @@ export default function WishList(props) {
             alignContent: "center",
             paddingLeft: "10%",
             width: parseInt(width) >= 720 ? "95%" : "100%",
+            marginBottom:20, 
+
           }}
         >
           <Text

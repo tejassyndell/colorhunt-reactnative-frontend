@@ -101,7 +101,7 @@ export default function Contact(props) {
       setShowValidationErrors(true);
       return;
     } 
-    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z]{2,4}$/i;
+    const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     if (!emailRegex.test(email)) { // Use emailRegex to test the email
       setShowValidationErrors(true);
       return;
@@ -162,6 +162,8 @@ export default function Contact(props) {
               fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "700",
               width: "100%",
+              marginBottom:20, 
+
             }}
           >
             Contact us
@@ -326,7 +328,7 @@ export default function Contact(props) {
                   marginLeft: 10,
                 }}
               >
-                Email Not Valid
+                Please use a valid email address
               </Text>
             )}
           </View>

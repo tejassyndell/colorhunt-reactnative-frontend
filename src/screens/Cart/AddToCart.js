@@ -130,6 +130,7 @@ const AddToCart = (props) => {
             alignItems: "center",
             alignContent: "center",
             paddingLeft: "10%",
+            marginBottom:20,
             width: parseInt(windowwidthe) >= 720 ? "95%" : "100%",
           }}
         >

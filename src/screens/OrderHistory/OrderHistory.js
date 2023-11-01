@@ -214,6 +214,8 @@ const OrderHistory = (props) => {
               fontSize: width >= 720 ? 35 : 20,
               fontWeight: "700",
               width: "100%",
+              marginBottom:20, 
+
             }}
           >
             Orders History
@@ -445,10 +447,10 @@ const OrderHistory = (props) => {
               </View>
             </View>
             <View style={styles.calender_cnt}>
-              <View style={{ paddingRight: "4%" }}>
+              <View style={{ paddingRight: "4%",marginTop:10 }}>
                 <TouchableOpacity
                   onPress={() => toggleCalendar()}
-                  style={{ height: height * 0.035, width: width * 0.035 }}
+                  style={{ height: 20, width:20 }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>
@@ -916,7 +918,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#FFF",
-    borderTopWidth: 1,
+   
     borderTopColor: "#E0E0E0",
   },
   first_cnt: {

@@ -276,6 +276,7 @@ export default function CategorisWiseArticle(props) {
                 resizeMode: "contain",
                 width: width >= 720 ? 55 : 35,
                 height: width >= 720 ? 55 : 35,
+                 marginBottom:20, 
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />

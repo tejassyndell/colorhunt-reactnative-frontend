@@ -44,6 +44,7 @@ export default function Notification(props) {
             display: "flex",
             flexDirection: "row",
             width: "100%",
+            marginBottom:20, 
           }}
         >
           <Text

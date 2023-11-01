@@ -252,6 +252,7 @@ export default function AllArticle(props) {
             width: "auto",
             height: "auto",
             padding: 4,
+           
           }}
         >
           <TouchableOpacity
@@ -264,6 +265,7 @@ export default function AllArticle(props) {
                 resizeMode: "contain",
                 width: width >= 720 ? 55 : 32,
                 height: width >= 720 ? 55 : 32,
+                marginBottom:20,
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />
@@ -273,7 +275,7 @@ export default function AllArticle(props) {
       headerStyle: {
         height: headerHeight, // Increase the header height here
         elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        shadowOpacity: 0,
       },
     });
   }, []);
