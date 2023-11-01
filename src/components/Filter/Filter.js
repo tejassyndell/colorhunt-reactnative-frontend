@@ -300,7 +300,7 @@ export default function Filter({
         ) : (
           ""
         )}
-        {isLoggedIn ? (
+       
           <View style={styles.container2}>
             {status ? (
               <View style={styles.headertrue}>
@@ -413,7 +413,7 @@ export default function Filter({
               </View>
             </View>
           </View>
-        ) : null}
+        
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[

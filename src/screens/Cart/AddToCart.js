@@ -226,7 +226,7 @@ const AddToCart = (props) => {
 
   const handleAddMoreItems = () => {
     navigation.navigate("Home");
-    Keyboard.dismiss(none);
+    Keyboard.dismiss();
   };
   cartIsEmpty;
   const handleGoBack = () => {

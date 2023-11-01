@@ -1027,7 +1027,8 @@ const OrderDetails = (props) => {
                           color: "#808080",
                         }}
                       >
-                        SoNumber:
+                        { OutwardNumber !== 0 ? "OutwardNumber" : "SoNumber:"}
+                        
                       </Text>
                     </View>
                     <View style={{ flex: 1 }}>

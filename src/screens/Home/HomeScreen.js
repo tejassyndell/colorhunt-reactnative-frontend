@@ -1072,7 +1072,7 @@ export default function HomeScreen(props) {
               width: "92%",
               backgroundColor: "white",
               position: "absolute",
-              bottom: "2%",
+              bottom: "3%",
               marginLeft: "4%",
               padding: 5,
               borderRadius: 20,

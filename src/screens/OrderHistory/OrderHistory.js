@@ -369,7 +369,11 @@ const OrderHistory = (props) => {
             setOldDataOfCompleted((prevData) => [...prevData, ...res.data.data]);
           }
 
-          setOutwardcurrentPage(nextPage);
+          if(res.data.hasMore==false){
+          setOutwardcurrentPage(0);
+          }else{
+            setOutwardcurrentPage(nextPage);
+          }
           setIsLoadingsodetails(false);
         }
       } else {

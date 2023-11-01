@@ -654,7 +654,7 @@ export default function CategorisWiseArticle(props) {
                   width: "92%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: "40%",
+                  bottom: "3%",
                   left: 1,
                   right: 0, // To make it span the full width
                   marginLeft: "4%", // Margin on the left side
