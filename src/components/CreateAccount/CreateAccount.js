@@ -286,7 +286,10 @@ const CreateAccount = (props) => {
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Image
                 source={require("../../../assets/FilterIcon/Close.png")}
-                style={{ width: 30, height: 30 }}
+                style={{
+                  width: width >= 720 ? 50 : 30,
+                  height: width >= 720 ? 50 : 30,
+                }}
               />
             </TouchableOpacity>
           </View>
@@ -441,7 +444,7 @@ const styles = StyleSheet.create({
   container: {
     width: "98%",
     alignItem: "center",
-    paddingHorizontal: width >= 720 ? 40 : 15,
+    paddingHorizontal: width >= 720 ? 40 : 10,
     paddingVertical: width >= 720 ? 60 : 25,
     justifyContent: "center",
   },

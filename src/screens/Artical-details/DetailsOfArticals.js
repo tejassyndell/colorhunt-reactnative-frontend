@@ -103,6 +103,7 @@ const DetailsOfArticals = (props) => {
     };
     try {
       const res = await ArticleDetails(data);
+      console.log(res.data);
       setArticlePhotos(res.data.photos);
       setArticleCategory(res.data.calculatedData[0].Category);
       setSubcategory(res.data.calculatedData[0].subcategory);
