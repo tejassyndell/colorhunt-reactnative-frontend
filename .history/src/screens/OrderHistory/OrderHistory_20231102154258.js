@@ -60,8 +60,7 @@ const OrderHistory = (props) => {
   const [filteroutwardstatus, setFilteroutwardstatus] = useState(false);
   const [handlerstop, sethandlerstop] = useState(false);
   const [handleroutwardstop, sethandleroutwardstop] = useState(false);
-  const [Ispendingsoloading, setIspendingsoloading] = useState(false);
-  const [Iscompletesoloading, setIscompletesoloading] = useState(false);
+
   const onRefresh = () => {
     setRefreshing(true);
 
@@ -239,12 +238,10 @@ const OrderHistory = (props) => {
 
       if (orderstatus) {
         if (filterosstatus == false && handlerstop == false) {
-          setIspendingsoloading(true);
           getSonumber();
         }
       } else {
         if (filteroutwardstatus == false && handleroutwardstop == false) {
-          setIscompletesoloading(true);
           getCompleteData();
         }
       }
@@ -271,21 +268,18 @@ const OrderHistory = (props) => {
     } else {
       pageSize = 20;
     }
-
     await getsonumber({
       PartyId: data[0].Id,
       page: nextPage,
       pageSize: pageSize,
     }).then((res) => {
       if (res && res.status == 200) {
-        console.log(res.data.hasMore, nextPage, res.data.data.length);
         if (res.data.data.length <= 0) {
           console.log(res.data.data);
           setSodatanotfount(true);
         } else {
           if (res.data.hasMore == false) {
             sethandlerstop(true);
-            setIspendingsoloading(false);
           }
           setSoNumberData((prevData) => [...prevData, ...res.data.data]);
           setOldDateOfso((prevData) => [...prevData, ...res.data.data]);
@@ -310,8 +304,7 @@ const OrderHistory = (props) => {
   };
   useEffect(() => {
     getSonumber();
-    getCompleteData();
-    // setOutwardcurrentPage(0);
+    setOutwardcurrentPage(0);
   }, []);
   const calculateTotalArticleRate = (articleRate, outwardNoPacks) => {
     return articleRate.reduce(
@@ -378,13 +371,14 @@ const OrderHistory = (props) => {
           setIsLoadingsodetails(false);
         } else {
           if (nextPage == 1) {
+            console.log("first time");
             setcompletedsodata(res.data.data);
             setOldDataOfCompleted(res.data.data);
           } else {
             if (res.data.hasMore == false) {
               sethandleroutwardstop(true);
-              setIscompletesoloading(false);
             }
+            console.log("second time");
             setcompletedsodata((prevData) => [...prevData, ...res.data.data]);
             setOldDataOfCompleted((prevData) => [
               ...prevData,
@@ -451,8 +445,8 @@ const OrderHistory = (props) => {
                   onPress={() => {
                     setToggle(!toggle);
                     setOrderstatus(false);
-                    // getCompleteData();
-                    // setIsLoadingsodetails(true);
+                    getCompleteData();
+                    setIsLoadingsodetails(true);
                   }}
                 >
                   <Text
@@ -465,13 +459,10 @@ const OrderHistory = (props) => {
               </View>
             </View>
             <View style={styles.calender_cnt}>
-              <View style={{ padding: 10 }}>
+              <View style={{ paddingTop: 5, paddingRight: 10 }}>
                 <TouchableOpacity
                   onPress={() => toggleCalendar()}
-                  style={{
-                    height: width >= 720 ? 40 : 25,
-                    width: width >= 720 ? 40 : 25,
-                  }}
+                  style={{ height: 20, width: 20 }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>
@@ -625,19 +616,6 @@ const OrderHistory = (props) => {
                         )
                       )
                     : ""}
-                  {Ispendingsoloading ? (
-                    <View
-                      style={{
-                        marginBottom: 100,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <ActivityIndicator size="large" color="black" />
-                    </View>
-                  ) : (
-                    ""
-                  )}
                 </ScrollView>
               </View>
             )
@@ -660,10 +638,9 @@ const OrderHistory = (props) => {
             <View style={orderstyles.order_cnt}>
               <ScrollView nestedScrollEnabled={true} onScroll={handleScroll}>
                 {completedsodata
-                  ? completedsodata.map((item, index) =>
+                  ? completedsodata.map((item) =>
                       item.status === 1 ? (
                         <TouchableOpacity
-                          key={index}
                           style={orderstyles.data_cnt}
                           onPress={() => {
                             navigation.navigate("orderdetails", {
@@ -789,19 +766,6 @@ const OrderHistory = (props) => {
                       )
                     )
                   : ""}
-                {Iscompletesoloading ? (
-                  <View
-                    style={{
-                      marginBottom: 100,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <ActivityIndicator size="large" color="black" />
-                  </View>
-                ) : (
-                  ""
-                )}
               </ScrollView>
             </View>
           )}
@@ -917,7 +881,7 @@ const OrderHistory = (props) => {
                         // fontWeight: "700",
                         color: "#FFF",
                         textAlign: "center",
-                        fontSize: width >= 720 ? 25 : 16,
+                        fontSize: width >= 720 ? 25 : 20,
                       }}
                     >
                       Next

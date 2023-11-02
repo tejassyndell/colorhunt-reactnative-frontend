@@ -25,9 +25,6 @@ import * as Location from "expo-location";
 import Loader from "../../components/Loader/Loader";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
-import RNHTMLtoPDF from "react-native-html-to-pdf";
-import Share from "react-native-share";
-import { Platform, PermissionsAndroid } from "react-native";
 
 const OrderDetails = (props) => {
   const { navigation } = props;

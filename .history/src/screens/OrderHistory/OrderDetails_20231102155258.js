@@ -25,9 +25,6 @@ import * as Location from "expo-location";
 import Loader from "../../components/Loader/Loader";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
-import RNHTMLtoPDF from "react-native-html-to-pdf";
-import Share from "react-native-share";
-import { Platform, PermissionsAndroid } from "react-native";
 
 const OrderDetails = (props) => {
   const { navigation } = props;
@@ -518,29 +515,24 @@ const OrderDetails = (props) => {
   const generatePDF = async () => {
     try {
       if (Platform.OS === "android") {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.error("Storage permission not granted");
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        if (status !== "granted") {
+          console.error("Location permission not granted");
+          return;
+        }
+      } else if (Platform.OS === "ios") {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        if (status !== "granted") {
+          console.error("Location permission not granted");
           return;
         }
       }
 
-      // Define the options for PDF generation
-      const options = {
-        html: html,
-        fileName: "example",
-      };
-
-      // Generate the PDF using RNHTMLtoPDF
-      const pdfFile = await RNHTMLtoPDF.convert(options);
+      // Generate PDF from HTML content
+      const pdfFile = await printToFileAsync({ html: html, base64: false });
 
       // Share the generated PDF
-      Share.open({
-        url: `file://${pdfFile.filePath}`,
-        type: "application/pdf",
-      });
+      await shareAsync(pdfFile.uri);
     } catch (error) {
       console.error("Error generating and sharing PDF:", error);
     }

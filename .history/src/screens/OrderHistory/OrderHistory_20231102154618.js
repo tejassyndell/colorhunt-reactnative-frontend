@@ -465,12 +465,12 @@ const OrderHistory = (props) => {
               </View>
             </View>
             <View style={styles.calender_cnt}>
-              <View style={{ padding: 10 }}>
+              <View style={{ paddingRight: "4%" }}>
                 <TouchableOpacity
                   onPress={() => toggleCalendar()}
                   style={{
-                    height: width >= 720 ? 40 : 25,
-                    width: width >= 720 ? 40 : 25,
+                    height: width >= 720 ? 40 : 30,
+                    width: width >= 720 ? 40 : 30,
                   }}
                 >
                   <Calendersvg />

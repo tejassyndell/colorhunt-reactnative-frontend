@@ -465,13 +465,10 @@ const OrderHistory = (props) => {
               </View>
             </View>
             <View style={styles.calender_cnt}>
-              <View style={{ padding: 10 }}>
+              <View style={{ paddingRight: "4%" }}>
                 <TouchableOpacity
                   onPress={() => toggleCalendar()}
-                  style={{
-                    height: width >= 720 ? 40 : 25,
-                    width: width >= 720 ? 40 : 25,
-                  }}
+                  style={{ height: height * 0.035, width: width * 0.035 }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>
@@ -966,25 +963,32 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#FFF",
+    borderTopWidth: 1,
+    borderTopColor: "#E0E0E0",
   },
   first_cnt: {
     width: "100%",
-    // height: height >= 844 ? "15%" : "19%",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    height: height >= 844 ? "15%" : "17%",
     backgroundColor: "#FFF",
+    padding: "5%",
   },
   pendin_complete_cnt: {
     width: "100%",
     backgroundColor: "#212121",
-    paddingHorizontal: width >= 720 ? 18 : 13,
-    height: width >= 720 ? 70 : 55,
+    paddingHorizontal: width >= 720 ? 18 : 15,
+    height: width >= 720 ? 70 : 50,
     borderRadius: 5,
     justifyContent: "center",
   },
   pc_btn_cnt: {
     display: "flex",
     flexDirection: "row",
+    //   backgroundColor: "blue",
+    // paddingVertical: "2.5%",
+    // paddingHorizontal: "3.5%",
+    // width: "100%",
+    gap: 6,
+    // justifyContent: "center",
   },
   pending_btn: {
     width: "50%",
@@ -992,11 +996,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // paddingTop: "1.5%",
     // paddingBottom: "2.5%"
-    height: 40,
-    justifyContent: "center",
   },
   pending_text: {
-    fontSize: width >= 720 ? 28 : 22,
+    fontSize: width < 720 ? width * 0.05 : width * 0.037,
     fontWeight: "700",
     textAlign: "center",
   },
@@ -1004,15 +1006,15 @@ const styles = StyleSheet.create({
     width: "50%",
     backgroundColor: "#212121",
     borderRadius: 5,
+    // paddingTop: "1.5%",
+    // paddingBottom: "2.5%"
   },
   complete_text: {
     color: "#FFF",
-    fontSize: width >= 720 ? 28 : 22,
+    fontSize: width < 720 ? width * 0.05 : width * 0.037,
     fontWeight: "700",
-    height: 40,
-    justifyContent: "center",
     textAlign: "center",
-    paddingTop: 6,
+    paddingBottom: "2%",
   },
   calender_cnt: {
     backgroundColor: "#FFF",
