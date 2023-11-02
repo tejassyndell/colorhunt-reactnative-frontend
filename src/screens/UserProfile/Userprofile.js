@@ -74,7 +74,7 @@ export default function Userprofile(props) {
       // Alert.alert("Server is not responding")
     }
     } catch (err) {
-      console.log(err, "error in fetching data");
+      // console.log(err, "error in fetching data");
     }
   };
   useLayoutEffect(() => {

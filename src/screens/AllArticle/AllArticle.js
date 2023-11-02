@@ -105,10 +105,10 @@ export default function AllArticle(props) {
         setSelectedCategories(categories);
         setSelectedPriceRange(priceRange);
       } else {
-        console.log("No data found with the key.");
+        // console.log("No data found with the key.");
       }
     } catch (error) {
-      console.error("Error retrieving data:", error);
+      // console.error("Error retrieving data:", error);
     }
   };
   const userChecked = async () => {
@@ -126,7 +126,7 @@ export default function AllArticle(props) {
   });
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -157,7 +157,7 @@ export default function AllArticle(props) {
   const getCategoriesname = async () => {
     retrieveStoredCategories();
     const res = await getProductName();
-    console.log(res,"()(())()()()");
+    // console.log(res,"()(())()()()");
     if (res.status === 200) {
       // console.log(res.data);
       setNameDatas(res.data);
@@ -183,7 +183,7 @@ export default function AllArticle(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -220,7 +220,7 @@ export default function AllArticle(props) {
         // setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const convertToTitleCase = (str) => {
@@ -453,7 +453,7 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All");
+    // console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function

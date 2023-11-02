@@ -57,7 +57,7 @@ const OrderDetails = (props) => {
     outwardArticleId = [],
     OutwardNumberId = "",
   } = route.params;
-  console.log(remarks, "{}{}{}{}{}{}{}{}");
+  // console.log(remarks, "{}{}{}{}{}{}{}{}");
   const [newPrint, setNewPrint] = useState(false);
   const [isloading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
@@ -72,7 +72,7 @@ const OrderDetails = (props) => {
         ? 110
         : 65;
 
-  console.log(newPrint);
+  // console.log(newPrint);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -245,7 +245,7 @@ const OrderDetails = (props) => {
     settotalqty(totalOutwardNoPacks);
   };
   const getgstamount = (val) => {
-    console.log(typeof val);
+    // console.log(typeof val);
     let gsttotal = val * 0.05;
     let totalamount = val + gsttotal;
     let roundedAmount = totalamount.toFixed(2);
@@ -256,9 +256,9 @@ const OrderDetails = (props) => {
     ptdata = JSON.parse(ptdata);
     if (ptdata !== null) {
       setpartydata(ptdata);
-      console.log(ptdata, "[][][][[][][][][]=-gnfgdgf");
+      // console.log(ptdata, "[][][][[][][][][]=-gnfgdgf");
     } else {
-      console.log("No data found");
+      // console.log("No data found");
     }
 
     const date = new Date(CreatedDate);
@@ -279,7 +279,7 @@ const OrderDetails = (props) => {
       party_id: ptdata[0].Id,
       CreatedDate: formattedDateTime,
     };
-    console.log(outwardArticleId.length, "OPOPOPOPOPOPO");
+    // console.log(outwardArticleId.length, "OPOPOPOPOPOPO");
 
     if (outwardArticleId.length > 0) {
       let ptdata = await AsyncStorage.getItem("UserData");
@@ -289,7 +289,7 @@ const OrderDetails = (props) => {
         OutwardNumberId: OutwardNumberId,
         PartyId: ptdata[0].Id,
       }).then((res) => {
-        console.log(res.data, "(((((((((((((((");
+        // console.log(res.data, "(((((((((((((((");
         if (res.status === 200) {
           setTableData({
             tableHead: [
@@ -340,7 +340,7 @@ const OrderDetails = (props) => {
     // You can adjust this logic based on your data and requirements
     // For example, you can calculate the height based on the length of text in the row.
     const textLength = rowData.someField.length; // Adjust to the actual field in your data
-    console.log(textLength * 40, "ksadksakndk");
+    // console.log(textLength * 40, "ksadksakndk");
     return textLength * 40; // Adjust the multiplier based on your desired row height calculation
   };
 
@@ -348,7 +348,7 @@ const OrderDetails = (props) => {
     orderdetils();
   }, []);
   useEffect(() => {
-    console.log(sodetails);
+    // console.log(sodetails);
   }, [sodetails]);
   const GSThtmltable = () => {
     if (partydata) {
@@ -409,7 +409,7 @@ const OrderDetails = (props) => {
   const GSThtmlContent = GSThtmltable();
   const htmlTableData = tableData.tableData
     ? tableData.tableData.map((rowData) => {
-      console.log(rowData[4]);
+      // console.log(rowData[4]);
       return `
         <tr>
           <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>

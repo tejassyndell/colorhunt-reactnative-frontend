@@ -102,12 +102,12 @@ const OrderHistory = (props) => {
       )
         .toISOString()
         .split("T")[0];
-      console.log({
-        PartyId: userdata[0].Id,
-        page: nextPage,
-        pageSize: 10,
-        filterdate: formattedDate,
-      });
+      // console.log({
+      //   PartyId: userdata[0].Id,
+      //   page: nextPage,
+      //   pageSize: 10,
+      //   filterdate: formattedDate,
+      // });
       await FilterSoNumber({
         PartyId: userdata[0].Id,
         page: nextPage,
@@ -123,7 +123,7 @@ const OrderHistory = (props) => {
               setSoNumberData((prevData) => [...prevData, ...res.data.data]);
               handlefilterscroll();
             } else {
-              console.log(res.data);
+              // console.log(res.data);
               setFiltercurrentPage(0);
               setSoNumberData(res.data.data);
             }
@@ -145,7 +145,7 @@ const OrderHistory = (props) => {
       )
         .toISOString()
         .split("T")[0];
-      console.log(formattedDate);
+      // console.log(formattedDate);
 
       await FilteroutwardNumber({
         PartyId: userdata[0].Id,
@@ -162,7 +162,7 @@ const OrderHistory = (props) => {
               setcompletedsodata((prevData) => [...prevData, ...res.data.data]);
               handlefilterscroll();
             } else {
-              console.log("second time");
+              // console.log("second time");
               setFilteroutwardcurrentPage(0);
               setcompletedsodata(res.data.data);
             }
@@ -274,9 +274,9 @@ const OrderHistory = (props) => {
 
     await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: pageSize }).then((res) => {
       if (res && res.status == 200) {
-        console.log(res.data.hasMore, nextPage, res.data.data.length);
+        // console.log(res.data.hasMore, nextPage, res.data.data.length);
         if (res.data.data.length <= 0) {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           setSodatanotfount(true);
         }
         else {
@@ -290,7 +290,7 @@ const OrderHistory = (props) => {
         }
       }
       else {
-        console.log(res, "_+_+_+");
+        // console.log(res, "_+_+_+");
         Alert.alert(
           "Server is not responding",
           [
@@ -366,7 +366,7 @@ const OrderHistory = (props) => {
       page: nextPage,
       pageSize: pageSize,
     }).then((res) => {
-      console.log(res.data.data.length, res.data.hasMore, res.data.hasMore, nextPage, "{}{}{{}{}{}{}");
+      // console.log(res.data.data.length, res.data.hasMore, res.data.hasMore, nextPage, "{}{}{{}{}{}{}");
       if (res && res.status == 200) {
         if (res.data.data.length <= 0) {
           setOutworddatanotfount(true);

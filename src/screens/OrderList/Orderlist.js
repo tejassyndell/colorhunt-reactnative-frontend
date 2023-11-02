@@ -132,7 +132,7 @@ const Orderlist = (props) => {
       DataArticle: Articldata,
       NoPacksNew: null,
     };
-    console.log("-=-=-=-", data);
+    // console.log("-=-=-=-", data);
     await addso(data).then((res) => {
       if (res.status === 200) {
         setIsLoading2(false);
@@ -161,7 +161,7 @@ const Orderlist = (props) => {
       if (Storagedata !== null) {
         setParsedData(JSON.parse(Storagedata));
       } else {
-        console.log("No data found");
+        // console.log("No data found");
       }
     })
     .catch((error) => {
@@ -195,7 +195,7 @@ const Orderlist = (props) => {
     gstamount =
       ParsedData.reduce((total, item) => total + parseInt(item.rate), 0) * 0.05;
   } else {
-    console.log(ParsedData);
+    // console.log(ParsedData);
   }
 
   useLayoutEffect(() => {
@@ -245,13 +245,13 @@ const Orderlist = (props) => {
 
   const filterTransportationValue = (e) => {
     setTransportationVal(e);
-    console.log(e);
+    // console.log(e);
     setshowTransporatation(true);
     if (e !== "") {
       let filterVal = Transportation.filter((item) =>
         item.Name.toLocaleLowerCase().includes(e.toLocaleLowerCase())
       );
-      console.log(filterVal);
+      // console.log(filterVal);
       setTransportation(filterVal);
     } else {
       setTransportation(OldTransportation);

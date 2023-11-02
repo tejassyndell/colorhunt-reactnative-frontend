@@ -124,7 +124,7 @@ export default function CategorisWiseArticle(props) {
   }, []);
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -150,7 +150,7 @@ export default function CategorisWiseArticle(props) {
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
-  console.log(category);
+  // console.log(category);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -175,7 +175,7 @@ export default function CategorisWiseArticle(props) {
         // Alert.alert("Server is not responding");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -195,7 +195,7 @@ export default function CategorisWiseArticle(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -222,7 +222,7 @@ export default function CategorisWiseArticle(props) {
         // getWishlist();
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const convertToTitleCase = (str) => {
@@ -260,7 +260,7 @@ export default function CategorisWiseArticle(props) {
           <TouchableOpacity
             onPress={() => {
               isLoggedIn ? navigation.navigate("Profile") : null;
-              console.log(isLoggedIn);
+              // console.log(isLoggedIn);
             }}
           >
             <Image
@@ -575,7 +575,7 @@ export default function CategorisWiseArticle(props) {
             }}
           >
             {finalData.length === 0 ? (
-              (console.log(nameDatas.length, "ewqewqewqeewq"),
+              (
               (
                 <View
                   style={{

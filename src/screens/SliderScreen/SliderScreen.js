@@ -24,7 +24,7 @@ const SliderScreen = (props) => {
     if (SystemNavigationBar && SystemNavigationBar.navigationHide) {
       try {
         const result = await SystemNavigationBar.navigationHide();
-        console.log("Show Navigation Bar:", result);
+        // console.log("Show Navigation Bar:", result);
       } catch (error) {
         console.error("Error showing navigation bar:", error);
       }

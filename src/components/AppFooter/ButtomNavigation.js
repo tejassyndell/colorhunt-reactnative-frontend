@@ -19,7 +19,7 @@ const ButtomNavigation = (props) => {
  
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 

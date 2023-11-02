@@ -1,6 +1,5 @@
 import React from "react";
 import { TouchableHighlight, Image, Text, View } from "react-native";
-import PropTypes from "prop-types";
 import styles from "./styles";
 
 export default function MenuButton(props) {
@@ -16,8 +15,3 @@ export default function MenuButton(props) {
   );
 }
 
-MenuButton.propTypes = {
-  onPress: PropTypes.func,
-  source: PropTypes.number,
-  title: PropTypes.string,
-};

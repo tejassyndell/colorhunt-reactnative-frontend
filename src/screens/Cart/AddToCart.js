@@ -163,7 +163,7 @@ const AddToCart = (props) => {
   const [array_1, setArray_1] = useState([]);
   const getDetailsOfInward = async (arr1, parsedOrderItems) => {
     await CollectInwardForCartArticals({ arr1 }).then((res) => {
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setcompreInward(res.data.data);
       TotalPrice(parsedOrderItems, res.data.data);
       setIsLoading(false);
@@ -174,9 +174,9 @@ const AddToCart = (props) => {
     data = await JSON.parse(data);
     await cartdetails({ party_id: data[0].Id })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.status == 200) {
-          console.log("Api response :", response.data[0]);
+          // console.log("Api response :", response.data[0]);
           let arr1 = response.data.map((item) => item.article_id);
           const parsedOrderItems = response.data.map((item) => ({
             ...item,
@@ -184,7 +184,7 @@ const AddToCart = (props) => {
           }));
           getDetailsOfInward(arr1, parsedOrderItems);
 
-          console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
+          // console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
           setOrderItems(parsedOrderItems);
         }
         else {
@@ -203,7 +203,7 @@ const AddToCart = (props) => {
         }
       })
       .catch((error) => {
-        console.log("Error fetching data:", error);
+        // console.log("Error fetching data:", error);
       });
   };
 
@@ -247,12 +247,12 @@ const AddToCart = (props) => {
         if (parseInt(item) === parseInt(it.article_id)) {
           new_arr.push(it);
         } else {
-          console.log(item, it.article_id);
+          // console.log(item, it.article_id);
         }
       });
     });
-    console.log("Frash data_1", array_1);
-    console.log("Frash data_2", new_arr);
+    // console.log("Frash data_1", array_1);
+    // console.log("Frash data_2", new_arr);
 
     if (new_arr.length > 0) {
       AsyncStorage.setItem("Orderlist", JSON.stringify(new_arr));
@@ -282,7 +282,7 @@ const AddToCart = (props) => {
             for (let j = 0; j < quntitynumber.length; j++) {
               const e = stringNumbers[i];
               const f = quntitynumber[j];
-              console.log(e, f, "()()()()");
+              // console.log(e, f, "()()()()");
               if (
                 parseInt(e) < parseInt(f) &&
                 it.ArticleId === item.article_id
@@ -317,18 +317,18 @@ const AddToCart = (props) => {
           ) {
             listOfOutOfProduct.push(item.article_id);
           } else {
-            console.log(
-              "11111111",
-              parseInt(it.SalesNoPacks),
-              parseInt(item.Quantity),
-              it.ArticleId,
-              item.article_id
-            );
+            // console.log(
+            //   "11111111",
+            //   parseInt(it.SalesNoPacks),
+            //   parseInt(item.Quantity),
+            //   it.ArticleId,
+            //   item.article_id
+            // );
           }
         }
       });
     });
-    console.log(listOfOutOfProduct);
+    // console.log(listOfOutOfProduct);
     setArray_1(listOfOutOfProduct);
     let total = 0;
     orderItems.map((it) => {
@@ -336,7 +336,7 @@ const AddToCart = (props) => {
         if (parseInt(item) === parseInt(it.article_id)) {
           total += it.rate;
         } else {
-          console.log(item, it.article_id);
+          // console.log(item, it.article_id);
         }
       });
     });
@@ -356,9 +356,9 @@ const AddToCart = (props) => {
         (item) => item.article_id !== article_id
       );
       setOrderItems(updatedcartitems);
-      console.log("Done");
+      // console.log("Done");
     } catch (error) {
-      console.log("Erro deleting article:", error);
+      // console.log("Erro deleting article:", error);
     }
   };
   const handleEditOrder = (article_id, qty) => {
@@ -473,10 +473,10 @@ const AddToCart = (props) => {
 
   const geticondeHeighte = () => {
     if (parseInt(windowwidthe) >= 720) {
-      console.log("same and above 800");
+      // console.log("same and above 800");
       return windowheight * 0.05;
     } else {
-      console.log("below 800");
+      // console.log("below 800");
       return windowheight * 0.04;
     }
   };
