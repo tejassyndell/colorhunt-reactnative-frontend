@@ -56,9 +56,16 @@ export default function CategorisWiseArticle(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
+
+    // Perform your data fetching or refreshing logic here
+    // For example, you can call your API to fetch new data
+    // Make sure to set refreshing to false when done.
+
     setTimeout(() => {
+      // After fetching new data, update your data state
+
       setRefreshing(false);
-    }, 1000);
+    }, 1000); // Simulating a delay, replace with your API call
   };
 
   const fetchMoreData = () => {
@@ -105,34 +112,13 @@ export default function CategorisWiseArticle(props) {
   }, []);
 
   const CheckUser = async () => {
-    try {
-      let user = await AsyncStorage.getItem("UserData");
-      user = await JSON.parse(user);
-      console.log("User data from AsyncStorage:", user);
-      if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    } catch (error) {
-      console.error("Error checking user:", error);
+    const user = await AsyncStorage.getItem("UserData");
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
   };
-  const CheckUserForProfile = async () => {
-    try {
-      let user = await AsyncStorage.getItem("UserData");
-      user = await JSON.parse(user);
-      console.log("User data from AsyncStorage:", user);
-      if (user) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.error("Error checking user:", error);
-    }
-  };
-
   useEffect(() => {
     CheckUser();
   }, []);
@@ -258,7 +244,6 @@ export default function CategorisWiseArticle(props) {
     // getCategoriesname();
     getWishlist();
     getproductnamess();
-    console.log("habwvhasbdvbsldbvhasbhasblba.");
   }, []);
 
   useLayoutEffect(() => {
@@ -281,13 +266,9 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <TouchableOpacity
-            onPress={async () => {
-              let status = await CheckUserForProfile();
-              if (status) {
-                navigation.navigate("Profile");
-              } else {
-                openCreateAccountModal();
-              }
+            onPress={() => {
+              isLoggedIn ? navigation.navigate("Profile") : null;
+              console.log(isLoggedIn);
             }}
           >
             <Image
@@ -303,8 +284,8 @@ export default function CategorisWiseArticle(props) {
       ),
       headerStyle: {
         height: headerHeight,
-        elevation: 0,
-        shadowOpacity: 0, // Increase the header height here
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
@@ -718,8 +699,7 @@ export default function CategorisWiseArticle(props) {
               padding: 12,
               marginTop: 25,
               marginBottom: 25,
-              height: "75%",
-              justifyContent: "center",
+              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

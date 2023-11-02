@@ -190,16 +190,14 @@ export default function WishList(props) {
         borderRadius: 10,
         borderColor: "gray",
         backgroundColor: "#FFF",
-        // shadowColor: "gray",
-        // shadowOpacity: 0.4,
-        // shadowRadius: 4,
-        // elevation: 10,
-        // shadowOffset: {
-        //   width: 0,
-        //   height: 0,
-        // },
-        borderWidth: 1,
-        borderColor: "gray",
+        shadowColor: "gray",
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 10,
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
       }}
     >
       <View id={item.id} style={styles.producticones}>

@@ -101,17 +101,14 @@ const Login = (props) => {
   //   };
   // }, []);
   useEffect(() => {
-    AsyncStorage.setItem(
-      "notificationstatus",
-      JSON.stringify({ status: true, token: token })
-    )
-      .then(() => {
-        // console.log("Data stored in local storage:", userData);
-      })
+    AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: token })).then(() => {
+      // console.log("Data stored in local storage:", userData);
+    })
       .catch((error) => {
         console.error("Error storing data in local storage:", error);
       });
-  }, []);
+
+  }, [])
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
     if (pixelRatio <= 1) {
@@ -161,10 +158,9 @@ const Login = (props) => {
           }).then((res) => {
             if (res && res.status == 200) {
               if (res.data[0].Status == 0) {
-                Alert.alert(
-                  "Invalid Phone Number. Please enter a valid phone number."
-                );
-              } else if (res.data[0].Status == 1) {
+                Alert.alert("Invalid Phone Number. Please enter a valid phone number.");
+              }
+              else if (res.data[0].Status == 1) {
                 setIsLoading(true);
 
                 getstatus(true, res.data[0].Name);
@@ -174,11 +170,9 @@ const Login = (props) => {
                     // console.log("Data stored in local storage:", userData);
                   })
                   .catch((error) => {
-                    console.error(
-                      "Error storing data in local storage:",
-                      error
-                    );
+                    console.error("Error storing data in local storage:", error);
                   });
+
 
                 setShowLogin(false); // Switch to OTP view
                 setIsLoading(false);

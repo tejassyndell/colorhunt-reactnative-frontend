@@ -14,38 +14,38 @@ const androidBorder = {
 };
 
 const iosBorder = {
-  // borderWidth: 1,
-  borderWidth: 1,
+  borderWidth: 2,
 };
 
 const styles = StyleSheet.create({
   fastRowContent: {
     width: width >= 720 ? 650 : 601,
-    paddingLeft: 10,
+    paddingLeft:10,
     ...commonStyle,
+    ...(Platform.OS === 'android' ? androidBorder : iosBorder),
   },
   secondCollam: {
     width: width >= 720 ? 100 : 90,
     ...commonStyle,
     textAlign: "center",
-    ...(Platform.OS === "android" ? androidBorder : iosBorder),
+    ...(Platform.OS === 'android' ? androidBorder : iosBorder),
   },
   thurdCollam: {
     width: 100,
     ...commonStyle,
-    ...(Platform.OS === "android" ? androidBorder : iosBorder),
+    ...(Platform.OS === 'android' ? androidBorder : iosBorder),
   },
   collamGst: {
     width: 100,
     ...commonStyle,
     textAlign: "center",
-    // ...(Platform.OS === "android" ? androidBorder : iosBorder),
+    ...(Platform.OS === 'android' ? androidBorder : iosBorder),
   },
   collamGst5Per: {
     width: 100,
     ...commonStyle,
     textAlign: "center",
-    ...(Platform.OS === "android" ? androidBorder : iosBorder),
+    ...(Platform.OS === 'android' ? androidBorder : iosBorder),
   },
 });
 

@@ -26,6 +26,9 @@ export default function Notification(props) {
 
   const data = [{}];
 
+
+
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -65,6 +68,7 @@ export default function Notification(props) {
 
   return (
     <View style={styles.container}>
+
       {/* {/ Render notification data /} */}
 
       <StatusBar style="auto" />
@@ -94,7 +98,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4641.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -128,7 +134,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4642.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -162,7 +170,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4644.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -196,7 +206,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4641.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -230,7 +242,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4642.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -264,7 +278,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4644.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -298,7 +314,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4641.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -332,7 +350,9 @@ export default function Notification(props) {
                 style={styles.imagesection}
                 source={require("../../../assets/notification/3300422348x4641.png")}
               ></Image>
+
             </View>
+
 
             <View style={styles.contentsection}>
               <Text style={styles.detailscon}>
@@ -353,9 +373,15 @@ export default function Notification(props) {
 
 const styles = StyleSheet.create({
   scrollView: {
+    height: "86%",
     backgroundColor: "white", // Set the background color to your preference
   },
-
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   input: {
     height: 40,
     marginTop: 12,

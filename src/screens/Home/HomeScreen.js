@@ -56,6 +56,10 @@ export default function HomeScreen(props) {
   const onRefresh = () => {
     setRefreshing(true);
 
+    // Add any logic here that you want to execute when the user triggers a refresh.
+    // For example, you can reload data or perform any other action.
+
+    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
     const delay = 3000; // 3 seconds
 
     setTimeout(() => {
@@ -405,8 +409,8 @@ export default function HomeScreen(props) {
 
         if (chunkResult.length > 0) {
           filtered = [...filtered, ...chunkResult];
-          if (parseInt(filtered.length) >= 4) {
-            console.log(filtered.length, typeof 4);
+          if(parseInt(filtered.length)>=4){
+            console.log(filtered.length,typeof 4);
             break; // Stop after the first matching chunk
           }
         }
@@ -894,7 +898,7 @@ export default function HomeScreen(props) {
                     fontWeight: "600",
                   }}
                   onPress={() => {
-                    kids.length === 0 ? null : viewAllArticles();
+                    viewAllArticles();
                   }}
                 >
                   View All
@@ -1109,8 +1113,7 @@ export default function HomeScreen(props) {
               padding: 12,
               marginTop: 25,
               marginBottom: 25,
-              height: "75%",
-              justifyContent: "center",
+              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />
