@@ -120,6 +120,20 @@ export default function AllArticle(props) {
       setIsLoggedIn(false);
     }
   };
+  const CheckUserForProfile = async () => {
+    try {
+      let user = await AsyncStorage.getItem("UserData");
+      user = await JSON.parse(user);
+      console.log("User data from AsyncStorage:", user);
+      if (user) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Error checking user:", error);
+    }
+  };
 
   useEffect(() => {
     userChecked();
@@ -255,8 +269,13 @@ export default function AllArticle(props) {
           }}
         >
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Profile");
+            onPress={async () => {
+              let status = await CheckUserForProfile();
+              if (status) {
+                navigation.navigate("Profile");
+              } else {
+                openCreateAccountModal();
+              }
             }}
           >
             <Image
@@ -671,7 +690,8 @@ export default function AllArticle(props) {
               padding: 12,
               marginTop: 25,
               marginBottom: 25,
-              height: "90%",
+              height: "75%",
+              justifyContent: "center",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

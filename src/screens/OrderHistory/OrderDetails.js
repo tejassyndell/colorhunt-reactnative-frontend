@@ -69,8 +69,8 @@ const OrderDetails = (props) => {
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
 
   console.log(newPrint);
 
@@ -109,7 +109,11 @@ const OrderDetails = (props) => {
       ),
       headerRight: () => <View />,
       headerStyle: {
-        height: headerHeight, // Increase the header height here
+        height: headerHeight,
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0,
+
+        // backgroundColor: "black",
       },
     });
   }, []);
@@ -121,11 +125,11 @@ const OrderDetails = (props) => {
   // Calculate column-wise total
   const columnTotals = tableData
     ? tableData.tableData.reduce((totals, rowData) => {
-      for (let i = 0; i < rowData.length; i++) {
-        totals[i] = (totals[i] || 0) + parseFloat(rowData[i] || 0);
-      }
-      return totals;
-    }, [])
+        for (let i = 0; i < rowData.length; i++) {
+          totals[i] = (totals[i] || 0) + parseFloat(rowData[i] || 0);
+        }
+        return totals;
+      }, [])
     : "";
 
   const transformArticleSize = (articleSize) => {
@@ -139,8 +143,8 @@ const OrderDetails = (props) => {
       const sizes =
         item.ArticleSize.length > 0
           ? JSON.parse(item.ArticleSize)
-            .map((sizeObj) => sizeObj.Name)
-            .join(", ")
+              .map((sizeObj) => sizeObj.Name)
+              .join(", ")
           : "";
 
       // Parse ArticleColor JSON string to extract color names
@@ -150,7 +154,7 @@ const OrderDetails = (props) => {
           : "";
 
       // Split OutwardNoPacks by commas and map to integers
-      const outwardNoPacksArray =  item.NoPacks.split(",").map((value) =>
+      const outwardNoPacksArray = item.NoPacks.split(",").map((value) =>
         parseInt(value, 10)
       );
 
@@ -364,13 +368,15 @@ const OrderDetails = (props) => {
         <td colspan="5" style="text-align: end; font-weight: bold"></td>
         <td colspan="1"></td>
         <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+        <td colspan="1">${`+${(
+          Math.ceil(getgstamount(totalval)) - getgstamount(totalval)
+        ).toFixed(2)}`}</td>
       </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
         <td colspan="1"></td>
-        <td colspan="1">${`₹${(Math.ceil(getgstamount(totalval)))}.00`}</td>
+        <td colspan="1">${`₹${Math.ceil(getgstamount(totalval))}.00`}</td>
     </tr>`;
       } else if (partydata[0].GSTType === "IGST") {
         return ` 
@@ -390,13 +396,15 @@ const OrderDetails = (props) => {
         <td colspan="5" style="text-align: end; font-weight: bold"></td>
         <td colspan="1"></td>
         <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+        <td colspan="1">${`+${(
+          Math.ceil(getgstamount(totalval)) - getgstamount(totalval)
+        ).toFixed(2)}`}</td>
       </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
         <td colspan="1"></td>
-        <td colspan="1">${`₹${(Math.ceil(getgstamount(totalval)))}.00`}</td>
+        <td colspan="1">${`₹${Math.ceil(getgstamount(totalval))}.00`}</td>
     </tr>`;
       } else {
         return ""; // Return an empty string if no GSTType match
@@ -409,8 +417,8 @@ const OrderDetails = (props) => {
   const GSThtmlContent = GSThtmltable();
   const htmlTableData = tableData.tableData
     ? tableData.tableData.map((rowData) => {
-      console.log(rowData[4]);
-      return `
+        console.log(rowData[4]);
+        return `
         <tr>
           <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>
           <td colspan="1" style="text-transform: uppercase">${rowData[1]}</td>
@@ -422,7 +430,7 @@ const OrderDetails = (props) => {
           <td colspan="1" style="text-transform: uppercase">${rowData[7]}</td>
         </tr>
       `;
-    })
+      })
     : [];
 
   const html = `
@@ -442,39 +450,45 @@ const OrderDetails = (props) => {
                 <strong>DATE:</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">${new Date(
-    CreatedDate
-  ).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  })}</td>
+              CreatedDate
+            ).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            })}</td>
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="9">
-                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode}.` : ""
-    }
+                <strong>ADDRESS:</strong>${
+                  partydata
+                    ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode}.`
+                    : ""
+                }
             </td>
             <td style="text-transform: uppercase" colspan="1">
                 <strong>SO NO:</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">
-               ${`${name}${OutwardNumber !== 0 ? OutwardNumber : sonumber
-    }/${startyear}-${endyear}`}
+               ${`${name}${
+                 OutwardNumber !== 0 ? OutwardNumber : sonumber
+               }/${startyear}-${endyear}`}
             </td>
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="12">
-                <strong>TRANSPORT:</strong>${transport !== null ? transport : "Transport"
-    }
+                <strong>TRANSPORT:</strong>${
+                  transport !== null ? transport : "Transport"
+                }
             </td>
         </tr>
         <tr>
-            <td colspan="12"><strong>GST:</strong>${partydata
-      ? partydata[0].GSTNumber !== null
-        ? partydata[0].GSTNumber
-        : "GST"
-      : "GST"
-    }</td>
+            <td colspan="12"><strong>GST:</strong>${
+              partydata
+                ? partydata[0].GSTNumber !== null
+                  ? partydata[0].GSTNumber
+                  : "GST"
+                : "GST"
+            }</td>
         </tr>
     </table>
     <br />
@@ -536,7 +550,7 @@ const OrderDetails = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: '#FFF'
+            backgroundColor: "#FFF",
           }}
         >
           <Loader />
@@ -550,422 +564,162 @@ const OrderDetails = (props) => {
             height: "100%",
           }}
         >
-          {newPrint === true ? (
-            <View>
+          <>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginVertical: 10,
+                alignItems: "center",
+                paddingEnd: 20,
+              }}
+            >
               <TouchableOpacity
-                style={{ backgroundColor: "#212121", padding: 8 }}
-              >
-                <Text
-                  style={{
-                    fontSize: 30,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
-                    fontWeight: "700",
-                    color: "#FFFFFF",
-                    textAlign: "center",
-                  }}
-                >
-                  NRS(JHCPL)
-                </Text>
-              </TouchableOpacity>
-              <ScrollView
-                nestedScrollEnabled={true}
-                keyboardShouldPersistTaps="handled"
-                style={{ maxWidth: "100%", backgroundColor: "#fff" }}
-              >
-                <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
-                  <View style={{ paddingVertical: 10 }}>
-                    <View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          height: width >= 720 ? 50 : 40,
-                          borderColor: "#000000",
-                          borderWidth: 1,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            width: 600,
-                            borderRightWidth: 2,
-                            borderColor: "#000000",
-                            fontWeight: "bold",
-                            paddingLeft: 3,
-                            fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            paddingTop: width >= 720 ? 10 : 9,
-                          }}
-                        >
-                          PARTY :{" "}
-                          <Text
-                            style={{
-                              borderRightWidth: 2,
-                              fontSize: width >= 720 ? 18 : 15,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              borderColor: "#000000",
-                              fontWeight: "400",
-                              paddingLeft: 3,
-                              paddingTop: width >= 720 ? 10 : 9,
-                            }}
-                          >
-                            {partydata[0].Name}
-                          </Text>
-                        </Text>
-                        {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
-                        <Text
-                          style={{
-                            width: 90,
-                            borderRightWidth: 2,
-                            borderColor: "#000000",
-                            textAlign: "center",
-                            fontWeight: "bold",
-                            paddingTop: width >= 720 ? 10 : 9,
-                            fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >
-                          DATE:
-                        </Text>
-                        <Text
-                          style={{
-                            width: 100,
-                            textAlign: "center",
-                            fontWeight: "400",
-                            paddingLeft: 5,
-                            paddingTop: width >= 720 ? 10 : 9,
-                            fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >
-                          15/06/2023
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          height: width >= 720 ? 50 : 40,
-                          borderColor: "#000000",
-                          borderWidth: 1,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            width: 600,
-                            borderRightWidth: 2,
-                            borderColor: "#000000",
-                            fontWeight: "bold",
-                            paddingLeft: 3,
-                            fontSize: width >= 720 ? 18 : 15,
-                            paddingTop: width >= 720 ? 10 : 9,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >
-                          ADDRESS :{" "}
-                          <Text
-                            style={{
-                              borderRightWidth: 2,
-                              borderColor: "#000000",
-                              fontWeight: "400",
-                              paddingLeft: 3,
-                              paddingTop: width >= 720 ? 10 : 9,
-                            }}
-                          >
-                            AHMEDABAD, GUJARAT, INDIA-380001
-                          </Text>
-                        </Text>
-                        {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
-                        <Text
-                          style={{
-                            width: 90,
-                            borderRightWidth: 2,
-                            borderColor: "#000000",
-                            textAlign: "center",
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 18 : 15,
-                            paddingTop: width >= 720 ? 10 : 9,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >
-                          SO NO:
-                        </Text>
-                        <Text
-                          style={{
-                            width: width >= 720 ? 200 : 160,
-                            textAlign: "center",
-
-                            fontWeight: "400",
-                            fontSize: width >= 720 ? 18 : 15,
-                            paddingTop: width >= 720 ? 10 : 9,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >{`${name}${sonumber}/${startyear}-${endyear}`}</Text>
-                      </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          height: width >= 720 ? 50 : 40,
-                          borderColor: "#000000",
-                          borderWidth: 1,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            width: 800,
-                            borderColor: "#000000",
-                            fontWeight: "bold",
-                            paddingLeft: 3,
-                            fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            paddingTop: width >= 720 ? 10 : 9,
-                          }}
-                        >
-                          TRANSPORT :{" "}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          height: width >= 720 ? 50 : 40,
-                          borderColor: "#000000",
-                          borderWidth: 1,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            width: 600,
-                            borderRightWidth: 2,
-                            borderColor: "#000000",
-                            fontWeight: "bold",
-                            paddingLeft: 3,
-                            fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            paddingTop: width >= 720 ? 10 : 9,
-                          }}
-                        >
-                          GST :{" "}
-                          <Text
-                            style={{
-                              borderRightWidth: 2,
-                              borderColor: "#000000",
-                              fontWeight: "400",
-                              paddingLeft: 3,
-                              paddingTop: width >= 720 ? 10 : 9,
-                            }}
-                          ></Text>
-                        </Text>
-                        {/* <Text style={{ width: 100, borderRightWidth: 2, borderColor: '#000000' }}></Text> */}
-                        <Text
-                          style={{
-                            width: 90,
-                            borderRightWidth: 2,
-                            borderColor: "#000000",
-                            textAlign: "center",
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            paddingTop: width >= 720 ? 10 : 9,
-                          }}
-                        >
-                          REMARK S
-                        </Text>
-                        <Text
-                          style={{
-                            width: 160,
-                            textAlign: "center",
-                            fontWeight: "400",
-                            paddingTop: width >= 720 ? 10 : 9,
-                          }}
-                        ></Text>
-                      </View>
-                    </View>
-                    <View style={{ marginTop: 50 }}>
-                      <Table
-                        borderStyle={{ borderWidth: 2, borderColor: "#000000" }}
-                      >
-                        {/* Fixed Header Row */}
-                        <Row
-                          data={tableData ? tableData.tableHead : ""}
-                          textStyle={{
-                            textAlign: "center",
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 18 : 15,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                          style={{
-                            height: 60,
-                            // Make sure the header row is displayed horizontally
-                          }}
-                          widthArr={widthArr}
-                        />
-                      </Table>
-                    </View>
-                    <View>
-                      <ScrollView
-                        vertical={true}
-                        style={{ maxHeight: width >= 720 ? 450 : 80 }}
-                      >
-                        <Table
-                          borderStyle={{
-                            borderWidth: 2,
-                            borderColor: "#000000",
-                          }}
-                        >
-                          {/* Data Rows */}
-                          <Rows
-                            data={tableData ? tableData.tableData : ""}
-                            textStyle={{
-                              margin: 6,
-                              textAlign: "center",
-                              fontSize: width >= 720 ? 16 : 13,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                            }}
-                            style={{
-                              height: width >= 720 ? 50 : "auto",
-                              paddingHorizontal: 20,
-                              width: "auto",
-                            }}
-                            widthArr={widthArr} // Apply column widths to the data rows
-                          />
-                        </Table>
-                      </ScrollView>
-                      <ScrollView>
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            height: 40,
-                            borderColor: "#000000",
-                            borderWidth: 2,
-                          }}
-                        >
-                          <Text
-                            style={{
-                              width: width >= 720 ? 650 : 600,
-                              borderRightWidth: 2,
-                              borderColor: "#000000",
-                              fontWeight: "bold",
-                              paddingLeft: 3,
-                              paddingTop: width >= 720 ? 10 : 9,
-                            }}
-                          >
-                            TOTAL
-                          </Text>
-                          <Text
-                            style={{
-                              width: 90,
-                              borderRightWidth: 2,
-                              borderColor: "#000000",
-                              textAlign: "center",
-                              fontWeight: "bold",
-                              paddingTop: width >= 720 ? 10 : 9,
-                            }}
-                          >
-                            5
-                          </Text>
-                          <Text
-                            style={{
-                              width: 100,
-                              borderRightWidth: 2,
-                              borderColor: "#000000",
-                            }}
-                          ></Text>
-                          <Text
-                            style={{
-                              width: 94,
-                              textAlign: "center",
-                              fontWeight: "bold",
-                              paddingTop: width >= 720 ? 10 : 9,
-                            }}
-                          >
-                            ₹195.00
-                          </Text>
-                        </View>
-                      </ScrollView>
-                    </View>
-                  </View>
-                </ScrollView>
-              </ScrollView>
-            </View>
-          ) : (
-            <>
-              <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginVertical: 10,
-                  alignItems: "center",
-                  paddingEnd: 20,
+                  padding: 8,
+                  borderTopRightRadius: 10,
+                  borderBottomRightRadius: 10,
+                }}
+              ></TouchableOpacity>
+              <Text
+                style={{
+                  color: "#808080",
+                  fontSize: width >= 720 ? 25 : 20,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  fontWeight: "700",
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    padding: 8,
-                    borderTopRightRadius: 10,
-                    borderBottomRightRadius: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 30,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "700",
-                      color: "#FFFFFF",
-                    }}
-                  >
-
-                  </Text>
-                </TouchableOpacity>
+                Date:{" "}
                 <Text
                   style={{
-                    color: "#808080",
+                    color: "#000000",
                     fontSize: width >= 720 ? 25 : 20,
                     fontFamily: isFontLoaded ? "Glory" : undefined,
                     fontWeight: "700",
                   }}
                 >
-                  Date:{" "}
+                  {new Date(CreatedDate).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })}
+                </Text>
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <View style={{ paddingHorizontal: 20 }}>
+                <View>
                   <Text
                     style={{
-                      color: "#000000",
-                      fontSize: width >= 720 ? 25 : 20,
+                      fontSize: width < 720 ? width * 0.04 : 24,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "700",
+                      fontWeight: "500",
+                      color: "#808080",
                     }}
                   >
-                    {new Date(CreatedDate).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })}
+                    Name:
                   </Text>
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                }}
-              >
-                <View style={{ paddingHorizontal: 20 }}>
-                  <View>
+                </View>
+                <View
+                  style={{
+                    height: width >= 720 ? 45 : 35,
+                    width: "100%",
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    borderColor: "#000000",
+                    paddingStart: 10,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: width >= 720 ? 20 : 16,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      color: "#000000",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {partydata ? partydata[0].Name : ""}
+                  </Text>
+                </View>
+
+                <View style={{ marginTop: 10 }}>
+                  <Text
+                    style={{
+                      fontSize: width < 720 ? width * 0.04 : 24,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "500",
+                      color: "#808080",
+                    }}
+                  >
+                    Address:
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    textAlignVertical: "top",
+                    height: width >= 720 ? 120 : 80,
+                    padding: 5,
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    borderColor: "#000000",
+                    backgroundColor: "#FFFFFF",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: width >= 720 ? 20 : 16,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "bold",
+                      color: partydata ? "#000000" : "#00000080",
+                    }}
+                  >
+                    {partydata
+                      ? `${partydata[0].Address},${partydata[0].City} ${partydata[0].State} ${partydata[0].PinCode},`
+                      : "Address"}
+                    {/* {console.log(partydata, "skhvchgvsacjvsjdc hasvcjvsdc")} */}
+                  </Text>
+                </View>
+                <View style={{ marginTop: 10, flexDirection: "row" }}>
+                  <View style={{ flex: 1.1 }}>
                     <Text
                       style={{
                         fontSize: width < 720 ? width * 0.04 : 24,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "500",
                         color: "#808080",
-
                       }}
                     >
-                      Name:
+                      {OutwardNumber !== 0 ? "OutwardNumber" : "SoNumber:"}
                     </Text>
                   </View>
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={{
+                        fontSize: width < 720 ? width * 0.04 : 24,
+                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontWeight: "500",
+                        color: "#808080",
+                      }}
+                    >
+                      Transport:
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
                   <View
                     style={{
                       height: width >= 720 ? 45 : 35,
-                      width: "100%",
+                      width: "48%",
                       borderWidth: 2,
                       borderRadius: 6,
                       borderColor: "#000000",
@@ -980,32 +734,22 @@ const OrderDetails = (props) => {
                         color: "#000000",
                         fontWeight: "bold",
                       }}
-                    >
-                      {partydata ? partydata[0].Name : ""}
-                    </Text>
+                      adjustsFontSizeToFit={true}
+                      numberOfLines={1}
+                    >{`${name}${
+                      OutwardNumber !== 0 ? OutwardNumber : sonumber
+                    }/${startyear}-${endyear}`}</Text>
                   </View>
 
-                  <View style={{ marginTop: 10 }}>
-                    <Text
-                      style={{
-                        fontSize: width < 720 ? width * 0.04 : 24,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "500",
-                        color: "#808080",
-                      }}
-                    >
-                      Address:
-                    </Text>
-                  </View>
                   <View
                     style={{
-                      textAlignVertical: "top",
-                      height: width >= 720 ? 120 : 80,
-                      padding: 5,
+                      height: width >= 720 ? 45 : 35,
+                      width: "48%",
                       borderWidth: 2,
                       borderRadius: 6,
-                      borderColor: "#000000",
-                      backgroundColor: "#FFFFFF",
+                      borderColor: transport !== null ? "black" : "#808080",
+                      paddingStart: 10,
+                      justifyContent: "center",
                     }}
                   >
                     <Text
@@ -1013,7 +757,7 @@ const OrderDetails = (props) => {
                         fontSize: width >= 720 ? 20 : 16,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
                         fontWeight: "bold",
-                        color: partydata ? "#000000" : "#00000080",
+                        color: transport !== null ? "black" : "#00000080",
                       }}
                     >
                       {partydata
@@ -1032,7 +776,6 @@ const OrderDetails = (props) => {
                         }}
                       >
                         {OutwardNumber !== 0 ? "OutwardNumber" : "SoNumber:"}
-
                       </Text>
                     </View>
                     <View style={{ flex: 1 }}>
@@ -1048,10 +791,38 @@ const OrderDetails = (props) => {
                       </Text>
                     </View>
                   </View>
+                  <Text
+                    style={{
+                      fontSize: width < 720 ? width * 0.04 : 24,
+                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontWeight: "500",
+                      color: "#808080",
+                    }}
+                  >
+                    GST:
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    flexWrap: "nowrap",
+                  }}
+                >
                   <View
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
+                      height: width >= 720 ? 45 : 35,
+                      width: "100%",
+                      borderWidth: 2,
+                      borderRadius: 6,
+                      borderColor:
+                        partydata.length > 0
+                          ? partydata[0].GSTNumber !== null
+                            ? "black"
+                            : "#00000080"
+                          : "#00000080",
+                      paddingStart: 10,
+                      justifyContent: "center",
                     }}
                   >
                     <View
@@ -1074,8 +845,9 @@ const OrderDetails = (props) => {
                         }}
                         adjustsFontSizeToFit={true}
                         numberOfLines={1}
-                      >{`${name}${OutwardNumber !== 0 ? OutwardNumber : sonumber
-                        }/${startyear}-${endyear}`}</Text>
+                      >{`${name}${
+                        OutwardNumber !== 0 ? OutwardNumber : sonumber
+                      }/${startyear}-${endyear}`}</Text>
                     </View>
 
                     <View
@@ -1104,151 +876,254 @@ const OrderDetails = (props) => {
                   <View style={{ marginTop: 10 }}>
                     <Text
                       style={{
-                        fontSize: width < 720 ? width * 0.04 : 24,
+                        fontSize: width >= 720 ? 20 : 16,
                         fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "500",
-                        color: "#808080",
-                      }}
-                    >
-                      GST:
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      flexWrap: "nowrap",
-                    }}
-                  >
-                    <View
-                      style={{
-                        height: width >= 720 ? 45 : 35,
-                        width: "100%",
-                        borderWidth: 2,
-                        borderRadius: 6,
-                        borderColor:
+                        fontWeight: "bold",
+                        color:
                           partydata.length > 0
                             ? partydata[0].GSTNumber !== null
                               ? "black"
                               : "#00000080"
                             : "#00000080",
-                        paddingStart: 10,
-                        justifyContent: "center",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: width >= 720 ? 20 : 16,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
-                          fontWeight: "bold",
-                          color:
-                            partydata.length > 0
-                              ? partydata[0].GSTNumber !== null
-                                ? "black"
-                                : "#00000080"
-                              : "#00000080",
-                        }}
-                      >
-                        {partydata.length > 0
-                          ? partydata[0].GSTNumber !== null
-                            ? partydata[0].GSTNumber
-                            : "GST"
-                          : "GST"}
-                      </Text>
-                    </View>
-
-                    {/* <View
-                                        style={{
-                                            height: width >= 720 ? 45 : 35,
-                                            width: '48%',
-                                            borderWidth: 2,
-                                            borderRadius: 6,
-                                            borderColor: remarks !== "" ? "black" : '#808080',
-                                            paddingStart: 10,
-                                            justifyContent: 'center'
-                                        }}
-                                    // value='NIRAV SIR'
-                                    >
-                                        <Text style={{
-                                            fontSize: width >= 720 ? 20 : 16,
-                                            color: '#000000',
-                                            fontWeight: 'bold',
-                                            color: remarks !== "" ? "black" : "#00000080"
-                                        }}>{remarks !== "" ? remarks : "Remarks"}</Text>
-                                    </View> */}
+                      {partydata.length > 0
+                        ? partydata[0].GSTNumber !== null
+                          ? partydata[0].GSTNumber
+                          : "GST"
+                        : "GST"}
+                    </Text>
                   </View>
                 </View>
-                <View>
-                  <ScrollView
-                    nestedScrollEnabled={true}
-                    keyboardShouldPersistTaps="handled"
-                    style={{
-                      maxWidth: "100%",
-                      backgroundColor: "#fff",
-                      marginBottom: 280,
-                      marginTop: 20,
-                    }}
-                  >
-                    <ScrollView
-                      horizontal={true}
-                      style={{ paddingVertical: 10 }}
-                    >
-                      <View style={{ paddingVertical: 10 }}>
-                        <View>
-                          <Table
-                            borderStyle={{
-                              borderWidth: 2,
+              </View>
+              <View>
+                <ScrollView horizontal={true} style={{ paddingVertical: 10 }}>
+                  <View>
+                    <View>
+                      <Table
+                        borderStyle={{
+                          borderWidth: 2,
+                          borderColor: "#000000",
+                          backgroundColor: "red",
+                        }}
+                      >
+                        {/* Fixed Header Row */}
+                        <Row
+                          data={tableData ? tableData.tableHead : ""}
+                          textStyle={{
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 18 : 15,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                          }}
+                          style={{
+                            height: 60,
+                          }}
+                          widthArr={widthArr}
+                        />
+                      </Table>
+                    </View>
+                    <View>
+                      <Table
+                        borderStyle={{
+                          borderWidth: 1,
+                          borderColor: "#000000",
+                        }}
+                      >
+                        {/* Data Rows */}
+                        <Rows
+                          data={tableData ? tableData.tableData : ""}
+                          textStyle={{
+                            margin: 6,
+                            textAlign: "center",
+                            fontSize: width >= 720 ? 16 : 13,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                          }}
+                          style={({ index }) => ({
+                            height: calculateRowHeight(
+                              tableData.tableData[index]
+                            ),
+                            width: "auto",
+                          })}
+                          widthArr={widthArr}
+                        />
+                      </Table>
+                    </View>
+
+                    <ScrollView>
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: "row",
+                          height: 40,
+                          borderColor: "#000000",
+                          borderWidth: 1,
+                        }}
+                      >
+                        <Text style={styles.fastRowContent}>SUBTOTAL</Text>
+                        <Text style={styles.secondCollam}>{totalqty}</Text>
+                        <Text style={styles.thurdCollam}></Text>
+                        <Text
+                          style={{
+                            width: 98,
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            paddingTop: width >= 720 ? 10 : 9,
+                          }}
+                        >
+                          ₹{totalval}.00
+                        </Text>
+                      </View>
+                    </ScrollView>
+                    {partydata.length > 0 ? (
+                      partydata[0].GSTType === "GST" ? (
+                        <ScrollView>
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              height: 40,
                               borderColor: "#000000",
+                              borderWidth: 1,
                             }}
                           >
-                            {/* Fixed Header Row */}
-                            <Row
-                              data={tableData ? tableData.tableHead : ""}
-                              textStyle={{
+                            <Text style={styles.fastRowContent}></Text>
+                            <Text style={styles.secondCollam}></Text>
+                            <Text style={styles.collamGst}>GST 5%</Text>
+                            <Text style={styles.collamGst5Per}>
+                              ₹{parseInt(totalval * 0.05)}.00
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              height: 40,
+                              borderColor: "#000000",
+                              borderWidth: 1,
+                            }}
+                          >
+                            <Text style={styles.fastRowContent}>TOTAL</Text>
+                            <Text style={styles.secondCollam}></Text>
+                            <Text style={styles.thurdCollam}></Text>
+                            <Text style={styles.collamGst5Per}>
+                              ₹{getgstamount(totalval)}.00
+                            </Text>
+                          </View>
+                        </ScrollView>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
+                    {partydata.length > 0 ? (
+                      partydata[0].GSTType === "IGST" ? (
+                        <ScrollView>
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              height: 40,
+                              borderColor: "#000000",
+                              borderWidth: 1,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                width: width >= 720 ? 650 : 600,
+                                borderRightWidth: 2,
+                                borderColor: "#000000",
+                                fontWeight: "bold",
+                                paddingLeft: 3,
+                                paddingTop: width >= 720 ? 10 : 9,
+                              }}
+                            ></Text>
+                            <Text
+                              style={{
+                                width: width >= 720 ? 100 : 90,
+                                borderRightWidth: 2,
+                                borderColor: "#000000",
                                 textAlign: "center",
                                 fontWeight: "bold",
-                                fontSize: width >= 720 ? 18 : 15,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
+                                paddingTop: width >= 720 ? 10 : 9,
                               }}
+                            ></Text>
+                            <Text
                               style={{
-                                height: 60,
-                                // Make sure the header row is displayed horizontally
+                                width: 100,
+                                borderRightWidth: 2,
+                                borderColor: "#000000",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                paddingTop: width >= 720 ? 10 : 9,
                               }}
-                              widthArr={widthArr}
-                            />
-                          </Table>
-                        </View>
-                        <View>
-                          {/* <ScrollView
-                            vertical={true}
-                            style={{ maxHeight: width >= 720 ? 450 : 180 }}
-                          > */}
-                          <Table
-                            borderStyle={{
-                              borderWidth: 2,
+                            >
+                              SGST 2.5%
+                            </Text>
+                            <Text
+                              style={{
+                                width: 98,
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                paddingTop: width >= 720 ? 10 : 9,
+                              }}
+                            >
+                              ₹{parseInt(totalval * 0.025)}.00
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              height: 40,
                               borderColor: "#000000",
+                              borderWidth: 1,
                             }}
                           >
-                            {/* Data Rows */}
-                            <Rows
-                              data={tableData ? tableData.tableData : ""}
-                              textStyle={{
-                                margin: 6,
-                                textAlign: "center",
-                                fontSize: width >= 720 ? 16 : 13,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
+                            <Text
+                              style={{
+                                width: width >= 720 ? 650 : 600,
+                                borderRightWidth: 2,
+                                borderColor: "#000000",
+                                fontWeight: "bold",
+                                paddingLeft: 3,
+                                paddingTop: width >= 720 ? 10 : 9,
                               }}
-                              style={({ index }) => ({
-                                height: calculateRowHeight(
-                                  tableData.tableData[index]
-                                ), // Call a function to calculate row height based on content
-                                width: "auto",
-                              })}
-                              widthArr={widthArr} // Apply column widths to the data rows
-                            />
-                          </Table>
-                          {/* </ScrollView> */}
-
+                            ></Text>
+                            <Text
+                              style={{
+                                width: width >= 720 ? 100 : 90,
+                                borderRightWidth: 2,
+                                borderColor: "#000000",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                paddingTop: width >= 720 ? 10 : 9,
+                              }}
+                            ></Text>
+                            <Text
+                              style={{
+                                width: 100,
+                                borderRightWidth: 2,
+                                borderColor: "#000000",
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                paddingTop: width >= 720 ? 10 : 9,
+                              }}
+                            >
+                              CGST 2.5%
+                            </Text>
+                            <Text
+                              style={{
+                                width: 98,
+                                textAlign: "center",
+                                fontWeight: "bold",
+                                paddingTop: width >= 720 ? 10 : 9,
+                              }}
+                            >
+                              ₹{parseInt(totalval * 0.025)}.00
+                            </Text>
+                          </View>
                           <ScrollView>
                             <View
                               style={{
@@ -1257,21 +1132,34 @@ const OrderDetails = (props) => {
                                 height: 40,
                                 borderColor: "#000000",
                                 borderWidth: 1,
-                                borderTopWidth: 2,
                               }}
                             >
                               <Text
-                                style={styles.fastRowContent}
+                                style={{
+                                  width: width >= 720 ? 650 : 600,
+                                  borderColor: "#000000",
+                                  fontWeight: "bold",
+                                  paddingLeft: 3,
+                                  paddingTop: width >= 720 ? 10 : 9,
+                                }}
                               >
-                                SUBTOTAL
+                                TOTAL
                               </Text>
                               <Text
-                                style={styles.secondCollam}
-                              >
-                                {totalqty}
-                              </Text>
+                                style={{
+                                  width: width >= 720 ? 100 : 90,
+                                  borderColor: "#000000",
+                                  textAlign: "center",
+                                  fontWeight: "bold",
+                                  paddingTop: width >= 720 ? 10 : 9,
+                                }}
+                              ></Text>
                               <Text
-                                style={styles.thurdCollam}
+                                style={{
+                                  width: 100,
+                                  borderRightWidth: 2,
+                                  borderColor: "#000000",
+                                }}
                               ></Text>
                               <Text
                                 style={{
@@ -1281,326 +1169,47 @@ const OrderDetails = (props) => {
                                   paddingTop: width >= 720 ? 10 : 9,
                                 }}
                               >
-                                ₹{totalval}.00
+                                ₹{getgstamount(totalval)}.00
                               </Text>
                             </View>
                           </ScrollView>
-                          {partydata.length > 0 ? (
-                            partydata[0].GSTType === "GST" ? (
-                              <ScrollView>
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                    borderTopWidth: 2,
-                                  }}
-                                >
-                                  <Text
-                                    style={styles.fastRowContent}
-                                  ></Text>
-                                  <Text
-                                    style={styles.secondCollam}
-                                  ></Text>
-                                  <Text
-                                    style={styles.collamGst}
-                                  >
-                                    GST 5%
-                                  </Text>
-                                  <Text
-                                    style={styles.collamGst5Per}
-                                  >
-                                    ₹{(totalval * 0.05).toFixed(2)}
-                                  </Text>
-                                </View>
-                                <View  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                    borderTopWidth: 1,
-                                  }}>
-                                <Text
-                                    style={styles.fastRowContent}
-                                  >
-                                  </Text>
-                                  <Text
-                                    style={styles.secondCollam}
-                                  ></Text>
-                                  <Text
-                                    style={styles.thurdCollam}
-                                  >
-                                    Adjust Amount
-                                  </Text>
-                                  <Text
-                                    style={styles.collamGst5Per}
-                                  >
-                                    +{(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}
-                                  </Text>
-                                </View>
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                    borderTopWidth: 1,
-                                  }}
-                                >
-                                 
-                                  <Text
-                                    style={styles.fastRowContent}
-                                  >
-                                    TOTAL
-                                  </Text>
-                                  <Text
-                                    style={styles.secondCollam}
-                                  ></Text>
-                                  <Text
-                                    style={styles.thurdCollam}
-                                  ></Text>
-                                  <Text
-                                    style={styles.collamGst5Per}
-                                  >
-                                    ₹{Math.ceil(getgstamount(totalval))}.00
-                                  </Text>
-                                </View>
-                              </ScrollView>
-                            ) : (
-                              ""
-                            )
-                          ) : (
-                            ""
-                          )}
-                          {partydata.length > 0 ? (
-                            partydata[0].GSTType === "IGST" ? (
-                              <ScrollView>
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                  }}
-                                >
-                                  <Text
-                                    style={{
-                                      width: width >= 720 ? 650 : 600,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                      fontWeight: "bold",
-                                      paddingLeft: 3,
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  ></Text>
-                                  <Text
-                                    style={{
-                                      width: width >= 720 ? 100 : 90,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  ></Text>
-                                  <Text
-                                    style={{
-                                      width: 100,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  >
-                                    SGST 2.5%
-                                  </Text>
-                                  <Text
-                                    style={{
-                                      width: 98,
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  >
-                                    ₹{(totalval * 0.025).toFixed(2)}
-                                  </Text>
-                                </View>
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                  }}
-                                >
-                                  <Text
-                                    style={{
-                                      width: width >= 720 ? 650 : 600,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                      fontWeight: "bold",
-                                      paddingLeft: 3,
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  ></Text>
-                                  <Text
-                                    style={{
-                                      width: width >= 720 ? 100 : 90,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  ></Text>
-                                  <Text
-                                    style={{
-                                      width: 100,
-                                      borderRightWidth: 2,
-                                      borderColor: "#000000",
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  >
-                                    CGST 2.5%
-                                  </Text>
-                                  <Text
-                                    style={{
-                                      width: 98,
-                                      textAlign: "center",
-                                      fontWeight: "bold",
-                                      paddingTop: width >= 720 ? 10 : 9,
-                                    }}
-                                  >
-                                    ₹{(totalval * 0.025).toFixed(2)}
-                                  </Text>
-                                </View>
-                                <View  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                    borderTopWidth: 1,
-                                  }}>
-                                <Text
-                                    style={styles.fastRowContent}
-                                  >
-                                  </Text>
-                                  <Text
-                                    style={styles.secondCollam}
-                                  ></Text>
-                                  <Text
-                                    style={styles.thurdCollam}
-                                  >
-                                    Adjust Amount
-                                  </Text>
-                                  <Text
-                                    style={styles.collamGst5Per}
-                                  >
-                                    +{(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}
-                                  </Text>
-                                </View>
-                                <ScrollView>
-                                  <View
-                                    style={{
-                                      flex: 1,
-                                      flexDirection: "row",
-                                      height: 40,
-                                      borderColor: "#000000",
-                                      borderWidth: 1,
-                                      borderTopWidth: 1,
-                                    }}
-                                  >
-                                    <Text
-                                      style={{
-                                        width: width >= 720 ? 650 : 600,
-                                        borderRightWidth: 2,
-                                        borderColor: "#000000",
-                                        fontWeight: "bold",
-                                        paddingLeft: 3,
-                                        paddingTop: width >= 720 ? 10 : 9,
-                                      }}
-                                    >
-                                      TOTAL
-                                    </Text>
-                                    <Text
-                                      style={{
-                                        width: width >= 720 ? 100 : 90,
-                                        borderRightWidth: 2,
-                                        borderColor: "#000000",
-                                        textAlign: "center",
-                                        fontWeight: "bold",
-                                        paddingTop: width >= 720 ? 10 : 9,
-                                      }}
-                                    ></Text>
-                                    <Text
-                                      style={{
-                                        width: 100,
-                                        borderRightWidth: 2,
-                                        borderColor: "#000000",
-                                      }}
-                                    ></Text>
-                                    <Text
-                                      style={{
-                                        width: 98,
-                                        textAlign: "center",
-                                        fontWeight: "bold",
-                                        paddingTop: width >= 720 ? 10 : 9,
-                                      }}
-                                    >
-                                      ₹{Math.ceil(getgstamount(totalval))}.00
-                                    </Text>
-                                  </View>
-                                </ScrollView>
-                              </ScrollView>
-                            ) : (
-                              ""
-                            )
-                          ) : (
-                            ""
-                          )}
-                        </View>
-                      </View>
-                    </ScrollView>
-                  </ScrollView>
-                </View>
-              </View>
-
-              <View>
-                <TouchableOpacity
-                  onPress={generatePDF}
-                  style={{ alignItems: "flex-end", marginRight: 10 }}
-                >
-                  <View
-                    style={{
-                      width: width >= 720 ? 70 : 50,
-                      height: width >= 720 ? 70 : 50,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                    }}
-                  >
-                    <Image
-                      source={require("../../../assets/PDFImage.png")}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        resizeMode: "contain",
-                      }}
-                    ></Image>
+                        </ScrollView>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      ""
+                    )}
                   </View>
-                </TouchableOpacity>
+                </ScrollView>
               </View>
-            </>
-          )}
+            </View>
+
+            <View>
+              <TouchableOpacity
+                onPress={generatePDF}
+                style={{ alignItems: "flex-end", marginRight: 10 }}
+              >
+                <View
+                  style={{
+                    width: width >= 720 ? 70 : 50,
+                    height: width >= 720 ? 70 : 50,
+                    backgroundColor: "white",
+                    borderRadius: 10,
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/PDFImage.png")}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      resizeMode: "contain",
+                    }}
+                  ></Image>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </>
         </View>
       )}
     </>
