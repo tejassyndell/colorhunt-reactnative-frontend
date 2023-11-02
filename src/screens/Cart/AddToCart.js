@@ -591,12 +591,12 @@ const AddToCart = (props) => {
                         }}
                       >
                         <View style={{ paddingBottom: 20 }}>
-                          {orderItems.map((item) =>
+                          {orderItems.map((item,index) =>
                             array_1.length > 0 ? (
                               array_1.includes(item.article_id) ? (
                                 // id === item.article_id ?
                                 <View
-                                  key={item.id}
+                                  key={index}
                                   style={{
                                     flexDirection: "row",
                                     width: "94%",

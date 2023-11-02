@@ -410,7 +410,6 @@ export default function AllArticle(props) {
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
-
             marginTop: 10,
           }}
         />

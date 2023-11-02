@@ -45,14 +45,18 @@ const CreateAccount = (props) => {
       try {
         let data = await AsyncStorage.getItem("notificationstatus");
         data = await JSON.parse(data);
-        if (data.status === true) {
-          setToken(data.token);
-        } else {
-          console.log("Notification permission denied");
+        if (data) {
+          if (data.status === true) {
+            setToken(data.token);
+          } else {
+            console.log("Notification permission denied");
+          }
         }
+
       } catch (error) {
         console.error("Error requesting permission:", error);
       }
+
     };
     getToken();
   }, []);
@@ -239,11 +243,17 @@ const CreateAccount = (props) => {
           pinCode,
           contactPerson,
           token,
-        });
-        console.log("API response:", response.data);
-        setShowSuccess(true); // Show success message
-        // Clear the form input fields
-        clearFormFields();
+        }).then((res) => {
+          if (res.status == 200) {
+            console.log("API response:", res.data);
+            setShowSuccess(true); // Show success message
+            // Clear the form input fields
+            clearFormFields();
+          } else {
+            console.log("error in userdata api");
+          }
+        })
+
       } catch (error) {
         console.error("Error making API request:", error);
       }

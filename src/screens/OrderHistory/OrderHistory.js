@@ -60,8 +60,8 @@ const OrderHistory = (props) => {
   const [filteroutwardstatus, setFilteroutwardstatus] = useState(false);
   const [handlerstop, sethandlerstop] = useState(false);
   const [handleroutwardstop, sethandleroutwardstop] = useState(false);
-const [Ispendingsoloading,setIspendingsoloading]=useState(false);
-const [Iscompletesoloading,setIscompletesoloading]=useState(false);
+  const [Ispendingsoloading, setIspendingsoloading] = useState(false);
+  const [Iscompletesoloading, setIscompletesoloading] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
 
@@ -266,11 +266,10 @@ const [Iscompletesoloading,setIscompletesoloading]=useState(false);
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     let pageSize;
-    if(nextPage==1)
-    {
-      pageSize=100;
-    }else{
-      pageSize=20;
+    if (nextPage == 1) {
+      pageSize = 100;
+    } else {
+      pageSize = 20;
     }
 
     await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: pageSize }).then((res) => {
@@ -283,7 +282,7 @@ const [Iscompletesoloading,setIscompletesoloading]=useState(false);
         else {
           if (res.data.hasMore == false) {
             sethandlerstop(true)
-          setIspendingsoloading(false);
+            setIspendingsoloading(false);
           }
           setSoNumberData(prevData => [...prevData, ...res.data.data]);
           setOldDateOfso(prevData => [...prevData, ...res.data.data]);
@@ -357,11 +356,10 @@ const [Iscompletesoloading,setIscompletesoloading]=useState(false);
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     let pageSize;
-    if(nextPage==1)
-    {
-      pageSize=100;
-    }else{
-      pageSize=20;
+    if (nextPage == 1) {
+      pageSize = 100;
+    } else {
+      pageSize = 20;
     }
     await getCompletedSoDetails({
       PartyId: data[0].Id,
@@ -620,8 +618,8 @@ const [Iscompletesoloading,setIscompletesoloading]=useState(false);
                       )
                     )
                     : ""}
-                    {
-                      Ispendingsoloading?
+                  {
+                    Ispendingsoloading ?
                       <View style={{
                         marginBottom: 100,
                         justifyContent: 'center',
@@ -632,9 +630,9 @@ const [Iscompletesoloading,setIscompletesoloading]=useState(false);
                           color="black"
                         />
                       </View>
-                      :""
-                    }
-                
+                      : ""
+                  }
+
                 </ScrollView>
 
               </View>
@@ -658,9 +656,10 @@ const [Iscompletesoloading,setIscompletesoloading]=useState(false);
             <View style={orderstyles.order_cnt}>
               <ScrollView nestedScrollEnabled={true} onScroll={handleScroll}>
                 {completedsodata
-                  ? completedsodata.map((item) =>
+                  ? completedsodata.map((item, index) =>
                     item.status === 1 ? (
                       <TouchableOpacity
+                        key={index}
                         style={orderstyles.data_cnt}
                         onPress={() => {
                           navigation.navigate("orderdetails", {
@@ -786,20 +785,20 @@ const [Iscompletesoloading,setIscompletesoloading]=useState(false);
                     )
                   )
                   : ""}
-                   {
-                      Iscompletesoloading?
-                      <View style={{
-                        marginBottom: 100,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}>
-                        <ActivityIndicator
-                          size="large"
-                          color="black"
-                        />
-                      </View>
-                      :""
-                    }
+                {
+                  Iscompletesoloading ?
+                    <View style={{
+                      marginBottom: 100,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}>
+                      <ActivityIndicator
+                        size="large"
+                        color="black"
+                      />
+                    </View>
+                    : ""
+                }
               </ScrollView>
             </View>
           )}

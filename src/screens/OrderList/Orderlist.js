@@ -513,9 +513,9 @@ const Orderlist = (props) => {
                     nestedScrollEnabled={true}
                   >
                     <View>
-                      {Transportation.map((item) => (
+                      {Transportation.map((item,index) => (
                         <TouchableOpacity
-                          key={item.Id}
+                          key={index}
                           onPress={() => {
                             setTransportationVal(item.Name);
                             setshowTransporatation(!showTransporatation);
@@ -569,7 +569,7 @@ const Orderlist = (props) => {
                 <ScrollView nestedScrollEnabled={true}>
                   {ParsedData &&
                     ParsedData.map((item, index) => (
-                      <View key={item.id}>
+                      <View key={index}>
                         <View
                           style={{
                             flexDirection: "row",

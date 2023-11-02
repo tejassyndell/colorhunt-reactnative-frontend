@@ -15,6 +15,8 @@ import { getCategories } from "../../api/api";
 import { useRef } from "react";
 import { Svg, G, Path, Circle } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from "expo-font";
+
 const { width, height } = Dimensions.get("window");
 
 export default function Filter({
