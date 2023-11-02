@@ -355,7 +355,12 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "white", // Set the background color to your preference
   },
-
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   input: {
     height: 40,
     marginTop: 12,

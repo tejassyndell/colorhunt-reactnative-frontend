@@ -68,8 +68,8 @@ export default function Notification(props) {
       {/* {/ Render notification data /} */}
 
       <StatusBar style="auto" />
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.notificasionContenor}>
+      <View style={styles.notificasionContenor}>
+        <ScrollView style={styles.scrollView}>
           <TouchableOpacity style={styles.contentBox}>
             <View
               style={{
@@ -342,8 +342,8 @@ export default function Notification(props) {
               <Text style={styles.timedetails}>1m ago.</Text>
             </View>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
         <ButtomNavigation navigation={navigation} page="notification" />
       </View>
@@ -355,7 +355,12 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "white", // Set the background color to your preference
   },
-
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   input: {
     height: 40,
     marginTop: 12,
@@ -382,6 +387,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
+    backgroundColor: "red",
   },
   contentBox: {
     height: "auto",
