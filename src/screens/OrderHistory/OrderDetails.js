@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   Platform,
+  RefreshControl,
   ActivityIndicator,
 } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -29,6 +30,13 @@ import * as Permissions from "expo-permissions";
 const OrderDetails = (props) => {
   const { navigation } = props;
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    setRefreshing(true)
+    orderdetils()
+    
+   
+  };
   const route = useRoute();
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -311,6 +319,7 @@ const OrderDetails = (props) => {
           settotalqut(res.data);
           setsodetials(res.data);
           setIsLoading(false);
+          setRefreshing(false);
           // console.log(res.data);
         }
       });
@@ -336,6 +345,7 @@ const OrderDetails = (props) => {
           settotalqut(res.data);
           setsodetials(res.data);
           setIsLoading(false);
+          setRefreshing(false);
 
           // console.log(res.data);
         }
@@ -889,6 +899,14 @@ const OrderDetails = (props) => {
             </View>
           ) : (
             <>
+            <ScrollView
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 0.7 }}
+            keyboardShouldPersistTaps="handled"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
               <View
                 style={{
                   flexDirection: "row",
@@ -1015,7 +1033,7 @@ const OrderDetails = (props) => {
                       }}
                     >
                       {partydata
-                        ? `${partydata[0].Address},${partydata[0].City} ${partydata[0].State} , PinCode${partydata[0].PinCode},`
+                        ? `${partydata[0].Address},${partydata[0].City} ${partydata[0].State} ,${partydata[0].PinCode},`
                         : "Address"}
                       {console.log(partydata, "skhvchgvsacjvsjdc hasvcjvsdc")}
                     </Text>
@@ -1520,6 +1538,7 @@ const OrderDetails = (props) => {
                 </View>
               </View>
 
+              </ScrollView>
               <View>
                 <TouchableOpacity
                   onPress={generatePDF}

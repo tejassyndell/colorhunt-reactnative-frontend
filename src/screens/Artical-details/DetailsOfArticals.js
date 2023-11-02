@@ -9,6 +9,7 @@ import {
   Modal,
   Dimensions,
   Platform,
+  RefreshControl,
 } from "react-native";
 import {
   ArticleDetails,
@@ -67,6 +68,15 @@ const DetailsOfArticals = (props) => {
   const [articalCartId, setArticalCartId] = useState();
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+
+  const onRefresh = () => {
+    setRefreshing(true)
+    ArticleDetailsData()
+    
+   
+  };
 
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -122,9 +132,11 @@ const DetailsOfArticals = (props) => {
       setAvailableStock(salesnopackstoArray.map((stock) => parseInt(stock)));
       console.log(availableStock);
       setIsLoading(false);
+      setRefreshing(false)
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      setRefreshing(false)
     }
   };
   useEffect(() => {
@@ -338,7 +350,14 @@ const DetailsOfArticals = (props) => {
         </View>
       ) : (
         <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>
-          <ScrollView nestedScrollEnabled={true}>
+          <ScrollView nestedScrollEnabled={true}
+           showsHorizontalScrollIndicator={false}
+           contentContainerStyle={{ flexGrow: 0.7 }}
+           keyboardShouldPersistTaps="handled"
+           refreshControl={
+             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+           }
+          >
             <View style={{ zIndex: 1, flex: 1 }}>
               <View
                 style={{

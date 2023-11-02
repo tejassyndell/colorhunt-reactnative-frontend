@@ -44,17 +44,14 @@ const AddToCart = (props) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-
+    cartDetails()
     // Add any logic here that you want to execute when the user triggers a refresh.
     // For example, you can reload data or perform any other action.
 
     // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
+   // 3 seconds
 
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
+   
   };
 
   useEffect(() => {
@@ -164,7 +161,7 @@ const AddToCart = (props) => {
   const [array_1, setArray_1] = useState([]);
   const getDetailsOfInward = async (arr1, parsedOrderItems) => {
     await CollectInwardForCartArticals({ arr1 }).then((res) => {
-      console.log(res.data.data);
+      console.log('bdjahbdasjd');
       setcompreInward(res.data.data);
       TotalPrice(parsedOrderItems, res.data.data);
       setIsLoading(false);
@@ -187,6 +184,8 @@ const AddToCart = (props) => {
 
             console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
             setOrderItems(parsedOrderItems);
+            setIsLoading(false)
+            setRefreshing(false)
         }
         else {
           Alert.alert(

@@ -54,18 +54,9 @@ export default function HomeScreen(props) {
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
+    
+    getCategoriesname()
+   
   };
 
   // Add a listener to track keyboard visibility
@@ -228,10 +219,13 @@ export default function HomeScreen(props) {
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const getCategoriesname = async () => {
+ 
+    setRefreshing(true);
     try {
       const result1 = await getcateGorywithphotos();
       if (result1 && result1.status === 200) {
-        setNameData(result1.data);
+        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION");
+        setNameData(filteredData);
         setTimeout(() => {
           setIsLoading(false);
           setRefreshing(false);

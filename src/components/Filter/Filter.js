@@ -67,13 +67,13 @@ export default function Filter({
   }, []);
 
   const getCategoriesname = async () => {
-    const valuesToRemove = ['ASSORTED', 'REJECTION',];
     try {
       const result1 = await getCategories();
-      const filteredData = result1.data.filter(item => !valuesToRemove.includes(item))
       if (result1.status === 200) {
+        // Assuming result1.data is an array of objects
+        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION");
         setData(filteredData);
-        console.log(result1.data);
+        console.log(filteredData);
       }
     } catch (error) {
       console.error(error);

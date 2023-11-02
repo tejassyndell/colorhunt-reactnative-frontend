@@ -55,16 +55,7 @@ export default function AllArticle(props) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    // 3 seconds
-
-    setIsLoading(false);
-    setRefreshing(false);
+    getCategoriesname();
   };
 
   const fetchMoreData = () => {
@@ -252,7 +243,6 @@ export default function AllArticle(props) {
             width: "auto",
             height: "auto",
             padding: 4,
-           
           }}
         >
           <TouchableOpacity
@@ -265,7 +255,7 @@ export default function AllArticle(props) {
                 resizeMode: "contain",
                 width: width >= 720 ? 55 : 32,
                 height: width >= 720 ? 55 : 32,
-                marginBottom:20,
+                marginBottom: 20,
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />
@@ -570,7 +560,7 @@ export default function AllArticle(props) {
                 NO ARTICLES FOUND
               </Text>
             ) : (
-              <View>
+              <>
                 <ScrollView
                   style={{ flex: 1 }}
                   refreshControl={
@@ -579,21 +569,21 @@ export default function AllArticle(props) {
                       onRefresh={onRefresh}
                     />
                   }
-                ></ScrollView>
-
-                <FlatList
-                  style={{ backgroundColor: "#FFF" }}
-                  data={finalData}
-                  keyExtractor={(item) => item.Id.toString()}
-                  renderItem={renderItem}
-                  numColumns={width >= 720 ? 4 : 2}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingVertical: 0 }}
-                  columnWrapperStyle={{ justifyContent: "space-between" }}
-                  onEndReached={fetchMoreData}
-                  onEndReachedThreshold={0.1}
-                />
-              </View>
+                >
+                  <FlatList
+                    style={{ backgroundColor: "#FFF" }}
+                    data={finalData}
+                    keyExtractor={(item) => item.Id.toString()}
+                    renderItem={renderItem}
+                    numColumns={width >= 720 ? 4 : 2}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ paddingVertical: 0 }}
+                    columnWrapperStyle={{ justifyContent: "space-between" }}
+                    onEndReached={fetchMoreData}
+                    onEndReachedThreshold={0.1}
+                  />
+                </ScrollView>
+              </>
             )}
           </View>
           {/* {/ </ScrollView> /} */}
