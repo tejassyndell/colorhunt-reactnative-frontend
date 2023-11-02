@@ -172,15 +172,7 @@ export default function CategorisWiseArticle(props) {
         setIsLoading(false);
         setRefreshing(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getproductnamess();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
     } catch (error) {
       console.log(error);

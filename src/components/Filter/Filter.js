@@ -30,7 +30,6 @@ export default function Filter({
   uniquerates,
 }) {
   const [data, setData] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState(Scategories);
   const [selectedPriceRange, setSelectedPriceRange] = useState([
     minArticleRate,
@@ -56,17 +55,7 @@ export default function Filter({
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
-  const UserCheck = async () => {
-    const user = await AsyncStorage.get("UserData");
-    if (user) {
-      isLoggedIn(true);
-    } else {
-      isLoggedIn(false);
-    }
-  };
-  useEffect(() => {
-    UserCheck();
-  }, []);
+
 
   const getCategoriesname = async () => {
     try {
@@ -262,9 +251,9 @@ export default function Filter({
             style={{ width: "100%", height: height >= 844 ? 360 : 250 }}
           >
             <View style={styles.categoriesContainer}>
-              {data.map((item) => (
+              {data.map((item,index) => (
                 <TouchableOpacity
-                  key={item.Id}
+                  key={index}
                   style={[
                     styles.categoryItem,
                     selectedCategories.includes(item.Category) && {

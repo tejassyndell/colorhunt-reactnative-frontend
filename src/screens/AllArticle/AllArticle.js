@@ -157,6 +157,7 @@ export default function AllArticle(props) {
   const getCategoriesname = async () => {
     retrieveStoredCategories();
     const res = await getProductName();
+    console.log(res,"()(())()()()");
     if (res.status === 200) {
       // console.log(res.data);
       setNameDatas(res.data);

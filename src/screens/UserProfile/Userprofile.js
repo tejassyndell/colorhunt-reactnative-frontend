@@ -71,7 +71,7 @@ export default function Userprofile(props) {
         setRefreshing(false);
       }
     else{
-      Alert.alert("Server is not responding")
+      // Alert.alert("Server is not responding")
     }
     } catch (err) {
       console.log(err, "error in fetching data");

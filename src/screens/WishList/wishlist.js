@@ -77,15 +77,7 @@ export default function WishList(props) {
     if (res.status === 200) {
       setNameDatas(res.data);
     } else {
-      Alert.alert("Server is not responding", [
-        {
-          text: "OK",
-          onPress: () => {
-            // Call namdemo function when the user clicks 'OK'
-            getCategoriesname();
-          },
-        },
-      ]);
+      // Alert.alert("Server is not responding");
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -120,15 +112,7 @@ export default function WishList(props) {
         setSelectprd(res.data);
         setIsLoading(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getWishlist();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
     });
   };

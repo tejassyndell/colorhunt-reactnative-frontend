@@ -233,15 +233,7 @@ export default function HomeScreen(props) {
       if (result1 && result1.status === 200) {
         setNameData(result1.data);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getCategoriesname();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
       const result2 = await getProductName();
       if (result2 && result2.status === 200) {
@@ -250,15 +242,7 @@ export default function HomeScreen(props) {
         setIsLoading(false);
         setRefreshing(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getCategoriesname();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
       // console.log(result2,"|{{|{{|{{|{{|");
     } catch (error) {
