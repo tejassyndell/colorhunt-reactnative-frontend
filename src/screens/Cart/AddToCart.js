@@ -44,17 +44,7 @@ const AddToCart = (props) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
+    cartDetails();
   };
 
   useEffect(() => {
@@ -186,21 +176,10 @@ const AddToCart = (props) => {
 
           // console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
           setOrderItems(parsedOrderItems);
+          setRefreshing(false);
+          setIsLoading(false);
         }
-        else {
-          Alert.alert(
-            "Server is not responding",
-            [
-              {
-                text: "OK",
-                onPress: () => {
-                  // Call namdemo function when the user clicks 'OK'
-                  cartDetails();
-                },
-              },
-            ]
-          );
-        }
+        
       })
       .catch((error) => {
         // console.log("Error fetching data:", error);

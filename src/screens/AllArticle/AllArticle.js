@@ -55,16 +55,7 @@ export default function AllArticle(props) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    // 3 seconds
-
-    setIsLoading(false);
-    setRefreshing(false);
+    getCategoriesname()
   };
 
   const fetchMoreData = () => {
@@ -139,8 +130,8 @@ export default function AllArticle(props) {
         ? 120
         : 100
       : height >= 844
-      ? 100
-      : 65;
+        ? 100
+        : 65;
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -157,7 +148,6 @@ export default function AllArticle(props) {
   const getCategoriesname = async () => {
     retrieveStoredCategories();
     const res = await getProductName();
-    // console.log(res,"()(())()()()");
     if (res.status === 200) {
       // console.log(res.data);
       setNameDatas(res.data);
@@ -568,17 +558,16 @@ export default function AllArticle(props) {
                 NO ARTICLES FOUND
               </Text>
             ) : (
-              <View>
-                <ScrollView
-                  style={{ flex: 1 }}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={refreshing}
-                      onRefresh={onRefresh}
-                    />
-                  }
-                ></ScrollView>
-
+              <>
+              <ScrollView
+                style={{ flex: 1 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+              >
                 <FlatList
                   style={{ backgroundColor: "#FFF" }}
                   data={finalData}
@@ -591,7 +580,8 @@ export default function AllArticle(props) {
                   onEndReached={fetchMoreData}
                   onEndReachedThreshold={0.1}
                 />
-              </View>
+              </ScrollView>
+            </>
             )}
           </View>
           {/* {/ </ScrollView> /} */}

@@ -56,16 +56,7 @@ export default function CategorisWiseArticle(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
-
-    // Perform your data fetching or refreshing logic here
-    // For example, you can call your API to fetch new data
-    // Make sure to set refreshing to false when done.
-
-    setTimeout(() => {
-      // After fetching new data, update your data state
-
-      setRefreshing(false);
-    }, 1000); // Simulating a delay, replace with your API call
+    getproductnamess();
   };
 
   const fetchMoreData = () => {
@@ -164,7 +155,6 @@ export default function CategorisWiseArticle(props) {
     try {
       const res = await getProductName();
       if (res.status === 200) {
-        // console.log(res.data);
         const sdPrds = res.data.slice();
         const fildata = sdPrds.filter((item) => item.Category === category);
         setNameDatas(fildata);

@@ -64,17 +64,8 @@ const OrderHistory = (props) => {
   const [Iscompletesoloading, setIscompletesoloading] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
+    getSonumber(true);
+    getCompleteData(true);
   };
 
   const headerHeight =
@@ -261,8 +252,13 @@ const OrderHistory = (props) => {
       }
     }
   };
-  const getSonumber = async () => {
-    const nextPage = currentPage + 1;
+  const getSonumber = async (status=false) => {
+    let nextPage;
+    if(status==false){
+    nextPage = currentPage + 1;}
+    else{
+      nextPage = 1;
+    }
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     let pageSize;
@@ -350,9 +346,14 @@ const OrderHistory = (props) => {
     return Math.floor(totalAmount);
   };
 
-  const getCompleteData = async () => {
-    const nextPage = outwardcurrentPage + 1;
-
+  const getCompleteData = async (status=false) => {
+    let nextPage;
+    if(status==false){
+    nextPage = outwardcurrentPage + 1;}
+    else{
+      nextPage = 1;
+    }
+console.log(":}||}|}|}|}\]");
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     let pageSize;
@@ -392,6 +393,7 @@ const OrderHistory = (props) => {
           }
           setIsLoadingsodetails(false);
         }
+        setRefreshing(false);
       } else {
         Alert.alert(
           "Server is not responding",
@@ -485,7 +487,7 @@ const OrderHistory = (props) => {
                   refreshControl={
                     <RefreshControl
                       refreshing={refreshing}
-                      onRefresh={onRefresh}
+                      onRefresh={()=>{onRefresh()}}
                     />
                   }
                   onScroll={(event) => {
