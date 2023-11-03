@@ -48,10 +48,8 @@ export default function App() {
         translucent={false}
         networkActivityIndicatorVisible={true}
       />
-      {/* Render your AppContainer with network error handling */}
       {isOffline ? <AppContainer /> : <AppContainer />}
 
-      {/* Network Error Popup */}
       <Modal
         animationType="slide"
         visible={showNetworkError}

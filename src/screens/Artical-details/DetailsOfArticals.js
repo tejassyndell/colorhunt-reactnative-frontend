@@ -9,7 +9,7 @@ import {
   Modal,
   Dimensions,
   Platform,
-  RefreshControl,
+  RefreshControl
 } from "react-native";
 import {
   ArticleDetails,
@@ -32,6 +32,7 @@ import * as Font from "expo-font";
 import Loader from "../../components/Loader/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Svg, { Path } from "react-native-svg";
+
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
   const { width: viewportWidth } = Dimensions.get("window");
@@ -41,7 +42,7 @@ const DetailsOfArticals = (props) => {
   const [isImageZoomVisible, setImageZoomVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState("");
   const { id, Quantity = 0 } = route.params;
-  console.log(id);
+  // console.log(id);
   const styles = detailsOfArtStyles();
   const handleSizeClick = (size) => {};
   // const { id } = useParams()//Use this with navigate
@@ -69,15 +70,12 @@ const DetailsOfArticals = (props) => {
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
-
   const onRefresh = () => {
     setRefreshing(true)
     ArticleDetailsData()
     
    
   };
-
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -107,13 +105,14 @@ const DetailsOfArticals = (props) => {
       ? 110
       : 65;
   const ArticleDetailsData = async () => {
+    console.log("{}{{}{");
     let data = {
       ArticleId: id,
       PartyId: await getpartyid(),
     };
     try {
       const res = await ArticleDetails(data);
-      console.log(res.data);
+      // console.log(res.data);
       setArticlePhotos(res.data.photos);
       setArticleCategory(res.data.calculatedData[0].Category);
       setSubcategory(res.data.calculatedData[0].subcategory);
@@ -124,19 +123,19 @@ const DetailsOfArticals = (props) => {
       setArticlenumber(res.data.calculatedData[0].ArticleNumber);
       setSalesnopacks(res.data.calculatedData[0].SalesNoPacks);
       setNopacks(res.data.calculatedData[0].NoPacks);
-      console.log(nopacks);
+      // console.log(nopacks);
       const salesnopackstoArray =
         res.data.calculatedData[0].SalesNoPacks.split(",");
       // const salesnopackstoArray = [1, 2, 3, 4]
       // const salesnopackstoArray = [nopacks]
       setAvailableStock(salesnopackstoArray.map((stock) => parseInt(stock)));
-      console.log(availableStock);
+      // console.log(availableStock);
       setIsLoading(false);
-      setRefreshing(false)
+      setRefreshing(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setIsLoading(false);
-      setRefreshing(false)
+      setRefreshing(false);
     }
   };
   useEffect(() => {
@@ -185,16 +184,16 @@ const DetailsOfArticals = (props) => {
 
   const addtocart = async (ArticleId) => {
     if (!combinedArray) {
-      console.log("undefined");
+      // console.log("undefined");
       return;
     }
     const colorwiseQuantities = combinedArray.map(
       (coloritem) => quantities[coloritem.index]
     );
-    console.log("colorwise quantity :", colorwiseQuantities);
+    // console.log("colorwise quantity :", colorwiseQuantities);
     const colorwiseQuantitiesTOstring = colorwiseQuantities.join(",");
-    console.log("cqty to string ", colorwiseQuantitiesTOstring);
-    console.log(totalPrice);
+    // console.log("cqty to string ", colorwiseQuantitiesTOstring);
+    // console.log(totalPrice);
     const data = {
       party_id: await getpartyid(),
       article_id: ArticleId,
@@ -202,7 +201,7 @@ const DetailsOfArticals = (props) => {
       rate: totalPrice,
     };
     try {
-      console.log(data);
+      // console.log(data);
       await findfromthecart(data).then(async (res) => {
         if (res.data.id == -1) {
           await addto_cart(data);
@@ -214,7 +213,7 @@ const DetailsOfArticals = (props) => {
         }
       });
     } catch (error) {
-      console.log("Error Adding to Cart:", error);
+      // console.log("Error Adding to Cart:", error);
     }
     // navigate('/cart_list', { state: { totalPrice } })
   };
@@ -241,8 +240,8 @@ const DetailsOfArticals = (props) => {
     if (!combinedArray || !combinedArray[colorIndex]) {
       return;
     }
-    console.log(quantities[colorIndex]);
-    console.log(combinedArray[colorIndex].available);
+    // console.log(quantities[colorIndex]);
+    // console.log(combinedArray[colorIndex].available);
     if (quantities[colorIndex] < nopacks) {
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
@@ -263,12 +262,12 @@ const DetailsOfArticals = (props) => {
     (total, quantity) => total + quantity,
     0
   );
-  console.log(totalQuantity);
+  // console.log(totalQuantity);
 
   // const [magnifyStatus, setMagnifyStatus] = useState(false);
   // const [prdImage, setPrdImage] = useState();
   const openImageZoom = (index) => {
-    console.log(index);
+    // console.log(index);
     setSelectedImageIndex(index);
     setImageZoomVisible(true);
   };
@@ -308,23 +307,23 @@ const DetailsOfArticals = (props) => {
 
   const updateArticalInCart = async () => {
     if (!combinedArray) {
-      console.log("undefined");
+      // console.log("undefined");
       return;
     }
     const colorwiseQuantities = combinedArray.map(
       (coloritem) => quantities[coloritem.index]
     );
-    console.log("colorwise quantity :", colorwiseQuantities);
+    // console.log("colorwise quantity :", colorwiseQuantities);
     const colorwiseQuantitiesTOstring = colorwiseQuantities.join(",");
-    console.log("cqty to string ", colorwiseQuantitiesTOstring);
-    console.log(totalPrice);
+    // console.log("cqty to string ", colorwiseQuantitiesTOstring);
+    // console.log(totalPrice);
     const data = {
       id: articalCartId,
       Quantity: colorwiseQuantitiesTOstring,
       rate: totalPrice,
     };
     await updateCartArticale(data).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       navigation.navigate("cart_list", { totalPrice });
     });
   };
@@ -672,8 +671,8 @@ const DetailsOfArticals = (props) => {
                         </Text>
                       </View>
                     </View>
-                    {combinedArray.map((item, key) => (
-                      <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
+                    {combinedArray.map((item,index) => (
+                      <View key={index} style={{ flex: 1, flexDirection: "row", gap: 12 }}>
                         <View
                           style={{
                             flex: 1,

@@ -58,19 +58,19 @@ export default function AllArticle(props) {
     try {
       const res = await getProductName()
       if (res.status === 200) {
-        console.log(res.data);
+        // console.log(res.data);
         const sdPrds = res.data.slice()
-        console.log(sdPrds,'1233444');
+        // console.log(sdPrds,'1233444');
         const fildata = sdPrds.filter((item) => item.Category === category)
         setNameDatas(fildata)
-        console.log(fildata);
+        // console.log(fildata);
         setSelectprd(fildata)
-        console.log(fildata,'00000000000000000000000000000000');
+        // console.log(fildata,'00000000000000000000000000000000');
         setFilterDataSearch(fildata)
         setFinalData(fildata)
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -81,7 +81,7 @@ export default function AllArticle(props) {
       user_id: await getpartyid(),
       article_id: i.Id,
     };
-    console.log(data);
+    // console.log(data);
 
     try {
       // await getAddWishlist(data).then((res) => {
@@ -91,7 +91,7 @@ export default function AllArticle(props) {
       //   // setFinalData(res.data);
       // })
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   
     // try {
@@ -113,7 +113,7 @@ export default function AllArticle(props) {
       party_id:await getpartyid(),
       article_id: i.Id,
     };
-    console.log("Removing item from wishlist:", i.Id);
+    // console.log("Removing item from wishlist:", i.Id);
     try {
       // await DeleteWishlist(data).then((res) => {
       //   if (res.status === 200) {
@@ -126,7 +126,7 @@ export default function AllArticle(props) {
       //   }
       // });
     } catch (error) {
-      console.log("Error removing item from wishlist:", error);
+      // console.log("Error removing item from wishlist:", error);
     }
   };
 
@@ -182,8 +182,8 @@ export default function AllArticle(props) {
     }}>
       <View id={item.id} style={styles.producticones}>
         {selectedprd.includes((i) => i.Id === item.Id) ? (
-          console.log((i) => i.Id === item.Id,'idget'),
-          console.log(item.Id,'2222222222222'),
+          // console.log((i) => i.Id === item.Id,'idget'),
+          // console.log(item.Id,'2222222222222'),
           <TouchableOpacity
             onPress={() => {
               rmvProductWishlist(item);
@@ -198,8 +198,8 @@ export default function AllArticle(props) {
             />
           </TouchableOpacity>
         ) : (
-          console.log((i) => i.Id === item.Id,'idget'),
-          console.log(item.Id,'2222222222222'),
+          // console.log((i) => i.Id === item.Id,'idget'),
+          // console.log(item.Id,'2222222222222'),
           <TouchableOpacity
             onPress={() => {
               addArticleWishlist(item);

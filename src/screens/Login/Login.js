@@ -74,57 +74,32 @@ const Login = (props) => {
   //     return false;
   //   }
   // }
-  //  ? const keyboardDidShow = () => {
-  //     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
-  //     setLogoSize(newSize);
-  //     setLeftPosition("65%");
-  //   };
-
-  //   const keyboardDidHide = () => {
-  //     setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
-  //     setLeftPosition("50%");
-  //   };
-
-  // useEffect(() => {
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     "keyboardDidShow",
-  //     keyboardDidShow
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     "keyboardDidHide",
-  //     keyboardDidHide
-  //   );
-
-  //   return () => {
-  //     keyboardDidShowListener.remove();
-  //     keyboardDidHideListener.remove();
-  //   };
-  // }, []);
-  const keyboardDidShow = () => {
-    const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
-    setLogoSize(newSize);
-    setLeftPosition("65%");
-  };
-  const animateKeyboardShow = () => {
-    const customAnimationConfig = {
-      duration: 500, // Set the duration in milliseconds
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
+   const keyboardDidShow = () => {
+      const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
+      setLogoSize(newSize);
+      setLeftPosition("65%");
     };
 
-    LayoutAnimation.configureNext(customAnimationConfig);
-  };
+    const keyboardDidHide = () => {
+      setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
+      setLeftPosition("50%");
+    };
 
-  const keyboardDidHide = () => {
-    setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
-    setLeftPosition("50%");
-  };
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      keyboardDidShow
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      keyboardDidHide
+    );
 
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   useEffect(() => {
     AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: token })).then(() => {
       // console.log("Data stored in local storage:", userData);
@@ -165,7 +140,7 @@ const Login = (props) => {
   );
   const animateKeyboardShow = () => {
     const customAnimationConfig = {
-      duration: 1000, // Set the duration in milliseconds
+      duration: 500, // Set the duration in milliseconds
       create: {
         type: LayoutAnimation.Types.easeInEaseOut,
         property: LayoutAnimation.Properties.opacity,
@@ -205,6 +180,7 @@ const Login = (props) => {
 
                 getstatus(true, res.data[0].Name);
                 const userData = res.data; // Assuming res.data contains user data
+                console.log(userData);
                 AsyncStorage.setItem("UserData", JSON.stringify(userData))
                   .then(() => {
                     // console.log("Data stored in local storage:", userData);
@@ -219,7 +195,7 @@ const Login = (props) => {
               }
             } else {
               console.log(res, "error");
-              Alert.alert("Server is not responding");
+              // Alert.alert("Server is not responding");
             }
           });
         } catch (error) {

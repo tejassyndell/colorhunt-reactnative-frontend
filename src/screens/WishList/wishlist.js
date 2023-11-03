@@ -30,8 +30,7 @@ export default function WishList(props) {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
-    getWishlist()
-
+    getWishlist();
   };
 
   const headerHeight =
@@ -62,7 +61,7 @@ export default function WishList(props) {
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
-    console.log(partydata[0].Id, "[][][[][]");
+    // console.log(partydata[0].Id, "[][][[][]");
     return partydata[0].Id;
   };
 
@@ -72,25 +71,17 @@ export default function WishList(props) {
     if (res.status === 200) {
       setNameDatas(res.data);
     } else {
-      Alert.alert("Server is not responding", [
-        {
-          text: "OK",
-          onPress: () => {
-            // Call namdemo function when the user clicks 'OK'
-            getCategoriesname();
-          },
-        },
-      ]);
+      // Alert.alert("Server is not responding");
     }
   };
   const rmvProductWishlist = async (i) => {
-    console.log(i, "r");
+    // console.log(i, "r");
     let id = await getpartyid();
     let data = {
       party_id: id,
       article_id: i.Id,
     };
-    console.log(data);
+    // console.log(data);
 
     try {
       await DeleteWishlist(data).then((res) => {
@@ -99,7 +90,7 @@ export default function WishList(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -111,21 +102,14 @@ export default function WishList(props) {
       status: "true",
     };
     const result = await getWishlistData(data).then((res) => {
+      console.log("--------");
       if (res.status == 200) {
-        console.log(res.data);
+        // console.log(res.data);
         setSelectprd(res.data);
         setIsLoading(false);
         setRefreshing(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getWishlist();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
     });
   };

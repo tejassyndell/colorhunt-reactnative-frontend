@@ -50,12 +50,12 @@ const CreateAccount = (props) => {
           if (data.status === true) {
             setToken(data.token);
           } else {
-            console.log("Notification permission denied");
+            // console.log("Notification permission denied");
           }
         }
 
       } catch (error) {
-        console.error("Error requesting permission:", error);
+        // console.error("Error requesting permission:", error);
       }
 
     };
@@ -231,7 +231,7 @@ const CreateAccount = (props) => {
     }
 
     if (isValid) {
-      console.log("Form submitted.");
+      // console.log("Form submitted.");
       try {
         // Make an API request to store form data
         const response = await UserData({
@@ -290,7 +290,7 @@ const CreateAccount = (props) => {
 
   const handleClose = () => {
     onClose();
-    console.log("close");
+    // console.log("close");
   };
 
   return (

@@ -56,7 +56,7 @@ export default function CategorisWiseArticle(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
-    getproductnamess()
+    getproductnamess();
   };
 
   const fetchMoreData = () => {
@@ -115,7 +115,7 @@ export default function CategorisWiseArticle(props) {
   }, []);
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -141,7 +141,7 @@ export default function CategorisWiseArticle(props) {
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
-  console.log(category);
+  // console.log(category);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -155,7 +155,6 @@ export default function CategorisWiseArticle(props) {
     try {
       const res = await getProductName();
       if (res.status === 200) {
-        // console.log(res.data);
         const sdPrds = res.data.slice();
         const fildata = sdPrds.filter((item) => item.Category === category);
         setNameDatas(fildata);
@@ -163,18 +162,10 @@ export default function CategorisWiseArticle(props) {
         setIsLoading(false);
         setRefreshing(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getproductnamess();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -194,7 +185,7 @@ export default function CategorisWiseArticle(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -221,7 +212,7 @@ export default function CategorisWiseArticle(props) {
         // getWishlist();
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const convertToTitleCase = (str) => {
@@ -259,7 +250,7 @@ export default function CategorisWiseArticle(props) {
           <TouchableOpacity
             onPress={() => {
               isLoggedIn ? navigation.navigate("Profile") : null;
-              console.log(isLoggedIn);
+              // console.log(isLoggedIn);
             }}
           >
             <Image
@@ -595,7 +586,7 @@ export default function CategorisWiseArticle(props) {
             }}
           >
             {finalData.length === 0 ? (
-              (console.log(nameDatas.length, "ewqewqewqeewq"),
+              (
               (
                 <View
                   style={{

@@ -27,7 +27,6 @@ import { useEffect } from "react";
 import OrderDetails from "../screens/OrderHistory/OrderDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Aboutus from "../screens/AboutUs/Aboutus";
-
 // @ts-ignore
 
 const Stack = createStackNavigator();

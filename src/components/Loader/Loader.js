@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableHighlight, Image, View } from "react-native";
-import PropTypes from "prop-types";
+
 
 export default function Loader(props) {
   return (

@@ -23,13 +23,8 @@ const SliderScreen = (props) => {
   const showNavigation = async () => {
     if (SystemNavigationBar) {
       try {
-        if (SystemNavigationBar.navigationHide) { // Check if navigationHide is a function
-          const result = await SystemNavigationBar.navigationHide();
-          console.log(result, 'sbfdhjbsfsdf');
-          console.log("Show Navigation Bar:", result);
-        } else {
-          console.error("SystemNavigationBar.navigationHide is not a function.");
-        }
+        const result = await SystemNavigationBar.navigationHide();
+        // console.log("Show Navigation Bar:", result);
       } catch (error) {
         console.error("Error showing navigation bar:", error);
       }

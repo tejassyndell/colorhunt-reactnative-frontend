@@ -59,7 +59,7 @@ const OrderDetails = (props) => {
     outwardArticleId = [],
     OutwardNumberId = "",
   } = route.params;
-  console.log(remarks, "{}{}{}{}{}{}{}{}");
+  // console.log(remarks, "{}{}{}{}{}{}{}{}");
   const [newPrint, setNewPrint] = useState(false);
   const [isloading, setIsLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
@@ -74,7 +74,7 @@ const OrderDetails = (props) => {
         ? 110
         : 65;
 
-  console.log(newPrint);
+  // console.log(newPrint);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -152,7 +152,7 @@ const OrderDetails = (props) => {
           : "";
 
       // Split OutwardNoPacks by commas and map to integers
-      const outwardNoPacksArray =  item.NoPacks.split(",").map((value) =>
+      const outwardNoPacksArray = item.NoPacks.split(",").map((value) =>
         parseInt(value, 10)
       );
 
@@ -203,6 +203,7 @@ const OrderDetails = (props) => {
   const [tableData, setTableData] = useState({});
   const [totalval, setotalval] = useState(0);
   const [totalqty, settotalqty] = useState(0);
+  const [adjustamountstatus, setAdjustamountstatus] = useState(false);
   const settotle = (sodetails) => {
     let totalRate = 0;
 
@@ -224,6 +225,12 @@ const OrderDetails = (props) => {
       totalRate += itemTotalRate;
     });
     setotalval(totalRate);
+    let adjamount = (Math.ceil(getgstamount(totalRate)) - getgstamount(totalRate)).toFixed(2);
+    if (adjamount !== 0.00) {
+      setAdjustamountstatus(true);
+    } else {
+      setAdjustamountstatus(false);
+    }
   };
   const settotalqut = (sodetails) => {
     let totalOutwardNoPacks = 0;
@@ -247,7 +254,7 @@ const OrderDetails = (props) => {
     settotalqty(totalOutwardNoPacks);
   };
   const getgstamount = (val) => {
-    console.log(typeof val);
+    // console.log(typeof val);
     let gsttotal = val * 0.05;
     let totalamount = val + gsttotal;
     let roundedAmount = totalamount.toFixed(2);
@@ -258,9 +265,9 @@ const OrderDetails = (props) => {
     ptdata = JSON.parse(ptdata);
     if (ptdata !== null) {
       setpartydata(ptdata);
-      console.log(ptdata, "[][][][[][][][][]=-gnfgdgf");
+      // console.log(ptdata, "[][][][[][][][][]=-gnfgdgf");
     } else {
-      console.log("No data found");
+      // console.log("No data found");
     }
 
     const date = new Date(CreatedDate);
@@ -281,7 +288,7 @@ const OrderDetails = (props) => {
       party_id: ptdata[0].Id,
       CreatedDate: formattedDateTime,
     };
-    console.log(outwardArticleId.length, "OPOPOPOPOPOPO");
+    // console.log(outwardArticleId.length, "OPOPOPOPOPOPO");
 
     if (outwardArticleId.length > 0) {
       let ptdata = await AsyncStorage.getItem("UserData");
@@ -291,7 +298,7 @@ const OrderDetails = (props) => {
         OutwardNumberId: OutwardNumberId,
         PartyId: ptdata[0].Id,
       }).then((res) => {
-        console.log(res.data, "(((((((((((((((");
+        // console.log(res.data, "(((((((((((((((");
         if (res.status === 200) {
           setTableData({
             tableHead: [
@@ -342,7 +349,7 @@ const OrderDetails = (props) => {
     // You can adjust this logic based on your data and requirements
     // For example, you can calculate the height based on the length of text in the row.
     const textLength = rowData.someField.length; // Adjust to the actual field in your data
-    console.log(textLength * 40, "ksadksakndk");
+    // console.log(textLength * 40, "ksadksakndk");
     return textLength * 40; // Adjust the multiplier based on your desired row height calculation
   };
 
@@ -350,7 +357,7 @@ const OrderDetails = (props) => {
     orderdetils();
   }, []);
   useEffect(() => {
-    console.log(sodetails);
+    // console.log(sodetails);
   }, [sodetails]);
   const GSThtmltable = () => {
     if (partydata) {
@@ -362,12 +369,16 @@ const OrderDetails = (props) => {
           <td colspan="1">GST 5%</td>
           <td colspan="1">${`₹${(totalval * 0.05).toFixed(2)}`}</td>
         </tr>
-        <tr>
-        <td colspan="5" style="text-align: end; font-weight: bold"></td>
-        <td colspan="1"></td>
-        <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
-      </tr>
+        ${adjustamountstatus &&
+          `
+          <tr>
+          <td colspan="5" style="text-align: end; font-weight: bold"></td>
+          <td colspan="1"></td>
+          <td colspan="1"> Adjust Amount</td>
+          <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
+        </tr>`
+          }
+     
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
@@ -388,12 +399,14 @@ const OrderDetails = (props) => {
           <td colspan="1">CGST 2.5%</td>
           <td colspan="1">${`₹${(totalval * 0.025).toFixed(2)}`}</td>
         </tr>
-        <tr>
-        <td colspan="5" style="text-align: end; font-weight: bold"></td>
-        <td colspan="1"></td>
-        <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
-      </tr>
+        ${adjustamountstatus &&
+          `<tr>
+          <td colspan="5" style="text-align: end; font-weight: bold"></td>
+          <td colspan="1"></td>
+          <td colspan="1"> Adjust Amount</td>
+          <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
+        </tr>`
+          }
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
@@ -411,7 +424,7 @@ const OrderDetails = (props) => {
   const GSThtmlContent = GSThtmltable();
   const htmlTableData = tableData.tableData
     ? tableData.tableData.map((rowData) => {
-      console.log(rowData[4]);
+      // console.log(rowData[4]);
       return `
         <tr>
           <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>
@@ -453,7 +466,7 @@ const OrderDetails = (props) => {
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="9">
-                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode}.` : ""
+                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].Country}-${partydata[0].PinCode}.` : ""
     }
             </td>
             <td style="text-transform: uppercase" colspan="1">
@@ -507,29 +520,24 @@ const OrderDetails = (props) => {
   const generatePDF = async () => {
     try {
       if (Platform.OS === "android") {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.error("Storage permission not granted");
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== "granted") {
+          console.error("Location permission not granted");
+          return;
+        }
+      } else if (Platform.OS === "ios") {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== "granted") {
+          console.error("Location permission not granted");
           return;
         }
       }
 
-      // Define the options for PDF generation
-      const options = {
-        html: html,
-        fileName: "example",
-      };
-
-      // Generate the PDF using RNHTMLtoPDF
-      const pdfFile = await RNHTMLtoPDF.convert(options);
+      // Generate PDF from HTML content
+      const pdfFile = await printToFileAsync({ html: html, base64: false });
 
       // Share the generated PDF
-      Share.open({
-        url: `file://${pdfFile.filePath}`,
-        type: "application/pdf",
-      });
+      await shareAsync(pdfFile.uri);
     } catch (error) {
       console.error("Error generating and sharing PDF:", error);
     }
@@ -1023,7 +1031,7 @@ const OrderDetails = (props) => {
                       }}
                     >
                       {partydata
-                        ? `${partydata[0].Address}, ${partydata[0].City} ${partydata[0].State} , ${partydata[0].PinCode}.`
+                        ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].Country}-${partydata[0].PinCode}.`
                         : "Address"}
                     </Text>
                   </View>
@@ -1290,6 +1298,33 @@ const OrderDetails = (props) => {
                                     ₹{(totalval * 0.05).toFixed(2)}
                                   </Text>
                                 </View>
+                                {adjustamountstatus &&
+                                  <View style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    height: 40,
+                                    borderColor: "#000000",
+                                    borderWidth: 1,
+                                    borderTopWidth: 1,
+                                  }}>
+                                    <Text
+                                      style={styles.fastRowContent}
+                                    >
+                                    </Text>
+                                    <Text
+                                      style={styles.secondCollam}
+                                    ></Text>
+                                    <Text
+                                      style={styles.thurdCollam}
+                                    >
+                                      Adjust Amount
+                                    </Text>
+                                    <Text
+                                      style={styles.collamGst5Per}
+                                    >
+                                      +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
+                                    </Text>
+                                  </View>}
                                 <View
                                   style={{
                                     flex: 1,
@@ -1300,30 +1335,10 @@ const OrderDetails = (props) => {
                                     borderTopWidth: 1,
                                   }}
                                 >
-                                  <Text style={styles.fastRowContent}></Text>
-                                  <Text style={styles.secondCollam}></Text>
-                                  <Text style={styles.thurdCollam}>
-                                    Adjust Amount
-                                  </Text>
-                                  <Text style={styles.collamGst5Per}>
-                                    +
-                                    {(
-                                      Math.ceil(getgstamount(totalval)) -
-                                      getgstamount(totalval)
-                                    ).toFixed(2)}
-                                  </Text>
-                                </View>
-                                <View
-                                  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                    borderTopWidth: 1,
-                                  }}
-                                >
-                                  <Text style={styles.fastRowContent}>
+
+                                  <Text
+                                    style={styles.fastRowContent}
+                                  >
                                     TOTAL
                                   </Text>
                                   <Text style={styles.secondCollam}></Text>
@@ -1446,29 +1461,35 @@ const OrderDetails = (props) => {
                                     ₹{(totalval * 0.025).toFixed(2)}
                                   </Text>
                                 </View>
-                                <View
-                                  style={{
+                                {adjustamountstatus &&
+                                  <View style={{
                                     flex: 1,
                                     flexDirection: "row",
                                     height: 40,
                                     borderColor: "#000000",
                                     borderWidth: 1,
                                     borderTopWidth: 1,
-                                  }}
-                                >
-                                  <Text style={styles.fastRowContent}></Text>
-                                  <Text style={styles.secondCollam}></Text>
-                                  <Text style={styles.thurdCollam}>
-                                    Adjust Amount
-                                  </Text>
-                                  <Text style={styles.collamGst5Per}>
-                                    +
-                                    {(
-                                      Math.ceil(getgstamount(totalval)) -
-                                      getgstamount(totalval)
-                                    ).toFixed(2)}
-                                  </Text>
-                                </View>
+                                  }}>
+                                    <Text
+                                      style={styles.fastRowContent}
+                                    >
+                                    </Text>
+                                    <Text
+                                      style={styles.secondCollam}
+                                    ></Text>
+                                    <Text
+                                      style={styles.thurdCollam}
+                                    >
+                                      Adjust Amount
+                                    </Text>
+                                    <Text
+                                      style={styles.collamGst5Per}
+                                    >
+                                      +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
+                                    </Text>
+                                  </View>
+                                }
+
                                 <ScrollView>
                                   <View
                                     style={{

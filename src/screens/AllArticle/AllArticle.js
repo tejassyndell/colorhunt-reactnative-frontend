@@ -55,7 +55,7 @@ export default function AllArticle(props) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    getCategoriesname();
+    getCategoriesname()
   };
 
   const fetchMoreData = () => {
@@ -96,10 +96,10 @@ export default function AllArticle(props) {
         setSelectedCategories(categories);
         setSelectedPriceRange(priceRange);
       } else {
-        console.log("No data found with the key.");
+        // console.log("No data found with the key.");
       }
     } catch (error) {
-      console.error("Error retrieving data:", error);
+      // console.error("Error retrieving data:", error);
     }
   };
   const userChecked = async () => {
@@ -117,7 +117,7 @@ export default function AllArticle(props) {
   });
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -130,8 +130,8 @@ export default function AllArticle(props) {
         ? 120
         : 100
       : height >= 844
-      ? 100
-      : 65;
+        ? 100
+        : 65;
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -173,7 +173,7 @@ export default function AllArticle(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -210,7 +210,7 @@ export default function AllArticle(props) {
         // setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const convertToTitleCase = (str) => {
@@ -444,7 +444,7 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All");
+    // console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -560,29 +560,29 @@ export default function AllArticle(props) {
               </Text>
             ) : (
               <>
-                <ScrollView
-                  style={{ flex: 1 }}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={refreshing}
-                      onRefresh={onRefresh}
-                    />
-                  }
-                >
-                  <FlatList
-                    style={{ backgroundColor: "#FFF" }}
-                    data={finalData}
-                    keyExtractor={(item) => item.Id.toString()}
-                    renderItem={renderItem}
-                    numColumns={width >= 720 ? 4 : 2}
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingVertical: 0 }}
-                    columnWrapperStyle={{ justifyContent: "space-between" }}
-                    onEndReached={fetchMoreData}
-                    onEndReachedThreshold={0.1}
+              <ScrollView
+                style={{ flex: 1 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
                   />
-                </ScrollView>
-              </>
+                }
+              >
+                <FlatList
+                  style={{ backgroundColor: "#FFF" }}
+                  data={finalData}
+                  keyExtractor={(item) => item.Id.toString()}
+                  renderItem={renderItem}
+                  numColumns={width >= 720 ? 4 : 2}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingVertical: 0 }}
+                  columnWrapperStyle={{ justifyContent: "space-between" }}
+                  onEndReached={fetchMoreData}
+                  onEndReachedThreshold={0.1}
+                />
+              </ScrollView>
+            </>
             )}
           </View>
           {/* {/ </ScrollView> /} */}

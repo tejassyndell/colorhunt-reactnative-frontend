@@ -1,6 +1,5 @@
 import React from "react";
 import { TouchableOpacity, Image, View, Dimensions } from "react-native";
-import PropTypes from "prop-types";
 import styles from "./styles.js";
 import Svg, { G, Circle, Path } from 'react-native-svg';
 export default function MenuBackArrow(props) {
@@ -32,6 +31,4 @@ export default function MenuBackArrow(props) {
   );
 }
 
-MenuBackArrow.propTypes = {
-  onPress: PropTypes.func,
-};
+

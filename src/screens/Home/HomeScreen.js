@@ -54,9 +54,7 @@ export default function HomeScreen(props) {
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    
     getCategoriesname()
-   
   };
 
   // Add a listener to track keyboard visibility
@@ -158,7 +156,7 @@ export default function HomeScreen(props) {
       status: "false",
     };
     const result = await getWishlistData(data).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setSelectprd(res.data);
     });
   };
@@ -185,7 +183,7 @@ export default function HomeScreen(props) {
         // getWishlist();
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -206,7 +204,7 @@ export default function HomeScreen(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -219,7 +217,6 @@ export default function HomeScreen(props) {
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   const getCategoriesname = async () => {
- 
     setRefreshing(true);
     try {
       const result1 = await getcateGorywithphotos();
@@ -238,15 +235,7 @@ export default function HomeScreen(props) {
         setIsLoading(false);
         setRefreshing(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getCategoriesname();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
       setTimeout(() => {
         setIsLoading(false);
@@ -350,7 +339,7 @@ export default function HomeScreen(props) {
         selectedPriceRange[1] == maxArticleRate) ||
         selectedPriceRange.length === 0)
     ) {
-      console.log("done");
+      // console.log("done");
       let currentText = await AsyncStorage.getItem("searchText");
 
       // Parse the currentText if it exists
@@ -400,7 +389,10 @@ export default function HomeScreen(props) {
 
         if (chunkResult.length > 0) {
           filtered = [...filtered, ...chunkResult];
-          break; // Stop after the first matching chunk
+          if(parseInt(filtered.length)>=4){
+            // console.log(filtered.length,typeof 4);
+            break; // Stop after the first matching chunk
+          }
         }
       }
 

@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
-console.log(typeof width);
+// console.log(typeof width);
 const styles = StyleSheet.create({
   btnClickContain: {
     flexDirection: "row",

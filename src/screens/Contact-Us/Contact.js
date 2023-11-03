@@ -79,7 +79,7 @@ export default function Contact(props) {
 
 
   const handleSubmit = async () => {
-    console.log("Hello", username, email, subject, message);
+    // console.log("Hello", username, email, subject, message);
     if (!username || !email || !subject || !message) {
       setShowValidationErrors(true);
       return;
@@ -103,7 +103,7 @@ export default function Contact(props) {
   
 
   const mail = async () => {
-    console.log(username, email, subject, message);
+    // console.log(username, email, subject, message);
     const data = {
       username,
       email,
@@ -114,10 +114,10 @@ export default function Contact(props) {
       const result = await SendMail(data);
       if (result.status === 200) {
         const data = result.data;
-        console.log(data);
+        // console.log(data);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
