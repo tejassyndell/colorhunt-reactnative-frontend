@@ -78,17 +78,20 @@ export default function Notification(props) {
           <TouchableOpacity style={styles.contentBox}>
             <View
               style={{
-                width: "20%",
-                height: "auto",
+                width: 60,
+
+                height: 60,
                 marginVertical: 8,
                 alignItems: "center",
                 justifyContent: "center",
                 shadowColor: "gray",
                 marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
+                shadowOpacity: 3, // Increased shadow opacity
                 shadowRadius: 6, // Increased shadow radius
                 borderRadius: 2,
-                elevation: 2, // Increased elevation
+                backgroundColor:'red',
+                shadowColor:'black',
+                elevation:2, // Increased elevation
                 shadowOffset: {
                   width: 1,
                   height: 1,
@@ -97,8 +100,8 @@ export default function Notification(props) {
             >
               <Image
                 style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4641.png")}
-              ></Image>
+                source={require("../../../assets/notification/resize1.jpg")}
+              />
 
             </View>
 
@@ -111,258 +114,7 @@ export default function Notification(props) {
               <Text style={styles.timedetails}>1m ago.</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.contentBox}>
-            <View
-              style={{
-                width: "20%",
-                height: "auto",
-                marginVertical: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "gray",
-                marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
-                shadowRadius: 6, // Increased shadow radius
-                borderRadius: 2,
-                elevation: 2, // Increased elevation
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-              }}
-            >
-              <Image
-                style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4642.png")}
-              ></Image>
-
-            </View>
-
-
-            <View style={styles.contentsection}>
-              <Text style={styles.detailscon}>
-                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
-                elementum amet ornare id. Feugiat tempus.
-              </Text>
-              <Text style={styles.timedetails}>1m ago.</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentBox}>
-            <View
-              style={{
-                width: "20%",
-                height: "auto",
-                marginVertical: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "gray",
-                marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
-                shadowRadius: 6, // Increased shadow radius
-                borderRadius: 2,
-                elevation: 2, // Increased elevation
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-              }}
-            >
-              <Image
-                style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4644.png")}
-              ></Image>
-
-            </View>
-
-
-            <View style={styles.contentsection}>
-              <Text style={styles.detailscon}>
-                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
-                elementum amet ornare id. Feugiat tempus.
-              </Text>
-              <Text style={styles.timedetails}>1m ago.</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentBox}>
-            <View
-              style={{
-                width: "20%",
-                height: "auto",
-                marginVertical: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "gray",
-                marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
-                shadowRadius: 6, // Increased shadow radius
-                borderRadius: 2,
-                elevation: 2, // Increased elevation
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-              }}
-            >
-              <Image
-                style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4641.png")}
-              ></Image>
-
-            </View>
-
-
-            <View style={styles.contentsection}>
-              <Text style={styles.detailscon}>
-                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
-                elementum amet ornare id. Feugiat tempus.
-              </Text>
-              <Text style={styles.timedetails}>1m ago.</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentBox}>
-            <View
-              style={{
-                width: "20%",
-                height: "auto",
-                marginVertical: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "gray",
-                marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
-                shadowRadius: 6, // Increased shadow radius
-                borderRadius: 2,
-                elevation: 2, // Increased elevation
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-              }}
-            >
-              <Image
-                style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4642.png")}
-              ></Image>
-
-            </View>
-
-
-            <View style={styles.contentsection}>
-              <Text style={styles.detailscon}>
-                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
-                elementum amet ornare id. Feugiat tempus.
-              </Text>
-              <Text style={styles.timedetails}>1m ago.</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentBox}>
-            <View
-              style={{
-                width: "20%",
-                height: "auto",
-                marginVertical: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "gray",
-                marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
-                shadowRadius: 6, // Increased shadow radius
-                borderRadius: 2,
-                elevation: 3, // Increased elevation
-                shadowOffset: {
-                  width: 0,
-                  height: 0,
-                },
-              }}
-            >
-              <Image
-                style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4644.png")}
-              ></Image>
-
-            </View>
-
-
-            <View style={styles.contentsection}>
-              <Text style={styles.detailscon}>
-                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
-                elementum amet ornare id. Feugiat tempus.
-              </Text>
-              <Text style={styles.timedetails}>1m ago.</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentBox}>
-            <View
-              style={{
-                width: "20%",
-                height: "auto",
-                marginVertical: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "gray",
-                marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
-                shadowRadius: 6, // Increased shadow radius
-                borderRadius: 2,
-                elevation: 2, // Increased elevation
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-              }}
-            >
-              <Image
-                style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4641.png")}
-              ></Image>
-
-            </View>
-
-
-            <View style={styles.contentsection}>
-              <Text style={styles.detailscon}>
-                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
-                elementum amet ornare id. Feugiat tempus.
-              </Text>
-              <Text style={styles.timedetails}>1m ago.</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentBox}>
-            <View
-              style={{
-                width: "20%",
-                height: "auto",
-                marginVertical: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "gray",
-                marginRight: 8,
-                shadowOpacity: 1, // Increased shadow opacity
-                shadowRadius: 6, // Increased shadow radius
-                borderRadius: 2,
-                elevation: 2, // Increased elevation
-                shadowOffset: {
-                  width: 1,
-                  height: 1,
-                },
-              }}
-            >
-              <Image
-                style={styles.imagesection}
-                source={require("../../../assets/notification/3300422348x4641.png")}
-              ></Image>
-
-            </View>
-
-
-            <View style={styles.contentsection}>
-              <Text style={styles.detailscon}>
-                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
-                elementum amet ornare id. Feugiat tempus.
-              </Text>
-              <Text style={styles.timedetails}>1m ago.</Text>
-            </View>
-          </TouchableOpacity>
+         
         </View>
       </ScrollView>
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
@@ -421,7 +173,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   imagesection: {
-    resizeMode: "contain",
+    width:'100%',
+    height:'100%'
   },
   detailscon: {
     width: "65%",
