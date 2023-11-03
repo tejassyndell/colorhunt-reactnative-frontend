@@ -28,6 +28,7 @@ const LoginStyles = () => {
       width: width >= 720 ? "100%" : "100%",
       height: width >= 720 ? "100%" : "100%",
       resizeMode: "cover",
+
     },
     slide: {
       flex: 1,

@@ -64,17 +64,13 @@ const OrderHistory = (props) => {
   const [Iscompletesoloading, setIscompletesoloading] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
+    getCompleteData()
 
     // Add any logic here that you want to execute when the user triggers a refresh.
     // For example, you can reload data or perform any other action.
 
     // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
+   
   };
 
   const headerHeight =
@@ -215,6 +211,8 @@ const OrderHistory = (props) => {
               fontSize: width >= 720 ? 35 : 20,
               fontWeight: "700",
               width: "100%",
+              marginBottom:20, 
+
             }}
           >
             Orders History
@@ -371,6 +369,7 @@ const OrderHistory = (props) => {
         if (res.data.data.length <= 0) {
           setOutworddatanotfount(true);
           setIsLoadingsodetails(false);
+          setRefreshing(false)
         }
         else {
           if (nextPage == 1) {
@@ -391,6 +390,7 @@ const OrderHistory = (props) => {
             setOutwardcurrentPage(nextPage);
           }
           setIsLoadingsodetails(false);
+          setRefreshing(false)
         }
       } else {
         Alert.alert(
@@ -461,10 +461,10 @@ const OrderHistory = (props) => {
               </View>
             </View>
             <View style={styles.calender_cnt}>
-              <View style={{ paddingRight: "4%" }}>
+              <View style={{ paddingRight: "4%",marginTop:10 }}>
                 <TouchableOpacity
                   onPress={() => toggleCalendar()}
-                  style={{ height: height * 0.035, width: width * 0.035 }}
+                  style={{ height: 20, width:20 }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>
@@ -654,7 +654,14 @@ const OrderHistory = (props) => {
             </View>
           ) : (
             <View style={orderstyles.order_cnt}>
-              <ScrollView nestedScrollEnabled={true} onScroll={handleScroll}>
+              <ScrollView nestedScrollEnabled={true} onScroll={handleScroll}
+               refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
+              }
+              >
                 {completedsodata
                   ? completedsodata.map((item, index) =>
                     item.status === 1 ? (
@@ -825,7 +832,7 @@ const OrderHistory = (props) => {
                     paddingLeft: 20,
                   }}
                 >
-                  <View style={{ height: 25, width: 25 }}>
+                  <View style={{ height: 35, width: 35 }}>
                     <Image
                       style={{
                         height: "100%",
@@ -963,7 +970,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#FFF",
-    borderTopWidth: 1,
+   
     borderTopColor: "#E0E0E0",
   },
   first_cnt: {

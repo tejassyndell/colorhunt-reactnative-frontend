@@ -13,11 +13,9 @@ import {
   ScrollView,
   RefreshControl
 } from "react-native";
-import { ActivityIndicator } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { SendMail } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
-import ResponsiveImage from "react-native-responsive-image";
 import * as Font from "expo-font";
 import Loader from "../../components/Loader/Loader"
 import Contactsvg from "../../jssvgs/Contactsvg";
@@ -30,26 +28,11 @@ export default function Contact(props) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [showValidationErrors, setShowValidationErrors] = useState(false);
-  const [buttonWidth, setButtonWidth] = useState(153);
-  const [buttonFontSize, setButtonFontSize] = useState(18);
+
   const { width, height } = Dimensions.get("window");
 
-  const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = () => {
-    setRefreshing(true);
 
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
-  };
 
 
   const headerHeight =
@@ -93,9 +76,16 @@ export default function Contact(props) {
     loadCustomFont();
   }, []);
 
+
+
   const handleSubmit = async () => {
     console.log("Hello", username, email, subject, message);
     if (!username || !email || !subject || !message) {
+      setShowValidationErrors(true);
+      return;
+    } 
+    const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (!emailRegex.test(email)) { // Use emailRegex to test the email
       setShowValidationErrors(true);
       return;
     } else {
@@ -104,12 +94,13 @@ export default function Contact(props) {
         { text: "OK", onPress: () => console.log("Alert dismissed") },
       ]);
       mail();
-      setusername("");
+      setUsername("");
       setEmail("");
       setSubject("");
       setMessage("");
     }
   };
+  
 
   const mail = async () => {
     console.log(username, email, subject, message);
@@ -154,6 +145,8 @@ export default function Contact(props) {
               fontFamily: isFontLoaded ? "Glory" : undefined,
               fontWeight: "700",
               width: "100%",
+              marginBottom:20, 
+
             }}
           >
             Contact us
@@ -207,9 +200,7 @@ export default function Contact(props) {
         contentContainerStyle={{ flexGrow: 0.7 }}
         keyboardShouldPersistTaps="handled"
         showsHorizontalScrollIndicator={true}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+       
       >
         <View
           style={{
@@ -267,7 +258,7 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}
@@ -301,12 +292,24 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}
               >
                 This field is required
+              </Text>
+            )}
+            {showValidationErrors && email && (
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: 12,
+                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  marginLeft: 10,
+                }}
+              >
+                Please use a valid email address
               </Text>
             )}
           </View>
@@ -335,7 +338,7 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}
@@ -374,7 +377,7 @@ export default function Contact(props) {
               <Text
                 style={{
                   color: "red",
-                  fontSize: 10,
+                  fontSize: 12,
                   fontFamily: isFontLoaded ? "Glory" : undefined,
                   marginLeft: 10,
                 }}

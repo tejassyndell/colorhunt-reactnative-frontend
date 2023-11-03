@@ -138,6 +138,21 @@ const Login = (props) => {
       clearAndReset();
     }, [])
   );
+  const animateKeyboardShow = () => {
+    const customAnimationConfig = {
+      duration: 1000, // Set the duration in milliseconds
+      create: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+    };
+
+    LayoutAnimation.configureNext(customAnimationConfig);
+  };
+
   const handleNextOrVerify = async () => {
     if (showLogin) {
       // Check if phone number is valid (for simplicity, checking if it's 10 digits)
@@ -193,11 +208,21 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         navigation.navigate("Slider");
-      } else {
+      } else  if (otp.join('').length < 1) {
+        // Navigate to the desired screen when "Back" is clicked
+        setPhoneNumber("")
+        setShowLogin(true);
+        
+
+      }else {
         alert("Invalid OTP. Please try again.");
       }
+     
+      
+      
     }
   };
+  
   const otpInput = [useRef(), useRef(), useRef(), useRef()];
   // Function to handle OTP digit input
   const handleOTPDigitChange = (index, text) => {
@@ -213,7 +238,7 @@ const Login = (props) => {
     }
   };
 
-  const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : "Verify";
+  const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") :( otp.join('').length === 0? "Back": "Verify");
 
   const gifImageSource = require("../../../assets/Loader/Screen.gif");
   return (
@@ -237,6 +262,7 @@ const Login = (props) => {
         <KeyboardAvoidingView
           style={{ flex: 1, justifyContent: "center" }} // You might need to adjust the style as per your layout
           behavior={Platform.OS === "ios" ? "padding" : null}
+          onKeyboardWillShow={animateKeyboardShow}
         >
           <View style={styles.container1}>
             <View style={styles.imagebox}>

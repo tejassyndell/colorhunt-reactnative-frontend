@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   Platform,
+  RefreshControl,
   ActivityIndicator,
 } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -29,6 +30,13 @@ import * as Permissions from "expo-permissions";
 const OrderDetails = (props) => {
   const { navigation } = props;
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {
+    setRefreshing(true)
+    orderdetils()
+    
+   
+  };
   const route = useRoute();
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -92,6 +100,9 @@ const OrderDetails = (props) => {
             flexDirection: "row",
             width: "100%",
             marginLeft: 14,
+            height:35,
+            marginBottom:20
+            
           }}
         >
           <Text
@@ -309,6 +320,7 @@ const OrderDetails = (props) => {
           settotalqut(res.data);
           setsodetials(res.data);
           setIsLoading(false);
+          setRefreshing(false);
           // console.log(res.data);
         }
       });
@@ -332,6 +344,9 @@ const OrderDetails = (props) => {
           settotalqut(res.data);
           setsodetials(res.data);
           setIsLoading(false);
+          setRefreshing(false);
+
+          // console.log(res.data);
         }
       });
     }
@@ -891,6 +906,14 @@ const OrderDetails = (props) => {
             </View>
           ) : (
             <>
+            <ScrollView
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 0.7 }}
+            keyboardShouldPersistTaps="handled"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
               <View
                 style={{
                   flexDirection: "row",
@@ -1225,7 +1248,7 @@ const OrderDetails = (props) => {
                           > */}
                           <Table
                             borderStyle={{
-                              borderWidth: 2,
+                              borderWidth: 1.5,
                               borderColor: "#000000",
                             }}
                           >
@@ -1257,7 +1280,6 @@ const OrderDetails = (props) => {
                                 height: 40,
                                 borderColor: "#000000",
                                 borderWidth: 1,
-                                borderTopWidth: 2,
                               }}
                             >
                               <Text
@@ -1295,7 +1317,6 @@ const OrderDetails = (props) => {
                                     height: 40,
                                     borderColor: "#000000",
                                     borderWidth: 1,
-                                    borderTopWidth: 2,
                                   }}
                                 >
                                   <Text
@@ -1575,6 +1596,7 @@ const OrderDetails = (props) => {
                 </View>
               </View>
 
+              </ScrollView>
               <View>
                 <TouchableOpacity
                   onPress={generatePDF}

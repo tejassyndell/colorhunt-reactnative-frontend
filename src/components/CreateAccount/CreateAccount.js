@@ -9,6 +9,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import { UserData } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -243,19 +244,24 @@ const CreateAccount = (props) => {
           pinCode,
           contactPerson,
           token,
-        }).then((res) => {
-          if (res.status == 200) {
-            console.log("API response:", res.data);
-            setShowSuccess(true); // Show success message
-            // Clear the form input fields
-            clearFormFields();
-          } else {
-            console.log("error in userdata api");
-          }
-        })
+        });
+        console.log("API response:", response.data);
+       
+        
+        console.log(response.data)
+        if (response && response.data && response.data.error) {
+          // Set the phone number error message
+          
+         Alert.alert("Number is already Exits");
+        }else{
+          setShowSuccess(true); // Show success message
+        }
 
+       
+        clearFormFields();
       } catch (error) {
         console.error("Error making API request:", error);
+       
       }
     }
   };
@@ -303,7 +309,7 @@ const CreateAccount = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <ScrollView>
+          <ScrollView style={{ paddingHorizontal: 10,}}>
             <TextInput
               style={[styles.input, nameError && styles.inputError]}
               placeholder="Name"

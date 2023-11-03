@@ -56,16 +56,7 @@ export default function CategorisWiseArticle(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
-
-    // Perform your data fetching or refreshing logic here
-    // For example, you can call your API to fetch new data
-    // Make sure to set refreshing to false when done.
-
-    setTimeout(() => {
-      // After fetching new data, update your data state
-
-      setRefreshing(false);
-    }, 1000); // Simulating a delay, replace with your API call
+    getproductnamess()
   };
 
   const fetchMoreData = () => {
@@ -276,6 +267,7 @@ export default function CategorisWiseArticle(props) {
                 resizeMode: "contain",
                 width: width >= 720 ? 55 : 35,
                 height: width >= 720 ? 55 : 35,
+                 marginBottom:20, 
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />
@@ -507,7 +499,8 @@ export default function CategorisWiseArticle(props) {
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
         >
-          <View
+          {isLoggedIn ? (
+            <View
             style={{
               flexDirection: "row",
               backgroundColor: "#FFF",
@@ -557,6 +550,25 @@ export default function CategorisWiseArticle(props) {
               </Svg>
             </TouchableOpacity>
           </View>
+          ):(
+            <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#FFF",
+              alignItems: "center",
+              width: "112%",
+              paddingStart: 3,
+              paddingTop: 10,
+            }}
+          >
+            <SearchBar
+              searchPhrase={searchText}
+              setSearchPhrase={setSearchText}
+            />
+          
+          </View>
+          )}
+          
           <View>
             <Text
               style={{
@@ -654,7 +666,7 @@ export default function CategorisWiseArticle(props) {
                   width: "92%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: "3%",
+                  bottom: "2%",
                   left: 1,
                   right: 0, // To make it span the full width
                   marginLeft: "4%", // Margin on the left side

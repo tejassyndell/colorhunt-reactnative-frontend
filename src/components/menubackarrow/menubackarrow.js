@@ -12,7 +12,7 @@ export default function MenuBackArrow(props) {
         onPress={props.onPress}
       >
       
-        <Svg style={{ marginLeft: 10}} width={width >= 720 ? 50 : 35} height={width >= 720 ? 50 : 35} viewBox="0 0 35 35" {...props}>
+        <Svg style={{ marginLeft: 10, marginBottom:20, }} width={width >= 720 ? 50 : 35} height={width >= 720 ? 50 : 35} viewBox="0 0 35 35" {...props}>
           <G id="menu bar">
             <G id="arrow">
               <Circle id="Ellipse_4" cx={17.5} cy={17.5} r={17.5} fill="black" />
