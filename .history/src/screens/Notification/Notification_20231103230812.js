@@ -126,9 +126,7 @@ export default function Notification(props) {
                     justifyContent: "center",
 
                     marginRight: 8,
-                    borderWidth: 0.5,
-                    borderColor: "gray",
-                    borderRadius: 1,
+                    borderWidth: 1,
                   }}
                 >
                   <Image

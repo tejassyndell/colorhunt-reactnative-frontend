@@ -11,7 +11,7 @@ import {
   Platform,
   Dimensions,
   ScrollView,
-  RefreshControl,
+  RefreshControl
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -41,16 +41,19 @@ export default function Notification(props) {
     setRefreshing(true);
 
     setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false); // Set isLoading to false after 2 seconds
+      setIsLoading(false); 
+      setRefreshing(false);// Set isLoading to false after 2 seconds
     }, 2000);
-
+    
     // Add any logic here that you want to execute when the user triggers a refresh.
     // For example, you can reload data or perform any other action.
 
     // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    // 3 seconds
+   // 3 seconds
+
+   
   };
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -67,7 +70,7 @@ export default function Notification(props) {
             display: "flex",
             flexDirection: "row",
             width: "100%",
-            marginBottom: 20,
+            marginBottom:20, 
           }}
         >
           <Text
@@ -92,7 +95,7 @@ export default function Notification(props) {
 
   return (
     <>
-      {isLoading ? (
+     {isLoading ? (
         <View
           style={{
             flex: 1,
@@ -102,74 +105,73 @@ export default function Notification(props) {
           }}
         >
           <Loader />
-        </View>
-      ) : (
-        <View style={styles.container}>
-          {/* {/ Render notification data /} */}
+        </View>):(
 
-          <StatusBar style="auto" />
-          <ScrollView
-            style={styles.scrollView}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-            <View style={styles.notificasionContenor}>
-              <TouchableOpacity style={styles.contentBox}>
-                <View
-                  style={{
-                    width: 60,
+    <View style={styles.container}>
 
-                    height: 60,
-                    marginVertical: 8,
-                    alignItems: "center",
-                    justifyContent: "center",
+      {/* {/ Render notification data /} */}
 
-                    marginRight: 8,
-                    borderWidth: 0.5,
-                    borderColor: "gray",
-                    borderRadius: 1,
-                  }}
-                >
-                  <Image
-                    style={styles.imagesection}
-                    source={require("../../../assets/notification/resize1.jpg")}
-                  />
-                </View>
+      <StatusBar style="auto" />
+      <ScrollView style={styles.scrollView}
+       refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      >
+        <View style={styles.notificasionContenor}>
+          <TouchableOpacity style={styles.contentBox}>
+            <View
+              style={{
+                width: 60,
 
-                <View style={styles.contentsection}>
-                  <View
-                    style={{
-                      width: "65%",
-                      height: "100%",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Text style={styles.detailscon}>
-                      Lorem ipsum dolor sit amet consectetur. Lacus pulvinar
-                      interdum
-                    </Text>
-                  </View>
+                height: 60,
+                marginVertical: 8,
+                alignItems: "center",
+                justifyContent: "center",
+                shadowColor: "gray",
+                marginRight: 8,
+                shadowOpacity: 3, // Increased shadow opacity
+                shadowRadius: 6, // Increased shadow radius
+                borderRadius: 2,
+                shadowColor:'black',
+                elevation:2, // Increased elevation
+                shadowOffset: {
+                  width: 1,
+                  height: 1,
+                },
+              }}
+            >
+              <Image
+                style={styles.imagesection}
+                source={require("../../../assets/notification/resize1.jpg")}
+              />
 
-                  <View
-                    style={{
-                      width: 120,
-                      height: "100%",
-                      justifyContent: "center",
-                      textAlign: "right",
-                    }}
-                  >
-                    <Text style={styles.timedetails}>1m ago.</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
             </View>
-          </ScrollView>
-          <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-            <ButtomNavigation navigation={navigation} page="notification" />
-          </View>
+
+
+            <View style={styles.contentsection}>
+              <View style={{width:'65%',height:'100%',justifyContent:'center',}}>
+              <Text style={styles.detailscon}>
+                Lorem ipsum dolor sit amet consectetur. Lacus pulvinar interdum
+      
+              </Text>
+
+              </View>
+              
+              <View style={{width:120,height:'100%',justifyContent:'center',textAlign:'right',backgroundColor:'red'}}>
+              <Text style={styles.timedetails}>1m ago.</Text>
+
+              </View>
+            </View>
+          </TouchableOpacity>
+
+         
         </View>
-      )}
+      </ScrollView>
+      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+        <ButtomNavigation navigation={navigation} page="notification" />
+      </View>
+    </View>
+        )}
     </>
   );
 }
@@ -215,29 +217,33 @@ const styles = StyleSheet.create({
   contentBox: {
     height: "auto",
     width: "95%",
-    backfaceVisibility: "#FFF",
+    backfaceVisibility:'#FFF',
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
     marginTop: 5,
     // shadowOpacity: 0.5, // Increased shadow opacity
     // borderColor: "rgba(0,0,0,0.9)",
-    elevation: 0.4, // Increased elevation
+    elevation:0.4, // Increased elevation
+   
   },
   imagesection: {
-    width: "100%",
-    height: "100%",
+    width:'100%',
+    height:'100%'
   },
   detailscon: {
+    
     fontSize: 14,
     fontWeight: "600",
-    // Corrected to string
+     // Corrected to string
   },
   timedetails: {
+ 
     fontSize: 14,
     fontWeight: "600", // Corrected to string
-    alignItems: "flex-end",
-    width: "100%",
+    alignItems:'flex-end',
+    width:'100%',
+   
 
     paddingRight: 15,
   },

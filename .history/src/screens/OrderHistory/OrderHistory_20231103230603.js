@@ -1066,7 +1066,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // paddingTop: "1.5%",
     // paddingBottom: "2.5%"
-    justifyContent: "center",
   },
   complete_text: {
     color: "#FFF",

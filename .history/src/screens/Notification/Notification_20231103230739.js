@@ -124,11 +124,17 @@ export default function Notification(props) {
                     marginVertical: 8,
                     alignItems: "center",
                     justifyContent: "center",
-
+                    shadowColor: "gray",
                     marginRight: 8,
-                    borderWidth: 0.5,
-                    borderColor: "gray",
-                    borderRadius: 1,
+                    shadowOpacity: 3, // Increased shadow opacity
+                    shadowRadius: 6, // Increased shadow radius
+                    borderRadius: 2,
+                    shadowColor: "black",
+                    elevation: 2, // Increased elevation
+                    shadowOffset: {
+                      width: 1,
+                      height: 1,
+                    },
                   }}
                 >
                   <Image

@@ -708,7 +708,7 @@ const AddToCart = (props) => {
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "flex-end",
-                                        gap: 10,
+                                        gap: windowwidthe * 0.01,
                                         paddingRight: "5%",
                                         marginVertical: "5%",
                                         borderRadius: 10,

@@ -708,7 +708,7 @@ const AddToCart = (props) => {
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "flex-end",
-                                        gap: 10,
+                                        gap: windowwidthe * 0.01,
                                         paddingRight: "5%",
                                         marginVertical: "5%",
                                         borderRadius: 10,
@@ -734,8 +734,8 @@ const AddToCart = (props) => {
                                           handleDeleteOrder(item.article_id)
                                         }
                                         style={{
-                                          width: width >= 720 ? 30 : 20,
-                                          height: width >= 720 ? 30 : 20,
+                                          width: width >= 720 ? 30 : 15,
+                                          height: width >= 720 ? 30 : 15,
                                         }}
                                       >
                                         {deletsvg}

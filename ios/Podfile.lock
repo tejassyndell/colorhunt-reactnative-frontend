@@ -1323,6 +1323,8 @@ PODS:
     - React-perflogger (= 0.72.5)
   - RNCAsyncStorage (1.18.2):
     - React-Core
+  - RNDateTimePicker (7.6.1):
+    - React-Core
   - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
@@ -1455,6 +1457,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
@@ -1626,6 +1629,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
   RNFBApp:
@@ -1735,6 +1740,7 @@ SPEC CHECKSUMS:
   React-utils: 40cdd9acee23230df5b78bf78a64ce8a2084c2d0
   ReactCommon: 4ec7cc40d091eed0a510755619940b6a03cb507b
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
+  RNDateTimePicker: 8fb39263b721223e095248acaf6f406d5b7f6713
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: 5a16a735bad57ca29ee44757bde7e654c5bc8f60
   RNFBFirestore: 7fdfb27c8292e75886817178524ef2c256985f49

@@ -1025,16 +1025,15 @@ const styles = StyleSheet.create({
   },
   first_cnt: {
     width: "100%",
-    paddingHorizontal: 20,
-    height: height >= 844 ? "13%" : "17%",
+    height: height >= 844 ? "15%" : "17%",
     backgroundColor: "#FFF",
-    justifyContent: "center",
+    padding: "4%",
   },
   pendin_complete_cnt: {
     width: "100%",
     backgroundColor: "#212121",
     paddingHorizontal: width >= 720 ? 18 : 10,
-    height: width >= 720 ? 70 : 60,
+    height: width >= 720 ? 70 : 50,
     borderRadius: 5,
     justifyContent: "center",
   },
@@ -1045,6 +1044,8 @@ const styles = StyleSheet.create({
     // paddingVertical: "2.5%",
     // paddingHorizontal: "3.5%",
     // width: "100%",
+    gap: 6,
+    // justifyContent: "center",
   },
   pending_btn: {
     width: "50%",
@@ -1052,11 +1053,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // paddingTop: "1.5%",
     // paddingBottom: "2.5%"
-    justifyContent: "center",
-    height: 40,
   },
   pending_text: {
-    fontSize: width >= 720 ? 27 : 20,
+    fontSize: width < 720 ? width * 0.05 : width * 0.037,
     fontWeight: "700",
     textAlign: "center",
   },
@@ -1066,7 +1065,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // paddingTop: "1.5%",
     // paddingBottom: "2.5%"
-    justifyContent: "center",
   },
   complete_text: {
     color: "#FFF",
