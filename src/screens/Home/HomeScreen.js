@@ -54,7 +54,6 @@ export default function HomeScreen(props) {
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    setIsLoading(true);
     getCategoriesname()
   };
 
