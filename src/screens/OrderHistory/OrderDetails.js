@@ -201,6 +201,7 @@ const OrderDetails = (props) => {
   const [tableData, setTableData] = useState({});
   const [totalval, setotalval] = useState(0);
   const [totalqty, settotalqty] = useState(0);
+  const [adjustamountstatus, setAdjustamountstatus] = useState(false);
   const settotle = (sodetails) => {
     let totalRate = 0;
 
@@ -222,6 +223,12 @@ const OrderDetails = (props) => {
       totalRate += itemTotalRate;
     });
     setotalval(totalRate);
+    let adjamount = (Math.ceil(getgstamount(totalRate)) - getgstamount(totalRate)).toFixed(2);
+    if (adjamount !== 0.00) {
+      setAdjustamountstatus(true);
+    } else {
+      setAdjustamountstatus(false);
+    }
   };
   const settotalqut = (sodetails) => {
     let totalOutwardNoPacks = 0;
@@ -360,12 +367,16 @@ const OrderDetails = (props) => {
           <td colspan="1">GST 5%</td>
           <td colspan="1">${`₹${(totalval * 0.05).toFixed(2)}`}</td>
         </tr>
-        <tr>
-        <td colspan="5" style="text-align: end; font-weight: bold"></td>
-        <td colspan="1"></td>
-        <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
-      </tr>
+        ${adjustamountstatus &&
+          `
+          <tr>
+          <td colspan="5" style="text-align: end; font-weight: bold"></td>
+          <td colspan="1"></td>
+          <td colspan="1"> Adjust Amount</td>
+          <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
+        </tr>`
+          }
+     
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
@@ -386,12 +397,14 @@ const OrderDetails = (props) => {
           <td colspan="1">CGST 2.5%</td>
           <td colspan="1">${`₹${(totalval * 0.025).toFixed(2)}`}</td>
         </tr>
-        <tr>
-        <td colspan="5" style="text-align: end; font-weight: bold"></td>
-        <td colspan="1"></td>
-        <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
-      </tr>
+        ${adjustamountstatus &&
+          `<tr>
+          <td colspan="5" style="text-align: end; font-weight: bold"></td>
+          <td colspan="1"></td>
+          <td colspan="1"> Adjust Amount</td>
+          <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
+        </tr>`
+          }
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
@@ -451,7 +464,7 @@ const OrderDetails = (props) => {
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="9">
-                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State},${partydata[0].Country}-${partydata[0].PinCode}.` : ""
+                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].Country}-${partydata[0].PinCode}.` : ""
     }
             </td>
             <td style="text-transform: uppercase" colspan="1">
@@ -1315,32 +1328,33 @@ const OrderDetails = (props) => {
                                     ₹{(totalval * 0.05).toFixed(2)}
                                   </Text>
                                 </View>
-                                <View style={{
-                                  flex: 1,
-                                  flexDirection: "row",
-                                  height: 40,
-                                  borderColor: "#000000",
-                                  borderWidth: 1,
-                                  borderTopWidth: 1,
-                                }}>
-                                  <Text
-                                    style={styles.fastRowContent}
-                                  >
-                                  </Text>
-                                  <Text
-                                    style={styles.secondCollam}
-                                  ></Text>
-                                  <Text
-                                    style={styles.thurdCollam}
-                                  >
-                                    Adjust Amount
-                                  </Text>
-                                  <Text
-                                    style={styles.collamGst5Per}
-                                  >
-                                    +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
-                                  </Text>
-                                </View>
+                                {adjustamountstatus &&
+                                  <View style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    height: 40,
+                                    borderColor: "#000000",
+                                    borderWidth: 1,
+                                    borderTopWidth: 1,
+                                  }}>
+                                    <Text
+                                      style={styles.fastRowContent}
+                                    >
+                                    </Text>
+                                    <Text
+                                      style={styles.secondCollam}
+                                    ></Text>
+                                    <Text
+                                      style={styles.thurdCollam}
+                                    >
+                                      Adjust Amount
+                                    </Text>
+                                    <Text
+                                      style={styles.collamGst5Per}
+                                    >
+                                      +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
+                                    </Text>
+                                  </View>}
                                 <View
                                   style={{
                                     flex: 1,
@@ -1483,32 +1497,35 @@ const OrderDetails = (props) => {
                                     ₹{(totalval * 0.025).toFixed(2)}
                                   </Text>
                                 </View>
-                                <View style={{
-                                  flex: 1,
-                                  flexDirection: "row",
-                                  height: 40,
-                                  borderColor: "#000000",
-                                  borderWidth: 1,
-                                  borderTopWidth: 1,
-                                }}>
-                                  <Text
-                                    style={styles.fastRowContent}
-                                  >
-                                  </Text>
-                                  <Text
-                                    style={styles.secondCollam}
-                                  ></Text>
-                                  <Text
-                                    style={styles.thurdCollam}
-                                  >
-                                    Adjust Amount
-                                  </Text>
-                                  <Text
-                                    style={styles.collamGst5Per}
-                                  >
-                                    +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
-                                  </Text>
-                                </View>
+                                {adjustamountstatus &&
+                                  <View style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    height: 40,
+                                    borderColor: "#000000",
+                                    borderWidth: 1,
+                                    borderTopWidth: 1,
+                                  }}>
+                                    <Text
+                                      style={styles.fastRowContent}
+                                    >
+                                    </Text>
+                                    <Text
+                                      style={styles.secondCollam}
+                                    ></Text>
+                                    <Text
+                                      style={styles.thurdCollam}
+                                    >
+                                      Adjust Amount
+                                    </Text>
+                                    <Text
+                                      style={styles.collamGst5Per}
+                                    >
+                                      +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
+                                    </Text>
+                                  </View>
+                                }
+
                                 <ScrollView>
                                   <View
                                     style={{

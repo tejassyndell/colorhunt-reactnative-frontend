@@ -72,9 +72,13 @@ const OrderHistory = (props) => {
   const [showToDate, setShowToDate] = useState(false);
 
   const onRefresh = () => {
+    setSoNumberData([])
+    setOldDateOfso([])
+    setcompletedsodata([])
+    setOldDataOfCompleted([])
     setRefreshing(true);
-    getSonumber(true);
-    getCompleteData(true);
+    getSonumber();
+    getCompleteData();
   };
 
   const headerHeight =
@@ -90,86 +94,72 @@ const OrderHistory = (props) => {
   };
 
   const filterOsDataByDate = async () => {
-    const nextPage = filtercurrentPage + 1;
     let userdata = await AsyncStorage.getItem("UserData");
     userdata = await JSON.parse(userdata);
-    if (selectedDate !== "DD/MM/YYYY") {
-      const dateParts = selectedDate.split("/");
+    let fdate = fromDate.toLocaleDateString('en-GB');
+    const fdateParts = fdate.split("/");
+    const formattedDate = new Date(
+      `${fdateParts[2]}-${fdateParts[1]}-${fdateParts[0]}`
+    )
+      .toISOString()
+      .split("T")[0];
 
-      // Create a new Date object with the parts and format it as "YYYY-MM-DD"
-      const formattedDate = new Date(
-        `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
-      )
-        .toISOString()
-        .split("T")[0];
-      // console.log({
-      //   PartyId: userdata[0].Id,
-      //   page: nextPage,
-      //   pageSize: 10,
-      //   filterdate: formattedDate,
-      // });
-      await FilterSoNumber({
-        PartyId: userdata[0].Id,
-        page: nextPage,
-        pageSize: 10,
-        filterdate: formattedDate,
-      }).then((res) => {
-        if (res.status == 200) {
-          if (res.data.data.length <= 0) {
-            setSodatanotfount(true);
-          } else {
-            if (res.data.hasMore) {
-              setFiltercurrentPage(nextPage);
-              setSoNumberData((prevData) => [...prevData, ...res.data.data]);
-              handlefilterscroll();
-            } else {
-              // console.log(res.data);
-              setFiltercurrentPage(0);
-              setSoNumberData(res.data.data);
-            }
-          }
+    let tdate = toDate.toLocaleDateString('en-GB');
+    const tdateParts = tdate.split("/");
+    const formattedtoDate = new Date(
+      `${tdateParts[2]}-${tdateParts[1]}-${tdateParts[0]}`
+    )
+      .toISOString()
+      .split("T")[0];
+    await FilterSoNumber({
+      PartyId: userdata[0].Id,
+      fromdate: formattedDate,
+      todate: formattedtoDate
+    }).then((res) => {
+      if (res.status == 200) {
+        if (res.data.data.length <= 0) {
+          setSodatanotfount(true);
+        } else {
+          setSoNumberData(res.data.data);
         }
-      });
-    }
+      }
+    });
+
   };
   const filterdataOfcompleted = async () => {
-    const nextPage = filteroutwardcurrentPage + 1;
     let userdata = await AsyncStorage.getItem("UserData");
     userdata = await JSON.parse(userdata);
-    if (selectedDateIncompleted !== "DD/MM/YYYY") {
-      const dateParts = selectedDateIncompleted.split("/");
 
-      // Create a new Date object with the parts and format it as "YYYY-MM-DD"
-      const formattedDate = new Date(
-        `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
-      )
-        .toISOString()
-        .split("T")[0];
-      // console.log(formattedDate);
+    let fdate = outwardfromdate.toLocaleDateString('en-GB');
+    const fdateParts = fdate.split("/");
+    const formattedDate = new Date(
+      `${fdateParts[2]}-${fdateParts[1]}-${fdateParts[0]}`
+    )
+      .toISOString()
+      .split("T")[0];
 
-      await FilteroutwardNumber({
-        PartyId: userdata[0].Id,
-        page: nextPage,
-        pageSize: 10,
-        filterdate: formattedDate,
-      }).then((res) => {
-        if (res.status == 200) {
-          if (res.data.data.length <= 0) {
-            setOutworddatanotfount(true);
-          } else {
-            if (res.data.hasMore) {
-              setFilteroutwardcurrentPage(nextPage);
-              setcompletedsodata((prevData) => [...prevData, ...res.data.data]);
-              handlefilterscroll();
-            } else {
-              // console.log("second time");
-              setFilteroutwardcurrentPage(0);
-              setcompletedsodata(res.data.data);
-            }
-          }
+    let tdate = outwardtodate.toLocaleDateString('en-GB');
+    const tdateParts = tdate.split("/");
+    const formattedtoDate = new Date(
+      `${tdateParts[2]}-${tdateParts[1]}-${tdateParts[0]}`
+    )
+      .toISOString()
+      .split("T")[0];
+
+    await FilteroutwardNumber({
+      PartyId: userdata[0].Id,
+      fromdate: formattedDate,
+      todate: formattedtoDate
+    }).then((res) => {
+      if (res.status == 200) {
+        if (res.data.data.length <= 0) {
+          setOutworddatanotfount(true);
+        } else {
+          setcompletedsodata(res.data.data);
         }
-      });
-    }
+      }
+    });
+
   };
 
   const handleDateSelect = (day) => {
@@ -229,56 +219,15 @@ const OrderHistory = (props) => {
       },
     });
   }, []);
-  const handleScroll = ({ nativeEvent }) => {
-    const { contentOffset, contentSize, layoutMeasurement } = nativeEvent;
-    const isEndOfList =
-      contentOffset.y + layoutMeasurement.height + 1 >= contentSize.height;
 
-    if (isEndOfList) {
-      // User has reached the end of the list, load the next page
 
-      if (orderstatus) {
-        if (filterosstatus == false && handlerstop == false) {
-          setIspendingsoloading(true);
-          getSonumber();
-        }
-      } else {
-        if (filteroutwardstatus == false && handleroutwardstop == false) {
-          setIscompletesoloading(true);
-          getCompleteData();
-        }
-      }
-    }
-  };
-  const handlefilterscroll = () => {
-    if (orderstatus) {
-      if (filterosstatus == true) {
-        filterOsDataByDate();
-      }
-    } else {
-      if (filteroutwardstatus == true) {
-        filterdataOfcompleted();
-      }
-    }
-  };
-  const getSonumber = async (status = false) => {
-    let nextPage;
-    if (status == false) {
-      nextPage = currentPage + 1;
-    }
-    else {
-      nextPage = 1;
-    }
+  const getSonumber = async () => {
+
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
-    let pageSize;
-    if (nextPage == 1) {
-      pageSize = 100;
-    } else {
-      pageSize = 20;
-    }
 
-    await getsonumber({ PartyId: data[0].Id, page: nextPage, pageSize: pageSize }).then((res) => {
+
+    await getsonumber({ PartyId: data[0].Id }).then((res) => {
       if (res && res.status == 200) {
         // console.log(res.data.hasMore, nextPage, res.data.data.length);
         if (res.data.data.length <= 0) {
@@ -286,33 +235,12 @@ const OrderHistory = (props) => {
           setSodatanotfount(true);
         }
         else {
-          if (res.data.hasMore == false) {
-            sethandlerstop(true)
-            setIspendingsoloading(false);
-          }
-          setSoNumberData(prevData => [...prevData, ...res.data.data]);
-          setOldDateOfso(prevData => [...prevData, ...res.data.data]);
-          setCurrentPage(nextPage);
+          setSoNumberData(res.data.data);
+          setOldDateOfso(res.data.data);
         }
+        setIsLoading(false);
+        setRefreshing(false);
       }
-      else {
-        // console.log(res, "_+_+_+");
-        Alert.alert(
-          "Server is not responding",
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                // Call namdemo function when the user clicks 'OK'
-                getSonumber();
-              },
-            },
-          ]
-        );
-      }
-
-      setIsLoading(false);
-      setRefreshing(false);
     });
   };
   useEffect(() => {
@@ -356,27 +284,12 @@ const OrderHistory = (props) => {
     return Math.floor(totalAmount);
   };
 
-  const getCompleteData = async (status = false) => {
-    let nextPage;
-    if (status == false) {
-      nextPage = outwardcurrentPage + 1;
-    }
-    else {
-      nextPage = 1;
-    }
-    console.log(":}||}|}|}|}\]");
+  const getCompleteData = async () => {
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
-    let pageSize;
-    if (nextPage == 1) {
-      pageSize = 100;
-    } else {
-      pageSize = 20;
-    }
+
     await getCompletedSoDetails({
-      PartyId: data[0].Id,
-      page: nextPage,
-      pageSize: pageSize,
+      PartyId: data[0].Id
     }).then((res) => {
       // console.log(res.data.data.length, res.data.hasMore, res.data.hasMore, nextPage, "{}{}{{}{}{}{}");
       if (res && res.status == 200) {
@@ -385,39 +298,11 @@ const OrderHistory = (props) => {
           setIsLoadingsodetails(false);
         }
         else {
-          if (nextPage == 1) {
-            setcompletedsodata(res.data.data);
-            setOldDataOfCompleted(res.data.data);
-          } else {
-            if (res.data.hasMore == false) {
-              sethandleroutwardstop(true);
-              setIscompletesoloading(false);
-            }
-            setcompletedsodata((prevData) => [...prevData, ...res.data.data]);
-            setOldDataOfCompleted((prevData) => [...prevData, ...res.data.data]);
-          }
-
-          if (res.data.hasMore == false) {
-            setOutwardcurrentPage(0);
-          } else {
-            setOutwardcurrentPage(nextPage);
-          }
+          setcompletedsodata(res.data.data);
+          setOldDataOfCompleted(res.data.data);
           setIsLoadingsodetails(false);
+          setRefreshing(false);
         }
-        setRefreshing(false);
-      } else {
-        Alert.alert(
-          "Server is not responding",
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                // Call namdemo function when the user clicks 'OK'
-                getCompleteData();
-              },
-            },
-          ]
-        );
       }
     });
   };
@@ -431,23 +316,33 @@ const OrderHistory = (props) => {
 
   const handleNext = () => {
     if (orderstatus) {
-      console.log('Selected From Date: ', fromDate);
-      console.log('Selected To Date: ', toDate);
+      setFilterosstatus(true);
+      filterOsDataByDate();
     }
     else {
-      console.log('Selected From Date: ', outwardfromdate);
-      console.log('Selected To Date: ', outwardtodate);
+      setFilteroutwardstatus(true);
+      filterdataOfcompleted();
     }
     closeModal();
   };
-  const cleardate = ()=>{
-    if(orderstatus){
+  const cleardate = () => {
+    if (orderstatus) {
       setFromDate(new Date())
-      setToDate(new Date())}else{
-        setOutwardfromdate(new Date())
-        setOutwardtodate(new Date())
-      }
-
+      setToDate(new Date())
+      setSodatanotfount(false);
+      setFilterosstatus(false);
+      setSoNumberData(oldDataOfso);
+    }
+    else {
+      setOutwardfromdate(new Date())
+      setOutwardtodate(new Date())
+      setOutworddatanotfount(false);
+      setFilteroutwardstatus(false);
+      setcompletedsodata(olddataofcompleted);
+    }
+    setTimeout(() => {
+      closeModal();
+    }, 1000)
   }
   return (
     <>
@@ -530,9 +425,6 @@ const OrderHistory = (props) => {
                       onRefresh={() => { onRefresh() }}
                     />
                   }
-                  onScroll={(event) => {
-                    handleScroll(event);
-                  }}
                 >
                   {sonumberdata
                     ? sonumberdata.map((item, index) =>
@@ -696,7 +588,7 @@ const OrderHistory = (props) => {
             </View>
           ) : (
             <View style={orderstyles.order_cnt}>
-              <ScrollView nestedScrollEnabled={true} onScroll={handleScroll}>
+              <ScrollView nestedScrollEnabled={true} >
                 {completedsodata
                   ? completedsodata.map((item, index) =>
                     item.status === 1 ? (
@@ -1308,7 +1200,7 @@ const calenderstyle = StyleSheet.create({
   tobox: {
     width: "45%"
   },
-  nextbuttoncontainer: { width: "100%",justifyContent:"flex-end", alignContent:"flex-end",gap:20,flexDirection:"row"},
+  nextbuttoncontainer: { width: "100%", justifyContent: "flex-end", alignContent: "flex-end", gap: 20, flexDirection: "row" },
   nextpressable: {
     width: width >= 720 ? 200 : 100,
     backgroundColor: "black",
@@ -1316,7 +1208,7 @@ const calenderstyle = StyleSheet.create({
     height: 50,
     justifyContent: "center"
   },
-  clearpressable:{
+  clearpressable: {
     width: width >= 720 ? 200 : 100,
     backgroundColor: "black",
     borderRadius: 3.423,
