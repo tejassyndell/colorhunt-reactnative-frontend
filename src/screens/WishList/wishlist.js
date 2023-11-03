@@ -30,13 +30,8 @@ export default function WishList(props) {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
+    getWishlist()
 
-    // Add your refreshing logic here (e.g., fetch new data or update existing data).
-
-    // Simulate a delay to hide the loading indicator after a few seconds (adjust as needed).
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 3000); // 3 seconds
   };
 
   const headerHeight =
@@ -110,6 +105,7 @@ export default function WishList(props) {
 
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
+    console.log('kjsankjfdnsjnfdkjnsfd');
     const data = {
       party_id: await getpartyid(),
       status: "true",
@@ -119,6 +115,7 @@ export default function WishList(props) {
         console.log(res.data);
         setSelectprd(res.data);
         setIsLoading(false);
+        setRefreshing(false);
       } else {
         Alert.alert("Server is not responding", [
           {
@@ -155,6 +152,8 @@ export default function WishList(props) {
             alignContent: "center",
             paddingLeft: "10%",
             width: parseInt(width) >= 720 ? "95%" : "100%",
+            marginBottom:20, 
+
           }}
         >
           <Text

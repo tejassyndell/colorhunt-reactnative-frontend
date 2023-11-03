@@ -55,17 +55,7 @@ const Orderlist = (props) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-   // 3 seconds
-
-   
-      setIsLoading(false);
-      setRefreshing(false);
-    
+    GetTransportation()
   };
 
   useEffect(() => {
@@ -169,6 +159,7 @@ const Orderlist = (props) => {
     });
 
   const GetTransportation = async () => {
+    console.log('bsdasbs');
     await gettransportation()
       .then((response) => {
         setTransportation(response.data);
@@ -511,6 +502,7 @@ const Orderlist = (props) => {
                       bottom: 14,
                     }}
                     nestedScrollEnabled={true}
+                    
                   >
                     <View>
                       {Transportation.map((item,index) => (
@@ -566,7 +558,7 @@ const Orderlist = (props) => {
                   width: "100%",
                 }}
               >
-                <ScrollView nestedScrollEnabled={true}>
+                <ScrollView nestedScrollEnabled={true} >
                   {ParsedData &&
                     ParsedData.map((item, index) => (
                       <View key={index}>
@@ -617,7 +609,7 @@ const Orderlist = (props) => {
                           </TouchableOpacity>
                           <View
                             style={{
-                              width: "60%",
+                              width: "75%",
                               marginHorizontal: "3%",
                               marginBottom: "1%",
                               justifyContent: "center",
@@ -765,7 +757,7 @@ const Orderlist = (props) => {
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 50,
+                          height: 'auto',
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
@@ -844,7 +836,7 @@ const Orderlist = (props) => {
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 50,
+                          height: 'auto',
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
@@ -1122,7 +1114,7 @@ const Orderlist = (props) => {
                 <View style={{ paddingBottom: 2 }}>
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 22 : 12,
+                      fontSize: width >= 720 ? 22 : 14,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontWeight: "500",
                     }}
@@ -1133,7 +1125,7 @@ const Orderlist = (props) => {
                 <View style={{}}>
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 22 : 12,
+                      fontSize: width >= 720 ? 22 : 16,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontWeight: "700",
                     }}

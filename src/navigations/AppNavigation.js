@@ -26,6 +26,7 @@ import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import { useEffect } from "react";
 import OrderDetails from "../screens/OrderHistory/OrderDetails";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Aboutus from "../screens/AboutUs/Aboutus";
 
 // @ts-ignore
 
@@ -78,6 +79,7 @@ function MainNavigator() {
       <Stack.Screen name="ordershistroy" component={OrderHistory} />
       <Stack.Screen name="DrawerContainer" component={DrawerContainer} />
       <Stack.Screen name="orderdetails" component={OrderDetails} />
+      <Stack.Screen name="Aboutus" component={Aboutus} />
     </Stack.Navigator>
   );
 }
