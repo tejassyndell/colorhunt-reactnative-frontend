@@ -499,7 +499,8 @@ export default function CategorisWiseArticle(props) {
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
         >
-          <View
+          {isLoggedIn ? (
+            <View
             style={{
               flexDirection: "row",
               backgroundColor: "#FFF",
@@ -549,6 +550,25 @@ export default function CategorisWiseArticle(props) {
               </Svg>
             </TouchableOpacity>
           </View>
+          ):(
+            <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#FFF",
+              alignItems: "center",
+              width: "112%",
+              paddingStart: 3,
+              paddingTop: 10,
+            }}
+          >
+            <SearchBar
+              searchPhrase={searchText}
+              setSearchPhrase={setSearchText}
+            />
+          
+          </View>
+          )}
+          
           <View>
             <Text
               style={{

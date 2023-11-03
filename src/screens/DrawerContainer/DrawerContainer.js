@@ -398,7 +398,7 @@ export default function DrawerContainer(props) {
                   width: "100%",
                 }}
                 onPress={() => {
-                  navigation.navigate("AboutUs");
+                  navigation.navigate("Aboutus");
                   navigation.closeDrawer();
                 }}
               >
