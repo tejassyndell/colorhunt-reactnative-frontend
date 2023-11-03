@@ -894,7 +894,7 @@ export default function HomeScreen(props) {
                     fontWeight: "600",
                   }}
                   onPress={() => {
-                    viewAllArticles();
+                    // viewAllArticles();
                   }}
                 >
                   View All
