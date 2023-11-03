@@ -87,7 +87,7 @@ const Footersvg = (props) => {
       </G>
     </Svg>
   ) : (
-    <TouchableOpacity>
+    // <TouchableOpacity>
     <Svg
       width={width >= 720 ? 47 : 32}
       height={width >= 720 ? 40 : 25}
@@ -109,28 +109,28 @@ const Footersvg = (props) => {
           fill="white"
         />
       </G>
-      {/* {showRedDot && (
+      {showRedDot && (
         <Circle cx={20} cy={4} r={3} fill="red" /> // Adjust the coordinates and size as needed
-      )} */}
+      )}
     </Svg>
-      <View
-      style={{
-        position: 'absolute',
-        top: width >= 720 ? 8 : -5, // Adjust position based on icon size
-        right: width >= 720 ? 8 : -6, // Adjust position based on icon size
-        backgroundColor: '#FFF', // Background color for the circle
-        borderRadius: 10, // Adjust size based on the count value
-        width: 20, // Adjust size based on the count value
-        height: 20, // Adjust size based on the count value
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth:2,
-        borderColor:"gray"
-      }}
-    >
-      <Text style={{ color: '#000', fontSize: 12 }}>{count}</Text>
-    </View>
-    </TouchableOpacity> 
+    //   <View
+    //   style={{
+    //     position: 'absolute',
+    //     top: width >= 720 ? 8 : -5, // Adjust position based on icon size
+    //     right: width >= 720 ? 8 : -6, // Adjust position based on icon size
+    //     backgroundColor: '#FFF', // Background color for the circle
+    //     borderRadius: 10, // Adjust size based on the count value
+    //     width: 20, // Adjust size based on the count value
+    //     height: 20, // Adjust size based on the count value
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     borderWidth:2,
+    //     borderColor:"gray"
+    //   }}
+    // >
+    //   <Text style={{ color: '#000', fontSize: 12 }}>{count}</Text>
+    // </View>
+    // </TouchableOpacity> 
   );
 
   const history = status ? (
