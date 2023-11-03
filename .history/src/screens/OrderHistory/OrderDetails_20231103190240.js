@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  Platform,
   ActivityIndicator,
 } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -1539,7 +1540,7 @@ const OrderDetails = (props) => {
               </View>
 
               <View>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={generatePDF}
                   style={{ alignItems: "flex-end", marginRight: 10 }}
                 >
@@ -1560,7 +1561,7 @@ const OrderDetails = (props) => {
                       }}
                     ></Image>
                   </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </>
           )}

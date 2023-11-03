@@ -514,36 +514,36 @@ const OrderDetails = (props) => {
 </body>
     </html>
   `;
-  const generatePDF = async () => {
-    try {
-      if (Platform.OS === "android") {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.error("Storage permission not granted");
-          return;
-        }
-      }
+  // const generatePDF = async () => {
+  //   try {
+  //     if (Platform.OS === "android") {
+  //       const granted = await PermissionsAndroid.request(
+  //         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+  //       );
+  //       if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+  //         console.error("Storage permission not granted");
+  //         return;
+  //       }
+  //     }
 
-      // Define the options for PDF generation
-      const options = {
-        html: html,
-        fileName: "example",
-      };
+  //     // Define the options for PDF generation
+  //     const options = {
+  //       html: html,
+  //       fileName: "example",
+  //     };
 
-      // Generate the PDF using RNHTMLtoPDF
-      const pdfFile = await RNHTMLtoPDF.convert(options);
+  //     // Generate the PDF using RNHTMLtoPDF
+  //     const pdfFile = await RNHTMLtoPDF.convert(options);
 
-      // Share the generated PDF
-      Share.open({
-        url: `file://${pdfFile.filePath}`,
-        type: "application/pdf",
-      });
-    } catch (error) {
-      console.error("Error generating and sharing PDF:", error);
-    }
-  };
+  //     // Share the generated PDF
+  //     Share.open({
+  //       url: `file://${pdfFile.filePath}`,
+  //       type: "application/pdf",
+  //     });
+  //   } catch (error) {
+  //     console.error("Error generating and sharing PDF:", error);
+  //   }
+  // };
 
   return (
     <>
@@ -1539,7 +1539,7 @@ const OrderDetails = (props) => {
               </View>
 
               <View>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={generatePDF}
                   style={{ alignItems: "flex-end", marginRight: 10 }}
                 >
@@ -1560,7 +1560,7 @@ const OrderDetails = (props) => {
                       }}
                     ></Image>
                   </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </>
           )}
