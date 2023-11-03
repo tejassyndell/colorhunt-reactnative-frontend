@@ -150,7 +150,7 @@ const OrderDetails = (props) => {
           : "";
 
       // Split OutwardNoPacks by commas and map to integers
-      const outwardNoPacksArray =  item.NoPacks.split(",").map((value) =>
+      const outwardNoPacksArray = item.NoPacks.split(",").map((value) =>
         parseInt(value, 10)
       );
 
@@ -364,7 +364,7 @@ const OrderDetails = (props) => {
         <td colspan="5" style="text-align: end; font-weight: bold"></td>
         <td colspan="1"></td>
         <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
       </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
@@ -390,7 +390,7 @@ const OrderDetails = (props) => {
         <td colspan="5" style="text-align: end; font-weight: bold"></td>
         <td colspan="1"></td>
         <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}`}</td>
       </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
@@ -451,7 +451,7 @@ const OrderDetails = (props) => {
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="9">
-                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode}.` : ""
+                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State},${partydata[0].Country}-${partydata[0].PinCode}.` : ""
     }
             </td>
             <td style="text-transform: uppercase" colspan="1">
@@ -1017,7 +1017,7 @@ const OrderDetails = (props) => {
                       }}
                     >
                       {partydata
-                        ? `${partydata[0].Address}, ${partydata[0].City} ${partydata[0].State} , ${partydata[0].PinCode}.`
+                        ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].Country}-${partydata[0].PinCode}.`
                         : "Address"}
                     </Text>
                   </View>
@@ -1315,15 +1315,15 @@ const OrderDetails = (props) => {
                                     ₹{(totalval * 0.05).toFixed(2)}
                                   </Text>
                                 </View>
-                                <View  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                    borderTopWidth: 1,
-                                  }}>
-                                <Text
+                                <View style={{
+                                  flex: 1,
+                                  flexDirection: "row",
+                                  height: 40,
+                                  borderColor: "#000000",
+                                  borderWidth: 1,
+                                  borderTopWidth: 1,
+                                }}>
+                                  <Text
                                     style={styles.fastRowContent}
                                   >
                                   </Text>
@@ -1338,7 +1338,7 @@ const OrderDetails = (props) => {
                                   <Text
                                     style={styles.collamGst5Per}
                                   >
-                                    +{(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}
+                                    +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
                                   </Text>
                                 </View>
                                 <View
@@ -1351,7 +1351,7 @@ const OrderDetails = (props) => {
                                     borderTopWidth: 1,
                                   }}
                                 >
-                                 
+
                                   <Text
                                     style={styles.fastRowContent}
                                   >
@@ -1483,15 +1483,15 @@ const OrderDetails = (props) => {
                                     ₹{(totalval * 0.025).toFixed(2)}
                                   </Text>
                                 </View>
-                                <View  style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    height: 40,
-                                    borderColor: "#000000",
-                                    borderWidth: 1,
-                                    borderTopWidth: 1,
-                                  }}>
-                                <Text
+                                <View style={{
+                                  flex: 1,
+                                  flexDirection: "row",
+                                  height: 40,
+                                  borderColor: "#000000",
+                                  borderWidth: 1,
+                                  borderTopWidth: 1,
+                                }}>
+                                  <Text
                                     style={styles.fastRowContent}
                                   >
                                   </Text>
@@ -1506,7 +1506,7 @@ const OrderDetails = (props) => {
                                   <Text
                                     style={styles.collamGst5Per}
                                   >
-                                    +{(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}
+                                    +{(Math.ceil(getgstamount(totalval)) - getgstamount(totalval)).toFixed(2)}
                                   </Text>
                                 </View>
                                 <ScrollView>

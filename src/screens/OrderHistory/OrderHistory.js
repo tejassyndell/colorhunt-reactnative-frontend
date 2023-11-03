@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Button
 } from "react-native";
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { Pressable } from "react-native";
@@ -62,6 +63,14 @@ const OrderHistory = (props) => {
   const [handleroutwardstop, sethandleroutwardstop] = useState(false);
   const [Ispendingsoloading, setIspendingsoloading] = useState(false);
   const [Iscompletesoloading, setIscompletesoloading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+  const [outwardfromdate, setOutwardfromdate] = useState(new Date());
+  const [outwardtodate, setOutwardtodate] = useState(new Date());
+  const [showFromDate, setShowFromDate] = useState(false);
+  const [showToDate, setShowToDate] = useState(false);
+
   const onRefresh = () => {
     setRefreshing(true);
     getSonumber(true);
@@ -252,11 +261,12 @@ const OrderHistory = (props) => {
       }
     }
   };
-  const getSonumber = async (status=false) => {
+  const getSonumber = async (status = false) => {
     let nextPage;
-    if(status==false){
-    nextPage = currentPage + 1;}
-    else{
+    if (status == false) {
+      nextPage = currentPage + 1;
+    }
+    else {
       nextPage = 1;
     }
     let data = await AsyncStorage.getItem("UserData");
@@ -346,14 +356,15 @@ const OrderHistory = (props) => {
     return Math.floor(totalAmount);
   };
 
-  const getCompleteData = async (status=false) => {
+  const getCompleteData = async (status = false) => {
     let nextPage;
-    if(status==false){
-    nextPage = outwardcurrentPage + 1;}
-    else{
+    if (status == false) {
+      nextPage = outwardcurrentPage + 1;
+    }
+    else {
       nextPage = 1;
     }
-console.log(":}||}|}|}|}\]");
+    console.log(":}||}|}|}|}\]");
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     let pageSize;
@@ -410,6 +421,34 @@ console.log(":}||}|}|}|}\]");
       }
     });
   };
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleNext = () => {
+    if (orderstatus) {
+      console.log('Selected From Date: ', fromDate);
+      console.log('Selected To Date: ', toDate);
+    }
+    else {
+      console.log('Selected From Date: ', outwardfromdate);
+      console.log('Selected To Date: ', outwardtodate);
+    }
+    closeModal();
+  };
+  const cleardate = ()=>{
+    if(orderstatus){
+      setFromDate(new Date())
+      setToDate(new Date())}else{
+        setOutwardfromdate(new Date())
+        setOutwardtodate(new Date())
+      }
+
+  }
   return (
     <>
       {isloading ? (
@@ -464,8 +503,9 @@ console.log(":}||}|}|}|}\]");
             </View>
             <View style={styles.calender_cnt}>
               <View style={{ paddingRight: "4%" }}>
+                {/* <Button title="Select Dates" onPress={openModal} /> */}
                 <TouchableOpacity
-                  onPress={() => toggleCalendar()}
+                  onPress={openModal}
                   style={{ height: height * 0.035, width: width * 0.035 }}
                 >
                   <Calendersvg />
@@ -487,7 +527,7 @@ console.log(":}||}|}|}|}\]");
                   refreshControl={
                     <RefreshControl
                       refreshing={refreshing}
-                      onRefresh={()=>{onRefresh()}}
+                      onRefresh={() => { onRefresh() }}
                     />
                   }
                   onScroll={(event) => {
@@ -926,9 +966,138 @@ console.log(":}||}|}|}|}\]");
               </View>
             </View>
           </Modal>
+
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation navigation={navigation} page="orderhistory" />
           </View>
+          <Modal visible={showModal} animationType="slide" style={{ padding: "5%" }}>
+            <View style={calenderstyle.calendercontainer}>
+              <View style={calenderstyle.frombox}>
+                <Text style={calenderstyle.fromtext}>From Date</Text>
+                <View style={{ width: "100%", flexDirection: "row" }}>
+                  <View
+                    style={calenderstyle.fromdate}
+                  >
+                    <View style={{ width: "80%" }}>
+                      <Text style={{ color: 'black' }}>
+                        {orderstatus ?
+                          fromDate
+                            ? new Date(fromDate).toLocaleDateString('en-GB', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                            })
+                            : 'Select Date' :
+                          outwardfromdate ? new Date(outwardfromdate).toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          })
+                            : 'Select Date'
+                        }
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => { setShowFromDate(true) }}
+                      style={calenderstyle.calendericonecontainer}>
+                      <View style={{ height: 18, width: 18 }}>
+                        <Calendersvg />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  {showFromDate && (
+                    <DateTimePicker
+                      value={orderstatus ? fromDate : outwardfromdate}
+                      mode="date"
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowFromDate(false);
+                        if (selectedDate) {
+                          orderstatus ?
+                            setFromDate(selectedDate) :
+                            setOutwardfromdate(selectedDate)
+                        }
+                      }}
+                    />
+                  )}
+
+                </View>
+              </View>
+              <View style={calenderstyle.tobox}>
+                <Text style={calenderstyle.fromtext}>To Date</Text>
+                <View
+                  style={calenderstyle.fromdate}
+                >
+                  <View style={{ width: "80%" }}>
+                    <Text style={{ color: 'black' }}>
+                      {orderstatus ?
+                        toDate
+                          ? new Date(toDate).toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          })
+                          : 'Select Date' : outwardtodate ?
+                          new Date(outwardtodate).toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          })
+                          : 'Select Date'
+
+                      }
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setShowToDate(true)}
+                    style={calenderstyle.calendericonecontainer}>
+                    <View style={{ height: 18, width: 18 }}>
+                      <Calendersvg />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                {showToDate && (
+                  <DateTimePicker
+                    value={orderstatus ? toDate : outwardtodate}
+                    mode="date"
+                    display="default"
+                    minimumDate={orderstatus ? fromDate : outwardfromdate}
+                    onChange={(event, selectedDate) => {
+                      setShowToDate(false);
+                      if (selectedDate) {
+                        orderstatus ?
+                          setToDate(selectedDate) :
+                          setOutwardtodate(selectedDate)
+                      }
+                    }}
+                  />
+                )}
+              </View>
+            </View>
+
+            <View style={calenderstyle.nextbuttoncontainer}>
+              <Pressable
+                style={calenderstyle.clearpressable}
+                onPress={cleardate}
+              >
+                <Text
+                  style={calenderstyle.nextbuttontext}
+                >
+                  Clear
+                </Text>
+              </Pressable>
+              <Pressable
+                style={calenderstyle.nextpressable}
+                onPress={handleNext}
+              >
+                <Text
+                  style={calenderstyle.nextbuttontext}
+                >
+                  Next
+                </Text>
+              </Pressable>
+            </View>
+          </Modal>
         </View>
       )}
     </>
@@ -1119,3 +1288,65 @@ const orderstyles = StyleSheet.create({
     color: "gray",
   },
 });
+
+const calenderstyle = StyleSheet.create({
+  calendercontainer: {
+    backgroundColor: "#FFF",
+    height: "40%",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    width: "100%",
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: "5%"
+  },
+  frombox: {
+    width: "45%"
+  },
+  tobox: {
+    width: "45%"
+  },
+  nextbuttoncontainer: { width: "100%",justifyContent:"flex-end", alignContent:"flex-end",gap:20,flexDirection:"row"},
+  nextpressable: {
+    width: width >= 720 ? 200 : 100,
+    backgroundColor: "black",
+    borderRadius: 3.423,
+    height: 50,
+    justifyContent: "center"
+  },
+  clearpressable:{
+    width: width >= 720 ? 200 : 100,
+    backgroundColor: "black",
+    borderRadius: 3.423,
+    height: 50,
+    justifyContent: "center"
+  },
+  nextbuttontext: {
+    // fontWeight: "700",
+    color: "#FFF",
+    textAlign: "center",
+    fontSize: width >= 720 ? 25 : 16,
+  },
+  fromdate: {
+    backgroundColor: 'transparent',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 5,
+    width: "100%",
+    flexDirection: "row"
+  },
+  calendericonecontainer: {
+    width: "20%",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center"
+  },
+  fromtext: {
+    marginBottom: "4%",
+    fontSize: 16,
+    color: "#000"
+  }
+})

@@ -165,6 +165,7 @@ const Login = (props) => {
 
                 getstatus(true, res.data[0].Name);
                 const userData = res.data; // Assuming res.data contains user data
+                console.log(userData);
                 AsyncStorage.setItem("UserData", JSON.stringify(userData))
                   .then(() => {
                     // console.log("Data stored in local storage:", userData);
