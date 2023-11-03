@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  Platform,
   ActivityIndicator,
 } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
@@ -24,9 +25,6 @@ import * as Location from "expo-location";
 import Loader from "../../components/Loader/Loader";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
-import RNHTMLtoPDF from "react-native-html-to-pdf";
-import Share from "react-native-share";
-import { Platform, PermissionsAndroid } from "react-native";
 
 const OrderDetails = (props) => {
   const { navigation } = props;
@@ -71,8 +69,8 @@ const OrderDetails = (props) => {
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
 
   console.log(newPrint);
 
@@ -123,11 +121,11 @@ const OrderDetails = (props) => {
   // Calculate column-wise total
   const columnTotals = tableData
     ? tableData.tableData.reduce((totals, rowData) => {
-      for (let i = 0; i < rowData.length; i++) {
-        totals[i] = (totals[i] || 0) + parseFloat(rowData[i] || 0);
-      }
-      return totals;
-    }, [])
+        for (let i = 0; i < rowData.length; i++) {
+          totals[i] = (totals[i] || 0) + parseFloat(rowData[i] || 0);
+        }
+        return totals;
+      }, [])
     : "";
 
   const transformArticleSize = (articleSize) => {
@@ -141,8 +139,8 @@ const OrderDetails = (props) => {
       const sizes =
         item.ArticleSize.length > 0
           ? JSON.parse(item.ArticleSize)
-            .map((sizeObj) => sizeObj.Name)
-            .join(", ")
+              .map((sizeObj) => sizeObj.Name)
+              .join(", ")
           : "";
 
       // Parse ArticleColor JSON string to extract color names
@@ -152,7 +150,7 @@ const OrderDetails = (props) => {
           : "";
 
       // Split OutwardNoPacks by commas and map to integers
-      const outwardNoPacksArray =  item.NoPacks.split(",").map((value) =>
+      const outwardNoPacksArray = item.NoPacks.split(",").map((value) =>
         parseInt(value, 10)
       );
 
@@ -366,13 +364,15 @@ const OrderDetails = (props) => {
         <td colspan="5" style="text-align: end; font-weight: bold"></td>
         <td colspan="1"></td>
         <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+        <td colspan="1">${`+${(
+          Math.ceil(getgstamount(totalval)) - getgstamount(totalval)
+        ).toFixed(2)}`}</td>
       </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
         <td colspan="1"></td>
-        <td colspan="1">${`₹${(Math.ceil(getgstamount(totalval)))}.00`}</td>
+        <td colspan="1">${`₹${Math.ceil(getgstamount(totalval))}.00`}</td>
     </tr>`;
       } else if (partydata[0].GSTType === "IGST") {
         return ` 
@@ -392,13 +392,15 @@ const OrderDetails = (props) => {
         <td colspan="5" style="text-align: end; font-weight: bold"></td>
         <td colspan="1"></td>
         <td colspan="1"> Adjust Amount</td>
-        <td colspan="1">${`+${(Math.ceil(getgstamount(totalval))-getgstamount(totalval)).toFixed(2)}`}</td>
+        <td colspan="1">${`+${(
+          Math.ceil(getgstamount(totalval)) - getgstamount(totalval)
+        ).toFixed(2)}`}</td>
       </tr>
         <tr>
         <td colspan="5" style="text-align: end; font-weight: bold">TOTAL</td>
         <td colspan="1"></td>
         <td colspan="1"></td>
-        <td colspan="1">${`₹${(Math.ceil(getgstamount(totalval)))}.00`}</td>
+        <td colspan="1">${`₹${Math.ceil(getgstamount(totalval))}.00`}</td>
     </tr>`;
       } else {
         return ""; // Return an empty string if no GSTType match
@@ -411,8 +413,8 @@ const OrderDetails = (props) => {
   const GSThtmlContent = GSThtmltable();
   const htmlTableData = tableData.tableData
     ? tableData.tableData.map((rowData) => {
-      console.log(rowData[4]);
-      return `
+        console.log(rowData[4]);
+        return `
         <tr>
           <td colspan="1" style="text-transform: uppercase">${rowData[0]}</td>
           <td colspan="1" style="text-transform: uppercase">${rowData[1]}</td>
@@ -424,7 +426,7 @@ const OrderDetails = (props) => {
           <td colspan="1" style="text-transform: uppercase">${rowData[7]}</td>
         </tr>
       `;
-    })
+      })
     : [];
 
   const html = `
@@ -444,39 +446,45 @@ const OrderDetails = (props) => {
                 <strong>DATE:</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">${new Date(
-    CreatedDate
-  ).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  })}</td>
+              CreatedDate
+            ).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            })}</td>
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="9">
-                <strong>ADDRESS:</strong>${partydata ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode}.` : ""
-    }
+                <strong>ADDRESS:</strong>${
+                  partydata
+                    ? `${partydata[0].Address}, ${partydata[0].City}, ${partydata[0].State}, ${partydata[0].PinCode}.`
+                    : ""
+                }
             </td>
             <td style="text-transform: uppercase" colspan="1">
                 <strong>SO NO:</strong>
             </td>
             <td style="text-transform: uppercase" colspan="2">
-               ${`${name}${OutwardNumber !== 0 ? OutwardNumber : sonumber
-    }/${startyear}-${endyear}`}
+               ${`${name}${
+                 OutwardNumber !== 0 ? OutwardNumber : sonumber
+               }/${startyear}-${endyear}`}
             </td>
         </tr>
         <tr>
             <td style="text-transform: uppercase" colspan="12">
-                <strong>TRANSPORT:</strong>${transport !== null ? transport : "Transport"
-    }
+                <strong>TRANSPORT:</strong>${
+                  transport !== null ? transport : "Transport"
+                }
             </td>
         </tr>
         <tr>
-            <td colspan="12"><strong>GST:</strong>${partydata
-      ? partydata[0].GSTNumber !== null
-        ? partydata[0].GSTNumber
-        : "GST"
-      : "GST"
-    }</td>
+            <td colspan="12"><strong>GST:</strong>${
+              partydata
+                ? partydata[0].GSTNumber !== null
+                  ? partydata[0].GSTNumber
+                  : "GST"
+                : "GST"
+            }</td>
         </tr>
     </table>
     <br />
@@ -507,29 +515,28 @@ const OrderDetails = (props) => {
   const generatePDF = async () => {
     try {
       if (Platform.OS === "android") {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        const { status } = await Permissions.askAsync(
+          Permissions.MEDIA_LIBRARY
         );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.error("Storage permission not granted");
+        if (status !== "granted") {
+          console.error("Location permission not granted");
+          return;
+        }
+      } else if (Platform.OS === "ios") {
+        const { status } = await Permissions.askAsync(
+          Permissions.MEDIA_LIBRARY
+        );
+        if (status !== "granted") {
+          console.error("Location permission not granted");
           return;
         }
       }
 
-      // Define the options for PDF generation
-      const options = {
-        html: html,
-        fileName: "example",
-      };
-
-      // Generate the PDF using RNHTMLtoPDF
-      const pdfFile = await RNHTMLtoPDF.convert(options);
+      // Generate PDF from HTML content
+      const pdfFile = await printToFileAsync({ html: html, base64: false });
 
       // Share the generated PDF
-      Share.open({
-        url: `file://${pdfFile.filePath}`,
-        type: "application/pdf",
-      });
+      await shareAsync(pdfFile.uri);
     } catch (error) {
       console.error("Error generating and sharing PDF:", error);
     }
@@ -543,7 +550,7 @@ const OrderDetails = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: '#FFF'
+            backgroundColor: "#FFF",
           }}
         >
           <Loader />
@@ -921,9 +928,7 @@ const OrderDetails = (props) => {
                       fontWeight: "700",
                       color: "#FFFFFF",
                     }}
-                  >
-
-                  </Text>
+                  ></Text>
                 </TouchableOpacity>
                 <Text
                   style={{
@@ -1079,8 +1084,9 @@ const OrderDetails = (props) => {
                         }}
                         adjustsFontSizeToFit={true}
                         numberOfLines={1}
-                      >{`${name}${OutwardNumber !== 0 ? OutwardNumber : sonumber
-                        }/${startyear}-${endyear}`}</Text>
+                      >{`${name}${
+                        OutwardNumber !== 0 ? OutwardNumber : sonumber
+                      }/${startyear}-${endyear}`}</Text>
                     </View>
 
                     <View
@@ -1245,19 +1251,13 @@ const OrderDetails = (props) => {
                                 borderTopWidth: 2,
                               }}
                             >
-                              <Text
-                                style={styles.fastRowContent}
-                              >
+                              <Text style={styles.fastRowContent}>
                                 SUBTOTAL
                               </Text>
-                              <Text
-                                style={styles.secondCollam}
-                              >
+                              <Text style={styles.secondCollam}>
                                 {totalqty}
                               </Text>
-                              <Text
-                                style={styles.thurdCollam}
-                              ></Text>
+                              <Text style={styles.thurdCollam}></Text>
                               <Text
                                 style={{
                                   width: 98,

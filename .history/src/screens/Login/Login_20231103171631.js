@@ -74,31 +74,93 @@ const Login = (props) => {
   //     return false;
   //   }
   // }
-  //  ? const keyboardDidShow = () => {
-  //     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
-  //     setLogoSize(newSize);
-  //     setLeftPosition("65%");
-  //   };
-
-  //   const keyboardDidHide = () => {
-  //     setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
-  //     setLeftPosition("50%");
-  //   };
-
   // useEffect(() => {
-  //   const keyboardDidShowListener = Keyboard.addListener(
-  //     "keyboardDidShow",
-  //     keyboardDidShow
-  //   );
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     "keyboardDidHide",
-  //     keyboardDidHide
-  //   );
+  //   const getTokenAndSubscribe = async () => {
+  //     const permissionGranted = await requestUserPermission();
 
-  //   return () => {
-  //     keyboardDidShowListener.remove();
-  //     keyboardDidHideListener.remove();
-  //   };
+  //     if (permissionGranted) {
+  //       const fcmToken = await messaging().getToken();
+  //       setToken(fcmToken);
+  //       console.log('FCM Token:', fcmToken);
+  //     } else {
+  //       console.log('Permission not granted for notifications.');
+  //     }
+
+  //     // Rest of your code for handling notifications
+  //     // messaging()
+  //     //   .getInitialNotification()
+  //     //   .then(async (remoteMessage) => {
+  //     //     if (remoteMessage) {
+  //     //       console.log(
+  //     //         'Notification caused app to open from quit state:',
+  //     //         remoteMessage.notification,
+  //     //       );
+  //     //     }
+  //     //   });
+  //     // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+  // //     messaging().onNotificationOpenedApp(async (remoteMessage) => {
+  // //       console.log(
+  // //         'Notification caused app to open from background state:',
+  // //         remoteMessage.notification,
+  // //       );
+  // //     });
+  // //     // Register background handler
+  // //     messaging().setBackgroundMessageHandler(async remoteMessage => {
+  // //       console.log('Message handled in the background!', remoteMessage);
+  // //       const channelId = 'colorhuntmobileapp';
+  // //       const channelConfig = {
+  // //         channelId,
+  // //         channelName: 'colorhuntmobileapp Notification Channel',
+  // //         channelDescription: 'colorhuntmobileapp custom notification channel',
+  // //         soundName: 'default',
+  // //         importance: 4, // Notification Importance (0-4), where 4 is the highest
+  // //         vibrate: true,
+  // //       };
+
+  // //       // Create the channel
+  // //       PushNotification.createChannel(channelConfig);
+  // //       const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+  // //         PushNotification.localNotification({
+  // //           channelId: "colorhuntmobileapp",
+  // //           title: remoteMessage.notification.title,
+  // //           message: remoteMessage.notification.body
+  // //         })
+  // //       });
+  // //       // return unsubscribe;
+  // //     });
+  // //     // Listen for incoming FCM messages
+  // //     // Define the channel settings
+  // //     const channelId = 'colorhuntmobileapp';
+  // //     const channelConfig = {
+  // //       channelId,
+  // //       channelName: 'colorhuntmobileapp Notification Channel',
+  // //       channelDescription: 'colorhuntmobileapp custom notification channel',
+  // //       soundName: 'default',
+  // //       importance: 4, // Notification Importance (0-4), where 4 is the highest
+  // //       vibrate: true,
+  // //     };
+
+  //     // Create the channel
+  //     PushNotification.createChannel(channelConfig);
+  //     const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+  //       PushNotification.localNotification({
+  //         channelId: "colorhuntmobileapp",
+  //         title: remoteMessage.notification.title,
+  //         message: remoteMessage.notification.body
+  //       })
+  //     });
+
+  // //     return unsubscribe;
+  // //   };
+
+  //   getTokenAndSubscribe();
+
+  //   // Check whether an initial notification is available
+
+  //   // getNotificationPermission();
   // }, []);
   const keyboardDidShow = () => {
     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
@@ -126,14 +188,21 @@ const Login = (props) => {
   };
 
   useEffect(() => {
-    AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: token })).then(() => {
-      // console.log("Data stored in local storage:", userData);
-    })
-      .catch((error) => {
-        console.error("Error storing data in local storage:", error);
-      });
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      keyboardDidShow
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      keyboardDidHide
+    );
 
-  }, [])
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
     if (pixelRatio <= 1) {
@@ -180,28 +249,24 @@ const Login = (props) => {
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
-          }).then((res) => {
-            if (res && res.status == 200) {
-              if (res.data[0].Status == 0) {
-                Alert.alert("Invalid Phone Number. Please enter a valid phone number.");
-              }
-              else if (res.data[0].Status == 1) {
-                setIsLoading(true);
+          }).then(async (res) => {
+            if (res && res.status === 201) {
+              alert("Invalid Phone Number. Please enter a valid phone number.");
+            } else if (res && res.status === 200) {
+              setIsLoading(true);
 
-                getstatus(true, res.data[0].Name);
-                const userData = res.data; // Assuming res.data contains user data
-                AsyncStorage.setItem("UserData", JSON.stringify(userData))
-                  .then(() => {
-                    // console.log("Data stored in local storage:", userData);
-                  })
-                  .catch((error) => {
-                    console.error("Error storing data in local storage:", error);
-                  });
+              getstatus(true, res.data[0].Name);
+              const userData = res.data; // Assuming res.data contains user data
+              AsyncStorage.setItem("UserData", JSON.stringify(userData))
+                .then(() => {
+                  console.log("Data stored in local storage:", userData);
+                })
+                .catch((error) => {
+                  console.error("Error storing data in local storage:", error);
+                });
 
-
-                setShowLogin(false); // Switch to OTP view
-                setIsLoading(false);
-              }
+              setShowLogin(false); // Switch to OTP view
+              setIsLoading(false);
             } else {
               console.log(res, "error");
               Alert.alert("Server is not responding");

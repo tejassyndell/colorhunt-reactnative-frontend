@@ -38,7 +38,7 @@ elsif podfile_properties.key?('ios.flipper') then
 end
 
 target 'ColorHunt' do
-  use_frameworks!
+  use_modular_headers!
   use_expo_modules!
   config = use_native_modules!
 
