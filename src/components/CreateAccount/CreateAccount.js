@@ -9,6 +9,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import { UserData } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -241,11 +242,22 @@ const CreateAccount = (props) => {
           token,
         });
         console.log("API response:", response.data);
-        setShowSuccess(true); // Show success message
-        // Clear the form input fields
+       
+        
+        console.log(response.data)
+        if (response && response.data && response.data.error) {
+          // Set the phone number error message
+          
+         Alert.alert("Number is already Exits");
+        }else{
+          setShowSuccess(true); // Show success message
+        }
+
+       
         clearFormFields();
       } catch (error) {
         console.error("Error making API request:", error);
+       
       }
     }
   };
