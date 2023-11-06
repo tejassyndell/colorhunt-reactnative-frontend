@@ -23,6 +23,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.colorhuntmobileapp.app",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification"],
         "NSNotificationsUsageDescription": "We need your permission to send you notifications"

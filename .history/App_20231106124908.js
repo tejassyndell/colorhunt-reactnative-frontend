@@ -38,10 +38,6 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    getNotificationToken();
-  }, []);
-
   // const [showNetworkError, setShowNetworkError] = useState(false);
 
   // Function to enable/disable font scaling for a specific Text component

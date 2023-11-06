@@ -14,6 +14,7 @@
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		C5C07F942AF8DF2A002C17A4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C5C07F932AF8DF2A002C17A4 /* GoogleService-Info.plist */; };
 		D8FD75DFC4B5E0E48FCA0A40 /* Pods_ColorHunt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65EC95D1DAC595246A2CC502 /* Pods_ColorHunt.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = ColorHunt/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		BE3A21C2CC4A47898D0DE392 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "ColorHunt/noop-file.swift"; sourceTree = "<group>"; };
+		C5C07F932AF8DF2A002C17A4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-ColorHunt/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,6 +52,7 @@
 		13B07FAE1A68108700A75B9A /* ColorHunt */ = {
 			isa = PBXGroup;
 			children = (
+				C5C07F932AF8DF2A002C17A4 /* GoogleService-Info.plist */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
+				C5C07F942AF8DF2A002C17A4 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 			);
@@ -305,9 +309,6 @@
 				"${BUILT_PRODUCTS_DIR}/RCTTypeSafety/RCTTypeSafety.framework",
 				"${BUILT_PRODUCTS_DIR}/RNCAsyncStorage/RNCAsyncStorage.framework",
 				"${BUILT_PRODUCTS_DIR}/RNDateTimePicker/RNDateTimePicker.framework",
-				"${BUILT_PRODUCTS_DIR}/RNFBApp/RNFBApp.framework",
-				"${BUILT_PRODUCTS_DIR}/RNFBFirestore/RNFBFirestore.framework",
-				"${BUILT_PRODUCTS_DIR}/RNFBMessaging/RNFBMessaging.framework",
 				"${BUILT_PRODUCTS_DIR}/RNFastImage/RNFastImage.framework",
 				"${BUILT_PRODUCTS_DIR}/RNGestureHandler/RNGestureHandler.framework",
 				"${BUILT_PRODUCTS_DIR}/RNReanimated/RNReanimated.framework",
@@ -377,9 +378,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTTypeSafety.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNCAsyncStorage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNDateTimePicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNFBApp.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNFBFirestore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNFBMessaging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNFastImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNGestureHandler.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNReanimated.framework",
@@ -628,6 +626,7 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -702,6 +701,7 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;

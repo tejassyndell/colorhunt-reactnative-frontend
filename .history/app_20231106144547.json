@@ -23,11 +23,23 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.colorhuntmobileapp.app",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification"],
         "NSNotificationsUsageDescription": "We need your permission to send you notifications"
       }
     },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/perf",
+      "@react-native-firebase/crashlytics",
+      "expo-build-properties",
+      {
+        "ios": {
+          "useFrameworks": "static"
+        }
+      }
+    ],
     "android": {
       "package": "com.colorhuntmobileapp.app",
       "permissions": [

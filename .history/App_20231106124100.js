@@ -18,30 +18,18 @@ export default function App() {
 
     if (enabled) {
       console.log("Authorization status:", authStatus);
-      getNotificationToken();
     }
   }
 
   const getNotificationToken = async () => {
     let notificationToken = await AsyncStorage.getItem("UserData");
     console.log(notificationToken, "the old token");
-    if (notificationToken) {
+    if (!notificationToken) {
+      console.log(notificationToken);
     }
     try {
-      const notificationToken = await messaging().getToken();
-      if (notificationToken) {
-        console.log(notificationToken, "gentrate a new token");
-        await AsyncStorage.setItem("UserData", notificationToken);
-      }
-    } catch (error) {
-      console.log(error, "error in notifationtoken ");
-    }
+    } catch (error) {}
   };
-
-  useEffect(() => {
-    getNotificationToken();
-  }, []);
-
   // const [showNetworkError, setShowNetworkError] = useState(false);
 
   // Function to enable/disable font scaling for a specific Text component

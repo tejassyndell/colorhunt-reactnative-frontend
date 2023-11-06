@@ -18,7 +18,6 @@ export default function App() {
 
     if (enabled) {
       console.log("Authorization status:", authStatus);
-      getNotificationToken();
     }
   }
 
@@ -37,10 +36,6 @@ export default function App() {
       console.log(error, "error in notifationtoken ");
     }
   };
-
-  useEffect(() => {
-    getNotificationToken();
-  }, []);
 
   // const [showNetworkError, setShowNetworkError] = useState(false);
 
