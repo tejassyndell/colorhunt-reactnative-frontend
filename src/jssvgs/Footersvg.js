@@ -4,28 +4,48 @@ import { Text, TouchableOpacity } from 'react-native';
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { cartcount } from "../api/api";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/action";
 const Footersvg = (props) => {
 
   const { width, height } = Dimensions.get("window");
   const { val, status } = props;
   const [showRedDot, setShowreddot] = useState(false);
   const [count, setCount] = useState(0);
+  const cartData = useSelector((state) => state.reducer)
+  const dispach = useDispatch();
+
   const getcountofcart = async () => {
+    // console.warn(cartData);
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     const response = await cartcount({ PartyId: data[0].Id }).then((res) => {
-      console.log(res.data);
-      setCount(res.data[0].total)
-      if (res.data[0].total > 0) { setShowreddot(true) }
+      dispach(addToCart(res.data[0]))
     }
     )
+
   }
+  useFocusEffect(
+    React.useCallback(() => {
+      if (val == "cart") {
+        getcountofcart()
+      }
+    }, [val])
+
+
+  )
   useEffect(() => {
     if (val == "cart") {
-      getcountofcart()
+      if (cartData && cartData.total > 0) {
+        setShowreddot(true);
+      } else {
+        setShowreddot(false);
+      }
     }
-  }, [val])
+  }, [cartData])
   const vector = status ? (
     <Svg
       width={width >= 720 ? 60 : 42}
@@ -87,9 +107,9 @@ const Footersvg = (props) => {
       </G>
     </Svg>
   ) : (
-    // <TouchableOpacity>
+
     <Svg
-      width={width >= 720 ? 47 : 32}
+      width={width >= 720 ? 49 : 34}
       height={width >= 720 ? 40 : 25}
       viewBox="0 0 21 20"
       fill="none"
@@ -110,27 +130,10 @@ const Footersvg = (props) => {
         />
       </G>
       {showRedDot && (
-        <Circle cx={20} cy={4} r={3} fill="red" /> // Adjust the coordinates and size as needed
+        <Circle cx={20} cy={4} r={4}  fill="red" /> // Adjust the coordinates and size as needed
       )}
     </Svg>
-    //   <View
-    //   style={{
-    //     position: 'absolute',
-    //     top: width >= 720 ? 8 : -5, // Adjust position based on icon size
-    //     right: width >= 720 ? 8 : -6, // Adjust position based on icon size
-    //     backgroundColor: '#FFF', // Background color for the circle
-    //     borderRadius: 10, // Adjust size based on the count value
-    //     width: 20, // Adjust size based on the count value
-    //     height: 20, // Adjust size based on the count value
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     borderWidth:2,
-    //     borderColor:"gray"
-    //   }}
-    // >
-    //   <Text style={{ color: '#000', fontSize: 12 }}>{count}</Text>
-    // </View>
-    // </TouchableOpacity> 
+
   );
 
   const history = status ? (

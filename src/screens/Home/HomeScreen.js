@@ -21,6 +21,7 @@ import {
   getWishlistData,
   getAddWishlist,
   DeleteWishlist,
+  cartcount
 } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
@@ -33,6 +34,8 @@ import Svg, { Circle, Path } from "react-native-svg";
 import SidebarSvg from "../../jssvgs/Sidebarsvg";
 import ProfileSvg from "../../jssvgs/ProfileSvg";
 import Loader from "../../components/Loader/Loader";
+import { useFocusEffect } from "@react-navigation/native";
+
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -51,7 +54,6 @@ export default function HomeScreen(props) {
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
-
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     getCategoriesname()

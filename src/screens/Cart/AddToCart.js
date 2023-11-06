@@ -21,6 +21,7 @@ import {
   CollectInwardForCartArticals,
   cartdetails,
   deletecartitem,
+  cartcount
 } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -28,6 +29,8 @@ import { ImageZoomProps } from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
 import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import Loader from "../../components/Loader/Loader";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/action";
 
 const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -41,7 +44,18 @@ const AddToCart = (props) => {
   const { width, height } = Dimensions.get("window");
 
   const [refreshing, setRefreshing] = useState(false);
-
+  const dispach = useDispatch();
+  const getcountofcart = async () => {
+    let data = await AsyncStorage.getItem("UserData");
+    data = await JSON.parse(data);
+    const response = await cartcount({ PartyId: data[0].Id }).then((res) => {
+      dispach(addToCart(res.data[0]))
+    }
+    )
+  }
+  useEffect(() => {
+    getcountofcart()
+  }, [])
   const onRefresh = () => {
     setRefreshing(true);
     cartDetails();
@@ -100,8 +114,8 @@ const AddToCart = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -178,7 +192,6 @@ const AddToCart = (props) => {
           // console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
           setOrderItems(parsedOrderItems);
           setRefreshing(false);
-          setIsLoading(false);
         }
       })
       .catch((error) => {
@@ -321,8 +334,8 @@ const AddToCart = (props) => {
     });
     setTotalPrice(total);
   };
+
   const handleDeleteOrder = async (article_id) => {
-    // console.log(article_id);
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     const data = {
@@ -330,11 +343,14 @@ const AddToCart = (props) => {
       article_id: article_id,
     };
     try {
-      await deletecartitem(data);
+      await deletecartitem(data).then((res)=>{
+        getcountofcart();
+      })
       const updatedcartitems = orderItems.filter(
         (item) => item.article_id !== article_id
       );
       setOrderItems(updatedcartitems);
+
       // console.log("Done");
     } catch (error) {
       // console.log("Erro deleting article:", error);
@@ -586,7 +602,7 @@ const AddToCart = (props) => {
                                     borderRadius: 10,
                                     paddingVertical: 5,
                                     backgroundColor: "#FFF",
-                                    borderWidth: 1,
+                                    borderWidth: 0.5,
                                   }}
                                 >
                                   <View

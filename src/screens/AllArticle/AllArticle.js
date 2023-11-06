@@ -560,7 +560,7 @@ export default function AllArticle(props) {
               </Text>
             ) : (
               <>
-              <ScrollView
+              {/* <ScrollView
                 style={{ flex: 1 }}
                 refreshControl={
                   <RefreshControl
@@ -568,7 +568,7 @@ export default function AllArticle(props) {
                     onRefresh={onRefresh}
                   />
                 }
-              >
+              > */}
                 <FlatList
                   style={{ backgroundColor: "#FFF" }}
                   data={finalData}
@@ -580,8 +580,14 @@ export default function AllArticle(props) {
                   columnWrapperStyle={{ justifyContent: "space-between" }}
                   onEndReached={fetchMoreData}
                   onEndReachedThreshold={0.1}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
                 />
-              </ScrollView>
+              {/* </ScrollView> */}
             </>
             )}
           </View>

@@ -16,6 +16,7 @@ import {
   addto_cart,
   findfromthecart,
   updateCartArticale,
+  cartcount
 } from "../../api/api";
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
@@ -32,6 +33,8 @@ import * as Font from "expo-font";
 import Loader from "../../components/Loader/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Svg, { Path } from "react-native-svg";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/action";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
@@ -44,7 +47,7 @@ const DetailsOfArticals = (props) => {
   const { id, Quantity = 0 } = route.params;
   // console.log(id);
   const styles = detailsOfArtStyles();
-  const handleSizeClick = (size) => {};
+  const handleSizeClick = (size) => { };
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -70,11 +73,13 @@ const DetailsOfArticals = (props) => {
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const dispach = useDispatch();
+
   const onRefresh = () => {
     setRefreshing(true)
     ArticleDetailsData()
-    
-   
+
+
   };
   useEffect(() => {
     const loadCustomFont = async () => {
@@ -102,8 +107,8 @@ const DetailsOfArticals = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   const ArticleDetailsData = async () => {
     console.log("{}{{}{");
     let data = {
@@ -181,6 +186,15 @@ const DetailsOfArticals = (props) => {
     }
     setQuantities(defaultQuantities);
   }, [articleColorver, availableStock, articleRate]);
+  const getcountofcart = async () => {
+    let data = await AsyncStorage.getItem("UserData");
+    data = await JSON.parse(data);
+    const response = await cartcount({ PartyId: data[0].Id }).then((res) => {
+      console.log(res.data);
+      dispach(addToCart(res.data[0]))
+    }
+    )
+  }
 
   const addtocart = async (ArticleId) => {
     if (!combinedArray) {
@@ -205,6 +219,7 @@ const DetailsOfArticals = (props) => {
       await findfromthecart(data).then(async (res) => {
         if (res.data.id == -1) {
           await addto_cart(data);
+          getcountofcart()
           navigation.navigate("cart_list", { totalPrice });
         } else {
           setIsModalVisible(true);
@@ -350,12 +365,12 @@ const DetailsOfArticals = (props) => {
       ) : (
         <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>
           <ScrollView nestedScrollEnabled={true}
-           showsHorizontalScrollIndicator={false}
-           contentContainerStyle={{ flexGrow: 0.7 }}
-           keyboardShouldPersistTaps="handled"
-           refreshControl={
-             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-           }
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 0.7 }}
+            keyboardShouldPersistTaps="handled"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <View style={{ zIndex: 1, flex: 1 }}>
               <View
@@ -536,7 +551,7 @@ const DetailsOfArticals = (props) => {
                                   {
                                     paddingHorizontal:
                                       articleSizeData &&
-                                      articleSizeData.length > 3
+                                        articleSizeData.length > 3
                                         ? "1%"
                                         : 0,
                                   },
@@ -671,7 +686,7 @@ const DetailsOfArticals = (props) => {
                         </Text>
                       </View>
                     </View>
-                    {combinedArray.map((item,index) => (
+                    {combinedArray.map((item, index) => (
                       <View key={index} style={{ flex: 1, flexDirection: "row", gap: 12 }}>
                         <View
                           style={{
