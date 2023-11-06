@@ -602,7 +602,9 @@ const AddToCart = (props) => {
                                     borderRadius: 10,
                                     paddingVertical: 5,
                                     backgroundColor: "#FFF",
-                                    borderWidth: 0.5,
+                                    // borderWidth: 1,
+                                    elevation:3,
+                                    shadowColor:"black"
                                   }}
                                 >
                                   <View

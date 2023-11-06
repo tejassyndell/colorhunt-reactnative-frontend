@@ -35,6 +35,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Svg, { Path } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/action";
+import { TextInput } from "react-native-gesture-handler";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
@@ -270,9 +271,38 @@ const DetailsOfArticals = (props) => {
     }
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [colorIndex]: Math.max(prevQuantities[colorIndex] - 1, 0),
+      [colorIndex]: prevQuantities[colorIndex] - 1,
     }));
   };
+  const onchangeaddqty = (val, colorIndex) => {
+    // if (val == "") {
+    //   setQuantities(() => ({
+    //     [colorIndex]:"0",
+    //   }));
+    // }
+    if (val > quantities[colorIndex]) {
+      if (!combinedArray || !combinedArray[colorIndex]) {
+        return;
+      }
+      // console.log(quantities[colorIndex]);
+      // console.log(combinedArray[colorIndex].available);
+      if (quantities[colorIndex] < nopacks) {
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
+          [colorIndex]: val,
+        }));
+      }
+    } else if (val < quantities[colorIndex] && val >=0) {
+      if (!combinedArray || !combinedArray[colorIndex]) {
+        return;
+      }
+      setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [colorIndex]: val,
+      }));
+    }
+
+  }
   const totalQuantity = Object.values(quantities).reduce(
     (total, quantity) => total + quantity,
     0
@@ -797,19 +827,21 @@ const DetailsOfArticals = (props) => {
                               -
                             </Text>
                           </Pressable>
-                          <View style={{ flex: 1 }}>
-                            <Text
-                              style={{
-                                fontSize: width >= 720 ? 30 : 18,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
-                                textAlign: "center",
-                                fontWeight: "bold",
-                                color: "#000",
-                              }}
-                            >
-                              {quantities[item.index]}
-                            </Text>
-                          </View>
+                          {/* <View style={{ flex: 1 }}> */}
+                          <TextInput
+                            value={quantities[item.index].toString()}
+                            style={{
+                              fontSize: width >= 720 ? 30 : 18,
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              textAlign: "center",
+                              fontWeight: "bold",
+                              color: "#000",
+                            }}
+                            onChangeText={(text) =>{text<=item.available? onchangeaddqty(text, item.index): onchangeaddqty(item.available, item.index)}}
+                          >
+
+                          </TextInput>
+                          {/* </View> */}
                           <Pressable
                             onPress={() => handleIncrease(item.index)}
                             disabled={quantities[item.index] >= item.available}

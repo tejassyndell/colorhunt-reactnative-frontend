@@ -159,7 +159,6 @@ const Orderlist = (props) => {
     });
 
   const GetTransportation = async () => {
-    console.log('bsdasbs');
     await gettransportation()
       .then((response) => {
         setTransportation(response.data);
@@ -265,10 +264,10 @@ const Orderlist = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor:'#FFF'
+            backgroundColor: '#FFF'
           }}
         >
-           <Loader/>
+          <Loader />
         </View>
       ) : (
         <View
@@ -416,7 +415,7 @@ const Orderlist = (props) => {
                     Transportation
                   </Text>
 
-                  <View
+                  <TouchableOpacity
                     style={{
                       width: "100%",
                       borderWidth: 1,
@@ -430,6 +429,11 @@ const Orderlist = (props) => {
                       backgroundColor: "#EEE",
                       display: "flex",
                       flexDirection: "row",
+                    }}
+                    onPress={() => {
+                      Transportation.length !== 0
+                        ? setshowTransporatation(!showTransporatation)
+                        : "";
                     }}
                   >
                     <Text
@@ -481,7 +485,7 @@ const Orderlist = (props) => {
                         </Svg>
                       </TouchableOpacity>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
                 {showTransporatation && Transportation.length !== 0 && (
                   <ScrollView
@@ -502,10 +506,10 @@ const Orderlist = (props) => {
                       bottom: 14,
                     }}
                     nestedScrollEnabled={true}
-                    
+
                   >
                     <View>
-                      {Transportation.map((item,index) => (
+                      {Transportation.map((item, index) => (
                         <TouchableOpacity
                           key={index}
                           onPress={() => {
@@ -531,13 +535,15 @@ const Orderlist = (props) => {
                                 {
                                   fontSize:
                                     windowwidthe < 720
-                                      ? windowwidthe * 0.045
+                                      ? windowwidthe * 0.042
                                       : 26,
                                   color:
                                     hoveredItem === item.Id
                                       ? "#fff"
                                       : "#626262",
-                                  fontWeight: "500",
+                                  // fontWeight: "500",
+                                  fontFamily: isFontLoaded ? "Glory" : undefined,
+
                                 },
                               ]}
                             >
@@ -692,11 +698,11 @@ const Orderlist = (props) => {
                       borderRadius: 25,
                       justifyContent: "center",
                       alignItems: "center",
-                      alignContent:"center",
+                      alignContent: "center",
                       padding: 5,
                     }}
                   >
-                     <Loader/>
+                    <Loader />
                   </View>
                 </View>
               )}
@@ -1148,5 +1154,6 @@ const styles = StyleSheet.create({
   item: {
     borderRadius: 6,
     padding: 10,
+    paddingLeft: 2.6
   },
 });

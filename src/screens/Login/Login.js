@@ -24,9 +24,9 @@ const { width, height } = Dimensions.get("window");
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import WhiteLogo from "../../jssvgs/WhiteLogo ";
-// import messaging from "@react-native-firebase/messaging";
-// import PushNotification from "react-native-push-notification";
-// import { requestPermissionsAsync } from "expo-notifications";
+import messaging from "@react-native-firebase/messaging";
+import PushNotification from "react-native-push-notification";
+import { requestPermissionsAsync } from "expo-notifications";
 
 const Login = (props) => {
   const { navigation } = props;
@@ -59,31 +59,126 @@ const Login = (props) => {
     };
   }, []);
 
-  // const requestUserPermission = async () => {
-  //   const status = await requestPermissionsAsync();
-  //   try {
-  //     const authStatus = await messaging().requestPermission();
-  //     const enabled =
-  //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  const requestUserPermission = async () => {
+    const status = await requestPermissionsAsync();
+    try {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-  //     console.log('Authorization status:', authStatus, enabled);
-  //     return enabled;
-  //   } catch (error) {
-  //     console.error('Error requesting permission:', error);
-  //     return false;
-  //   }
-  // }
-   const keyboardDidShow = () => {
-      const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
-      setLogoSize(newSize);
-      setLeftPosition("65%");
+      console.log('Authorization status:', authStatus, enabled);
+      return enabled;
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+      return false;
+    }
+  }
+  useEffect(() => {
+    const getTokenAndSubscribe = async () => {
+      const permissionGranted = await requestUserPermission();
+
+      if (permissionGranted) {
+        const fcmToken = await messaging().getToken();
+        AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: fcmToken })).then(() => {
+          // console.log("Data stored in local storage:", userData);
+        })
+          .catch((error) => {
+            console.error("Error storing data in local storage:", error);
+          });
+        setToken(fcmToken);
+        console.log('FCM Token:', fcmToken);
+      } else {
+        console.log('Permission not granted for notifications.');
+      }
+
+      // Rest of your code for handling notifications
+      messaging()
+        .getInitialNotification()
+        .then(async (remoteMessage) => {
+          if (remoteMessage) {
+            console.log(
+              'Notification caused app to open from quit state:',
+              remoteMessage.notification,
+            );
+          }
+        });
+      // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+      messaging().onNotificationOpenedApp(async (remoteMessage) => {
+        console.log(
+          'Notification caused app to open from background state:',
+          remoteMessage.notification,
+        );
+      });
+      // Register background handler
+      messaging().setBackgroundMessageHandler(async remoteMessage => {
+        console.log('Message handled in the background!', remoteMessage);
+        const channelId = 'colorhuntmobileapp';
+        const channelConfig = {
+          channelId,
+          channelName: 'colorhuntmobileapp Notification Channel',
+          channelDescription: 'colorhuntmobileapp custom notification channel',
+          soundName: 'default',
+          importance: 4, // Notification Importance (0-4), where 4 is the highest
+          vibrate: true,
+        };
+
+        // Create the channel
+        PushNotification.createChannel(channelConfig);
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+          PushNotification.localNotification({
+            channelId: "colorhuntmobileapp",
+            title: remoteMessage.notification.title,
+            message: remoteMessage.notification.body
+          })
+        });
+        // return unsubscribe;
+      });
+      // Listen for incoming FCM messages
+      // Define the channel settings
+      const channelId = 'colorhuntmobileapp';
+      const channelConfig = {
+        channelId,
+        channelName: 'colorhuntmobileapp Notification Channel',
+        channelDescription: 'colorhuntmobileapp custom notification channel',
+        soundName: 'default',
+        importance: 4, // Notification Importance (0-4), where 4 is the highest
+        vibrate: true,
+      };
+
+      // Create the channel
+      PushNotification.createChannel(channelConfig);
+      const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+        PushNotification.localNotification({
+          channelId: "colorhuntmobileapp",
+          title: remoteMessage.notification.title,
+          message: remoteMessage.notification.body,
+        })
+      });
+
+
+      return unsubscribe;
     };
 
-    const keyboardDidHide = () => {
-      setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
-      setLeftPosition("50%");
-    };
+    getTokenAndSubscribe();
+
+    // Check whether an initial notification is available
+
+    // getNotificationPermission();
+  }, []);
+  const keyboardDidShow = () => {
+    const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
+    setLogoSize(newSize);
+    setLeftPosition("65%");
+  };
+
+  const keyboardDidHide = () => {
+    setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
+    setLeftPosition("50%");
+  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -100,15 +195,15 @@ const Login = (props) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-  useEffect(() => {
-    AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: token })).then(() => {
-      // console.log("Data stored in local storage:", userData);
-    })
-      .catch((error) => {
-        console.error("Error storing data in local storage:", error);
-      });
+  // useEffect(() => {
+  //   AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: token })).then(() => {
+  //     // console.log("Data stored in local storage:", userData);
+  //   })
+  //     .catch((error) => {
+  //       console.error("Error storing data in local storage:", error);
+  //     });
 
-  }, [])
+  // }, [])
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
     if (pixelRatio <= 1) {
@@ -170,7 +265,7 @@ const Login = (props) => {
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
-          }).then((res) => {
+          }).then(async(res) => {
             if (res && res.status == 200) {
               if (res.data[0].Status == 0) {
                 Alert.alert("Invalid Phone Number. Please enter a valid phone number.");
@@ -189,6 +284,7 @@ const Login = (props) => {
                     console.error("Error storing data in local storage:", error);
                   });
 
+                  await udatepartytoken({party_id:res.data[0].Id,token:token});
 
                 setShowLogin(false); // Switch to OTP view
                 setIsLoading(false);
@@ -209,21 +305,21 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         navigation.navigate("Slider");
-      } else  if (otp.join('').length < 1) {
+      } else if (otp.join('').length < 1) {
         // Navigate to the desired screen when "Back" is clicked
         setPhoneNumber("")
         setShowLogin(true);
-        
 
-      }else {
+
+      } else {
         alert("Invalid OTP. Please try again.");
       }
-     
-      
-      
+
+
+
     }
   };
-  
+
   const otpInput = [useRef(), useRef(), useRef(), useRef()];
   // Function to handle OTP digit input
   const handleOTPDigitChange = (index, text) => {
@@ -239,7 +335,7 @@ const Login = (props) => {
     }
   };
 
-  const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") :( otp.join('').length === 0? "Back": "Verify");
+  const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : (otp.join('').length === 0 ? "Back" : "Verify");
 
   const gifImageSource = require("../../../assets/Loader/Screen.gif");
   return (
