@@ -28,17 +28,11 @@ export default function App() {
 
   const getNoticicationToken = async () => {
     let checktoken = await AsyncStorage.getItem("notificationToken");
-    console.log("old token", checktoken);
-    if (!checktoken) {
+    if (!!checktoken) {
       try {
+        await messaging().registerDeviceForRemoteMessages();
         const notificationToken = await messaging().getToken();
-        if (!!notificationToken) {
-          console.log(
-            "noti-token get NEW TOKEN succefully ",
-            notificationToken
-          );
-          await AsyncStorage.setItem("notificationToken", notificationToken);
-        }
+        console.log("noti-token get succefully ", notificationToken);
       } catch (error) {
         console.log(error, "error in getToken ");
         alert(error?.message);

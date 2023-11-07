@@ -33,10 +33,7 @@ export default function App() {
       try {
         const notificationToken = await messaging().getToken();
         if (!!notificationToken) {
-          console.log(
-            "noti-token get NEW TOKEN succefully ",
-            notificationToken
-          );
+          console.log("noti-token get succefully ", notificationToken);
           await AsyncStorage.setItem("notificationToken", notificationToken);
         }
       } catch (error) {

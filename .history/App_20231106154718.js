@@ -19,7 +19,6 @@ export default function App() {
     if (enabled) {
       console.log("Authorization status:", authStatus);
       // getNotificationToken();
-      getNoticicationToken();
     }
   }
   useEffect(() => {
@@ -27,22 +26,12 @@ export default function App() {
   }, []);
 
   const getNoticicationToken = async () => {
-    let checktoken = await AsyncStorage.getItem("notificationToken");
-    console.log("old token", checktoken);
-    if (!checktoken) {
-      try {
-        const notificationToken = await messaging().getToken();
-        if (!!notificationToken) {
-          console.log(
-            "noti-token get NEW TOKEN succefully ",
-            notificationToken
-          );
-          await AsyncStorage.setItem("notificationToken", notificationToken);
-        }
-      } catch (error) {
-        console.log(error, "error in getToken ");
-        alert(error?.message);
-      }
+    try {
+      const notificationToken = await messaging().getToken();
+      console.log("noti-token get succefully ", notificationToken);
+    } catch (error) {
+      console.log(error, "error in getToken ");
+      alert(error?.message);
     }
   };
 
@@ -61,6 +50,10 @@ export default function App() {
   //     console.log(error, "error in notifationtoken ");
   //   }
   // };
+
+  // useEffect(() => {
+  //   getNotificationToken();
+  // }, []);
 
   // const [showNetworkError, setShowNetworkError] = useState(false);
 

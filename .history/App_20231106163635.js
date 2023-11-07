@@ -6,12 +6,12 @@ import { StatusBar, Text, View, Modal, Image } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import messaging from "@react-native-firebase/messaging";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Permission } from "react-native";
 export default function App() {
   const [isOffline, setOfflineStatus] = useState(false);
 
   async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
+    const authStatus = await messaging().Permission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
