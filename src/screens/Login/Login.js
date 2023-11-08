@@ -11,6 +11,7 @@ import {
   Keyboard,
   ActivityIndicator,
   Alert,
+  Platform,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -112,8 +113,33 @@ const Login = (props) => {
         );
       });
       // Register background handler
-      messaging().setBackgroundMessageHandler(async remoteMessage => {
-        console.log('Message handled in the background!', remoteMessage);
+      // if (Platform.OS === "android") {
+
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+          console.log('Message handled in the background!', remoteMessage);
+          const channelId = 'colorhuntmobileapp';
+          const channelConfig = {
+            channelId,
+            channelName: 'colorhuntmobileapp Notification Channel',
+            channelDescription: 'colorhuntmobileapp custom notification channel',
+            soundName: 'default',
+            importance: 4, // Notification Importance (0-4), where 4 is the highest
+            vibrate: true,
+          };
+          // Create the channel
+          PushNotification.createChannel(channelConfig);
+          const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+            PushNotification.localNotification({
+              channelId: "colorhuntmobileapp",
+              title: remoteMessage.notification.title,
+              message: remoteMessage.notification.body
+            })
+          });
+          // return unsubscribe;
+        });
+        // Listen for incoming FCM messages
+        // Define the channel settings
         const channelId = 'colorhuntmobileapp';
         const channelConfig = {
           channelId,
@@ -131,36 +157,13 @@ const Login = (props) => {
           PushNotification.localNotification({
             channelId: "colorhuntmobileapp",
             title: remoteMessage.notification.title,
-            message: remoteMessage.notification.body
+            message: remoteMessage.notification.body,
           })
         });
-        // return unsubscribe;
-      });
-      // Listen for incoming FCM messages
-      // Define the channel settings
-      const channelId = 'colorhuntmobileapp';
-      const channelConfig = {
-        channelId,
-        channelName: 'colorhuntmobileapp Notification Channel',
-        channelDescription: 'colorhuntmobileapp custom notification channel',
-        soundName: 'default',
-        importance: 4, // Notification Importance (0-4), where 4 is the highest
-        vibrate: true,
-      };
-
-      // Create the channel
-      PushNotification.createChannel(channelConfig);
-      const unsubscribe = messaging().onMessage(async remoteMessage => {
-
-        PushNotification.localNotification({
-          channelId: "colorhuntmobileapp",
-          title: remoteMessage.notification.title,
-          message: remoteMessage.notification.body,
-        })
-      });
 
 
-      return unsubscribe;
+        return unsubscribe;
+      // }
     };
 
     getTokenAndSubscribe();
@@ -265,7 +268,7 @@ const Login = (props) => {
           // Call the phoneNumberValidation function to validate the number
           const validationResponse = await phoneNumberValidation({
             number: phoneNumber,
-          }).then(async(res) => {
+          }).then(async (res) => {
             if (res && res.status == 200) {
               if (res.data[0].Status == 0) {
                 Alert.alert("Invalid Phone Number. Please enter a valid phone number.");
@@ -284,7 +287,7 @@ const Login = (props) => {
                     console.error("Error storing data in local storage:", error);
                   });
 
-                  await udatepartytoken({party_id:res.data[0].Id,token:token});
+                await udatepartytoken({ party_id: res.data[0].Id, token: token });
 
                 setShowLogin(false); // Switch to OTP view
                 setIsLoading(false);

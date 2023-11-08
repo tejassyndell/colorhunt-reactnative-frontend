@@ -50,7 +50,7 @@ export default function App() {
       />
       {isOffline ? <AppContainer /> : <AppContainer />}
 
-      <Modal
+      {/* <Modal
         animationType="slide"
         visible={showNetworkError}
         onRequestClose={() => {
@@ -95,7 +95,7 @@ export default function App() {
             </Text>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
