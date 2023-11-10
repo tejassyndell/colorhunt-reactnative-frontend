@@ -130,6 +130,7 @@ const AddToCart = (props) => {
               fontSize: width >= 720 ? 45 : 25,
               fontFamily: "Glory",
               width: "100%",
+              height:25
             }}
           >
             Cart

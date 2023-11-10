@@ -11,26 +11,26 @@ export default function App() {
 
   // Function to enable/disable font scaling for a specific Text component
  
-  useEffect(() => {
-    const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
-      const offline = !(state.isConnected && state.isInternetReachable);
-      const online = state.isConnected && state.isInternetReachable;
-      setOfflineStatus(offline);
-      if (offline) {
-        // Set showNetworkError with a delay of 2000 milliseconds (2 seconds)
-        setShowNetworkError(true);
-      } else if (online) {
-        setShowNetworkError(false);
-      } else {
-        setShowNetworkError(false);
-      }
+  // useEffect(() => {
+  //   const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
+  //     const offline = !(state.isConnected && state.isInternetReachable);
+  //     const online = state.isConnected && state.isInternetReachable;
+  //     setOfflineStatus(offline);
+  //     if (offline) {
+  //       // Set showNetworkError with a delay of 2000 milliseconds (2 seconds)
+  //       setShowNetworkError(true);
+  //     } else if (online) {
+  //       setShowNetworkError(false);
+  //     } else {
+  //       setShowNetworkError(false);
+  //     }
 
-      // Call the setFontScaling function to disable font scaling
+  //     // Call the setFontScaling function to disable font scaling
 
-    });
+  //   });
 
-    return () => removeNetInfoSubscription();
-  }, []);
+  //   return () => removeNetInfoSubscription();
+  // }, []);
 
   // Define your fetchUsers function or replace this with your actual data fetching logic
   const fetchUsers = () => {
@@ -49,7 +49,7 @@ export default function App() {
         networkActivityIndicatorVisible={true}
       />
       {isOffline ? <AppContainer /> : <AppContainer />}
-
+{/* 
       <Modal
         animationType="slide"
         visible={showNetworkError}
@@ -95,7 +95,7 @@ export default function App() {
             </Text>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

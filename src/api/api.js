@@ -1,8 +1,8 @@
 /* eslint-disable */
 import axios from "axios";
-// const url = "http://10.0.2.2:4000";
+const url = "http://10.0.2.2:4000";
 // const url = "http://localhost:4000";
-const url = "https://colorhunt-server.sincprojects.com";
+// const url = "https://colorhunt-server.sincprojects.com";
 // const url = 'https://garment-backend.sincprojects.com'
 
 export const loginAuth = async (user) => {
@@ -31,6 +31,18 @@ export const getCategories = async () => {
     console.log(error, "err in react api");
   }
 };
+
+//////////////////////getAllNotification
+export const AllNotifications = async (data) => {
+  console.log(')()()()()');
+
+  try {
+    return await axios.post(`${url}/getallnotification`,data);
+  } catch (error) {
+    console.log(error, "err in react api");
+  }
+};
+
 export const getcateGorywithphotos = async () => {
   try {
     return await axios.get(`${url}/getcategorywithphotos`);
@@ -51,6 +63,7 @@ export const getAddWishlist = async (data) => {
 };
 /////////getWishlistData
 export const getWishlistData = async (data) => {
+  console.log(data);
   try {
     return await axios.post(`${url}/getWishlist`, data);
   } catch (error) {
@@ -113,7 +126,7 @@ export const Profiledata = async (data) => {
     return await axios.post(`${url}/getparty`, data);
   } catch (err) {
     console.log(err, "err in react api");
-    // throw err;
+    throw err;
   }
 };
 export const addto_cart = async (data) => {
@@ -199,7 +212,6 @@ export const CollectInwardForCartArticals = async (data) => {
 };
 
 export const getsonumber = async (data) => {
-  console.log(data);
   try {
     return await axios.post(`${url}/getsonumber`, data);
   } catch (err) {
@@ -251,27 +263,22 @@ export const getCompletedSoDetails = async (data) => {
   }
 };
 
-export const FilterSoNumber = async (data) => {
-  try {
-    return await axios.post(`${url}/filtersonumber`, data);
-  } catch (err) {
-    console.log(err);
-  }
-};
 
-export const FilteroutwardNumber = async (data) => {
+export const partyidsend = async (data) => {
+  console.log(data);
   try {
-    return await axios.post(`${url}/filteroutwardnumber`, data);
+    return await axios.post(`${url}/partyidsend`, data);
   } catch (err) {
     console.log(err);
   }
 };
 
 
-export const cartcount = async (data) => {
+export const updateNotification = async (data) => {
+  console.log(data,'oijwqeoijwoie');
   try {
-    return await axios.post(`${url}/cartcount`, data);
+    return await axios.post(`${url}/updatenotification`, data);
   } catch (err) {
-    console.log(err);
+    console.log(err, "err in react API");
   }
-}
+};
