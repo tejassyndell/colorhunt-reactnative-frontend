@@ -38,8 +38,7 @@ const SliderScreen = (props) => {
   }, []);
   
 
-
-
+ 
   const Shopping = () => {
     navigation.navigate("Home");
   };
@@ -64,8 +63,15 @@ const SliderScreen = (props) => {
     return <View style={styles.paginationContainer}>{dots}</View>;
   };
 
+  const Shoppings = () => {
+    navigation.navigate("Home");
+  };
+
+
   return (
+    <>
     <View style={styles.container}>
+   
       <Swiper
         loop={false}
         showsPagination={true}
@@ -75,6 +81,7 @@ const SliderScreen = (props) => {
           autoplay={true}
          
       >
+         <TouchableOpacity onPress={Shopping} style={{flex:1}}>
         <ImageBackground
           source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
           style={styles.slide}
@@ -103,8 +110,10 @@ const SliderScreen = (props) => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
-
+        </TouchableOpacity>
         {/* Repeat the same structure for other slides */}
+        <TouchableOpacity onPress={Shopping} style={{flex:1}}>
+
         <ImageBackground
           source={require("../../../assets/SliderImage/low-angle-little-boy-posing.png")}
           style={styles.slide}
@@ -122,7 +131,8 @@ const SliderScreen = (props) => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
-
+        </TouchableOpacity>
+        <TouchableOpacity onPress={Shopping} style={{flex:1}}>
         <ImageBackground
           source={require("../../../assets/SliderImage/kid-studio-portrait-isolated.png")}
           style={styles.slide}
@@ -153,7 +163,8 @@ const SliderScreen = (props) => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
-
+        </TouchableOpacity>
+        <TouchableOpacity onPress={Shopping} style={{flex:1}}>
         <ImageBackground
           source={require("../../../assets/SliderImage/handsome-confident-hipster-modelsexy-unshaven-man-dressed-summer-stylish-green-hoodie-jeans-clothes-fashion-male-with-curly-hairstyle-posing-studio-isolated-blue.png")}
           style={styles.slide}
@@ -172,6 +183,7 @@ const SliderScreen = (props) => {
                   backgroundColor: "black",
                   borderColor: "black",
                 },
+                
               ]}
               onPress={Shopping}
             >
@@ -179,8 +191,14 @@ const SliderScreen = (props) => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
+        </TouchableOpacity>
+   
       </Swiper>
+
     </View>
+    
+    </>
+   
   );
 };
 

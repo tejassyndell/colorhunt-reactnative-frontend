@@ -100,8 +100,8 @@ const AddToCart = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -120,7 +120,7 @@ const AddToCart = (props) => {
             alignItems: "center",
             alignContent: "center",
             paddingLeft: "10%",
-            marginBottom: 20,
+            marginBottom:20,
             width: parseInt(windowwidthe) >= 720 ? "95%" : "100%",
           }}
         >
@@ -130,6 +130,7 @@ const AddToCart = (props) => {
               fontSize: width >= 720 ? 45 : 25,
               fontFamily: "Glory",
               width: "100%",
+              height:25
             }}
           >
             Cart
@@ -180,6 +181,7 @@ const AddToCart = (props) => {
           setRefreshing(false);
           setIsLoading(false);
         }
+        
       })
       .catch((error) => {
         // console.log("Error fetching data:", error);
@@ -476,7 +478,7 @@ const AddToCart = (props) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: "#FFF",
+            backgroundColor:"#FFF"
           }}
         >
           <View
@@ -571,7 +573,7 @@ const AddToCart = (props) => {
                         }}
                       >
                         <View style={{ paddingBottom: 20 }}>
-                          {orderItems.map((item, index) =>
+                          {orderItems.map((item,index) =>
                             array_1.length > 0 ? (
                               array_1.includes(item.article_id) ? (
                                 // id === item.article_id ?
@@ -581,17 +583,25 @@ const AddToCart = (props) => {
                                     flexDirection: "row",
                                     width: "94%",
 
+                                    shadowOpacity: 0.5,
+                                    elevation: 5, // For Android, use elevation
+                                    shadowOffset: {
+                                      width: 1,
+                                      height: 1,
+                                    },
                                     marginHorizontal: "3%",
                                     marginTop: "5%",
                                     borderRadius: 10,
-                                    paddingVertical: 5,
+                                    paddingVertical: "1.5%",
                                     backgroundColor: "#FFF",
+                                    paddingHorizontal: 3,
                                     borderWidth: 1,
+                                    borderColor: "rgba(0,0,0,0.3)",
                                   }}
                                 >
                                   <View
                                     style={{
-                                      marginHorizontal: 5,
+                                      marginHorizontal: 10,
                                       borderRadius: 10,
                                       shadowColor: "#000",
                                       shadowOffset: {
@@ -608,7 +618,6 @@ const AddToCart = (props) => {
                                         borderRadius: 12,
                                         borderColor: "rgba(0,0,0,0.2)",
                                         borderWidth: 1,
-                                        marginRight: 10,
                                       }}
                                       onPress={() =>
                                         handleEditOrder(
@@ -708,7 +717,7 @@ const AddToCart = (props) => {
                                         display: "flex",
                                         flexDirection: "row",
                                         justifyContent: "flex-end",
-                                        gap: 10,
+                                        gap: windowwidthe * 0.01,
                                         paddingRight: "5%",
                                         marginVertical: "5%",
                                         borderRadius: 10,
@@ -723,8 +732,8 @@ const AddToCart = (props) => {
                                           )
                                         }
                                         style={{
-                                          width: width >= 720 ? 30 : 20,
-                                          height: width >= 720 ? 30 : 20,
+                                          width: width >= 720 ? 30 : 15,
+                                          height: width >= 720 ? 30 : 15,
                                         }}
                                       >
                                         {editesvg}
@@ -734,8 +743,8 @@ const AddToCart = (props) => {
                                           handleDeleteOrder(item.article_id)
                                         }
                                         style={{
-                                          width: width >= 720 ? 30 : 20,
-                                          height: width >= 720 ? 30 : 20,
+                                          width: width >= 720 ? 30 : 15,
+                                          height: width >= 720 ? 30 : 15,
                                         }}
                                       >
                                         {deletsvg}

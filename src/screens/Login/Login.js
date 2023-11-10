@@ -11,6 +11,8 @@ import {
   Keyboard,
   ActivityIndicator,
   Alert,
+  Animated,
+  LayoutAnimation,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -44,7 +46,41 @@ const Login = (props) => {
   const initialLogoSize = Math.min(width, height) * 0.5;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
+  const [isLogoVisible, setLogoVisible] = useState(true);
 
+ 
+  const keyboardDidShow = () => {
+    // const newSize = 100;
+    // setLogoSize(newSize);
+    // setLeftPosition("65%");
+    setLogoVisible(false); // Hide the logo when the keyboard shows
+    setTimeout(() => {
+    }, 10); // Hide the logo when the keyboard shows
+  };
+
+  const keyboardDidHide = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    setLogoSize(initialLogoSize);
+    setLeftPosition("50%");
+    setLogoVisible(true); // Show the logo when the keyboard hides
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      keyboardDidShow
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      keyboardDidHide
+    );
+    
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   useEffect(() => {
     // This is the code that runs after the component mounts
     // Start a timer with a delay of 2000 milliseconds (2 seconds)
@@ -74,41 +110,20 @@ const Login = (props) => {
   //     return false;
   //   }
   // }
-   const keyboardDidShow = () => {
-      const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
-      setLogoSize(newSize);
-      setLeftPosition("65%");
-    };
 
-    const keyboardDidHide = () => {
-      setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
-      setLeftPosition("50%");
-    };
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      keyboardDidShow
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      keyboardDidHide
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-  useEffect(() => {
-    AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: token })).then(() => {
-      // console.log("Data stored in local storage:", userData);
-    })
+    AsyncStorage.setItem(
+      "notificationstatus",
+      JSON.stringify({ status: true, token: token })
+    )
+      .then(() => {
+        // console.log("Data stored in local storage:", userData);
+      })
       .catch((error) => {
         console.error("Error storing data in local storage:", error);
       });
-
-  }, [])
+  }, []);
   const getResponsiveImageSource = () => {
     const pixelRatio = PixelRatio.get();
     if (pixelRatio <= 1) {
@@ -139,18 +154,18 @@ const Login = (props) => {
     }, [])
   );
   const animateKeyboardShow = () => {
-    const customAnimationConfig = {
-      duration: 500, // Set the duration in milliseconds
-      create: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-    };
+    // Set the duration to 1 second (1000 milliseconds)
 
-    LayoutAnimation.configureNext(customAnimationConfig);
+    // Define your Animated value
+    const yourAnimatedValue = new Animated.Value(0);
+
+    Keyboard.addListener("keyboardDidShow", () => {
+      Animated.timing(yourAnimatedValue, {
+        toValue: 2, // or any other value you desire
+        duration: 400, // A shorter duration for a faster animation
+        useNativeDriver: true,
+      }).start();
+    });
   };
 
   const handleNextOrVerify = async () => {
@@ -173,9 +188,10 @@ const Login = (props) => {
           }).then((res) => {
             if (res && res.status == 200) {
               if (res.data[0].Status == 0) {
-                Alert.alert("Invalid Phone Number. Please enter a valid phone number.");
-              }
-              else if (res.data[0].Status == 1) {
+                Alert.alert(
+                  "Invalid Phone Number. Please enter a valid phone number."
+                );
+              } else if (res.data[0].Status == 1) {
                 setIsLoading(true);
 
                 getstatus(true, res.data[0].Name);
@@ -186,9 +202,11 @@ const Login = (props) => {
                     // console.log("Data stored in local storage:", userData);
                   })
                   .catch((error) => {
-                    console.error("Error storing data in local storage:", error);
+                    console.error(
+                      "Error storing data in local storage:",
+                      error
+                    );
                   });
-
 
                 setShowLogin(false); // Switch to OTP view
                 setIsLoading(false);
@@ -209,21 +227,16 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         navigation.navigate("Slider");
-      } else  if (otp.join('').length < 1) {
+      } else if (otp.join("").length < 1) {
         // Navigate to the desired screen when "Back" is clicked
-        setPhoneNumber("")
+        setPhoneNumber("");
         setShowLogin(true);
-        
-
-      }else {
+      } else {
         alert("Invalid OTP. Please try again.");
       }
-     
-      
-      
     }
   };
-  
+
   const otpInput = [useRef(), useRef(), useRef(), useRef()];
   // Function to handle OTP digit input
   const handleOTPDigitChange = (index, text) => {
@@ -239,7 +252,13 @@ const Login = (props) => {
     }
   };
 
-  const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") :( otp.join('').length === 0? "Back": "Verify");
+  const buttonLabel = showLogin
+    ? phoneNumber
+      ? "Next"
+      : "Skip"
+    : otp.join("").length === 0
+    ? "Back"
+    : "Verify";
 
   const gifImageSource = require("../../../assets/Loader/Screen.gif");
   return (
@@ -272,18 +291,15 @@ const Login = (props) => {
                 style={styles.backgroundImage1}
                 resizeMode="stretch"
               >
-                <View
-                  style={[styles.loginLogoContainer, { left: leftPosition }]}
-                >
-                  {/* <Image
-                source={imageSource}
-                style={[
-                  styles.loginLogo,
-                  { height: logoSize, width: logoSize },
-                ]}
-              /> */}
-                  <WhiteLogo path={imageSource} />
-                </View>
+                {isLogoVisible ? (
+                  <View
+                    style={[styles.loginLogoContainer, { left: leftPosition }]}
+                  >
+                    <WhiteLogo path={imageSource} />
+                  </View>
+                ) : (
+                  null
+                )}
               </ImageBackground>
               <View style={styles.contentContainer}>
                 {showLogin ? (

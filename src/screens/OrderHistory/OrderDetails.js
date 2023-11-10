@@ -24,8 +24,8 @@ import * as Location from "expo-location";
 import Loader from "../../components/Loader/Loader";
 import * as FileSystem from "expo-file-system";
 import * as Permissions from "expo-permissions";
-import RNHTMLtoPDF from "react-native-html-to-pdf";
-import Share from "react-native-share";
+// import RNHTMLtoPDF from "react-native-html-to-pdf";
+// import Share from "react-native-share";
 import { Platform, PermissionsAndroid } from "react-native";
 
 const OrderDetails = (props) => {
@@ -517,31 +517,31 @@ const OrderDetails = (props) => {
 </body>
     </html>
   `;
-  const generatePDF = async () => {
-    try {
-      if (Platform.OS === "android") {
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== "granted") {
-          console.error("Location permission not granted");
-          return;
-        }
-      } else if (Platform.OS === "ios") {
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== "granted") {
-          console.error("Location permission not granted");
-          return;
-        }
-      }
+  // const generatePDF = async () => {
+  //   try {
+  //     if (Platform.OS === "android") {
+  //       const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  //       if (status !== "granted") {
+  //         console.error("Location permission not granted");
+  //         return;
+  //       }
+  //     } else if (Platform.OS === "ios") {
+  //       const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  //       if (status !== "granted") {
+  //         console.error("Location permission not granted");
+  //         return;
+  //       }
+  //     }
 
-      // Generate PDF from HTML content
-      const pdfFile = await printToFileAsync({ html: html, base64: false });
+  //     // Generate PDF from HTML content
+  //     const pdfFile = await printToFileAsync({ html: html, base64: false });
 
-      // Share the generated PDF
-      await shareAsync(pdfFile.uri);
-    } catch (error) {
-      console.error("Error generating and sharing PDF:", error);
-    }
-  };
+  //     // Share the generated PDF
+  //     await shareAsync(pdfFile.uri);
+  //   } catch (error) {
+  //     console.error("Error generating and sharing PDF:", error);
+  //   }
+  // };
 
   return (
     <>
