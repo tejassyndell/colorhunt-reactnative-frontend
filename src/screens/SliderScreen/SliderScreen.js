@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,12 +14,15 @@ import SliderStyles from "./styles";
 import Blacklogo from "../../jssvgs/Blacklogo";
 import Sliderwhitelog from "../../jssvgs/Sliderwhitelog";
 import SystemNavigationBar from 'react-native-system-navigation-bar';
+import { Sliderimages } from "../../api/api";
 
 const { width, height } = Dimensions.get("window");
-
+const baseImageUrl =
+  "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
 const SliderScreen = (props) => {
   const { navigation } = props;
+  const [slideimagesdata, setSliderimagedata] = useState([]);
   const showNavigation = async () => {
     if (SystemNavigationBar) {
       try {
@@ -32,11 +35,20 @@ const SliderScreen = (props) => {
       console.error("SystemNavigationBar is not available.");
     }
   };
-  
+  const getSliderimages = async () => {
+    await Sliderimages().then((res) => {
+      if (res) {
+        if (res.status == 200) {
+          setSliderimagedata(res.data);
+        }
+      }
+    })
+  }
   useEffect(() => {
+    getSliderimages();
     showNavigation(); // Call this function to hide the navigation bar when the component mounts
   }, []);
-  
+
 
 
 
@@ -66,121 +78,43 @@ const SliderScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Swiper
-        loop={false}
-        showsPagination={true}
-        renderPagination={(index, total) => (
-          <CustomPagination index={index} total={total} />
+      {slideimagesdata ?
+        <Swiper
+          loop={false}
+          showsPagination={true}
+          renderPagination={(index, total) => (
+            <CustomPagination index={index} total={total} />
           )}
           autoplay={true}
-         
-      >
-        <ImageBackground
-          source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
-          style={styles.slide}
         >
-          <View style={styles.contain1}>
-            {/* <Image
-              source={require("../../../assets/SliderImage/image99.png")}
-              resizeMode="contain"
-              style={{
-                width: imageWidth,
-                height: imageHeight,
+          {slideimagesdata.length > 0 ? slideimagesdata.map((item, index) => (
+            <ImageBackground
+              key={index}
+              source={{
+                uri: baseImageUrl + item.image
               }}
-            /> */}
-            <Sliderwhitelog />
-            <Text style={[styles.slideText1, { color: "white" }]}>
-              SMAERT{"\n"}FORMALS
-            </Text>
-            <Text style={[styles.slideText2, { color: "white" }]}>
-              MIN. {"\n"}30% OFF*
-            </Text>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: "white" }]}
-              onPress={Shopping}
+              style={styles.slide}
             >
-              <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-
-        {/* Repeat the same structure for other slides */}
-        <ImageBackground
-          source={require("../../../assets/SliderImage/low-angle-little-boy-posing.png")}
-          style={styles.slide}
-        >
-          <View style={styles.contain2}>
-            <Blacklogo />
-            <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
-              Flat{"\n"}40-50% OFF*
-            </Text>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: "white" }]}
-              onPress={Shopping}
-            >
-              <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-
-        <ImageBackground
-          source={require("../../../assets/SliderImage/kid-studio-portrait-isolated.png")}
-          style={styles.slide}
-        >
-          <View style={styles.contain3}>
-            <Blacklogo />
-
-            <Text
-              style={[
-                styles.slideText1,
-                {
-                  fontWeight: "500",
-                  marginTop: 20,
-                },
-              ]}
-            >
-              Flat{"\n"}20-40% OFF*
-            </Text>
-            <TouchableOpacity style={styles.button} onPress={Shopping}>
-              <Text
-                style={[
-                  styles.buttonText,
-                  { color: "white", fontWeight: "bold" },
-                ]}
-              >
-                Shop
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-
-        <ImageBackground
-          source={require("../../../assets/SliderImage/handsome-confident-hipster-modelsexy-unshaven-man-dressed-summer-stylish-green-hoodie-jeans-clothes-fashion-male-with-curly-hairstyle-posing-studio-isolated-blue.png")}
-          style={styles.slide}
-        >
-          <View style={styles.contain4}>
-            <Blacklogo />
-
-            <Text style={[styles.slideText1]}>BEST{"\n"}PICKS</Text>
-            <Text style={[styles.slideText2, { color: "black" }]}>
-              FLAT{"\n"}50% OFF*
-            </Text>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                {
-                  backgroundColor: "black",
-                  borderColor: "black",
-                },
-              ]}
-              onPress={Shopping}
-            >
-              <Text style={styles.buttonText}>Shop</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </Swiper>
+              <View style={styles.contain1}>
+                <Sliderwhitelog />
+                <Text style={[styles.slideText1, { color: "white" }]}>
+                  SMAERT{"\n"}FORMALS
+                </Text>
+                <Text style={[styles.slideText2, { color: "white" }]}>
+                  MIN. {"\n"}30% OFF*
+                </Text>
+                <TouchableOpacity
+                  style={[styles.button, { backgroundColor: "white" }]}
+                  onPress={Shopping}
+                >
+                  <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
+          )) : ""}
+        </Swiper> : ""}
     </View>
+
   );
 };
 
