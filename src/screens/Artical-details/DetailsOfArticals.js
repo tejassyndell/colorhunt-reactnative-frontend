@@ -533,9 +533,9 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             marginBottom: 5,
-                            fontWeight: "600",
+                            fontWeight: "700",
                             fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontFamily: isFontLoaded ? "Glory" :  "Arial, sans-serif",
                           }}
                         >
                           Size

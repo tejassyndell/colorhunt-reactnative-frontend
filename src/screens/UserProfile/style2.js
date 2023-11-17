@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "contain",
   },
-  loader:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'#FFF',
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
 
   },
   Profile: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   text: {
     color: "rgba(0, 0, 0, 0.5)",
     fontSize: width >= 720 ? 30 : 18,
-    fontWeight: '600',
+    fontFamily: "GloryBold"
   },
   hello: {
     borderBottomWidth: 1,

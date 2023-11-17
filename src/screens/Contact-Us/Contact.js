@@ -19,6 +19,7 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import * as Font from "expo-font";
 import Loader from "../../components/Loader/Loader"
 import Contactsvg from "../../jssvgs/Contactsvg";
+import { loadCustomFont } from "../../loadCustomFont";
 
 export default function Contact(props) {
   const { navigation } = props;
@@ -62,7 +63,9 @@ export default function Contact(props) {
     // Clear the timer when the component unmounts
     return () => clearTimeout(timer);
   }, []);
-
+  const fonttype = async () => {
+    const status = await loadCustomFont()
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -74,7 +77,7 @@ export default function Contact(props) {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
 
@@ -144,8 +147,7 @@ export default function Contact(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "700",
+              fontFamily: "GloryBold" ,
               width: "100%",
               marginBottom: 20,
 
@@ -174,9 +176,8 @@ export default function Contact(props) {
     submitText: {
       color: "white",
       textAlign: "center",
-      fontSize: width >= 720 ? 30 : 20,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
-      fontWeight: "700",
+      fontSize: width >= 720 ? 30 : 23,
+      fontFamily: "GlorySemiBold" ,
     },
   });
   const windowWidth = Dimensions.get("window").width;
@@ -186,16 +187,16 @@ export default function Contact(props) {
 
     if (!isValid) {
       setvalidusername(true);
-    } else{
+    } else {
       setvalidusername(false);
     }
   }
   const handleEmailChange = (text) => {
     setEmail(text);
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
-    if(isValidEmail){
+    if (isValidEmail) {
       setShowValidationemail(false);
-    }else{
+    } else {
       setShowValidationemail(true);
     }
     // Show validation error if the email is empty or invalid
@@ -271,29 +272,28 @@ export default function Contact(props) {
                   padding: 10,
                   margin: 5,
                   fontSize: width >= 720 ? 30 : 15,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
-
+                  fontFamily: "GloryRegular" ,
                   height: width >= 720 ? 70 : 40,
                 }}
               />
-              {showValidationErrors && !username && validusername==false && (
+              {showValidationErrors && !username && validusername == false && (
                 <Text
                   style={{
                     color: "red",
                     fontSize: 12,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontFamily: "GloryRegular" ,
                     marginLeft: 10,
                   }}
                 >
                   This field is required
                 </Text>
               )}
-              {validusername  && (
+              {validusername && (
                 <Text
                   style={{
                     color: "red",
                     fontSize: 12,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: "GloryRegular" ,
                     marginLeft: 10,
                   }}
                 >
@@ -312,40 +312,40 @@ export default function Contact(props) {
               <TextInput
                 placeholder="Email"
                 value={email}
-                onChangeText={(val)=>handleEmailChange(val)}
+                onChangeText={(val) => handleEmailChange(val)}
                 style={{
                   borderWidth: 1,
                   borderRadius: 5,
                   padding: 10,
                   margin: 5,
                   fontSize: width >= 720 ? 30 : 15,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontFamily: "GloryRegular" ,
                   height: width >= 720 ? 70 : 40,
                 }}
               />
-              {showValidationErrors && !email && showValidationemail==false && (
+              {showValidationErrors && !email && showValidationemail == false && (
                 <Text
                   style={{
                     color: "red",
                     fontSize: 12,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: "GloryRegular" ,
                     marginLeft: 10,
                   }}
                 >
                   This field is required
                 </Text>
               )}
-              {showValidationemail  && (
+              {showValidationemail && (
                 <Text
                   style={{
                     color: "red",
                     fontSize: 12,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: "GloryRegular" ,
                     marginLeft: 10,
                   }}
                 >
-                  {email==""?"This field is required":
-                 "Please use a valid email address"}
+                  {email == "" ? "This field is required" :
+                    "Please use a valid email address"}
                 </Text>
               )}
             </View>
@@ -367,7 +367,7 @@ export default function Contact(props) {
                   margin: 5,
                   height: width >= 720 ? 70 : 40,
                   fontSize: width >= 720 ? 30 : 15,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontFamily: "GloryRegular" ,
                 }}
               />
               {showValidationErrors && !subject && (
@@ -375,7 +375,7 @@ export default function Contact(props) {
                   style={{
                     color: "red",
                     fontSize: 12,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: "GloryRegular" ,
                     marginLeft: 10,
                   }}
                 >
@@ -406,7 +406,7 @@ export default function Contact(props) {
                   margin: 5,
                   height: multilineHeight,
                   fontSize: width >= 720 ? 30 : 15,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  fontFamily: "GloryRegular" ,
                 }}
               />
               {showValidationErrors && !message && (
@@ -414,7 +414,7 @@ export default function Contact(props) {
                   style={{
                     color: "red",
                     fontSize: 12,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: "GloryRegular" ,
                     marginLeft: 10,
                   }}
                 >

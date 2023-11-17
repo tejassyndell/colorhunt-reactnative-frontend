@@ -19,6 +19,7 @@ import Loader from "../../components/Loader/Loader";
 
 import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
+import { loadCustomFont } from "../../loadCustomFont.js";
 export default function WishList(props) {
   const { navigation } = props;
 
@@ -41,6 +42,9 @@ export default function WishList(props) {
       : height >= 844
       ? 110
       : 65;
+  const fonttype = async ()=>{
+    const status = await loadCustomFont()
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -52,7 +56,7 @@ export default function WishList(props) {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
   // uploard url image
@@ -96,13 +100,11 @@ export default function WishList(props) {
 
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
-    console.log('kjsankjfdnsjnfdkjnsfd');
     const data = {
       party_id: await getpartyid(),
       status: "true",
     };
     const result = await getWishlistData(data).then((res) => {
-      console.log("--------");
       if (res.status == 200) {
         // console.log(res.data);
         setSelectprd(res.data);
@@ -144,8 +146,7 @@ export default function WishList(props) {
             style={{
               textAlign: "center",
               fontSize: width >= 720 ? 35 : 25,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "700",
+              fontFamily: "GloryBold" ,
               width: "100%",
             }}
           >
@@ -267,15 +268,18 @@ export default function WishList(props) {
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{  fontSize: width >= 720 ? 18 : 14, 
+              fontFamily:"GlorySemiBold" }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 13 ,
+              fontFamily:"GloryMedium" }}>
               {item.Title}
             </Text>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{ fontSize: width >= 720 ? 18 : 14, 
+              fontFamily:"GlorySemiBold" }}
             >
               {"₹" + item.ArticleRate + ".00"}
             </Text>
@@ -311,7 +315,7 @@ export default function WishList(props) {
             <Text
               style={{
                 fontSize: width * 0.1,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontFamily:"GloryMedium",
                 textAlign: "center",
                 fontWeight: "700",
                 color: "#808080",

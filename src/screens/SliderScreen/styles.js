@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import * as Font from "expo-font";
+import { loadCustomFont } from "../../loadCustomFont";
 
 const LoginStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  const fonttype = async ()=>{
+    const status = await loadCustomFont()
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -16,7 +19,7 @@ const LoginStyles = () => {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
 
@@ -75,9 +78,8 @@ const LoginStyles = () => {
     buttonText: {
       color: "white",
       fontSize: width >= 720 ? 40 : 20,
-      fontWeight: "bold",
       paddingBottom:5,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily:  "GloryBold" ,
     },
     contain1: {
       position: "absolute",

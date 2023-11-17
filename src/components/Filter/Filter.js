@@ -16,6 +16,7 @@ import { useRef } from "react";
 import { Svg, G, Path, Circle } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
+import { loadCustomFont } from "../../loadCustomFont";
 
 const { width, height } = Dimensions.get("window");
 
@@ -54,7 +55,12 @@ export default function Filter({
   const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  const fonttype = async ()=>{
+    const status = await loadCustomFont()
+  }
+  useEffect(()=>{
+    fonttype()
+  },[])
 
 
   const getCategoriesname = async () => {
@@ -153,7 +159,12 @@ export default function Filter({
         ? curr
         : prev;
     });
-    setLeftValue(nearestAllowedValue);
+    if (rightValue == nearestAllowedValue) {
+      setLeftValue(minArticleRate)
+    }
+    else {
+      setLeftValue(nearestAllowedValue)
+    }
     setRightValue(Math.max(rightValue, nearestAllowedValue));
   };
 
@@ -169,7 +180,12 @@ export default function Filter({
     });
 
     // Update the rightValue to the nearest allowed value
-    setRightValue(nearestAllowedValue);
+    if (nearestAllowedValue == leftValue) {
+      setRightValue(maxArticleRate)
+    }
+    else {
+      setRightValue(nearestAllowedValue)
+    }
 
     // Ensure that the leftValue is less than or equal to the rightValue
     setLeftValue(Math.min(leftValue, nearestAllowedValue));
@@ -249,7 +265,7 @@ export default function Filter({
           ""
         )}
         {status === false ? (
-          <ScrollView style={{ width: '100%', backgroundColor:'#FFF', height: height >= 844 ? 360 : 250 }}>
+          <ScrollView style={{ width: '100%', backgroundColor: '#FFF', height: height >= 844 ? 360 : 250 }}>
             <View style={styles.categoriesContainer}>
               {data.map((item, index) => (
                 <TouchableOpacity
@@ -341,7 +357,7 @@ export default function Filter({
                 style={{
                   textAlign: "left",
                   fontSize: width >= 720 ? 25 : 15,
-                  fontFamily: "Glory",
+                  fontFamily: "GlorySemiBold",
                   paddingRight: 10,
                   paddingBottom: 5,
                 }}
@@ -395,7 +411,7 @@ export default function Filter({
                 style={{
                   textAlign: width >= 720 ? "right" : "left",
                   fontSize: width >= 720 ? 25 : 15,
-                  fontFamily: "Glory",
+                  fontFamily: "GlorySemiBold",
                   paddingLeft: 16,
                 }}
               >
@@ -420,8 +436,7 @@ export default function Filter({
             <Text
               style={{
                 color: selectedCategories.length > 0 ? "white" : "black",
-                fontWeight: "600",
-                fontFamily: "Glory",
+                fontFamily: "GlorySemiBold",
                 fontSize: 18, // Add this line for bold text
               }}
             >
@@ -456,9 +471,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   headerText: {
-    fontSize: width >= 720 ? 30 : 22,
-    fontFamily: "Glory",
-    fontWeight: "bold",
+    fontSize: width >= 720 ? 30 : 24,
+    fontFamily: "GloryBold",
   },
   closeIcon: {
     width: width >= 720 ? 45 : 30,
@@ -508,14 +522,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   categoryText: {
-    fontSize: width >= 720 ? 16 : 12,
-    fontFamily: "Glory",
+    fontSize: width >= 720 ? 16 : 13,
+    fontFamily: "GlorySemiBold",
     marginLeft: 3,
     width: "80%",
     paddingVertical: 5,
     flexWrap: "wrap", // Enable text wrapping
     justifyContent: "center",
-    fontWeight: "500",
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -535,10 +548,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   label: {
-    fontSize: width >= 720 ? 30 : 22,
-    fontFamily: "Glory",
+    fontSize: width >= 720 ? 30 : 24,
+    fontFamily: "GloryBold",
     marginBottom: 10,
-    fontWeight: "700",
     height: 50,
     paddingTop: 10,
     justifyContent: "center",
@@ -573,9 +585,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: width >= 720 ? 20 : 18,
-    fontFamily: "Glory",
+    fontFamily: "GlorySemiBold",
     paddingBottom: 3,
-    fontWeight: "600",
   },
   tooltipContainer: {
     backgroundColor: "black",
@@ -636,7 +647,6 @@ const styleslider = StyleSheet.create({
     top: 15,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
-    fontFamily: "Glory",
-    fontWeight: "500",
+    fontFamily: "GlorySemiBold",
   },
 });

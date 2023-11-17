@@ -31,6 +31,7 @@ import Loader from "../../components/Loader/Loader";
 import { ActivityIndicator } from "react-native";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
 import Svg, { Circle, Path } from "react-native-svg";
+import { loadCustomFont } from "../../loadCustomFont";
 
 export default function AllArticle(props) {
   const { navigation } = props;
@@ -54,6 +55,12 @@ export default function AllArticle(props) {
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const fonttype =async ()=>{
+    let status =await loadCustomFont()
+  }
+  useEffect(()=>{
+    fonttype()
+  },[])
   const onRefresh = () => {
     getCategoriesname()
   };
@@ -424,15 +431,21 @@ export default function AllArticle(props) {
         >
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{  fontSize: width >= 720 ? 18 : 14, 
+              fontFamily:"GlorySemiBold"
+            }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{ fontSize: width >= 720 ? 15 : 10 }}>
+            <Text style={{ fontSize: width >= 720 ? 15 : 13 ,
+              fontFamily:"GloryMedium"
+            }}>
               {convertToTitleCase(item.Category)}
             </Text>
             <Text
-              style={{ fontWeight: "bold", fontSize: width >= 720 ? 18 : 12 }}
+              style={{  fontSize: width >= 720 ? 18 : 14,
+              fontFamily:"GlorySemiBold"
+            }}
             >
               {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
             </Text>
@@ -531,12 +544,12 @@ export default function AllArticle(props) {
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 25 : 15,
-                fontWeight: "700",
+                fontSize: width >= 720 ? 25 : 18,
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
                 marginTop: 10,
+                fontFamily:"GloryBold"
               }}
             >
               ALL Articles
@@ -554,9 +567,9 @@ export default function AllArticle(props) {
           >
             {noArticlesFound ? (
               <Text
-                style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}
+                style={{ textAlign: "center", fontSize: 16, marginTop: 20,fontFamily:"GloryMedium" }}
               >
-                NO ARTICLES FOUND
+                  No Articles Found
               </Text>
             ) : (
               <>
