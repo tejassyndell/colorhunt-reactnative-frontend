@@ -276,7 +276,7 @@ const OrderHistory = (props) => {
       }
     }
     const totalAmount = sum + 0.05 * sum;
-    return Math.floor(totalAmount);
+    return Math.ceil(totalAmount);
   };
 
   const getCompleteData = async () => {

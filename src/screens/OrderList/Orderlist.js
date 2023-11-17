@@ -400,7 +400,6 @@ const Orderlist = (props) => {
                   style={{
                     paddingHorizontal: "5%",
                     paddingBottom: "3%",
-                    paddingTop: 2,
                     gap: 5,
                   }}
                 >
@@ -422,7 +421,6 @@ const Orderlist = (props) => {
                       paddingVertical: "2.5%",
                       paddingLeft: "3%",
                       borderRadius: 6,
-
                       borderBottomLeftRadius: 0,
                       borderBottomRightRadius: 0,
                       borderColor: "#E4E7EA",
@@ -458,7 +456,7 @@ const Orderlist = (props) => {
                       <TouchableOpacity
                         style={{
                           width: width >= 720 ? 50 : 30,
-                          height: width >= 720 ? 50 : 30
+                          height: width >= 720 ? 50 : 30,
                         }}
                         onPress={() => {
                           Transportation.length !== 0
@@ -466,15 +464,12 @@ const Orderlist = (props) => {
                             : "";
                         }}
                       >
-                        {/* <Image
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            resizeMode: "contain",
-                          }}
-                          source={require("../../../assets/DownArrow(1).png")}
-                        ></Image> */}
-                        <Svg width="100%" height="100%" viewBox="0 0 30 30" fill="none">
+                        <Svg
+                          width="100%"
+                          height="100%"
+                          viewBox="0 0 30 30"
+                          fill="none"
+                        >
                           <G id="download_2">
                             <Path
                               id="Vector"
@@ -487,83 +482,18 @@ const Orderlist = (props) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                {showTransporatation && Transportation.length !== 0 && (
-                  <ScrollView
-                    style={{
-                      // height: "auto",
-                      maxHeight: "50%",
-                      borderWidth: 1,
-                      backgroundColor: "#EEEEEE",
-                      marginHorizontal: "5%",
-                      borderRadius: 6,
-                      borderColor: "#E4E7EA",
-                      paddingHorizontal: "2.5%",
-                      paddingBottom: "4.5%",
-                      width: "90%",
-                      position: "relative",
-                      borderTopLeftRadius: 0,
-                      borderTopRightRadius: 0,
-                      bottom: 14,
-                    }}
-                    nestedScrollEnabled={true}
 
-                  >
-                    <View>
-                      {Transportation.map((item, index) => (
-                        <TouchableOpacity
-                          key={index}
-                          onPress={() => {
-                            setTransportationVal(item.Name);
-                            setshowTransporatation(!showTransporatation);
-                          }}
-                        // onPressIn={() => handlePressIn(item)}
-                        // onPressOut={handlePressOut}
-                        >
-                          <View
-                            style={[
-                              styles.item,
-                              {
-                                backgroundColor:
-                                  hoveredItem === item.Id
-                                    ? "black"
-                                    : "transparent",
-                              },
-                            ]}
-                          >
-                            <Text
-                              style={[
-                                {
-                                  fontSize:
-                                    windowwidthe < 720
-                                      ? windowwidthe * 0.042
-                                      : 26,
-                                  color:
-                                    hoveredItem === item.Id
-                                      ? "#fff"
-                                      : "#626262",
-                                  // fontWeight: "500",
-                                  fontFamily: isFontLoaded ? "Glory" : undefined,
-
-                                },
-                              ]}
-                            >
-                              {item.Name.toUpperCase()}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  </ScrollView>
-                )}
               </View>
+
               <View
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   maxHeight: "30%",
-                  width: "100%",
+                  width: "100%"
                 }}
               >
+
                 <ScrollView nestedScrollEnabled={true} >
                   {ParsedData &&
                     ParsedData.map((item, index) => (
@@ -675,6 +605,74 @@ const Orderlist = (props) => {
                 </ScrollView>
               </View>
             </View>
+            {showTransporatation && Transportation.length !== 0 && (
+              <ScrollView
+                style={{
+                  height: "auto",
+                  maxHeight: "100%",
+                  borderWidth: 1,
+                  backgroundColor: "#EEEEEE",
+                  marginHorizontal: "5%",
+                  borderRadius: 6,
+                  borderColor: "#E4E7EA",
+                  paddingHorizontal: "2.5%",
+                  paddingBottom: "4.5%",
+                  width: "90%",
+                  position: "absolute",
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                  top: "35%"
+                }}
+                nestedScrollEnabled={true}
+
+              >
+                <View>
+                  {Transportation.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        setTransportationVal(item.Name);
+                        setshowTransporatation(!showTransporatation);
+                      }}
+                    // onPressIn={() => handlePressIn(item)}
+                    // onPressOut={handlePressOut}
+                    >
+                      <View
+                        style={[
+                          styles.item,
+                          {
+                            backgroundColor:
+                              hoveredItem === item.Id
+                                ? "black"
+                                : "transparent",
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            {
+                              fontSize:
+                                windowwidthe < 720
+                                  ? windowwidthe * 0.042
+                                  : 26,
+                              color:
+                                hoveredItem === item.Id
+                                  ? "#fff"
+                                  : "#626262",
+                              // fontWeight: "500",
+                              fontFamily: isFontLoaded ? "Glory" : undefined,
+
+                            },
+                          ]}
+                        >
+                          {item.Name.toUpperCase()}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
+            )}
             <Modal
               visible={isModalVisible}
               transparent={true}
