@@ -17,8 +17,6 @@
       "color": "#007AFF"
     },
     "splash": {
-  
-      
       "backgroundColor": "#FFF"
     },
     "updates": {
@@ -43,7 +41,8 @@
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "favicon": "./assets/icon.png"

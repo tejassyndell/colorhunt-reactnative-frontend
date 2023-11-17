@@ -8,7 +8,6 @@ import NetInfo from "@react-native-community/netinfo";
 export default function App() {
   const [isOffline, setOfflineStatus] = useState(false);
   const [showNetworkError, setShowNetworkError] = useState(false);
-
   // Function to enable/disable font scaling for a specific Text component
  
   useEffect(() => {
