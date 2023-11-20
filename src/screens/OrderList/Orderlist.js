@@ -24,6 +24,7 @@ import * as Font from "expo-font";
 import Svg, { G, Path } from 'react-native-svg';
 import Loader from "../../components/Loader/Loader"
 import Ordersuccessful from "../../jssvgs/Ordersucseccful";
+import { loadCustomFont } from "../../loadCustomFont";
 const Orderlist = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +58,9 @@ const Orderlist = (props) => {
     setRefreshing(true);
     GetTransportation()
   };
-
+const fonttype = async ()=>{
+ const status = await loadCustomFont();
+}
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -69,7 +72,7 @@ const Orderlist = (props) => {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
 
@@ -208,9 +211,8 @@ const Orderlist = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: windowwidthe * 0.05,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "700",
+              fontSize: width >= 720 ? 35 : 25,
+              fontFamily: "GloryBold" ,
               width: "100%",
             }}
           >
@@ -311,8 +313,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: "500",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       color: "#000",
                     }}
                   >
@@ -334,10 +335,8 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         color: "#626262",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontSize:
-                          windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: "500",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                        fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                       }}
                     >
                       {new Date(currentDate).toLocaleDateString("en-GB", {
@@ -358,8 +357,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: "500",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       color: "#000",
                     }}
                   >
@@ -376,7 +374,7 @@ const Orderlist = (props) => {
                       borderColor: "#E4E7EA",
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                       backgroundColor: "#EEE",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                     }}
                     onChangeText={(e) => {
                       setDestinationVal(e);
@@ -388,8 +386,7 @@ const Orderlist = (props) => {
                       style={{
                         fontSize: windowwidthe * 0.03,
                         color: "red",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "500",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       }}
                     >
                       {fillvalue ? "Filed cannot be empty" : ""}
@@ -406,8 +403,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: "500",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       color: "#000",
                     }}
                   >
@@ -439,8 +435,7 @@ const Orderlist = (props) => {
                         color: "#626262",
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: "500",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       }}
                     >
                       {transportationVal.toUpperCase()}
@@ -504,7 +499,7 @@ const Orderlist = (props) => {
                             width: "90%",
                             backgroundColor: "#FFF",
                             padding: "3%",
-                            height: width >= 720 ? 200 : 100,
+                            height: width >= 720 ? 200 : 120,
                             marginHorizontal: "5%",
                             marginVertical: width >= 720 ? 20 : 10,
                             borderRadius: 10,
@@ -521,7 +516,7 @@ const Orderlist = (props) => {
                               //   width: 1,
                               //   height: 1,
                               // },
-                              width: width >= 720 ? 130 : "20%",
+                              width: width >= 720 ? 130 : "28%",
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
@@ -558,18 +553,17 @@ const Orderlist = (props) => {
                                 style={{
                                   fontSize: width >= 720 ? 30 : 18,
                                   fontFamily: isFontLoaded
-                                    ? "Glory"
+                                    ? "GloryBold"
                                     : undefined,
-                                  fontWeight: "700",
                                 }}
                               >
                                 {item.ArticleNumber}
                               </Text>
                               <Text
                                 style={{
-                                  fontSize: width >= 720 ? 30 : 18,
+                                  fontSize: width >= 720 ? 30 : 14,
                                   fontFamily: isFontLoaded
-                                    ? "Glory"
+                                    ? "GloryRegular"
                                     : undefined,
                                   fontWeight: "400",
                                 }}
@@ -590,9 +584,8 @@ const Orderlist = (props) => {
                                 style={{
                                   fontSize: width >= 720 ? 30 : 18,
                                   fontFamily: isFontLoaded
-                                    ? "Glory"
+                                    ? "GloryBold"
                                     : undefined,
-                                  fontWeight: "700",
                                 }}
                               >
                                 ₹{item.rate}.00
@@ -659,9 +652,7 @@ const Orderlist = (props) => {
                                 hoveredItem === item.Id
                                   ? "#fff"
                                   : "#626262",
-                              // fontWeight: "500",
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                             },
                           ]}
                         >
@@ -732,8 +723,7 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 32,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
-                          fontWeight: "700",
+                          fontFamily: isFontLoaded ? "GloryBold" : undefined,
                           marginBottom: 10,
                         }}
                       >
@@ -743,10 +733,9 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 24,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                           textAlign: "center",
                           marginBottom: 20,
-                          fontWeight: "500",
                           color: "rgba(0, 0, 0, 0.70)",
                         }}
                       >
@@ -766,13 +755,13 @@ const Orderlist = (props) => {
                           justifyContent: "center",
                           alignItems: "center",
                           marginVertical: 20,
+                          paddingVertical:"4%"
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "700",
+                            fontFamily: isFontLoaded ? "GloryBold" : undefined,
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -809,8 +798,7 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 32,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
-                          fontWeight: "700",
+                          fontFamily: isFontLoaded ? "GloryBold" : undefined,
                           marginBottom: 10,
                           marginTop: 50,
                         }}
@@ -821,10 +809,9 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 24,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                           textAlign: "center",
                           marginBottom: 20,
-                          fontWeight: "500",
                           color: "rgba(0, 0, 0, 0.70)",
                         }}
                       >
@@ -845,13 +832,13 @@ const Orderlist = (props) => {
                           justifyContent: "center",
                           alignItems: "center",
                           marginVertical: 20,
+                          paddingVertical:"4%"
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "700",
+                            fontFamily: isFontLoaded ? "GloryBold" : undefined,
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -903,8 +890,7 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "400",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -916,8 +902,7 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "500",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -940,8 +925,7 @@ const Orderlist = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "400",
+                            fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -953,8 +937,7 @@ const Orderlist = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "500",
+                            fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -985,8 +968,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "400",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -998,8 +980,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "500",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1020,8 +1001,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "400",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1033,8 +1013,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "500",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1091,8 +1070,7 @@ const Orderlist = (props) => {
                     style={{
                       color: "white",
                       fontSize: width >= 720 ? 25 : 15,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "600",
+                      fontFamily: isFontLoaded ? "GloryBold" : undefined,
                       textAlign: "center",
                     }}
                   >
@@ -1119,8 +1097,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: width >= 720 ? 22 : 14,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "500",
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                     }}
                   >
                     Total Price
@@ -1130,8 +1107,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: width >= 720 ? 22 : 16,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "700",
+                      fontFamily: isFontLoaded ? "GloryBold" : undefined,
                     }}
                   >
                     ₹{parseInt(totalrate + gstamount)}.00

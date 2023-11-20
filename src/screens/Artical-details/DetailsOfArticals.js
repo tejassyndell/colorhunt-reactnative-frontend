@@ -36,6 +36,7 @@ import Svg, { Path } from "react-native-svg";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/action";
 import { TextInput } from "react-native-gesture-handler";
+import { loadCustomFont } from "../../loadCustomFont";
 
 const DetailsOfArticals = (props) => {
   const { navigation } = props;
@@ -82,6 +83,9 @@ const DetailsOfArticals = (props) => {
 
 
   };
+ const fonttype = async()=>{
+  const status = await loadCustomFont();
+ }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -93,7 +97,7 @@ const DetailsOfArticals = (props) => {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
   const getpartyid = async () => {
@@ -429,7 +433,7 @@ const DetailsOfArticals = (props) => {
                       position: "absolute",
                     }}
                   >
-                    <Text style={{ textAlign: "center", fontSize: 25 }}>
+                    <Text style={{ textAlign: "center", fontSize: 28,fontFamily:"GloryMedium" }}>
                       No Image
                     </Text>
                   </View>
@@ -462,9 +466,8 @@ const DetailsOfArticals = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 40 : 26,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryBold",
                         textAlign: "center",
-                        fontWeight: "bold",
                         color: "black",
                       }}
                     >
@@ -533,9 +536,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             marginBottom: 5,
-                            fontWeight: "700",
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" :  "Arial, sans-serif",
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
                           }}
                         >
                           Size
@@ -613,9 +615,8 @@ const DetailsOfArticals = (props) => {
                         <Text
                           style={{
                             marginBottom: 5,
-                            fontWeight: 600,
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
                           }}
                         >
                           Subcategory
@@ -656,12 +657,11 @@ const DetailsOfArticals = (props) => {
                                 articleSizeData && articleSizeData.length > 3
                                   ? 30
                                   : 16,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontFamily:"GloryMedium" ,
                               paddingHorizontal:
                                 articleSizeData && articleSizeData.length > 3
                                   ? "10%"
                                   : 0,
-                              fontWeight: "600",
                               textAlign: "center",
                               color: "#000000",
                             }}
@@ -685,9 +685,8 @@ const DetailsOfArticals = (props) => {
                       <View style={{ flex: 1.18 }}>
                         <Text
                           style={{
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
                           }}
                         >
                           Color
@@ -696,9 +695,8 @@ const DetailsOfArticals = (props) => {
                       <View style={{ flex: 1.21 }}>
                         <Text
                           style={{
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
                           }}
                         >
                           Available in Stock
@@ -707,9 +705,8 @@ const DetailsOfArticals = (props) => {
                       <View style={{ flex: 1, paddingLeft: 2 }}>
                         <Text
                           style={{
-                            fontSize: width >= 720 ? 20 : 14,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "bold",
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
                           }}
                         >
                           Add Qty.
@@ -773,8 +770,7 @@ const DetailsOfArticals = (props) => {
                             style={{
                               textAlign: "center",
                               fontSize: width >= 720 ? 30 : 18,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "500",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#626262",
                             }}
                           >
@@ -820,8 +816,7 @@ const DetailsOfArticals = (props) => {
                             <Text
                               style={{
                                 fontSize: width >= 720 ? 45 : 24,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
-                                fontWeight: "800",
+                                fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               }}
                             >
                               -
@@ -832,9 +827,8 @@ const DetailsOfArticals = (props) => {
                             value={quantities[item.index].toString()}
                             style={{
                               fontSize: width >= 720 ? 30 : 18,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               textAlign: "center",
-                              fontWeight: "bold",
                               color: "#000",
                             }}
                             onChangeText={(text) =>{text<=item.available? onchangeaddqty(text, item.index): onchangeaddqty(item.available, item.index)}}
@@ -934,10 +928,9 @@ const DetailsOfArticals = (props) => {
                     <Text
                       style={{
                         fontSize: 24,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                         textAlign: "center",
                         marginBottom: 10,
-                        fontWeight: "500",
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
@@ -1056,8 +1049,7 @@ const DetailsOfArticals = (props) => {
             <Text
               style={{
                 fontSize: width >= 720 ? 15 : 11,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: "400",
+                fontFamily: isFontLoaded ? "GloryRegular" : undefined,
               }}
             >
               Total Price
@@ -1066,9 +1058,8 @@ const DetailsOfArticals = (props) => {
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 27 : 18,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: "700",
+                fontSize: width >= 720 ? 27 : 22,
+                fontFamily: isFontLoaded ? "GloryExtraBold" : undefined,
                 color: "black",
               }}
             >
@@ -1141,7 +1132,7 @@ const DetailsOfArticals = (props) => {
                   style={{
                     color: "white",
                     textAlign: "center",
-                    fontWeight: "bold",
+                    fontFamily:"GloryBold",
                     fontSize: width >= 720 ? 30 : 18,
                     marginLeft: width >= 720 ? 20 : 10,
                   }}

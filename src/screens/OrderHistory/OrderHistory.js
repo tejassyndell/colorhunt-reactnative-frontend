@@ -31,7 +31,7 @@ import Calendersvg from "../../jssvgs/Calendersvg";
 import CompletedOrderHistory from "../../jssvgs/Completedorderhistory";
 import PendingSvg from "../../jssvgs/Pendingsvg";
 import Loader from "../../components/Loader/Loader";
-
+import { loadCustomFont } from "../../loadCustomFont.js"
 const { width, height } = Dimensions.get("window");
 
 const OrderHistory = (props) => {
@@ -71,6 +71,10 @@ const OrderHistory = (props) => {
   const [showFromDate, setShowFromDate] = useState(false);
   const [showToDate, setShowToDate] = useState(false);
   const [filteractive, setFilteractive] = useState(false);
+  const fonttype = async () => {
+    const status = await loadCustomFont()
+  }
+  useEffect(() => { fonttype() }, [])
   const onRefresh = () => {
     setSoNumberData([]);
     setOldDateOfso([]);
@@ -200,8 +204,8 @@ const OrderHistory = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 35 : 20,
-              fontWeight: "700",
+              fontSize: width >= 720 ? 35 : 25,
+              fontFamily: "GloryBold",
               width: "100%",
               marginBottom: 20,
             }}
@@ -537,8 +541,8 @@ const OrderHistory = (props) => {
                                 </View>
                                 <Text
                                   style={{
-                                    fontSize: width < 720 ? 10.854 : 16.854,
-                                    fontWeight: "700",
+                                    fontSize: width < 720 ? 11.854 : 16.854,
+                                    fontFamily:"GloryBold",
                                     color: "#FF0203",
                                   }}
                                 >
@@ -709,9 +713,9 @@ const OrderHistory = (props) => {
                               </View>
                               <Text
                                 style={{
-                                  fontSize: width < 720 ? 10.854 : 16.854,
-                                  fontWeight: "700",
+                                  fontSize: width < 720 ? 11.854 : 16.854,
                                   color: "#7AC848",
+                                  fontFamily:"GloryBold"
                                 }}
                               >
                                 Completed
@@ -1064,24 +1068,22 @@ const styles = StyleSheet.create({
     height: 40,
   },
   pending_text: {
-    fontSize: width >= 720 ? 27 : 20,
-    fontWeight: "700",
+    fontSize: width >= 720 ? 27 : 22,
+    fontFamily: "GloryBold",
     textAlign: "center",
   },
   complete_btn: {
     width: "50%",
     backgroundColor: "#212121",
     borderRadius: 5,
-    // paddingTop: "1.5%",
-    // paddingBottom: "2.5%"
     justifyContent: "center",
   },
   complete_text: {
     color: "#FFF",
-    fontSize: width < 720 ? width * 0.05 : width * 0.037,
-    fontWeight: "700",
+    fontSize: width >= 720 ? 27 : 22,
     textAlign: "center",
     paddingBottom: "2%",
+    fontFamily:"GloryBold"
   },
   calender_cnt: {
     backgroundColor: "#FFF",
@@ -1143,12 +1145,12 @@ const orderstyles = StyleSheet.create({
   },
   txt_titile: {
     fontSize: width < 720 ? 14 : 20,
-    fontWeight: "400",
     color: "#000000B2",
+    fontFamily:"GloryMedium"
   },
   txt_val: {
-    fontSize: width >= 720 ? 22 : 13,
-    fontWeight: "700",
+    fontSize: width >= 720 ? 22 : 16,
+    fontFamily:"GloryBold",
     color: "#000000",
   },
   complete_icon_text: {
@@ -1226,10 +1228,10 @@ const calenderstyle = StyleSheet.create({
     justifyContent: "center",
   },
   nextbuttontext: {
-    // fontWeight: "700",
     color: "#FFF",
     textAlign: "center",
-    fontSize: width >= 720 ? 25 : 16,
+    fontSize: width >= 720 ? 25 : 18,
+    fontFamily:"GloryMedium"
   },
   fromdate: {
     backgroundColor: "transparent",
@@ -1250,5 +1252,6 @@ const calenderstyle = StyleSheet.create({
     marginBottom: "4%",
     fontSize: 16,
     color: "#000",
+    fontFamily:"GloryMedium"
   },
 });
