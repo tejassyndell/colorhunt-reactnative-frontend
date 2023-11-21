@@ -266,3 +266,12 @@ export const FilteroutwardNumber = async (data) => {
     console.log(err);
   }
 };
+
+
+export const cartcount = async (data) => {
+  try {
+    return await axios.post(`${url}/cartcount`, data);
+  } catch (err) {
+    console.log(err);
+  }
+}

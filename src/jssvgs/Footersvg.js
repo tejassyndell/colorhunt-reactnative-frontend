@@ -1,9 +1,31 @@
-import Svg, { G, Rect, Path } from "react-native-svg";
-import { Dimensions } from "react-native";
-
+import Svg, { G, Rect, Path, Circle } from "react-native-svg";
+import { Dimensions, View } from "react-native";
+import { Text, TouchableOpacity } from 'react-native';
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { cartcount } from "../api/api";
+import { useState } from "react";
 const Footersvg = (props) => {
+
   const { width, height } = Dimensions.get("window");
   const { val, status } = props;
+  const [showRedDot, setShowreddot] = useState(false);
+  const [count, setCount] = useState(0);
+  const getcountofcart = async () => {
+    let data = await AsyncStorage.getItem("UserData");
+    data = await JSON.parse(data);
+    const response = await cartcount({ PartyId: data[0].Id }).then((res) => {
+      console.log(res.data);
+      setCount(res.data[0].total)
+      if (res.data[0].total > 0) { setShowreddot(true) }
+    }
+    )
+  }
+  useEffect(() => {
+    if (val == "cart") {
+      getcountofcart()
+    }
+  }, [val])
   const vector = status ? (
     <Svg
       width={width >= 720 ? 60 : 42}
@@ -43,6 +65,7 @@ const Footersvg = (props) => {
       viewBox="0 0 39 39"
       fill="none"
     >
+      <Text style={{ color: "red" }}>●</Text>
       <G id="Group_1000005780">
         <Rect id="Rectangle_102" width={39} height={39} rx={7} fill="white" />
         <G id="Group_1000005772">
@@ -64,26 +87,50 @@ const Footersvg = (props) => {
       </G>
     </Svg>
   ) : (
+    // <TouchableOpacity>
     <Svg
-      width={width >= 720 ? 40 : 25}
+      width={width >= 720 ? 47 : 32}
       height={width >= 720 ? 40 : 25}
       viewBox="0 0 21 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <Path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M3.99121 18.4594C3.99121 17.6022 4.68515 16.9082 5.54238 16.9082C6.3894 16.9082 7.08336 17.6022 7.08336 18.4594C7.08336 19.3064 6.3894 20.0004 5.54238 20.0004C4.68515 20.0004 3.99121 19.3064 3.99121 18.4594ZM15.472 18.4594C15.472 17.6022 16.1659 16.9082 17.0231 16.9082C17.8701 16.9082 18.5641 17.6022 18.5641 18.4594C18.5641 19.3064 17.8701 20.0004 17.0231 20.0004C16.1659 20.0004 15.472 19.3064 15.472 18.4594Z"
-        fill="white"
-      />
-      <Path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M18.5639 3.92828C19.1864 3.92828 19.5946 4.14259 20.0028 4.61203C20.411 5.08146 20.4824 5.755 20.3906 6.36628L19.4211 13.0608C19.2374 14.3477 18.1353 15.2958 16.8392 15.2958H5.70543C4.34815 15.2958 3.22558 14.2548 3.11332 12.9088L2.17447 1.78419L0.63349 1.51886C0.225285 1.44742 -0.0604738 1.04942 0.010962 0.641217C0.0823978 0.222808 0.480423 -0.0527293 0.898833 0.00850138L3.33273 0.375886C3.6797 0.438137 3.93483 0.72286 3.96544 1.06983L4.15934 3.35578C4.18996 3.68336 4.45531 3.92828 4.78187 3.92828H18.5639ZM12.3796 9.23392H15.2064C15.635 9.23392 15.9718 8.88694 15.9718 8.46853C15.9718 8.03992 15.635 7.70315 15.2064 7.70315H12.3796C11.951 7.70315 11.6142 8.03992 11.6142 8.46853C11.6142 8.88694 11.951 9.23392 12.3796 9.23392Z"
-        fill="white"
-      />
+      <G>
+        <Path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M3.99121 18.4594C3.99121 17.6022 4.68515 16.9082 5.54238 16.9082C6.3894 16.9082 7.08336 17.6022 7.08336 18.4594C7.08336 19.3064 6.3894 20.0004 5.54238 20.0004C4.68515 20.0004 3.99121 19.3064 3.99121 18.4594ZM15.472 18.4594C15.472 17.6022 16.1659 16.9082 17.0231 16.9082C17.8701 16.9082 18.5641 17.6022 18.5641 18.4594C18.5641 19.3064 17.8701 20.0004 17.0231 20.0004C16.1659 20.0004 15.472 19.3064 15.472 18.4594Z"
+          fill="white"
+        />
+        <Path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M18.5639 3.92828C19.1864 3.92828 19.5946 4.14259 20.0028 4.61203C20.411 5.08146 20.4824 5.755 20.3906 6.36628L19.4211 13.0608C19.2374 14.3477 18.1353 15.2958 16.8392 15.2958H5.70543C4.34815 15.2958 3.22558 14.2548 3.11332 12.9088L2.17447 1.78419L0.63349 1.51886C0.225285 1.44742 -0.0604738 1.04942 0.010962 0.641217C0.0823978 0.222808 0.480423 -0.0527293 0.898833 0.00850138L3.33273 0.375886C3.6797 0.438137 3.93483 0.72286 3.96544 1.06983L4.15934 3.35578C4.18996 3.68336 4.45531 3.92828 4.78187 3.92828H18.5639ZM12.3796 9.23392H15.2064C15.635 9.23392 15.9718 8.88694 15.9718 8.46853C15.9718 8.03992 15.635 7.70315 15.2064 7.70315H12.3796C11.951 7.70315 11.6142 8.03992 11.6142 8.46853C11.6142 8.88694 11.951 9.23392 12.3796 9.23392Z"
+          fill="white"
+        />
+      </G>
+      {showRedDot && (
+        <Circle cx={20} cy={4} r={3} fill="red" /> // Adjust the coordinates and size as needed
+      )}
     </Svg>
+    //   <View
+    //   style={{
+    //     position: 'absolute',
+    //     top: width >= 720 ? 8 : -5, // Adjust position based on icon size
+    //     right: width >= 720 ? 8 : -6, // Adjust position based on icon size
+    //     backgroundColor: '#FFF', // Background color for the circle
+    //     borderRadius: 10, // Adjust size based on the count value
+    //     width: 20, // Adjust size based on the count value
+    //     height: 20, // Adjust size based on the count value
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     borderWidth:2,
+    //     borderColor:"gray"
+    //   }}
+    // >
+    //   <Text style={{ color: '#000', fontSize: 12 }}>{count}</Text>
+    // </View>
+    // </TouchableOpacity> 
   );
 
   const history = status ? (

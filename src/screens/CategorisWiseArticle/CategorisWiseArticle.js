@@ -56,9 +56,7 @@ export default function CategorisWiseArticle(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
+    getproductnamess();
   };
 
   const fetchMoreData = () => {
@@ -105,40 +103,19 @@ export default function CategorisWiseArticle(props) {
   }, []);
 
   const CheckUser = async () => {
-    try {
-      let user = await AsyncStorage.getItem("UserData");
-      user = await JSON.parse(user);
-      console.log("User data from AsyncStorage:", user);
-      if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    } catch (error) {
-      console.error("Error checking user:", error);
+    const user = await AsyncStorage.getItem("UserData");
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
   };
-  const CheckUserForProfile = async () => {
-    try {
-      let user = await AsyncStorage.getItem("UserData");
-      user = await JSON.parse(user);
-      console.log("User data from AsyncStorage:", user);
-      if (user) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.error("Error checking user:", error);
-    }
-  };
-
   useEffect(() => {
     CheckUser();
   }, []);
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -164,7 +141,7 @@ export default function CategorisWiseArticle(props) {
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
   const category = item1.Category;
   // const titlename = convertToTitleCase(category);
-  console.log(category);
+  // console.log(category);
   const openFilter = () => {
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
@@ -178,7 +155,6 @@ export default function CategorisWiseArticle(props) {
     try {
       const res = await getProductName();
       if (res.status === 200) {
-        // console.log(res.data);
         const sdPrds = res.data.slice();
         const fildata = sdPrds.filter((item) => item.Category === category);
         setNameDatas(fildata);
@@ -186,18 +162,10 @@ export default function CategorisWiseArticle(props) {
         setIsLoading(false);
         setRefreshing(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getproductnamess();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -217,7 +185,7 @@ export default function CategorisWiseArticle(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -244,7 +212,7 @@ export default function CategorisWiseArticle(props) {
         // getWishlist();
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const convertToTitleCase = (str) => {
@@ -258,7 +226,6 @@ export default function CategorisWiseArticle(props) {
     // getCategoriesname();
     getWishlist();
     getproductnamess();
-    console.log("habwvhasbdvbsldbvhasbhasblba.");
   }, []);
 
   useLayoutEffect(() => {
@@ -281,13 +248,9 @@ export default function CategorisWiseArticle(props) {
           }}
         >
           <TouchableOpacity
-            onPress={async () => {
-              let status = await CheckUserForProfile();
-              if (status) {
-                navigation.navigate("Profile");
-              } else {
-                openCreateAccountModal();
-              }
+            onPress={() => {
+              isLoggedIn ? navigation.navigate("Profile") : null;
+              // console.log(isLoggedIn);
             }}
           >
             <Image
@@ -295,6 +258,7 @@ export default function CategorisWiseArticle(props) {
                 resizeMode: "contain",
                 width: width >= 720 ? 55 : 35,
                 height: width >= 720 ? 55 : 35,
+                 marginBottom:20, 
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />
@@ -303,8 +267,8 @@ export default function CategorisWiseArticle(props) {
       ),
       headerStyle: {
         height: headerHeight,
-        elevation: 0,
-        shadowOpacity: 0, // Increase the header height here
+        borderBottomWidth: 1, // Adjust the width as needed
+        borderBottomColor: "#FFF", // Increase the header height here
       },
     });
   }, []);
@@ -526,7 +490,8 @@ export default function CategorisWiseArticle(props) {
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
         >
-          <View
+          {isLoggedIn ? (
+            <View
             style={{
               flexDirection: "row",
               backgroundColor: "#FFF",
@@ -576,6 +541,25 @@ export default function CategorisWiseArticle(props) {
               </Svg>
             </TouchableOpacity>
           </View>
+          ):(
+            <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#FFF",
+              alignItems: "center",
+              width: "112%",
+              paddingStart: 3,
+              paddingTop: 10,
+            }}
+          >
+            <SearchBar
+              searchPhrase={searchText}
+              setSearchPhrase={setSearchText}
+            />
+          
+          </View>
+          )}
+          
           <View>
             <Text
               style={{
@@ -602,7 +586,7 @@ export default function CategorisWiseArticle(props) {
             }}
           >
             {finalData.length === 0 ? (
-              (console.log(nameDatas.length, "ewqewqewqeewq"),
+              (
               (
                 <View
                   style={{
@@ -673,7 +657,7 @@ export default function CategorisWiseArticle(props) {
                   width: "92%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: "3%",
+                  bottom: "2%",
                   left: 1,
                   right: 0, // To make it span the full width
                   marginLeft: "4%", // Margin on the left side
@@ -718,8 +702,7 @@ export default function CategorisWiseArticle(props) {
               padding: 12,
               marginTop: 25,
               marginBottom: 25,
-              height: "75%",
-              justifyContent: "center",
+              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

@@ -21,21 +21,22 @@ const { width, height } = Dimensions.get("window");
 const SliderScreen = (props) => {
   const { navigation } = props;
   const showNavigation = async () => {
-    if (SystemNavigationBar && SystemNavigationBar.navigationHide) {
+    if (SystemNavigationBar) {
       try {
         const result = await SystemNavigationBar.navigationHide();
-        console.log("Show Navigation Bar:", result);
+        // console.log("Show Navigation Bar:", result);
       } catch (error) {
         console.error("Error showing navigation bar:", error);
       }
     } else {
-      console.error("SystemNavigationBar or immersive function is not available.");
+      console.error("SystemNavigationBar is not available.");
     }
   };
   
-    useEffect(() => {
-      showNavigation(); // Call this function to hide the navigation bar when the component mounts
-    }, []);
+  useEffect(() => {
+    showNavigation(); // Call this function to hide the navigation bar when the component mounts
+  }, []);
+  
 
 
 
@@ -70,8 +71,9 @@ const SliderScreen = (props) => {
         showsPagination={true}
         renderPagination={(index, total) => (
           <CustomPagination index={index} total={total} />
-        )}
-        // autoplay={true}
+          )}
+          autoplay={true}
+         
       >
         <ImageBackground
           source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}

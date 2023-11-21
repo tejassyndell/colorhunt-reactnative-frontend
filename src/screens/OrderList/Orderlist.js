@@ -55,17 +55,7 @@ const Orderlist = (props) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-   // 3 seconds
-
-   
-      setIsLoading(false);
-      setRefreshing(false);
-    
+    GetTransportation()
   };
 
   useEffect(() => {
@@ -132,7 +122,7 @@ const Orderlist = (props) => {
       DataArticle: Articldata,
       NoPacksNew: null,
     };
-    console.log("-=-=-=-", data);
+    // console.log("-=-=-=-", data);
     await addso(data).then((res) => {
       if (res.status === 200) {
         setIsLoading2(false);
@@ -161,7 +151,7 @@ const Orderlist = (props) => {
       if (Storagedata !== null) {
         setParsedData(JSON.parse(Storagedata));
       } else {
-        console.log("No data found");
+        // console.log("No data found");
       }
     })
     .catch((error) => {
@@ -169,6 +159,7 @@ const Orderlist = (props) => {
     });
 
   const GetTransportation = async () => {
+    console.log('bsdasbs');
     await gettransportation()
       .then((response) => {
         setTransportation(response.data);
@@ -195,7 +186,7 @@ const Orderlist = (props) => {
     gstamount =
       ParsedData.reduce((total, item) => total + parseInt(item.rate), 0) * 0.05;
   } else {
-    console.log(ParsedData);
+    // console.log(ParsedData);
   }
 
   useLayoutEffect(() => {
@@ -245,13 +236,13 @@ const Orderlist = (props) => {
 
   const filterTransportationValue = (e) => {
     setTransportationVal(e);
-    console.log(e);
+    // console.log(e);
     setshowTransporatation(true);
     if (e !== "") {
       let filterVal = Transportation.filter((item) =>
         item.Name.toLocaleLowerCase().includes(e.toLocaleLowerCase())
       );
-      console.log(filterVal);
+      // console.log(filterVal);
       setTransportation(filterVal);
     } else {
       setTransportation(OldTransportation);
@@ -511,11 +502,12 @@ const Orderlist = (props) => {
                       bottom: 14,
                     }}
                     nestedScrollEnabled={true}
+                    
                   >
                     <View>
-                      {Transportation.map((item) => (
+                      {Transportation.map((item,index) => (
                         <TouchableOpacity
-                          key={item.Id}
+                          key={index}
                           onPress={() => {
                             setTransportationVal(item.Name);
                             setshowTransporatation(!showTransporatation);
@@ -566,10 +558,10 @@ const Orderlist = (props) => {
                   width: "100%",
                 }}
               >
-                <ScrollView nestedScrollEnabled={true}>
+                <ScrollView nestedScrollEnabled={true} >
                   {ParsedData &&
                     ParsedData.map((item, index) => (
-                      <View key={item.id}>
+                      <View key={index}>
                         <View
                           style={{
                             flexDirection: "row",
@@ -617,7 +609,7 @@ const Orderlist = (props) => {
                           </TouchableOpacity>
                           <View
                             style={{
-                              width: "60%",
+                              width: "75%",
                               marginHorizontal: "3%",
                               marginBottom: "1%",
                               justifyContent: "center",
@@ -765,7 +757,7 @@ const Orderlist = (props) => {
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 50,
+                          height: 'auto',
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
@@ -844,7 +836,7 @@ const Orderlist = (props) => {
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 50,
+                          height: 'auto',
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
@@ -1122,7 +1114,7 @@ const Orderlist = (props) => {
                 <View style={{ paddingBottom: 2 }}>
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 22 : 12,
+                      fontSize: width >= 720 ? 22 : 14,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontWeight: "500",
                     }}
@@ -1133,7 +1125,7 @@ const Orderlist = (props) => {
                 <View style={{}}>
                   <Text
                     style={{
-                      fontSize: width >= 720 ? 22 : 12,
+                      fontSize: width >= 720 ? 22 : 16,
                       fontFamily: isFontLoaded ? "Glory" : undefined,
                       fontWeight: "700",
                     }}

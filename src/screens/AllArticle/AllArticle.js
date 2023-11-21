@@ -55,16 +55,7 @@ export default function AllArticle(props) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    setRefreshing(true);
-
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    // 3 seconds
-
-    setIsLoading(false);
-    setRefreshing(false);
+    getCategoriesname()
   };
 
   const fetchMoreData = () => {
@@ -105,10 +96,10 @@ export default function AllArticle(props) {
         setSelectedCategories(categories);
         setSelectedPriceRange(priceRange);
       } else {
-        console.log("No data found with the key.");
+        // console.log("No data found with the key.");
       }
     } catch (error) {
-      console.error("Error retrieving data:", error);
+      // console.error("Error retrieving data:", error);
     }
   };
   const userChecked = async () => {
@@ -120,27 +111,13 @@ export default function AllArticle(props) {
       setIsLoggedIn(false);
     }
   };
-  const CheckUserForProfile = async () => {
-    try {
-      let user = await AsyncStorage.getItem("UserData");
-      user = await JSON.parse(user);
-      console.log("User data from AsyncStorage:", user);
-      if (user) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.error("Error checking user:", error);
-    }
-  };
 
   useEffect(() => {
     userChecked();
   });
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -153,8 +130,8 @@ export default function AllArticle(props) {
         ? 120
         : 100
       : height >= 844
-      ? 100
-      : 65;
+        ? 100
+        : 65;
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -196,7 +173,7 @@ export default function AllArticle(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -233,7 +210,7 @@ export default function AllArticle(props) {
         // setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const convertToTitleCase = (str) => {
@@ -269,13 +246,8 @@ export default function AllArticle(props) {
           }}
         >
           <TouchableOpacity
-            onPress={async () => {
-              let status = await CheckUserForProfile();
-              if (status) {
-                navigation.navigate("Profile");
-              } else {
-                openCreateAccountModal();
-              }
+            onPress={() => {
+              navigation.navigate("Profile");
             }}
           >
             <Image
@@ -283,6 +255,7 @@ export default function AllArticle(props) {
                 resizeMode: "contain",
                 width: width >= 720 ? 55 : 32,
                 height: width >= 720 ? 55 : 32,
+                marginBottom: 20,
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />
@@ -292,7 +265,7 @@ export default function AllArticle(props) {
       headerStyle: {
         height: headerHeight, // Increase the header height here
         elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        shadowOpacity: 0,
       },
     });
   }, []);
@@ -429,7 +402,6 @@ export default function AllArticle(props) {
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
-
             marginTop: 10,
           }}
         />
@@ -472,7 +444,7 @@ export default function AllArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
-    console.log(priceRange, "All");
+    // console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
@@ -587,17 +559,16 @@ export default function AllArticle(props) {
                 NO ARTICLES FOUND
               </Text>
             ) : (
-              <View>
-                <ScrollView
-                  style={{ flex: 1 }}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={refreshing}
-                      onRefresh={onRefresh}
-                    />
-                  }
-                ></ScrollView>
-
+              <>
+              <ScrollView
+                style={{ flex: 1 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+              >
                 <FlatList
                   style={{ backgroundColor: "#FFF" }}
                   data={finalData}
@@ -610,7 +581,8 @@ export default function AllArticle(props) {
                   onEndReached={fetchMoreData}
                   onEndReachedThreshold={0.1}
                 />
-              </View>
+              </ScrollView>
+            </>
             )}
           </View>
           {/* {/ </ScrollView> /} */}
@@ -691,8 +663,7 @@ export default function AllArticle(props) {
               padding: 12,
               marginTop: 25,
               marginBottom: 25,
-              height: "75%",
-              justifyContent: "center",
+              height: "90%",
             }}
           >
             <CreateAccount onClose={closeCreateAccountModal} />

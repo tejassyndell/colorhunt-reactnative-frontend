@@ -41,17 +41,9 @@ export default function Userprofile(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
+    fetchprofiledata()
 
-    // Add any logic here that you want to execute when the user triggers a refresh.
-    // For example, you can reload data or perform any other action.
-
-    // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
-    const delay = 3000; // 3 seconds
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setRefreshing(false);
-    }, delay);
+   
   };
 
   useEffect(() => {
@@ -71,10 +63,10 @@ export default function Userprofile(props) {
         setRefreshing(false);
       }
     else{
-      Alert.alert("Server is not responding")
+      // Alert.alert("Server is not responding")
     }
     } catch (err) {
-      console.log(err, "error in fetching data");
+      // console.log(err, "error in fetching data");
     }
   };
   useLayoutEffect(() => {

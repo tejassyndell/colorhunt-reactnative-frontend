@@ -15,6 +15,8 @@ import { getCategories } from "../../api/api";
 import { useRef } from "react";
 import { Svg, G, Path, Circle } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from "expo-font";
+
 const { width, height } = Dimensions.get("window");
 
 export default function Filter({
@@ -28,7 +30,6 @@ export default function Filter({
   uniquerates,
 }) {
   const [data, setData] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState(Scategories);
   const [selectedPriceRange, setSelectedPriceRange] = useState([
     minArticleRate,
@@ -54,24 +55,15 @@ export default function Filter({
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
-  const UserCheck = async () => {
-    const user = await AsyncStorage.get("UserData");
-    if (user) {
-      isLoggedIn(true);
-    } else {
-      isLoggedIn(false);
-    }
-  };
-  useEffect(() => {
-    UserCheck();
-  }, []);
+
 
   const getCategoriesname = async () => {
     try {
       const result1 = await getCategories();
       if (result1.status === 200) {
-        console.log(result1.data, "================?>");
-        setData(result1.data);
+
+        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION");
+        setData(filteredData);
       }
     } catch (error) {
       console.error(error);
@@ -257,13 +249,11 @@ export default function Filter({
           ""
         )}
         {status === false ? (
-          <ScrollView
-            style={{ width: "100%", height: height >= 844 ? 360 : 250 }}
-          >
+          <ScrollView style={{ width: '100%', backgroundColor:'#FFF', height: height >= 844 ? 360 : 250 }}>
             <View style={styles.categoriesContainer}>
-              {data.map((item) => (
+              {data.map((item, index) => (
                 <TouchableOpacity
-                  key={item.Id}
+                  key={index}
                   style={[
                     styles.categoryItem,
                     selectedCategories.includes(item.Category) && {
@@ -359,7 +349,9 @@ export default function Filter({
                 {minArticleRate}
               </Text>
             </View>
-            <View style={{ width: width >= 720 ? "80%" : "70%", marginTop: 3 }}>
+            <View
+              style={{ width: width >= 720 ? "80%" : "70%", marginTop: 3 }}
+            >
               <View style={styles.sliderContainer}>
                 <View style={{ width: "100%" }}>
                   <View style={styleslider.sliderContainer}>
@@ -387,7 +379,9 @@ export default function Filter({
                         ]}
                         {...panResponderRight.panHandlers}
                       >
-                        <Text style={styleslider.thumbText}>{rightValue}</Text>
+                        <Text style={styleslider.thumbText}>
+                          {rightValue}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -494,7 +488,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 2,
-    elevation: 20, // For Android
+    // For Android
   },
 
   radioButton: {

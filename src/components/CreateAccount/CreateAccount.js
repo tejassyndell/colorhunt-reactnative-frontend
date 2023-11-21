@@ -9,6 +9,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import { UserData } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -45,14 +46,18 @@ const CreateAccount = (props) => {
       try {
         let data = await AsyncStorage.getItem("notificationstatus");
         data = await JSON.parse(data);
-        if (data.status === true) {
-          setToken(data.token);
-        } else {
-          console.log("Notification permission denied");
+        if (data) {
+          if (data.status === true) {
+            setToken(data.token);
+          } else {
+            // console.log("Notification permission denied");
+          }
         }
+
       } catch (error) {
-        console.error("Error requesting permission:", error);
+        // console.error("Error requesting permission:", error);
       }
+
     };
     getToken();
   }, []);
@@ -226,7 +231,7 @@ const CreateAccount = (props) => {
     }
 
     if (isValid) {
-      console.log("Form submitted.");
+      // console.log("Form submitted.");
       try {
         // Make an API request to store form data
         const response = await UserData({
@@ -241,11 +246,22 @@ const CreateAccount = (props) => {
           token,
         });
         console.log("API response:", response.data);
-        setShowSuccess(true); // Show success message
-        // Clear the form input fields
+       
+        
+        console.log(response.data)
+        if (response && response.data && response.data.error) {
+          // Set the phone number error message
+          
+         Alert.alert("Number is already Exits");
+        }else{
+          setShowSuccess(true); // Show success message
+        }
+
+       
         clearFormFields();
       } catch (error) {
         console.error("Error making API request:", error);
+       
       }
     }
   };
@@ -274,7 +290,7 @@ const CreateAccount = (props) => {
 
   const handleClose = () => {
     onClose();
-    console.log("close");
+    // console.log("close");
   };
 
   return (
@@ -293,7 +309,7 @@ const CreateAccount = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <ScrollView style={{ paddingHorizontal: 10 }}>
+          <ScrollView style={{ paddingHorizontal: 10,}}>
             <TextInput
               style={[styles.input, nameError && styles.inputError]}
               placeholder="Name"
@@ -442,9 +458,9 @@ const CreateAccount = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: "98%",
     alignItem: "center",
-    paddingHorizontal: width >= 720 ? 40 : 5,
+    paddingHorizontal: width >= 720 ? 40 : 10,
     paddingVertical: width >= 720 ? 60 : 25,
     justifyContent: "center",
   },

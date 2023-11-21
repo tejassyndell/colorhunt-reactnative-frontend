@@ -7,7 +7,6 @@ import {
   Dimensions,
   Modal,
 } from "react-native";
-import PropTypes from "prop-types";
 import styles from "./styles";
 import MenuButton from "../../components/MenuButton/MenuButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -23,11 +22,11 @@ export default function DrawerContainer(props) {
   const [userName, setUserName] = useState("");
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
 
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   const openCreateAccountModal = () => {
-    console.log("done");
+    // console.log("done");
     setCreateAccountVisible(true);
   };
 
@@ -67,9 +66,9 @@ export default function DrawerContainer(props) {
   const clearAsyncStorage = async () => {
     try {
       await AsyncStorage.clear();
-      console.log("AsyncStorage cleared successfully");
+      // console.log("AsyncStorage cleared successfully");
     } catch (error) {
-      console.error("Error clearing AsyncStorage:", error);
+      // console.error("Error clearing AsyncStorage:", error);
     }
   };
   const { width, height } = Dimensions.get("window");
@@ -277,7 +276,7 @@ export default function DrawerContainer(props) {
                   width: "100%",
                 }}
                 onPress={() => {
-                  navigation.navigate("AboutUs");
+                  navigation.navigate("Aboutus");
                   navigation.closeDrawer();
                 }}
               >
@@ -331,7 +330,7 @@ export default function DrawerContainer(props) {
                 style={{
                   flexDirection: "row",
                   marginLeft: 14,
-                  marginTop: 50,
+                  marginTop: 40,
                   width: "100%",
                 }}
                 onPress={() => {
@@ -398,7 +397,7 @@ export default function DrawerContainer(props) {
                   width: "100%",
                 }}
                 onPress={() => {
-                  navigation.navigate("AboutUs");
+                  navigation.navigate("Aboutus");
                   navigation.closeDrawer();
                 }}
               >
@@ -456,7 +455,7 @@ export default function DrawerContainer(props) {
                 style={{
                   flexDirection: "row",
                   marginLeft: 10,
-                  marginTop: 60,
+                  marginTop: 29,
                   width: "100%",
                 }}
                 onPress={() => {
@@ -488,7 +487,7 @@ export default function DrawerContainer(props) {
           <View
             style={{
               position: "absolute",
-              bottom: 50,
+              bottom: '4%',
               alignItems: "center",
               width: "100%",
               right: 20,
@@ -546,12 +545,7 @@ export default function DrawerContainer(props) {
   );
 }
 
-DrawerContainer.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }),
-  isLoggedIn: PropTypes.bool.isRequired, // Add prop type for isLoggedIn
-};
+
 
 const crose = (
   <Svg

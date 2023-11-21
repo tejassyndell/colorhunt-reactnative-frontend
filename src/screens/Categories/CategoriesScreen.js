@@ -44,7 +44,8 @@ export default function CategoriesScreen(props) {
       headerStyle: {
         height: headerHeight, // Increase the header height here
         elevation: 0, // Remove the shadow on Android
-        shadowOpacity: 0, // Remove the shadow on iOS
+        shadowOpacity: 0,
+        // Remove the shadow on iOS
       },
     });
   }, []);

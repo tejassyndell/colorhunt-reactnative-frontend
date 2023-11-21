@@ -30,13 +30,7 @@ export default function WishList(props) {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
-
-    // Add your refreshing logic here (e.g., fetch new data or update existing data).
-
-    // Simulate a delay to hide the loading indicator after a few seconds (adjust as needed).
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 3000); // 3 seconds
+    getWishlist();
   };
 
   const headerHeight =
@@ -67,7 +61,7 @@ export default function WishList(props) {
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
-    console.log(partydata[0].Id, "[][][[][]");
+    // console.log(partydata[0].Id, "[][][[][]");
     return partydata[0].Id;
   };
 
@@ -77,25 +71,17 @@ export default function WishList(props) {
     if (res.status === 200) {
       setNameDatas(res.data);
     } else {
-      Alert.alert("Server is not responding", [
-        {
-          text: "OK",
-          onPress: () => {
-            // Call namdemo function when the user clicks 'OK'
-            getCategoriesname();
-          },
-        },
-      ]);
+      // Alert.alert("Server is not responding");
     }
   };
   const rmvProductWishlist = async (i) => {
-    console.log(i, "r");
+    // console.log(i, "r");
     let id = await getpartyid();
     let data = {
       party_id: id,
       article_id: i.Id,
     };
-    console.log(data);
+    // console.log(data);
 
     try {
       await DeleteWishlist(data).then((res) => {
@@ -104,31 +90,26 @@ export default function WishList(props) {
         }
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
+    console.log('kjsankjfdnsjnfdkjnsfd');
     const data = {
       party_id: await getpartyid(),
       status: "true",
     };
     const result = await getWishlistData(data).then((res) => {
+      console.log("--------");
       if (res.status == 200) {
-        console.log(res.data);
+        // console.log(res.data);
         setSelectprd(res.data);
         setIsLoading(false);
+        setRefreshing(false);
       } else {
-        Alert.alert("Server is not responding", [
-          {
-            text: "OK",
-            onPress: () => {
-              // Call namdemo function when the user clicks 'OK'
-              getWishlist();
-            },
-          },
-        ]);
+        // Alert.alert("Server is not responding");
       }
     });
   };
@@ -155,6 +136,8 @@ export default function WishList(props) {
             alignContent: "center",
             paddingLeft: "10%",
             width: parseInt(width) >= 720 ? "95%" : "100%",
+            marginBottom:20, 
+
           }}
         >
           <Text
@@ -190,16 +173,14 @@ export default function WishList(props) {
         borderRadius: 10,
         borderColor: "gray",
         backgroundColor: "#FFF",
-        // shadowColor: "gray",
-        // shadowOpacity: 0.4,
-        // shadowRadius: 4,
-        // elevation: 10,
-        // shadowOffset: {
-        //   width: 0,
-        //   height: 0,
-        // },
-        borderWidth: 1,
-        borderColor: "gray",
+        shadowColor: "gray",
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 10,
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
       }}
     >
       <View id={item.id} style={styles.producticones}>

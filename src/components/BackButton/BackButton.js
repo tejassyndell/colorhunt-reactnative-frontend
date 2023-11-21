@@ -1,6 +1,5 @@
 import React from "react";
 import { TouchableHighlight, Image, } from "react-native";
-import PropTypes from "prop-types";
 import styles from "./styles";
 
 export default function BackButton(props) {
@@ -11,8 +10,3 @@ export default function BackButton(props) {
   );
 }
 
-BackButton.propTypes = {
-  onPress: PropTypes.func,
-  source: PropTypes.number,
-  title: PropTypes.string,
-};
