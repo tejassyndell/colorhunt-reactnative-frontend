@@ -115,11 +115,6 @@ const OrderHistory = (props) => {
     )
       .toISOString()
       .split("T")[0];
-    console.log({
-      PartyId: userdata[0].Id,
-      fromdate: formattedDate,
-      todate: formattedtoDate
-    });
     await FilterSoNumber({
       PartyId: userdata[0].Id,
       fromdate: formattedDate,
@@ -214,8 +209,8 @@ const OrderHistory = (props) => {
               fontSize: width >= 720 ? 35 : 25,
               fontFamily: "GloryBold",
               width: "100%",
-              height: width >= 720 ? 45 : 25,
-              marginBottom: 20,
+              height: width >= 720 ? 45:25,
+              marginBottom:20, 
 
             }}
           >
@@ -417,11 +412,11 @@ const OrderHistory = (props) => {
               </View>
             </View>
             <View style={styles.calender_cnt}>
-              <View style={{ paddingRight: "4%", marginTop: 10 }}>
+              <View style={{ paddingRight: "4%" ,marginTop:10}}>
                 {/* <Button title="Select Dates" onPress={openModal} /> */}
                 <TouchableOpacity
                   onPress={openModal}
-                  style={{ height: width >= 720 ? 35 : 20, width: width >= 720 ? 35 : 20 }}
+                  style={{ height: width >= 720 ? 35: 20, width: width >= 720 ? 35: 20 }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>
@@ -557,7 +552,7 @@ const OrderHistory = (props) => {
                                 <Text
                                   style={{
                                     fontSize: width < 720 ? 11.854 : 16.854,
-                                    fontFamily: "GloryBold",
+                                    fontFamily:"GloryBold",
                                     color: "#FF0203",
                                   }}
                                 >
@@ -730,7 +725,7 @@ const OrderHistory = (props) => {
                                 style={{
                                   fontSize: width < 720 ? 11.854 : 16.854,
                                   color: "#7AC848",
-                                  fontFamily: "GloryBold"
+                                  fontFamily:"GloryBold"
                                 }}
                               >
                                 Completed
@@ -784,7 +779,7 @@ const OrderHistory = (props) => {
                     paddingLeft: 20,
                   }}
                 >
-                  <View style={{ height: 35, width: 35 }}>
+                  <View style={{ height:  35, width:  35 }}>
                     <Image
                       style={{
                         height: "100%",
@@ -1053,7 +1048,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#FFF",
-
+   
     borderTopColor: "#E0E0E0",
   },
   first_cnt: {
@@ -1106,7 +1101,7 @@ const styles = StyleSheet.create({
     fontSize: width >= 720 ? 27 : 22,
     textAlign: "center",
     paddingBottom: "2%",
-    fontFamily: "GloryBold"
+    fontFamily:"GloryBold"
   },
   calender_cnt: {
     backgroundColor: "#FFF",
@@ -1167,13 +1162,13 @@ const orderstyles = StyleSheet.create({
     marginBottom: 8,
   },
   txt_titile: {
-    fontSize: width < 720 ? 14 : 20,
+    fontSize: width < 720 ? 14 :14,
     color: "#000000B2",
-    fontFamily: "GloryMedium"
+    fontFamily:"GloryMedium"
   },
   txt_val: {
     fontSize: width >= 720 ? 22 : 14.4,
-    fontFamily: "GloryBold",
+    fontFamily:"GloryBold",
     color: "#000000",
   },
   complete_icon_text: {
@@ -1248,7 +1243,7 @@ const calenderstyle = StyleSheet.create({
     color: "#FFF",
     textAlign: "center",
     fontSize: width >= 720 ? 25 : 18,
-    fontFamily: "GloryMedium"
+    fontFamily:"GloryMedium"
   },
   fromdate: {
     backgroundColor: 'transparent',
@@ -1269,6 +1264,6 @@ const calenderstyle = StyleSheet.create({
     marginBottom: "4%",
     fontSize: 16,
     color: "#000",
-    fontFamily: "GloryMedium"
+    fontFamily:"GloryMedium"
   },
 });
