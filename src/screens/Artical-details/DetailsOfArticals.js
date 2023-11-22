@@ -279,12 +279,28 @@ const DetailsOfArticals = (props) => {
     }));
   };
   const onchangeaddqty = (val, colorIndex) => {
-    // if (val == "") {
-    //   setQuantities(() => ({
-    //     [colorIndex]:"0",
-    //   }));
-    // }
-    if (val > quantities[colorIndex]) {
+
+    const numericValue = parseInt(val, 10);
+
+    if (isNaN(numericValue)) {
+
+      setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [colorIndex]: 0,
+      }));
+    }
+  
+    if (!combinedArray || !combinedArray[colorIndex]) {
+      return;
+    }
+  
+    if (numericValue < 0) {
+      setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [colorIndex]: 0,
+      }));
+    }
+    if (numericValue > quantities[colorIndex]) {
       if (!combinedArray || !combinedArray[colorIndex]) {
         return;
       }
@@ -293,16 +309,16 @@ const DetailsOfArticals = (props) => {
       if (quantities[colorIndex] < nopacks) {
         setQuantities((prevQuantities) => ({
           ...prevQuantities,
-          [colorIndex]: val,
+          [colorIndex]: numericValue,
         }));
       }
-    } else if (val < quantities[colorIndex] && val >=0) {
+    } else if (numericValue < quantities[colorIndex] ) {
       if (!combinedArray || !combinedArray[colorIndex]) {
         return;
       }
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
-        [colorIndex]: val,
+        [colorIndex]: numericValue,
       }));
     }
 

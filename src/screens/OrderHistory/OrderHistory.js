@@ -1053,15 +1053,16 @@ const styles = StyleSheet.create({
   },
   first_cnt: {
     width: "100%",
-    height: height >= 844 ? "15%" : "17%",
+    paddingHorizontal: 20,
+    height: height >= 844 ? "13%" : "17%",
     backgroundColor: "#FFF",
-    padding: "5%",
+    justifyContent: "center",
   },
   pendin_complete_cnt: {
     width: "100%",
     backgroundColor: "#212121",
-    paddingHorizontal: width >= 720 ? 18 : 15,
-    height: width >= 720 ? 70 : 50,
+    paddingHorizontal: width >= 720 ? 18 : 10,
+    height: width >= 720 ? 70 : 60,
     borderRadius: 5,
     justifyContent: "center",
   },
@@ -1072,7 +1073,7 @@ const styles = StyleSheet.create({
     // paddingVertical: "2.5%",
     // paddingHorizontal: "3.5%",
     // width: "100%",
-    gap: 6,
+    // gap: 6,
     // justifyContent: "center",
   },
   pending_btn: {
@@ -1081,6 +1082,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // paddingTop: "1.5%",
     // paddingBottom: "2.5%"
+    justifyContent: "center",
+    height: 40,
   },
   pending_text: {
     fontSize: width >= 720 ? 27 : 22,
@@ -1101,13 +1104,11 @@ const styles = StyleSheet.create({
     fontFamily:"GloryBold"
   },
   calender_cnt: {
-    backgroundColor: "red",
+    backgroundColor: "#FFF",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    height:40
-
   },
 });
 

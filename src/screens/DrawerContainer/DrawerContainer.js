@@ -119,7 +119,7 @@ export default function DrawerContainer(props) {
                   left: 10, // Left margin of 10 units
                   paddingTop: 12,
                   fontSize: width >= 720 ? 25 : 17, // Font size is 25 if the width is greater than or equal to 720, otherwise 17
-                  fontFamily:"GloryExtraBold" , // Font family "Glory" if isFontLoaded is true, otherwise use the default font
+                  fontFamily:"GloryMedium" , // Font family "Glory" if isFontLoaded is true, otherwise use the default font
                   fontWeight: "700", // Font weight is 700 (bold)
                   width: "60%", // Width of the text is 60% of the container
                 }}

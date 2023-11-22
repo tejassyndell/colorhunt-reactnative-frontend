@@ -29,7 +29,7 @@
       }
     },
     "android": {
-      "package": "com.colorhuntmobileapp.com",
+      "package": "com.colorhuntmobileapp.app",
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
