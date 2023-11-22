@@ -418,8 +418,6 @@ export default function CategorisWiseArticle(props) {
             resizeMode: "contain",
             borderRadius: 10,
             zIndex: 1,
-
-            // marginTop: 10,
           }}
         />
       </View>
