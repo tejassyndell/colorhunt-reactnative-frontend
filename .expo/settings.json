@@ -5,6 +5,6 @@
   "minify": false,
   "urlRandomness": null,
   "https": false,
-  "scheme": "com.colorhuntmobileapp.app",
+  "scheme": "exp+colorhunt-recipes-app",
   "devClient": false
 }

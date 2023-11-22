@@ -282,3 +282,12 @@ export const updateNotification = async (data) => {
     console.log(err, "err in react API");
   }
 };
+
+
+export const cartcount = async (data) => {
+  try {
+    return await axios.post(`${url}/cartcount`, data);
+  } catch (err) {
+    console.log(err);
+  }
+}

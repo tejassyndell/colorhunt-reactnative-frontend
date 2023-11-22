@@ -22,14 +22,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.colorhuntmobileapp.app",
+      "bundleIdentifier": "com.colorhuntmobileapp.com",
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification"],
         "NSNotificationsUsageDescription": "We need your permission to send you notifications"
       }
     },
     "android": {
-      "package": "com.colorhuntmobileapp.app",
+      "package": "com.colorhuntmobileapp.com",
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",

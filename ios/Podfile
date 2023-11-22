@@ -44,6 +44,9 @@ target 'ColorHunt' do
   use_frameworks!
   use_expo_modules!
   config = use_native_modules!
+  pod 'Firebase'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
 
   use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
   use_frameworks! :linkage => ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
