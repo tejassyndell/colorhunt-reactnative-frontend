@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   Profile: {
     height: "100%",
     width: "100%",
-    marginTop: "20%",
+    marginTop:width >= 720 ? "1%": "20%",
   },
   BottomContainer: {
     marginTop: 20,

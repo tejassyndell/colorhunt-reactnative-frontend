@@ -11,7 +11,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  Keyboard,
 } from "react-native";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { SendMail } from "../../api/api";
@@ -48,6 +49,28 @@ export default function Contact(props) {
   const multilineHeight = numberOfLines * lineHeight;
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     // Simulate a delay to hide the loading indicator after 3 seconds (adjust as needed)
@@ -191,17 +214,13 @@ export default function Contact(props) {
       </View>
     ) : (
      
+      <View style={{ flex: 1, backgroundColor: "white" }}>
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: "white" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 0.7 }}
-        keyboardShouldPersistTaps="handled"
-        showsHorizontalScrollIndicator={true}
-       
-      >
+
+     
         <View
           style={{
             alignItems: "center",
@@ -212,24 +231,21 @@ export default function Contact(props) {
             marginRight: "20%",
           }}
         >
-          {/* <Image
-            source={require("../../../assets/ContactPagePNG/contact.png")}
-            style={{
-              marginTop: 15,
-              width: "100%",
-              resizeMode: "contain",
-              height: "100%",
-            }}
-          /> */}
+         
           <Contactsvg/>
         </View>
+        <ScrollView
+       contentContainerStyle={{ flexGrow: 1 }}
+       keyboardShouldPersistTaps="handled"
+       vertical showsVerticalScrollIndicator={true}
+      >
         <View
           style={{
             justifyContent: "center",
-            alignItems: "center",
             width: "90%",
             marginLeft: "5%",
             marginRight: "5%",
+            paddingBottom: keyboardVisible ? '40%' : '0%',
           }}
         >
           <View
@@ -402,10 +418,12 @@ export default function Contact(props) {
           </View>
         </View>
       </ScrollView>
-      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+      
+      {/* <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
         <ButtomNavigation navigation={navigation} page="contactus" />
-      </View>
+      </View> */}
     </KeyboardAvoidingView>
+      </View>
     )}</>
   );
 }

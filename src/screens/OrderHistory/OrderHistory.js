@@ -205,7 +205,7 @@ const OrderHistory = (props) => {
               fontSize: width >= 720 ? 35 : 20,
               fontWeight: "700",
               width: "100%",
-              height:25,
+              height: width >= 720 ? 45:25,
               marginBottom:20, 
 
             }}
@@ -405,7 +405,7 @@ const OrderHistory = (props) => {
                 {/* <Button title="Select Dates" onPress={openModal} /> */}
                 <TouchableOpacity
                   onPress={openModal}
-                  style={{ height: 20, width: 20 }}
+                  style={{ height: width >= 720 ? 35: 20, width: width >= 720 ? 35: 20 }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>
@@ -770,7 +770,7 @@ const OrderHistory = (props) => {
                     paddingLeft: 20,
                   }}
                 >
-                  <View style={{ height: 35, width: 35 }}>
+                  <View style={{ height:  35, width:  35 }}>
                     <Image
                       style={{
                         height: "100%",
@@ -1091,11 +1091,13 @@ const styles = StyleSheet.create({
     paddingBottom: "2%",
   },
   calender_cnt: {
-    backgroundColor: "#FFF",
+    backgroundColor: "red",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "flex-end",
+    height:40
+
   },
 });
 
