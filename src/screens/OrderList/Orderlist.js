@@ -614,7 +614,7 @@ const fonttype = async ()=>{
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: "35%"
+                  top:height * 0.336
                 }}
                 nestedScrollEnabled={true}
 
