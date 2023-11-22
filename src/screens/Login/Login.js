@@ -113,7 +113,7 @@ const Login = (props) => {
         );
       });
       // Register background handler
-      // if (Platform.OS === "android") {
+      if (Platform.OS === "android") {
 
         messaging().setBackgroundMessageHandler(async remoteMessage => {
           console.log('Message handled in the background!', remoteMessage);
@@ -163,7 +163,7 @@ const Login = (props) => {
 
 
         return unsubscribe;
-      // }
+      }
     };
 
     getTokenAndSubscribe();
