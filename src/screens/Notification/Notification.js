@@ -163,10 +163,12 @@ const UpdateNotificationData = async (id) => {
       return `${daysAgo}d ago`;
     } else {
       // For older dates, use a library to format the relative time
+      
       return formatDistanceToNow(notificationTime, {
         addSuffix: true,
         includeSeconds: true,
-      }).replace("minute", "m").replace("hour", "h").replace("day", "d").replace("month", "m").replace('about','').replace('ds','d').replace('year','y');
+        
+      }).replace("minute", "m").replace("hour", "h").replace("day", "d").replace("month", "m").replace("ms", "m").replace('about','').replace('ds','d').replace('year','y');
     }
   };
   
@@ -307,7 +309,7 @@ const UpdateNotificationData = async (id) => {
                         width: "30%",
                         justifyContent: "center",
                         alignItems: "flex-end",
-                        paddingEnd: 20,
+                        paddingEnd: width >= 720 ? 0 : 20,
                       }}
                     >
                       <Text style={styles.timedetails}>
