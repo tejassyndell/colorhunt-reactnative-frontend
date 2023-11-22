@@ -21,6 +21,7 @@ import {
   CollectInwardForCartArticals,
   cartdetails,
   deletecartitem,
+  cartcount
 } from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -28,6 +29,9 @@ import { ImageZoomProps } from "react-native-image-pan-zoom";
 import * as Font from "expo-font";
 import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import Loader from "../../components/Loader/Loader";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/action";
+import { loadCustomFont } from "../../loadCustomFont";
 
 const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
@@ -43,12 +47,25 @@ const AddToCart = (props) => {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
-
+  const dispach = useDispatch();
+  const getcountofcart = async () => {
+    let data = await AsyncStorage.getItem("UserData");
+    data = await JSON.parse(data);
+    const response = await cartcount({ PartyId: data[0].Id }).then((res) => {
+      dispach(addToCart(res.data[0]))
+    }
+    )
+  }
+  useEffect(() => {
+    getcountofcart()
+  }, [])
   const onRefresh = () => {
     setRefreshing(true);
     cartDetails();
   };
-
+const fonttype = async ()=>{
+  const status = await loadCustomFont();
+}
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -60,7 +77,7 @@ const AddToCart = (props) => {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype()
     loadCustomFont();
   }, []);
 
@@ -125,8 +142,8 @@ const AddToCart = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -152,8 +169,8 @@ const AddToCart = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 45 : 25,
-              fontFamily: "Glory",
+              fontSize: width >= 720 ? 35 : 25,
+              fontFamily: "GloryBold" ,
               width: "100%",
             }}
           >
@@ -203,7 +220,6 @@ const AddToCart = (props) => {
           // console.log(parsedOrderItems, "-=-==-=-=-=--=-=-=");
           setOrderItems(parsedOrderItems);
           setRefreshing(false);
-          setIsLoading(false);
         }
       })
       .catch((error) => {
@@ -346,8 +362,8 @@ const AddToCart = (props) => {
     });
     setTotalPrice(total);
   };
+
   const handleDeleteOrder = async (article_id) => {
-    // console.log(article_id);
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
     const data = {
@@ -355,11 +371,14 @@ const AddToCart = (props) => {
       article_id: article_id,
     };
     try {
-      await deletecartitem(data);
+      await deletecartitem(data).then((res)=>{
+        getcountofcart();
+      })
       const updatedcartitems = orderItems.filter(
         (item) => item.article_id !== article_id
       );
       setOrderItems(updatedcartitems);
+
       // console.log("Done");
     } catch (error) {
       // console.log("Erro deleting article:", error);
@@ -411,8 +430,7 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "500",
+              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
               color: "red",
               textAlign: "right",
             }}
@@ -432,8 +450,7 @@ const AddToCart = (props) => {
           <Text
             style={{
               fontSize: windowwidthe * 0.035,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "400",
+              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
               color: "red",
             }}
           >
@@ -513,9 +530,8 @@ const AddToCart = (props) => {
             <Text
               style={{
                 fontSize: windowwidthe * 0.1,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                 textAlign: "center",
-                fontWeight: 700,
                 color: "#808080",
               }}
             >
@@ -543,7 +559,7 @@ const AddToCart = (props) => {
               <Text
                 style={{
                   color: "white",
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                   fontSize: width >= 720 ? 45 : 25,
                 }}
               >
@@ -1233,9 +1249,8 @@ const AddToCart = (props) => {
                           <Text
                             style={{
                               color: "white",
-                              fontSize: width >= 720 ? 35 : 25,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "600",
+                              fontSize: width >= 720 ? 35 : 22,
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               textAlign: "center",
                             }}
                           >

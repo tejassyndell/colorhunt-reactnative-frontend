@@ -31,7 +31,7 @@ import Calendersvg from "../../jssvgs/Calendersvg";
 import CompletedOrderHistory from "../../jssvgs/Completedorderhistory";
 import PendingSvg from "../../jssvgs/Pendingsvg";
 import Loader from "../../components/Loader/Loader";
-
+import { loadCustomFont } from "../../loadCustomFont.js"
 const { width, height } = Dimensions.get("window");
 
 const OrderHistory = (props) => {
@@ -70,7 +70,11 @@ const OrderHistory = (props) => {
   const [outwardtodate, setOutwardtodate] = useState(new Date());
   const [showFromDate, setShowFromDate] = useState(false);
   const [showToDate, setShowToDate] = useState(false);
-
+  const [filteractive, setFilteractive] = useState(false);
+  const fonttype = async () => {
+    const status = await loadCustomFont()
+  }
+  useEffect(() => { fonttype() }, [])
   const onRefresh = () => {
     setSoNumberData([])
     setOldDateOfso([])
@@ -202,8 +206,8 @@ const OrderHistory = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 35 : 20,
-              fontWeight: "700",
+              fontSize: width >= 720 ? 35 : 25,
+              fontFamily: "GloryBold",
               width: "100%",
               height: width >= 720 ? 45:25,
               marginBottom:20, 
@@ -284,7 +288,7 @@ const OrderHistory = (props) => {
       }
     }
     const totalAmount = sum + 0.05 * sum;
-    return Math.floor(totalAmount);
+    return Math.ceil(totalAmount);
   };
 
   const getCompleteData = async () => {
@@ -327,27 +331,34 @@ const OrderHistory = (props) => {
       setFilteroutwardstatus(true);
       filterdataOfcompleted();
     }
+    setFilteractive(true);
     closeModal();
   };
   const cleardate = () => {
-    if (orderstatus) {
-      setFromDate(new Date())
-      setToDate(new Date())
-      setSodatanotfount(false);
-      setFilterosstatus(false);
-      setSoNumberData(oldDataOfso);
+    if (filterosstatus == true) {
+      if (orderstatus) {
+        setFromDate(new Date());
+        setToDate(new Date());
+        setSodatanotfount(false);
+        setFilterosstatus(false);
+        setSoNumberData(oldDataOfso);
+      } else {
+        setOutwardfromdate(new Date());
+        setOutwardtodate(new Date());
+        setOutworddatanotfount(false);
+        setFilteroutwardstatus(false);
+        setcompletedsodata(olddataofcompleted);
+      }
+      setTimeout(() => {
+        setFilteractive(false);
+        closeModal();
+      }, 1000);
     }
     else {
-      setOutwardfromdate(new Date())
-      setOutwardtodate(new Date())
-      setOutworddatanotfount(false);
-      setFilteroutwardstatus(false);
-      setcompletedsodata(olddataofcompleted);
-    }
-    setTimeout(() => {
+      setFilteractive(false);
       closeModal();
-    }, 1000)
-  }
+    }
+  };
   return (
     <>
       {isloading ? (
@@ -540,8 +551,8 @@ const OrderHistory = (props) => {
                                 </View>
                                 <Text
                                   style={{
-                                    fontSize: width < 720 ? 10.854 : 16.854,
-                                    fontWeight: "700",
+                                    fontSize: width < 720 ? 11.854 : 16.854,
+                                    fontFamily:"GloryBold",
                                     color: "#FF0203",
                                   }}
                                 >
@@ -556,23 +567,20 @@ const OrderHistory = (props) => {
                       )
                     )
                     : ""}
-                  {
-                    Ispendingsoloading ?
-                      <View style={{
+                  {Ispendingsoloading ? (
+                    <View
+                      style={{
                         marginBottom: 100,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}>
-                        <ActivityIndicator
-                          size="large"
-                          color="black"
-                        />
-                      </View>
-                      : ""
-                  }
-
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <ActivityIndicator size="large" color="black" />
+                    </View>
+                  ) : (
+                    ""
+                  )}
                 </ScrollView>
-
               </View>
             )
           ) : isLoadingsodetails ? (
@@ -592,13 +600,14 @@ const OrderHistory = (props) => {
             </View>
           ) : (
             <View style={orderstyles.order_cnt}>
-              <ScrollView nestedScrollEnabled={true}
-               refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                />
-              }
+              <ScrollView
+                nestedScrollEnabled={true}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
               >
                 {completedsodata
                   ? completedsodata.map((item, index) =>
@@ -714,9 +723,9 @@ const OrderHistory = (props) => {
                               </View>
                               <Text
                                 style={{
-                                  fontSize: width < 720 ? 10.854 : 16.854,
-                                  fontWeight: "700",
+                                  fontSize: width < 720 ? 11.854 : 16.854,
                                   color: "#7AC848",
+                                  fontFamily:"GloryBold"
                                 }}
                               >
                                 Completed
@@ -882,22 +891,25 @@ const OrderHistory = (props) => {
                     style={calenderstyle.fromdate}
                   >
                     <View style={{ width: "80%" }}>
-                      <Text style={{ color: 'black' }}>
-                        {orderstatus ?
-                          fromDate
-                            ? new Date(fromDate).toLocaleDateString('en-GB', {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
+                      <Text style={{ color: "black" }}>
+                        {orderstatus
+                          ? fromDate
+                            ? new Date(fromDate).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
                             })
-                            : 'Select Date' :
-                          outwardfromdate ? new Date(outwardfromdate).toLocaleDateString('en-GB', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                          })
-                            : 'Select Date'
-                        }
+                            : "Select Date"
+                          : outwardfromdate
+                            ? new Date(outwardfromdate).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                              }
+                            )
+                            : "Select Date"}
                       </Text>
                     </View>
                     <TouchableOpacity
@@ -932,23 +944,22 @@ const OrderHistory = (props) => {
                   style={calenderstyle.fromdate}
                 >
                   <View style={{ width: "80%" }}>
-                    <Text style={{ color: 'black' }}>
-                      {orderstatus ?
-                        toDate
-                          ? new Date(toDate).toLocaleDateString('en-GB', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
+                    <Text style={{ color: "black" }}>
+                      {orderstatus
+                        ? toDate
+                          ? new Date(toDate).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
                           })
-                          : 'Select Date' : outwardtodate ?
-                          new Date(outwardtodate).toLocaleDateString('en-GB', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
+                          : "Select Date"
+                        : outwardtodate
+                          ? new Date(outwardtodate).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
                           })
-                          : 'Select Date'
-
-                      }
+                          : "Select Date"}
                     </Text>
                   </View>
                   <TouchableOpacity
@@ -1072,23 +1083,22 @@ const styles = StyleSheet.create({
     // paddingBottom: "2.5%"
   },
   pending_text: {
-    fontSize: width < 720 ? width * 0.05 : width * 0.037,
-    fontWeight: "700",
+    fontSize: width >= 720 ? 27 : 22,
+    fontFamily: "GloryBold",
     textAlign: "center",
   },
   complete_btn: {
     width: "50%",
     backgroundColor: "#212121",
     borderRadius: 5,
-    // paddingTop: "1.5%",
-    // paddingBottom: "2.5%"
+    justifyContent: "center",
   },
   complete_text: {
     color: "#FFF",
-    fontSize: width < 720 ? width * 0.05 : width * 0.037,
-    fontWeight: "700",
+    fontSize: width >= 720 ? 27 : 22,
     textAlign: "center",
     paddingBottom: "2%",
+    fontFamily:"GloryBold"
   },
   calender_cnt: {
     backgroundColor: "red",
@@ -1152,12 +1162,12 @@ const orderstyles = StyleSheet.create({
   },
   txt_titile: {
     fontSize: width < 720 ? 14 : 20,
-    fontWeight: "400",
     color: "#000000B2",
+    fontFamily:"GloryMedium"
   },
   txt_val: {
-    fontSize: width >= 720 ? 22 : 13,
-    fontWeight: "700",
+    fontSize: width >= 720 ? 22 : 16,
+    fontFamily:"GloryBold",
     color: "#000000",
   },
   complete_icon_text: {
@@ -1229,10 +1239,10 @@ const calenderstyle = StyleSheet.create({
     justifyContent: "center"
   },
   nextbuttontext: {
-    // fontWeight: "700",
     color: "#FFF",
     textAlign: "center",
-    fontSize: width >= 720 ? 25 : 16,
+    fontSize: width >= 720 ? 25 : 18,
+    fontFamily:"GloryMedium"
   },
   fromdate: {
     backgroundColor: 'transparent',
@@ -1252,6 +1262,7 @@ const calenderstyle = StyleSheet.create({
   fromtext: {
     marginBottom: "4%",
     fontSize: 16,
-    color: "#000"
-  }
-})
+    color: "#000",
+    fontFamily:"GloryMedium"
+  },
+});

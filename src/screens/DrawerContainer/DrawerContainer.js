@@ -15,6 +15,7 @@ import * as Font from "expo-font";
 import Svg, { Circle, Rect, Path, G, Defs, ClipPath } from "react-native-svg";
 import Drawerwhitelogo from "../../jssvgs/Drawerwhitelogo";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
+import { loadCustomFont } from "../../loadCustomFont";
 const { width, height } = Dimensions.get("window");
 
 export default function DrawerContainer(props) {
@@ -33,6 +34,9 @@ export default function DrawerContainer(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
+  const fonttype = async () => {
+    const status = await loadCustomFont();
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -44,7 +48,7 @@ export default function DrawerContainer(props) {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
   const fetchUserName = async () => {
@@ -115,7 +119,7 @@ export default function DrawerContainer(props) {
                   left: 10, // Left margin of 10 units
                   paddingTop: 12,
                   fontSize: width >= 720 ? 25 : 17, // Font size is 25 if the width is greater than or equal to 720, otherwise 17
-                  fontFamily: isFontLoaded ? "Glory" : undefined, // Font family "Glory" if isFontLoaded is true, otherwise use the default font
+                  fontFamily:"GloryExtraBold" , // Font family "Glory" if isFontLoaded is true, otherwise use the default font
                   fontWeight: "700", // Font weight is 700 (bold)
                   width: "60%", // Width of the text is 60% of the container
                 }}
@@ -165,7 +169,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -197,7 +201,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -228,7 +232,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -260,7 +264,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -291,7 +295,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -318,7 +322,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -349,7 +353,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -380,7 +384,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -412,7 +416,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -443,7 +447,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -472,7 +476,7 @@ export default function DrawerContainer(props) {
                 <Text
                   style={{
                     fontSize: width >= 720 ? 20 : 16,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: "GloryMedium" ,
                     color: "#FFF",
                     marginLeft: 8,
                   }}
@@ -504,8 +508,8 @@ export default function DrawerContainer(props) {
             <Text
               style={{
                 color: "rgba(255, 255, 255, 1)",
-                fontSize: width >= 720 ? 15 : 12,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontSize: width >= 720 ? 15 : 14,
+                    fontFamily: "GloryMedium" ,
               }}
             >
               Design By SYNDELL Inc.

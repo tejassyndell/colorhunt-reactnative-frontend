@@ -291,3 +291,11 @@ export const cartcount = async (data) => {
     console.log(err);
   }
 }
+ 
+export const Sliderimages = async()=>{
+  try{
+    return await axios.get(`${url}/sliderimages`);
+  }catch(err){
+    console.log(err);
+  }
+}

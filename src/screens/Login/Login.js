@@ -69,26 +69,22 @@ const Login = (props) => {
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      console.log("Authorization status:", authStatus, enabled);
+      console.log('Authorization status:', authStatus, enabled);
       return enabled;
     } catch (error) {
-      console.error("Error requesting permission:", error);
+      console.error('Error requesting permission:', error);
       return false;
     }
-  };
+  }
   useEffect(() => {
     const getTokenAndSubscribe = async () => {
       const permissionGranted = await requestUserPermission();
 
       if (permissionGranted) {
         const fcmToken = await messaging().getToken();
-        AsyncStorage.setItem(
-          "notificationstatus",
-          JSON.stringify({ status: true, token: fcmToken })
-        )
-          .then(() => {
-            // console.log("Data stored in local storage:", userData);
-          })
+        AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: fcmToken })).then(() => {
+          // console.log("Data stored in local storage:", userData);
+        })
           .catch((error) => {
             console.error("Error storing data in local storage:", error);
           });
@@ -151,8 +147,8 @@ const Login = (props) => {
         .then(async (remoteMessage) => {
           if (remoteMessage) {
             console.log(
-              "Notification caused app to open from quit state:",
-              remoteMessage.notification
+              'Notification caused app to open from quit state:',
+              remoteMessage.notification,
             );
           }
         });
@@ -160,11 +156,62 @@ const Login = (props) => {
 
       messaging().onNotificationOpenedApp(async (remoteMessage) => {
         console.log(
-          "Notification caused app to open from background state:",
-          remoteMessage.notification
+          'Notification caused app to open from background state:',
+          remoteMessage.notification,
         );
       });
       // Register background handler
+      if (Platform.OS === "android") {
+
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+          console.log('Message handled in the background!', remoteMessage);
+          const channelId = 'colorhuntmobileapp';
+          const channelConfig = {
+            channelId,
+            channelName: 'colorhuntmobileapp Notification Channel',
+            channelDescription: 'colorhuntmobileapp custom notification channel',
+            soundName: 'default',
+            importance: 4, // Notification Importance (0-4), where 4 is the highest
+            vibrate: true,
+          };
+          // Create the channel
+          PushNotification.createChannel(channelConfig);
+          const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+            PushNotification.localNotification({
+              channelId: "colorhuntmobileapp",
+              title: remoteMessage.notification.title,
+              message: remoteMessage.notification.body
+            })
+          });
+          // return unsubscribe;
+        });
+        // Listen for incoming FCM messages
+        // Define the channel settings
+        const channelId = 'colorhuntmobileapp';
+        const channelConfig = {
+          channelId,
+          channelName: 'colorhuntmobileapp Notification Channel',
+          channelDescription: 'colorhuntmobileapp custom notification channel',
+          soundName: 'default',
+          importance: 4, // Notification Importance (0-4), where 4 is the highest
+          vibrate: true,
+        };
+
+        // Create the channel
+        PushNotification.createChannel(channelConfig);
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+          PushNotification.localNotification({
+            channelId: "colorhuntmobileapp",
+            title: remoteMessage.notification.title,
+            message: remoteMessage.notification.body,
+          })
+        });
+
+
+        return unsubscribe;
+      }
     };
 
     getTokenAndSubscribe();
@@ -292,10 +339,7 @@ const Login = (props) => {
                     );
                   });
 
-                await udatepartytoken({
-                  party_id: res.data[0].Id,
-                  token: token,
-                });
+                await udatepartytoken({ party_id: res.data[0].Id, token: token });
 
                 setShowLogin(false); // Switch to OTP view
                 setIsLoading(false);
@@ -316,13 +360,18 @@ const Login = (props) => {
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         navigation.navigate("Slider");
-      } else if (otp.join("").length < 1) {
+      } else if (otp.join('').length < 1) {
         // Navigate to the desired screen when "Back" is clicked
         setPhoneNumber("");
         setShowLogin(true);
+
+
       } else {
         alert("Invalid OTP. Please try again.");
       }
+
+
+
     }
   };
 
@@ -341,13 +390,7 @@ const Login = (props) => {
     }
   };
 
-  const buttonLabel = showLogin
-    ? phoneNumber
-      ? "Next"
-      : "Skip"
-    : otp.join("").length === 0
-    ? "Back"
-    : "Verify";
+  const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : (otp.join('').length === 0 ? "Back" : "Verify");
 
   const gifImageSource = require("../../../assets/Loader/Screen.gif");
   return (

@@ -21,6 +21,7 @@ import {
   getWishlistData,
   getAddWishlist,
   DeleteWishlist,
+  cartcount
 } from "../../api/api";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import SearchBar from "../../components/SearchBar/searchbar";
@@ -33,6 +34,9 @@ import Svg, { Circle, Path } from "react-native-svg";
 import SidebarSvg from "../../jssvgs/Sidebarsvg";
 import ProfileSvg from "../../jssvgs/ProfileSvg";
 import Loader from "../../components/Loader/Loader";
+import { useFocusEffect } from "@react-navigation/native";
+import { loadCustomFont } from "../../loadCustomFont";
+
 export default function HomeScreen(props) {
   const { navigation } = props;
   const [nameData, setNameData] = useState([]);
@@ -51,8 +55,13 @@ export default function HomeScreen(props) {
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
-
   const [refreshing, setRefreshing] = useState(false);
+  const fonttype=async()=>{
+    const status = await loadCustomFont()
+  }
+  useEffect(()=>{
+    fonttype()
+  },[])
   const onRefresh = () => {
     getCategoriesname()
   };
@@ -98,8 +107,8 @@ export default function HomeScreen(props) {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   const [kids, setkidsdata] = useState([]);
   const [showarticle, setshowarticle] = useState(false);
 
@@ -221,7 +230,7 @@ export default function HomeScreen(props) {
     try {
       const result1 = await getcateGorywithphotos();
       if (result1 && result1.status === 200) {
-        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION");
+        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION" && item.Category !== "kids");
         setNameData(filteredData);
         setTimeout(() => {
           setIsLoading(false);
@@ -231,7 +240,7 @@ export default function HomeScreen(props) {
       const result2 = await getProductName();
       if (result2 && result2.status === 200) {
         setNameDatas(result2.data);
-        setkidsdata(nameDatas.filter((item) => item.Category === "kids"));
+        setkidsdata(result2.data.filter((item) => item.Category === "kids"));
         setIsLoading(false);
         setRefreshing(false);
       } else {
@@ -389,7 +398,7 @@ export default function HomeScreen(props) {
 
         if (chunkResult.length > 0) {
           filtered = [...filtered, ...chunkResult];
-          if(parseInt(filtered.length)>=4){
+          if (parseInt(filtered.length) >= 4) {
             // console.log(filtered.length,typeof 4);
             break; // Stop after the first matching chunk
           }
@@ -530,9 +539,8 @@ export default function HomeScreen(props) {
             >
               <Text
                 style={{
-                  fontSize: width >= 720 ? 32 : 22,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
-                  fontWeight: "700",
+                  fontSize: width >= 720 ? 32 : 24,
+                  fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif",
                   paddingLeft: 8,
                 }}
               >
@@ -540,71 +548,71 @@ export default function HomeScreen(props) {
               </Text>
             </View>
             {isLoggedIn ? (
-               <View
-               style={{
-                 flexDirection: "row",
-                 alignItems: "center",
-                 width: "100%",
-               }}
-             >
-               <SearchBar
-                 searchPhrase={searchText}
-                 setSearchPhrase={setSearchText}
-               />
-               
-               <TouchableOpacity
-                 style={{ width: "10%", alignItems: "flex-end" }}
-                 onPress={() => {
-                   isLoggedIn ? openFilter() : openCreateAccountModal();
-                 }}
-               >
-                 <Svg
-                   width={width >= 720 ? 60 : 35}
-                   height={width >= 720 ? 60 : 35}
-                   viewBox="0 0 40 40"
-                   fill="none"
-                   xmlns="http://www.w3.org/2000/Svg"
-                   {...props}
-                 >
-                   <Circle cx={20} cy={20} r={20} fill="#212121" />
-                   <Path
-                     opacity={0.4}
-                     d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
-                     fill="white"
-                   />
-                   <Path
-                     opacity={0.4}
-                     d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
-                     fill="white"
-                   />
-                   <Path
-                     d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
-                     fill="white"
-                   />
-                   <Path
-                     d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
-                     fill="white"
-                   />
-                 </Svg>
-               </TouchableOpacity>
-             </View>
-            ):(
               <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                width: "112%",
-              }}
-            >
-              <SearchBar
-                searchPhrase={searchText}
-                setSearchPhrase={setSearchText}
-              />
-              
-             
-            </View>
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <SearchBar
+                  searchPhrase={searchText}
+                  setSearchPhrase={setSearchText}
+                />
+
+                <TouchableOpacity
+                  style={{ width: "10%", alignItems: "flex-end" }}
+                  onPress={() => {
+                    isLoggedIn ? openFilter() : openCreateAccountModal();
+                  }}
+                >
+                  <Svg
+                    width={width >= 720 ? 60 : 35}
+                    height={width >= 720 ? 60 : 35}
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/Svg"
+                    {...props}
+                  >
+                    <Circle cx={20} cy={20} r={20} fill="#212121" />
+                    <Path
+                      opacity={0.4}
+                      d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
+                      fill="white"
+                    />
+                    <Path
+                      opacity={0.4}
+                      d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
+                      fill="white"
+                    />
+                    <Path
+                      d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
+                      fill="white"
+                    />
+                    <Path
+                      d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
+                      fill="white"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "112%",
+                }}
+              >
+                <SearchBar
+                  searchPhrase={searchText}
+                  setSearchPhrase={setSearchText}
+                />
+
+
+              </View>
             )}
-           
+
           </View>
           <ScrollView
             showsHorizontalScrollIndicator={false}
@@ -619,9 +627,8 @@ export default function HomeScreen(props) {
               <Text
                 style={{
                   start: 10,
-                  fontWeight: "700",
-                  fontSize: width >= 720 ? 25 : 18,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
+                  fontSize: width >= 720 ? 25 : 20,
+                  fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif",
                 }}
               >
                 Men's
@@ -631,9 +638,8 @@ export default function HomeScreen(props) {
                   position: "absolute",
                   color: "#666666",
                   end: 10,
-                  fontSize: width >= 720 ? 20 : 12,
-                  fontFamily: isFontLoaded ? "Glory" : undefined,
-                  fontWeight: "600",
+                  fontSize: width >= 720 ? 20 : 14,
+                  fontFamily: isFontLoaded ? "GlorySemiBold" : "Arial, sans-serif",
                 }}
                 onPress={() => {
                   viewAllArticles();
@@ -748,21 +754,21 @@ export default function HomeScreen(props) {
 
                           <Text
                             style={{
-                              fontWeight: "bold",
                               marginTop: 10,
-                              fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
+                              fontSize: width >= 720 ? 20 : 18,
+                              fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif",
                             }}
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text style={{ fontSize: width >= 720 ? 16 : 14 }}>
+                          <Text style={{ fontSize: width >= 720 ? 16 : 16,
+                            fontFamily: isFontLoaded ? "GloryMedium" : "Arial, sans-serif" }}>
                             {convertToTitleCase(item.Category)}
                           </Text>
                           <Text
                             style={{
-                              fontWeight: "bold",
-                              fontSize: width >= 720 ? 20 : 16,
+                              fontSize: width >= 720 ? 20 : 18,
+                              fontFamily: isFontLoaded ? "GloryBold" : "Arial, sans-serif"
                             }}
                           >
                             {isLoggedIn ? "₹" + item.ArticleRate + ".00" : null}
@@ -782,7 +788,7 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontFamily: "GloryMedium" ,
                           textAlign: "center",
                           color: "#808080",
                         }}
@@ -850,9 +856,8 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           marginTop: 10,
-                          fontWeight: "bold",
-                          fontSize: width >= 720 ? 30 : 14,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontSize: width >= 720 ? 30 : 18,
+                          fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif",
                           marginBottom: 10,
                           textAlign: "center",
                         }}
@@ -865,175 +870,153 @@ export default function HomeScreen(props) {
               </ScrollView>
             </View>
             <View></View>
-            <View style={{ marginTop: width >= 720 ? 30 : 10 }}>
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  top: 10,
-                  marginTop: 5,
-                }}
-              >
-                <Text
+            {kids.length === 0 ?
+              ""
+              :
+              <View style={{ marginTop: width >= 720 ? 30 : 10 }}>
+                <View
                   style={{
-                    start: 10,
-                    fontWeight: "700",
-                    fontSize: width >= 720 ? 25 : 18,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
+                    width: "100%",
+                    flexDirection: "row",
+                    top: 10,
+                    marginTop: 5,
                   }}
                 >
-                  Kid’s
-                </Text>
-                <Text
-                  style={{
-                    position: "absolute",
-                    end: 10,
-                    color: "#666666",
-                    fontSize: width >= 720 ? 18 : 12,
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
-                    fontWeight: "600",
-                  }}
-                  onPress={() => {
-                    // viewAllArticles();
-                  }}
-                >
-                  View All
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  position: "relative",
-                  width: "100%",
-                  height: "auto",
-                  flexDirection: "row",
-                  top: 20,
-                }}
-              >
-                {kids.length === 0 ? (
-                  <View
+                  <Text
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      justifyContent: "center",
-                      textAlign: "center",
+                      start: 10,
+                      fontSize: width >= 720 ? 25 : 20,
+                      fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif"
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: width >= 720 ? 25 : 17,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        textAlign: "center",
-                        color: "#808080",
-                      }}
-                    >
-                      No Article Found
-                    </Text>
-                  </View>
-                ) : (
-                  kids.map((item, index) => (
-                    <ScrollView
-                      horizontal={true}
-                      showsHorizontalScrollIndicator={false}
-                      style={{ overflow: "hidden" }}
-                    >
-                      <View
-                        key={index}
-                        style={{
-                          alignItems: "center",
-                          width: width >= 720 ? 300 : 155,
-                          height: width >= 720 ? 280 : 280,
-                          marginLeft: width >= 720 ? 15 : 10,
-                          marginRight: width >= 720 ? 15 : 5,
-                          marginBottom: width >= 720 ? "4%" : 120,
-                          borderRadius: 10,
-                        }}
+                    Kid’s
+                  </Text>
+                  <Text
+                    style={{
+                      position: "absolute",
+                      end: 10,
+                      color: "#666666",
+                      fontSize: width >= 720 ? 20 : 14,
+                      fontFamily: isFontLoaded ? "GlorySemiBold" : "Arial, sans-serif",
+                    }}
+                    onPress={() => {
+                      // viewAllArticles();
+                    }}
+                  >
+                    View All
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "auto",
+                    flexDirection: "row",
+                    top: 20,
+                  }}
+                >
+                  {
+                    kids.map((item, index) => (
+                      <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        style={{ overflow: "hidden" }}
                       >
                         <View
+                          key={index}
                           style={{
+                            alignItems: "center",
                             width: width >= 720 ? 300 : 155,
-                            height: width >= 720 ? 280 : 190,
-                            borderColor: "gray",
-                            shadowColor: "#000000",
-                            shadowOpacity: 0.9,
-                            shadowRadius: 3,
+                            height: width >= 720 ? 280 : 280,
+                            marginLeft: width >= 720 ? 15 : 10,
+                            marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,
-                            elevation: 4,
-                            shadowOffset: {
-                              width: 0,
-                              height: 0,
-                            },
-                          }}
-                        >
-                          <View id={item.id} style={styles.producticones}>
-                            {selectedprd.some((i) => i.Id === item.Id) ? (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  rmvProductWishlist(item);
-                                }}
-                              >
-                                <FontAwesome
-                                  name="heart"
-                                  style={[styles.icon]}
-                                />
-                              </TouchableOpacity>
-                            ) : (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  isLoggedIn
-                                    ? addArticleWishlist(item)
-                                    : openCreateAccountModal();
-                                }}
-                              >
-                                <FontAwesome
-                                  name="heart-o"
-                                  style={[styles.disabledIcon]}
-                                />
-                              </TouchableOpacity>
-                            )}
-                          </View>
-                          <Image
-                            source={{ uri: baseImageUrl + item.Photos }}
-                            style={{
-                              flex: 1,
-                              borderRadius: 10,
-                            }}
-                          />
-                        </View>
-
-                        <Text
-                          style={{
-                            fontWeight: "bold",
                             marginTop: 10,
-                            fontSize: width >= 720 ? 18 : 12,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
                           }}
                         >
-                          {item.ArticleNumber}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: width >= 720 ? 15 : 10,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >
-                          {convertToTitleCase(item.Category)}
-                        </Text>
-                        <Text
-                          style={{
-                            fontWeight: "bold",
-                            fontSize: width >= 720 ? 18 : 12,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                          }}
-                        >
-                          {"₹" + item.ArticleRate + ".00"}
-                        </Text>
-                      </View>
-                    </ScrollView>
-                  ))
-                )}
-              </View>
-            </View>
+                          <View
+                            style={{
+                              width: width >= 720 ? 300 : 155,
+                              height: width >= 720 ? 280 : 190,
+                              borderRadius: 12,
+                              backgroundColor: "#FFF",
+                              elevation: 2,
+                            }}
+                          >
+                            <View id={item.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    rmvProductWishlist(item);
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart"
+                                    style={[styles.icon]}
+                                  />
+                                </TouchableOpacity>
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? addArticleWishlist(item)
+                                      : openCreateAccountModal();
+                                  }}
+                                >
+                                  <FontAwesome
+                                    name="heart-o"
+                                    style={[styles.disabledIcon]}
+                                  />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            <TouchableOpacity onPress={() => {
+                              navigation.navigate("DetailsOfArticals", {
+                                id: item.Id,
+                              });
+                            }}>
+                              <Image
+                                source={{ uri: baseImageUrl + item.Photos }}
+                                style={{
+                                  width: "100%",
+                                  height: width >= 720 ? 280 : 190,
+                                  borderRadius: 10,
+                                }}
+                              /></TouchableOpacity>
+                          </View>
+
+                          <Text
+                            style={{
+                              marginTop: 10,
+                              fontSize: width >= 720 ? 18 : 12,
+                              fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif",
+                            }}
+                          >
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: width >= 720 ? 15 : 10,
+                              fontFamily: isFontLoaded ? "GloryMedium" : "Arial, sans-serif",
+                            }}
+                          >
+                            {convertToTitleCase(item.Category)}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: width >= 720 ? 18 : 12,
+                              fontFamily: isFontLoaded ? "GloryBold" : "Arial, sans-serif",
+                            }}
+                          >
+                            {"₹" + item.ArticleRate + ".00"}
+                          </Text>
+                        </View>
+                      </ScrollView>
+                    ))
+                  }
+                </View>
+              </View>}
           </ScrollView>
         </View>
       )}

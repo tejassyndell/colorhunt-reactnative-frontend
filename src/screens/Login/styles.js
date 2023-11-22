@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import * as Font from "expo-font";
+import { loadCustomFont } from "../../loadCustomFont";
 
 const SliderStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  const fonttype = async()=>{
+    const status = await loadCustomFont()
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -16,7 +19,7 @@ const SliderStyles = () => {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
 
@@ -34,23 +37,19 @@ const SliderStyles = () => {
       bottom: 0,
     },
     title: {
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily: "GloryExtraBold" ,
       color: "white",
-      fontSize: windowWidth * 0.07,
-
-      fontWeight: "700",
+      fontSize: windowWidth * 0.08,
       marginBottom: "2%",
     },
     subtitle: {
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily: "GloryMedium",
       color: "#BCBCBC",
-      fontSize: windowWidth * 0.04,
-
-      fontWeight: "700",
+      fontSize: windowWidth * 0.045,
       marginBottom: 80,
     },
     input: {
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily:"GloryRegular",
       flex: 1,
       fontSize: width >= 720 ? 35 : 20,
       height: width >= 720 ? 80 : 50,
@@ -69,7 +68,7 @@ const SliderStyles = () => {
       justifyContent: "space-between",
     },
     otpInput: {
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily: "GloryRegular",
       width: width >= 720 ? 90 : 47,
       justifyContent: "space-between",
       height: width >= 720 ? 90 : 50,
@@ -92,10 +91,9 @@ const SliderStyles = () => {
       right: 20,
     },
     buttonText: {
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontFamily:"GloryBold" ,
       color: "white",
-      fontSize: width >= 720 ? 40 : 23,
-      fontWeight: "700",
+      fontSize: width >= 720 ? 40 : 25,
       textAlign: "center",
     },
     phoneIcon: {

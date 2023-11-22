@@ -8,62 +8,8 @@ import messaging from "@react-native-firebase/messaging";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
-  // const [isOffline, setOfflineStatus] = useState(false);
-
-  // async function requestUserPermission() {
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-  //   if (enabled) {
-  //     console.log("Authorization status:", authStatus);
-  //     // getNotificationToken();
-  //     getNoticicationToken();
-  //   }
-  // }
-  // useEffect(() => {
-  //   requestUserPermission();
-  // }, []);
-
-  // const getNoticicationToken = async () => {
-  //   let checktoken = await AsyncStorage.getItem("notificationToken");
-  //   console.log("old token", checktoken);
-  //   if (!checktoken) {
-  //     try {
-  //       const notificationToken = await messaging().getToken();
-  //       if (!!notificationToken) {
-  //         console.log(
-  //           "noti-token get NEW TOKEN succefully ",
-  //           notificationToken
-  //         );
-  //         await AsyncStorage.setItem("notificationToken", notificationToken);
-  //       }
-  //     } catch (error) {
-  //       console.log(error, "error in getToken ");
-  //       alert(error?.message);
-  //     }
-  //   }
-  // };
-
-  // const getNotificationToken = async () => {
-  //   let notificationToken = await AsyncStorage.getItem("UserData");
-  //   console.log(notificationToken, "the old token");
-  //   if (notificationToken) {
-  //   }
-  //   try {
-  //     const notificationToken = await messaging().getToken();
-  //     if (notificationToken) {
-  //       console.log(notificationToken, "gentrate a new token");
-  //       await AsyncStorage.setItem("UserData", notificationToken);
-  //     }
-  //   } catch (error) {
-  //     console.log(error, "error in notifationtoken ");
-  //   }
-  // };
-
-  // const [showNetworkError, setShowNetworkError] = useState(false);
-
+  const [isOffline, setOfflineStatus] = useState(false);
+  const [showNetworkError, setShowNetworkError] = useState(false);
   // Function to enable/disable font scaling for a specific Text component
 
   // useEffect(() => {
@@ -103,8 +49,8 @@ export default function App() {
         translucent={false}
         networkActivityIndicatorVisible={true}
       />
-      {/* {isOffline ? <AppContainer /> : <AppContainer />} */}
-      <AppContainer />
+      {isOffline ? <AppContainer /> : <AppContainer />}
+
       {/* <Modal
         animationType="slide"
         visible={showNetworkError}

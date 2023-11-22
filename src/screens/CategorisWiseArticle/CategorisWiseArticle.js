@@ -32,6 +32,7 @@ import { ActivityIndicator } from "react-native";
 import * as Font from "expo-font";
 import { Svg, Path, Circle } from "react-native-svg";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
+import { loadCustomFont } from "../../loadCustomFont";
 export default function CategorisWiseArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
@@ -86,7 +87,9 @@ export default function CategorisWiseArticle(props) {
       keyboardDidHideListener.remove();
     };
   }, []);
-
+  const fonttype = async () => {
+    const status = await loadCustomFont()
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -98,7 +101,7 @@ export default function CategorisWiseArticle(props) {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
 
@@ -132,8 +135,8 @@ export default function CategorisWiseArticle(props) {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   // uploard url image
@@ -420,19 +423,22 @@ export default function CategorisWiseArticle(props) {
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
               style={{
-                fontWeight: "bold",
-                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontSize: width >= 720 ? 18 : 15,
+                fontFamily: "GlorySemiBold"
               }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{ fontFamily: isFontLoaded ? "Glory" : undefined }}>
+            <Text style={{
+              fontSize: width >= 720 ? 15 : 13,
+              fontFamily: "GloryMedium"
+            }}>
               {convertToTitleCase(item.Category)}
             </Text>
             <Text
               style={{
-                fontWeight: "bold",
-                fontFamily: isFontLoaded ? "Glory" : undefined,
+                fontSize: width >= 720 ? 18 : 15,
+                fontFamily: "GlorySemiBold"
               }}
             >
               {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
@@ -562,9 +568,8 @@ export default function CategorisWiseArticle(props) {
           <View>
             <Text
               style={{
-                fontSize: width >= 720 ? 25 : 15,
-                fontFamily: isFontLoaded ? "Glory" : undefined,
-                fontWeight: "700",
+                fontSize: width >= 720 ? 25 : 18,
+                fontFamily: "GloryBold",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
@@ -587,23 +592,26 @@ export default function CategorisWiseArticle(props) {
             }}
           >
             {finalData.length === 0 ? (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontFamily: isFontLoaded ? "Glory" : undefined,
-                    fontSize: 20,
-                  }}
-                >
-                  No Articles Found
-                </Text>
-              </View>
+              (
+                (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontFamily: "GloryMedium" ,
+                        fontSize: 20,
+                      }}
+                    >
+                      No Articles Found
+                    </Text>
+                  </View>
+                ))
             ) : (
               <FlatList
                 style={{ backgroundColor: "#FFF" }}

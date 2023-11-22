@@ -21,6 +21,7 @@ import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Svg, { G, Circle, Path } from "react-native-svg";
 import Loader from "../../components/Loader/Loader"
+import { loadCustomFont } from "../../loadCustomFont";
 export default function Userprofile(props) {
   const { navigation } = props;
   const [Profile, setprofile] = useState([]);
@@ -34,16 +35,21 @@ export default function Userprofile(props) {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
 
   const [refreshing, setRefreshing] = useState(false);
-
+  const fonttype = async () => {
+    const status = await loadCustomFont()
+  }
+  useEffect(() => {
+    fonttype()
+  }, [])
   const onRefresh = () => {
     setRefreshing(true);
     fetchprofiledata()
 
-   
+
   };
 
   useEffect(() => {
@@ -57,14 +63,14 @@ export default function Userprofile(props) {
       const data = { party_id: partyData[0].Id };
       const response = await Profiledata(data)
       // console.log(response,"{}{}{][");
-      if(response){
+      if (response) {
         setprofile(response.data);
         setIsLoading(false);
         setRefreshing(false);
       }
-    else{
-      // Alert.alert("Server is not responding")
-    }
+      else {
+        // Alert.alert("Server is not responding")
+      }
     } catch (err) {
       // console.log(err, "error in fetching data");
     }
@@ -117,7 +123,7 @@ export default function Userprofile(props) {
         height: headerHeight, // Increase the header height here
         elevation: 0, // Remove the shadow on Android
         shadowOpacity: 0, // Remove the shadow on iOS
-        backgroundColor:"black"
+        backgroundColor: "black"
       },
 
     });
@@ -127,7 +133,7 @@ export default function Userprofile(props) {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-           <Loader/>
+          <Loader />
         </View>
       ) : (
         <>

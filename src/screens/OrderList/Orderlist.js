@@ -24,6 +24,7 @@ import * as Font from "expo-font";
 import Svg, { G, Path } from 'react-native-svg';
 import Loader from "../../components/Loader/Loader"
 import Ordersuccessful from "../../jssvgs/Ordersucseccful";
+import { loadCustomFont } from "../../loadCustomFont";
 const Orderlist = (props) => {
   const { navigation } = props;
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +58,9 @@ const Orderlist = (props) => {
     setRefreshing(true);
     GetTransportation()
   };
-
+const fonttype = async ()=>{
+ const status = await loadCustomFont();
+}
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -69,7 +72,7 @@ const Orderlist = (props) => {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
 
@@ -159,7 +162,6 @@ const Orderlist = (props) => {
     });
 
   const GetTransportation = async () => {
-    console.log('bsdasbs');
     await gettransportation()
       .then((response) => {
         setTransportation(response.data);
@@ -209,9 +211,8 @@ const Orderlist = (props) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: windowwidthe * 0.05,
-              fontFamily: isFontLoaded ? "Glory" : undefined,
-              fontWeight: "700",
+              fontSize: width >= 720 ? 35 : 25,
+              fontFamily: "GloryBold" ,
               width: "100%",
             }}
           >
@@ -265,10 +266,10 @@ const Orderlist = (props) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor:'#FFF'
+            backgroundColor: '#FFF'
           }}
         >
-           <Loader/>
+          <Loader />
         </View>
       ) : (
         <View
@@ -312,8 +313,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: "500",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       color: "#000",
                     }}
                   >
@@ -335,10 +335,8 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         color: "#626262",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontSize:
-                          windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: "500",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                        fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                       }}
                     >
                       {new Date(currentDate).toLocaleDateString("en-GB", {
@@ -359,8 +357,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: "500",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       color: "#000",
                     }}
                   >
@@ -377,7 +374,7 @@ const Orderlist = (props) => {
                       borderColor: "#E4E7EA",
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                       backgroundColor: "#EEE",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                     }}
                     onChangeText={(e) => {
                       setDestinationVal(e);
@@ -389,8 +386,7 @@ const Orderlist = (props) => {
                       style={{
                         fontSize: windowwidthe * 0.03,
                         color: "red",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "500",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       }}
                     >
                       {fillvalue ? "Filed cannot be empty" : ""}
@@ -401,29 +397,26 @@ const Orderlist = (props) => {
                   style={{
                     paddingHorizontal: "5%",
                     paddingBottom: "3%",
-                    paddingTop: 2,
                     gap: 5,
                   }}
                 >
                   <Text
                     style={{
                       fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 24,
-                      fontWeight: "500",
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       color: "#000",
                     }}
                   >
                     Transportation
                   </Text>
 
-                  <View
+                  <TouchableOpacity
                     style={{
                       width: "100%",
                       borderWidth: 1,
                       paddingVertical: "2.5%",
                       paddingLeft: "3%",
                       borderRadius: 6,
-
                       borderBottomLeftRadius: 0,
                       borderBottomRightRadius: 0,
                       borderColor: "#E4E7EA",
@@ -431,14 +424,18 @@ const Orderlist = (props) => {
                       display: "flex",
                       flexDirection: "row",
                     }}
+                    onPress={() => {
+                      Transportation.length !== 0
+                        ? setshowTransporatation(!showTransporatation)
+                        : "";
+                    }}
                   >
                     <Text
                       style={{
                         color: "#626262",
                         fontSize:
                           windowwidthe < 720 ? windowwidthe * 0.045 : 26,
-                        fontWeight: "500",
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                       }}
                     >
                       {transportationVal.toUpperCase()}
@@ -454,7 +451,7 @@ const Orderlist = (props) => {
                       <TouchableOpacity
                         style={{
                           width: width >= 720 ? 50 : 30,
-                          height: width >= 720 ? 50 : 30
+                          height: width >= 720 ? 50 : 30,
                         }}
                         onPress={() => {
                           Transportation.length !== 0
@@ -462,15 +459,12 @@ const Orderlist = (props) => {
                             : "";
                         }}
                       >
-                        {/* <Image
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            resizeMode: "contain",
-                          }}
-                          source={require("../../../assets/DownArrow(1).png")}
-                        ></Image> */}
-                        <Svg width="100%" height="100%" viewBox="0 0 30 30" fill="none">
+                        <Svg
+                          width="100%"
+                          height="100%"
+                          viewBox="0 0 30 30"
+                          fill="none"
+                        >
                           <G id="download_2">
                             <Path
                               id="Vector"
@@ -481,83 +475,20 @@ const Orderlist = (props) => {
                         </Svg>
                       </TouchableOpacity>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
-                {showTransporatation && Transportation.length !== 0 && (
-                  <ScrollView
-                    style={{
-                      // height: "auto",
-                      maxHeight: "50%",
-                      borderWidth: 1,
-                      backgroundColor: "#EEEEEE",
-                      marginHorizontal: "5%",
-                      borderRadius: 6,
-                      borderColor: "#E4E7EA",
-                      paddingHorizontal: "2.5%",
-                      paddingBottom: "4.5%",
-                      width: "90%",
-                      position: "relative",
-                      borderTopLeftRadius: 0,
-                      borderTopRightRadius: 0,
-                      bottom: 14,
-                    }}
-                    nestedScrollEnabled={true}
-                    
-                  >
-                    <View>
-                      {Transportation.map((item,index) => (
-                        <TouchableOpacity
-                          key={index}
-                          onPress={() => {
-                            setTransportationVal(item.Name);
-                            setshowTransporatation(!showTransporatation);
-                          }}
-                        // onPressIn={() => handlePressIn(item)}
-                        // onPressOut={handlePressOut}
-                        >
-                          <View
-                            style={[
-                              styles.item,
-                              {
-                                backgroundColor:
-                                  hoveredItem === item.Id
-                                    ? "black"
-                                    : "transparent",
-                              },
-                            ]}
-                          >
-                            <Text
-                              style={[
-                                {
-                                  fontSize:
-                                    windowwidthe < 720
-                                      ? windowwidthe * 0.045
-                                      : 26,
-                                  color:
-                                    hoveredItem === item.Id
-                                      ? "#fff"
-                                      : "#626262",
-                                  fontWeight: "500",
-                                },
-                              ]}
-                            >
-                              {item.Name.toUpperCase()}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  </ScrollView>
-                )}
+
               </View>
+
               <View
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   maxHeight: "30%",
-                  width: "100%",
+                  width: "100%"
                 }}
               >
+
                 <ScrollView nestedScrollEnabled={true} >
                   {ParsedData &&
                     ParsedData.map((item, index) => (
@@ -568,7 +499,7 @@ const Orderlist = (props) => {
                             width: "90%",
                             backgroundColor: "#FFF",
                             padding: "3%",
-                            height: width >= 720 ? 200 : 100,
+                            height: width >= 720 ? 200 : 120,
                             marginHorizontal: "5%",
                             marginVertical: width >= 720 ? 20 : 10,
                             borderRadius: 10,
@@ -585,7 +516,7 @@ const Orderlist = (props) => {
                               //   width: 1,
                               //   height: 1,
                               // },
-                              width: width >= 720 ? 130 : "20%",
+                              width: width >= 720 ? 130 : "28%",
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
@@ -622,18 +553,17 @@ const Orderlist = (props) => {
                                 style={{
                                   fontSize: width >= 720 ? 30 : 18,
                                   fontFamily: isFontLoaded
-                                    ? "Glory"
+                                    ? "GloryBold"
                                     : undefined,
-                                  fontWeight: "700",
                                 }}
                               >
                                 {item.ArticleNumber}
                               </Text>
                               <Text
                                 style={{
-                                  fontSize: width >= 720 ? 30 : 18,
+                                  fontSize: width >= 720 ? 30 : 14,
                                   fontFamily: isFontLoaded
-                                    ? "Glory"
+                                    ? "GloryRegular"
                                     : undefined,
                                   fontWeight: "400",
                                 }}
@@ -654,9 +584,8 @@ const Orderlist = (props) => {
                                 style={{
                                   fontSize: width >= 720 ? 30 : 18,
                                   fontFamily: isFontLoaded
-                                    ? "Glory"
+                                    ? "GloryBold"
                                     : undefined,
-                                  fontWeight: "700",
                                 }}
                               >
                                 ₹{item.rate}.00
@@ -669,6 +598,72 @@ const Orderlist = (props) => {
                 </ScrollView>
               </View>
             </View>
+            {showTransporatation && Transportation.length !== 0 && (
+              <ScrollView
+                style={{
+                  height: "auto",
+                  maxHeight: "100%",
+                  borderWidth: 1,
+                  backgroundColor: "#EEEEEE",
+                  marginHorizontal: "5%",
+                  borderRadius: 6,
+                  borderColor: "#E4E7EA",
+                  paddingHorizontal: "2.5%",
+                  paddingBottom: "4.5%",
+                  width: "90%",
+                  position: "absolute",
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                  top: "35%"
+                }}
+                nestedScrollEnabled={true}
+
+              >
+                <View>
+                  {Transportation.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        setTransportationVal(item.Name);
+                        setshowTransporatation(!showTransporatation);
+                      }}
+                    // onPressIn={() => handlePressIn(item)}
+                    // onPressOut={handlePressOut}
+                    >
+                      <View
+                        style={[
+                          styles.item,
+                          {
+                            backgroundColor:
+                              hoveredItem === item.Id
+                                ? "black"
+                                : "transparent",
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            {
+                              fontSize:
+                                windowwidthe < 720
+                                  ? windowwidthe * 0.042
+                                  : 26,
+                              color:
+                                hoveredItem === item.Id
+                                  ? "#fff"
+                                  : "#626262",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                            },
+                          ]}
+                        >
+                          {item.Name.toUpperCase()}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
+            )}
             <Modal
               visible={isModalVisible}
               transparent={true}
@@ -692,11 +687,11 @@ const Orderlist = (props) => {
                       borderRadius: 25,
                       justifyContent: "center",
                       alignItems: "center",
-                      alignContent:"center",
+                      alignContent: "center",
                       padding: 5,
                     }}
                   >
-                     <Loader/>
+                    <Loader />
                   </View>
                 </View>
               )}
@@ -728,8 +723,7 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 32,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
-                          fontWeight: "700",
+                          fontFamily: isFontLoaded ? "GloryBold" : undefined,
                           marginBottom: 10,
                         }}
                       >
@@ -739,10 +733,9 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 24,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                           textAlign: "center",
                           marginBottom: 20,
-                          fontWeight: "500",
                           color: "rgba(0, 0, 0, 0.70)",
                         }}
                       >
@@ -762,13 +755,13 @@ const Orderlist = (props) => {
                           justifyContent: "center",
                           alignItems: "center",
                           marginVertical: 20,
+                          paddingVertical:"4%"
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "700",
+                            fontFamily: isFontLoaded ? "GloryBold" : undefined,
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -805,8 +798,7 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 32,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
-                          fontWeight: "700",
+                          fontFamily: isFontLoaded ? "GloryBold" : undefined,
                           marginBottom: 10,
                           marginTop: 50,
                         }}
@@ -817,10 +809,9 @@ const Orderlist = (props) => {
                       <Text
                         style={{
                           fontSize: 24,
-                          fontFamily: isFontLoaded ? "Glory" : undefined,
+                          fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                           textAlign: "center",
                           marginBottom: 20,
-                          fontWeight: "500",
                           color: "rgba(0, 0, 0, 0.70)",
                         }}
                       >
@@ -841,13 +832,13 @@ const Orderlist = (props) => {
                           justifyContent: "center",
                           alignItems: "center",
                           marginVertical: 20,
+                          paddingVertical:"4%"
                         }}
                       >
                         <Text
                           style={{
                             fontSize: 18,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "700",
+                            fontFamily: isFontLoaded ? "GloryBold" : undefined,
                             color: "white",
                             paddingHorizontal: 15,
                           }}
@@ -899,8 +890,7 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "400",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -912,8 +902,7 @@ const Orderlist = (props) => {
                     <Text
                       style={{
                         fontSize: width >= 720 ? 22 : 12,
-                        fontFamily: isFontLoaded ? "Glory" : undefined,
-                        fontWeight: "500",
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                         color: "#00000080",
                         textAlign: "right",
                       }}
@@ -936,8 +925,7 @@ const Orderlist = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "400",
+                            fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -949,8 +937,7 @@ const Orderlist = (props) => {
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? "Glory" : undefined,
-                            fontWeight: "500",
+                            fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -981,8 +968,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "400",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -994,8 +980,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "500",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1016,8 +1001,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "400",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1029,8 +1013,7 @@ const Orderlist = (props) => {
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "500",
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1087,8 +1070,7 @@ const Orderlist = (props) => {
                     style={{
                       color: "white",
                       fontSize: width >= 720 ? 25 : 15,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "600",
+                      fontFamily: isFontLoaded ? "GloryBold" : undefined,
                       textAlign: "center",
                     }}
                   >
@@ -1115,8 +1097,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: width >= 720 ? 22 : 14,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "500",
+                      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                     }}
                   >
                     Total Price
@@ -1126,8 +1107,7 @@ const Orderlist = (props) => {
                   <Text
                     style={{
                       fontSize: width >= 720 ? 22 : 16,
-                      fontFamily: isFontLoaded ? "Glory" : undefined,
-                      fontWeight: "700",
+                      fontFamily: isFontLoaded ? "GloryBold" : undefined,
                     }}
                   >
                     ₹{parseInt(totalrate + gstamount)}.00
@@ -1148,5 +1128,6 @@ const styles = StyleSheet.create({
   item: {
     borderRadius: 6,
     padding: 10,
+    paddingLeft: 2.6
   },
 });

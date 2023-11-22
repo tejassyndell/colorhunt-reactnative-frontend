@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import * as Font from "expo-font";
+import { loadCustomFont } from "../../loadCustomFont";
 
 const { width: viewportWidth } = Dimensions.get("window");
 const { width, height } = Dimensions.get("window");
 
 const detailsOfArtStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  const fonttype = async ()=>{
+    const  status = await loadCustomFont();
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -163,11 +166,9 @@ const detailsOfArtStyles = () => {
       alignItems: "center",
       justifyContent: "center",
     },
-    size_a: {
+      size_a: {
       marginTop: 3,
       textAlign: "center",
-      color: "b3a8a8",
-      fontWeight: "600",
       fontSize: width >= 720 ? 30 : 15,
       fontFamily: isFontLoaded ? "Glory" : undefined,
     },
@@ -373,11 +374,10 @@ const detailsOfArtStyles = () => {
       height: "40%",
     },
     articallabel: {
-      fontWeight: "bold",
       marginLeft: 0.5,
       textAlign: "left",
-      fontSize: width >= 720 ? 22 : 16,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontSize: width >= 720 ? 20 : 16,
+      fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
     },
     article_content_r: {
       width: "80.5%",
@@ -399,9 +399,8 @@ const detailsOfArtStyles = () => {
     },
     article_ratio_content: {
       textAlign: "center",
-      fontSize: width >= 720 ? 31 : 18,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
-      fontWeight: "500",
+      fontSize: width >= 720 ? 20 : 16,
+      fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
       color: "#626262",
     },
     article_rate_container: {
@@ -413,15 +412,13 @@ const detailsOfArtStyles = () => {
     article_rate_content: {
       textAlign: "center",
       fontSize: width >= 720 ? 30 : 18,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
-      fontWeight: "500",
+      fontFamily: isFontLoaded ? "GloryMedium" : undefined,
       color: "#626262",
     },
     articallabel1: {
-      fontWeight: "bold",
       marginLeft: 0.5,
-      fontSize: width >= 720 ? 20 : 14,
-      fontFamily: isFontLoaded ? "Glory" : undefined,
+      fontSize: width >= 720 ? 20 : 16,
+      fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
     },
     total_price_container: {
       width: "95%",

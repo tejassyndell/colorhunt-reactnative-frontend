@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, } from "react-native";
 import * as Font from "expo-font";
+import { loadCustomFont } from "../../loadCustomFont";
 
 
 const Categoriesstyle = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  const fonttype = async ()=>{
+    const status = await loadCustomFont()
+  }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -17,7 +20,7 @@ const Categoriesstyle = () => {
         console.error("Error loading custom font:", error);
       }
     };
-
+    fonttype();
     loadCustomFont();
   }, []);
 
@@ -51,8 +54,7 @@ const styles = StyleSheet.create({
   categoriesName: {
     flex: 1,
     fontSize: 20,
-    fontFamily: isFontLoaded ? 'Glory' : undefined,
-    fontWeight: 'bold',
+    fontFamily:"GloryBold",
     textAlign: 'center',
     color: '#333333',
     marginTop: 8
