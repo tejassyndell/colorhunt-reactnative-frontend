@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import { FlatList, ScrollView, Text, View, Image, TouchableHighlight } from "react-native";
-import styles from "./styles";
+import IngredientStyles from "./styles";
 import { getIngredientUrl, getRecipesByIngredient, getCategoryName } from "../../data/MockDataAPI";
 
 export default function IngredientScreen(props) {
@@ -9,6 +9,7 @@ export default function IngredientScreen(props) {
   const ingredientId = route.params?.ingredient;
   const ingredientUrl = getIngredientUrl(ingredientId);
   const ingredientName = route.params?.name;
+  const styles = IngredientStyles()
 
   useLayoutEffect(() => {
     navigation.setOptions({
