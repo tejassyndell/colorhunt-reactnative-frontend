@@ -81,27 +81,42 @@ const fonttype = async ()=>{
     loadCustomFont();
   }, []);
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        
-        setMaxHeight(windowwidthe * 0.9); // Adjust the value as needed
-        setKeyboardVisible(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setMaxHeight(windowwidthe * 1.1); // Adjust the value as needed
-        setKeyboardVisible(false);
-      }
-    );
 
+  const updateMaxHeight = () => {
+    const windowWidth = Dimensions.get("window").width;
+    const windowheight = Dimensions.get("window").height;
+
+    // Add your media query conditions here
+    const mediaQueryCondition = windowWidth >= 720 || windowheight >= 844;
+
+    // Adjust the maxHeight based on media query conditions
+    const newMaxHeight = mediaQueryCondition ? windowWidth * 0.60 : windowWidth * 0.90;
+    
+    setMaxHeight(newMaxHeight);
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+      updateMaxHeight();
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+      updateMaxHeight();
+    });
+
+    // Cleanup listeners
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
+  }, []);
+
+
+  useEffect(() => {
+    // Initial update
+    updateMaxHeight();
   }, []);
   const deletsvg = (
     <Svg width="100%" height="100%" viewBox="0 0 15 17" fill="none">
@@ -804,9 +819,9 @@ const fonttype = async ()=>{
                                       shadowColor: "gray",
                                       shadowOpacity: 0.5,
                                       marginHorizontal: "3%",
-                                      marginTop: "5%",
+                                      marginTop:width >= 720 ? "1%" :"5%",
                                       borderRadius: 10,
-                                      height: width >= 720 ? windowheight * 0.160: windowheight * 0.142,
+                                      height: width >= 720 ? 160:130,
                                       paddingVertical: "1.5%",
                                       borderColor: "rgba(0,0,0,0.2)",
                                       borderWidth: 1,

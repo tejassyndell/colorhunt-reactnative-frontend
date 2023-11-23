@@ -1101,7 +1101,7 @@ const styles = StyleSheet.create({
     fontFamily:"GloryBold"
   },
   calender_cnt: {
-    backgroundColor: "red",
+    backgroundColor: "#FFF",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",

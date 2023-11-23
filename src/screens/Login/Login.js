@@ -43,7 +43,7 @@ const Login = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSplace, setIsLoadingSplace] = useState(true);
 
-  const initialLogoSize = Math.min(width, height) * 0.5;
+  const initialLogoSize = Math.min(width, height) * 0.4;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
 
@@ -220,6 +220,8 @@ const Login = (props) => {
 
     // getNotificationPermission();
   }, []);
+
+  
   const keyboardDidShow = () => {
     const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
     setLogoSize(newSize);
@@ -227,7 +229,8 @@ const Login = (props) => {
   };
 
   const keyboardDidHide = () => {
-    setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
+    const newSized = Math.min(width, height) * 0.3;
+    setLogoSize(newSized); // Set it back to the original size when the keyboard is hidden
     setLeftPosition("50%");
   };
 
