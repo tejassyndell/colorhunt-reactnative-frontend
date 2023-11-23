@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "784149544299",
-    "project_id": "colorhuntmobileappnotification",
-    "storage_bucket": "colorhuntmobileappnotification.appspot.com"
+    "project_number": "857223445153",
+    "project_id": "colorhunt-12f6d",
+    "storage_bucket": "colorhunt-12f6d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:784149544299:android:6282431285657b9131602e",
+        "mobilesdk_app_id": "1:857223445153:android:4e1676cbcdf2cff8b70ee0",
         "android_client_info": {
           "package_name": "com.colorhuntmobileapp.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBJPUzWhQifsOFJGZUROC8vDR0XbBELFJ0"
+          "current_key": "AIzaSyAk3zoWOyCGSbTWYNg8k_H35IDLp2vVqYM"
         }
       ],
       "services": {
