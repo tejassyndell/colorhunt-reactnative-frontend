@@ -208,7 +208,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -369,7 +368,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {

@@ -409,10 +409,7 @@ const DetailsOfArticals = (props) => {
         </View>
       ) : (
         <View style={{ backgroundColor: "#FFF", flex: 1 }}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
+          <KeyboardAvoidingView style={{ marginBottom: 150 }}>
             <ScrollView
               nestedScrollEnabled={true}
               showsHorizontalScrollIndicator={false}

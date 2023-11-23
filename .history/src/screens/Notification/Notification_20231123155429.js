@@ -1,4 +1,4 @@
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import { useLayoutEffect } from "react";
 import {
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   SafeAreaView,
   Platform,
   Dimensions,
-  RefreshControl,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 
@@ -44,13 +44,7 @@ export default function Notification(props) {
   };
 
   const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 110
-        : 80
-      : height >= 844
-      ? 110
-      : 65;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
@@ -208,7 +202,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -246,13 +239,13 @@ export default function Notification(props) {
         <View style={styles.container}>
           {/* {/ Render notification data /} */}
 
-          {/* <StatusBar style="auto" /> */}
+          <StatusBar style="auto" />
           <ScrollView
             style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContent}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            horizontal={false}
           >
             <View style={styles.notificasionContenor}>
               {notificationalldata.map((item, index) => (
@@ -345,14 +338,16 @@ export default function Notification(props) {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    width: "100%", // Ensure the scrollView takes up the full width
+    marginBottom: 80,
+  },
+  scrollViewContent: {
+    alignItems: "center",
   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   input: {
     height: 40,
@@ -369,7 +364,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {
@@ -377,12 +372,11 @@ const styles = StyleSheet.create({
   },
   notificasionContenor: {
     width: "100%",
-    height: "auto",
+
     alignItems: "center",
   },
   contentBox: {
-    height: "auto",
-    width: "95%",
+    width: "90%",
     backfaceVisibility: "#FFF",
     flexDirection: "row",
     justifyContent: "space-between",

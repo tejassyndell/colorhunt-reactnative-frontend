@@ -1,4 +1,4 @@
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import { useLayoutEffect } from "react";
 import {
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   SafeAreaView,
   Platform,
   Dimensions,
-  RefreshControl,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 
@@ -120,7 +120,6 @@ export default function Notification(props) {
             display: "flex",
             flexDirection: "row",
             width: "100%",
-            marginBottom: 20,
           }}
         >
           <Text
@@ -208,7 +207,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -246,15 +244,16 @@ export default function Notification(props) {
         <View style={styles.container}>
           {/* {/ Render notification data /} */}
 
-          {/* <StatusBar style="auto" /> */}
-          <ScrollView
-            style={styles.scrollView}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            horizontal={false}
-          >
-            <View style={styles.notificasionContenor}>
+          <StatusBar style="auto" />
+
+          <View style={styles.notificasionContenor}>
+            <ScrollView
+              style={{ flex: 1, width: "100%" }}
+              contentContainerStyle={styles.container}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
               {notificationalldata.map((item, index) => (
                 <TouchableOpacity
                   style={styles.contentBox}
@@ -273,10 +272,10 @@ export default function Notification(props) {
                       justifyContent: "center",
                       shadowColor: "gray",
                       marginHorizontal: 2,
-                      shadowOpacity: 3,
+                      shadowOpacity: 0.1,
                       shadowRadius: 6,
                       borderRadius: 10,
-                      shadowColor: "black",
+                      shadowColor: "grey",
                       elevation: 2,
                       shadowOffset: {
                         width: 1,
@@ -331,8 +330,9 @@ export default function Notification(props) {
                   </View>
                 </TouchableOpacity>
               ))}
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
+
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation navigation={navigation} page="notification" />
           </View>
@@ -343,22 +343,18 @@ export default function Notification(props) {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    width: "100%", // Ensure the scrollView takes up the full width
-  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   input: {
     height: 40,
     marginTop: 12,
     marginBottom: 12,
     width: "100%",
+
     fontSize: 15,
     borderWidth: 1,
     borderRadius: 10,
@@ -369,7 +365,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {
@@ -377,11 +374,13 @@ const styles = StyleSheet.create({
   },
   notificasionContenor: {
     width: "100%",
-    height: "auto",
+    height: "100%",
     alignItems: "center",
+    backgroundColor: "red",
   },
   contentBox: {
     height: "auto",
+    backgroundColor: "yellow",
     width: "95%",
     backfaceVisibility: "#FFF",
     flexDirection: "row",
@@ -391,7 +390,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 10,
-    shadowOpacity: 0.5, // Increased shadow opacity
+    // shadowOpacity: 0.5, // Increased shadow opacity
     // borderColor: "rgba(0,0,0,0.9)",
     // elevation:0.4, // Increased elevation
   },

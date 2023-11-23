@@ -208,7 +208,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -343,16 +342,11 @@ export default function Notification(props) {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    width: "100%", // Ensure the scrollView takes up the full width
-  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   input: {
     height: 40,
@@ -369,7 +363,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {

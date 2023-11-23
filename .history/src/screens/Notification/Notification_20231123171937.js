@@ -1,4 +1,4 @@
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import { useLayoutEffect } from "react";
 import {
   StyleSheet,
@@ -11,7 +11,6 @@ import {
   Platform,
   Dimensions,
   RefreshControl,
-  ScrollView,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 
@@ -208,7 +207,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -247,92 +245,86 @@ export default function Notification(props) {
           {/* {/ Render notification data /} */}
 
           {/* <StatusBar style="auto" /> */}
-          <ScrollView
-            style={styles.scrollView}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            horizontal={false}
-          >
-            <View style={styles.notificasionContenor}>
-              {notificationalldata.map((item, index) => (
-                <TouchableOpacity
-                  style={styles.contentBox}
-                  key={index}
-                  onPress={() => {
-                    UpdateNotificationData(item.id);
-                    // You can add other code here if needed
+
+          <View style={styles.notificasionContenor}>
+            {notificationalldata.map((item, index) => (
+              <TouchableOpacity
+                style={styles.contentBox}
+                key={index}
+                onPress={() => {
+                  UpdateNotificationData(item.id);
+                  // You can add other code here if needed
+                }}
+              >
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    marginVertical: 2,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    shadowColor: "gray",
+                    marginHorizontal: 2,
+                    shadowOpacity: 3,
+                    shadowRadius: 6,
+                    borderRadius: 10,
+                    shadowColor: "black",
+                    elevation: 2,
+                    shadowOffset: {
+                      width: 1,
+                      height: 1,
+                    },
                   }}
                 >
+                  {item.status === 0 && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        backgroundColor: "red",
+                        width: 12,
+                        height: 12,
+                        borderRadius: 8,
+                        zIndex: 2,
+                      }}
+                    />
+                  )}
+                  <Image
+                    style={styles.imagesection}
+                    source={{ uri: baseImageUrl + item.image }}
+                  />
+                  {console.log(item.image, "imageget")}
+                </View>
+
+                <View style={styles.contentsection}>
                   <View
                     style={{
-                      width: 60,
-                      height: 60,
-                      marginVertical: 2,
-                      alignItems: "center",
+                      width: "62%",
                       justifyContent: "center",
-                      shadowColor: "gray",
-                      marginHorizontal: 2,
-                      shadowOpacity: 3,
-                      shadowRadius: 6,
-                      borderRadius: 10,
-                      shadowColor: "black",
-                      elevation: 2,
-                      shadowOffset: {
-                        width: 1,
-                        height: 1,
-                      },
+                      marginStart: 8,
                     }}
                   >
-                    {item.status === 0 && (
-                      <View
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          right: 0,
-                          backgroundColor: "red",
-                          width: 12,
-                          height: 12,
-                          borderRadius: 8,
-                          zIndex: 2,
-                        }}
-                      />
-                    )}
-                    <Image
-                      style={styles.imagesection}
-                      source={{ uri: baseImageUrl + item.image }}
-                    />
-                    {console.log(item.image, "imageget")}
+                    <Text style={styles.detailscon}>{item.body}</Text>
                   </View>
 
-                  <View style={styles.contentsection}>
-                    <View
-                      style={{
-                        width: "62%",
-                        justifyContent: "center",
-                        marginStart: 8,
-                      }}
-                    >
-                      <Text style={styles.detailscon}>{item.body}</Text>
-                    </View>
-
-                    <View
-                      style={{
-                        width: "30%",
-                        justifyContent: "center",
-                        alignItems: "flex-end",
-                        paddingEnd: width >= 720 ? 0 : 20,
-                      }}
-                    >
-                      <Text style={styles.timedetails}>
-                        {formatTimeDifference(item.CreatedDate)}
-                      </Text>
-                    </View>
+                  <View
+                    style={{
+                      width: "30%",
+                      justifyContent: "center",
+                      alignItems: "flex-end",
+                      paddingEnd: width >= 720 ? 0 : 20,
+                    }}
+                  >
+                    <Text style={styles.timedetails}>
+                      {formatTimeDifference(item.CreatedDate)}
+                    </Text>
                   </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation navigation={navigation} page="notification" />
           </View>
@@ -343,16 +335,11 @@ export default function Notification(props) {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    width: "100%", // Ensure the scrollView takes up the full width
-  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   input: {
     height: 40,
@@ -369,7 +356,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {

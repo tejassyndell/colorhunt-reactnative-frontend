@@ -593,7 +593,7 @@ const AddToCart = (props) => {
       ) : (
         <KeyboardAvoidingView
           style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "android" ? "padding" : "height"}
         >
           <View
             style={{

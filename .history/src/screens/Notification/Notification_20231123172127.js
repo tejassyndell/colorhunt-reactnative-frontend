@@ -11,7 +11,6 @@ import {
   Platform,
   Dimensions,
   RefreshControl,
-  ScrollView,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 
@@ -208,7 +207,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -252,7 +250,6 @@ export default function Notification(props) {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            horizontal={false}
           >
             <View style={styles.notificasionContenor}>
               {notificationalldata.map((item, index) => (
@@ -343,16 +340,17 @@ export default function Notification(props) {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
+  loaderContainer: {
     flex: 1,
-    width: "100%", // Ensure the scrollView takes up the full width
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFF",
   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   input: {
     height: 40,
@@ -369,7 +367,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {

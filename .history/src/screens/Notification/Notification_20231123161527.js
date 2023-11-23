@@ -1,4 +1,4 @@
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import { useLayoutEffect } from "react";
 import {
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   SafeAreaView,
   Platform,
   Dimensions,
-  RefreshControl,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 
@@ -44,13 +44,7 @@ export default function Notification(props) {
   };
 
   const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 110
-        : 80
-      : height >= 844
-      ? 110
-      : 65;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
@@ -208,7 +202,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -246,23 +239,27 @@ export default function Notification(props) {
         <View style={styles.container}>
           {/* {/ Render notification data /} */}
 
-          {/* <StatusBar style="auto" /> */}
-          <ScrollView
-            style={styles.scrollView}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            horizontal={false}
-          >
-            <View style={styles.notificasionContenor}>
-              {notificationalldata.map((item, index) => (
-                <TouchableOpacity
-                  style={styles.contentBox}
-                  key={index}
-                  onPress={() => {
-                    UpdateNotificationData(item.id);
-                    // You can add other code here if needed
-                  }}
+          <StatusBar style="auto" />
+
+          <View style={styles.notificasionContenor}>
+            {notificationalldata.map((item, index) => (
+              <TouchableOpacity
+                style={styles.contentBox}
+                key={index}
+                onPress={() => {
+                  UpdateNotificationData(item.id);
+                  // You can add other code here if needed
+                }}
+              >
+                <ScrollView
+                  style={styles.scrollView}
+                  contentContainerStyle={styles.scrollViewContent}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
                 >
                   <View
                     style={{
@@ -329,15 +326,15 @@ export default function Notification(props) {
                       </Text>
                     </View>
                   </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-          <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-            <ButtomNavigation navigation={navigation} page="notification" />
+                </ScrollView>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
       )}
+      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+        <ButtomNavigation navigation={navigation} page="notification" />
+      </View>
     </>
   );
 }
@@ -345,14 +342,17 @@ export default function Notification(props) {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    width: "100%", // Ensure the scrollView takes up the full width
+    marginBottom: 88,
+    backgroundColor: "red",
+  },
+  scrollViewContent: {
+    alignItems: "center",
   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   input: {
     height: 40,
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {
@@ -377,12 +377,11 @@ const styles = StyleSheet.create({
   },
   notificasionContenor: {
     width: "100%",
-    height: "auto",
+
     alignItems: "center",
   },
   contentBox: {
-    height: "auto",
-    width: "95%",
+    width: "90%",
     backfaceVisibility: "#FFF",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -391,7 +390,9 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 10,
-    shadowOpacity: 0.5, // Increased shadow opacity
+    shadowOpacity: 0.5,
+    flexDirection: "row",
+    justifyContent: "space-between", // Increased shadow opacity
     // borderColor: "rgba(0,0,0,0.9)",
     // elevation:0.4, // Increased elevation
   },

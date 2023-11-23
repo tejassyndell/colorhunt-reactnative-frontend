@@ -1,4 +1,4 @@
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import { useLayoutEffect } from "react";
 import {
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   SafeAreaView,
   Platform,
   Dimensions,
-  RefreshControl,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 
@@ -44,13 +44,7 @@ export default function Notification(props) {
   };
 
   const headerHeight =
-    Platform.OS === "android"
-      ? width >= 720
-        ? 110
-        : 80
-      : height >= 844
-      ? 110
-      : 65;
+    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
@@ -208,7 +202,6 @@ export default function Notification(props) {
 
     return null; // Return null for invalid time values
   };
-  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -246,43 +239,45 @@ export default function Notification(props) {
         <View style={styles.container}>
           {/* {/ Render notification data /} */}
 
-          {/* <StatusBar style="auto" /> */}
-          <ScrollView
-            style={styles.scrollView}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            horizontal={false}
-          >
-            <View style={styles.notificasionContenor}>
-              {notificationalldata.map((item, index) => (
-                <TouchableOpacity
-                  style={styles.contentBox}
-                  key={index}
-                  onPress={() => {
-                    UpdateNotificationData(item.id);
-                    // You can add other code here if needed
+          <StatusBar style="auto" />
+
+          <View style={styles.notificasionContenor}>
+            {notificationalldata.map((item, index) => (
+              <TouchableOpacity
+                style={styles.contentBox}
+                key={index}
+                onPress={() => {
+                  UpdateNotificationData(item.id);
+                  // You can add other code here if needed
+                }}
+              >
+                <View
+                  style={{
+                    width: 60,
+                    height: 60,
+                    marginVertical: 2,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    shadowColor: "gray",
+                    marginHorizontal: 2,
+                    shadowOpacity: 0.1,
+                    shadowRadius: 6,
+                    borderRadius: 10,
+                    shadowColor: "grey",
+                    elevation: 2,
+                    shadowOffset: {
+                      width: 1,
+                      height: 1,
+                    },
                   }}
                 >
-                  <View
-                    style={{
-                      width: 60,
-                      height: 60,
-                      marginVertical: 2,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      shadowColor: "gray",
-                      marginHorizontal: 2,
-                      shadowOpacity: 3,
-                      shadowRadius: 6,
-                      borderRadius: 10,
-                      shadowColor: "black",
-                      elevation: 2,
-                      shadowOffset: {
-                        width: 1,
-                        height: 1,
-                      },
-                    }}
+                  <ScrollView
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   >
                     {item.status === 0 && (
                       <View
@@ -303,36 +298,37 @@ export default function Notification(props) {
                       source={{ uri: baseImageUrl + item.image }}
                     />
                     {console.log(item.image, "imageget")}
+                  </ScrollView>
+                </View>
+
+                <View style={styles.contentsection}>
+                  <View
+                    style={{
+                      width: "62%",
+                      justifyContent: "center",
+                      marginStart: 8,
+                    }}
+                  >
+                    <Text style={styles.detailscon}>{item.body}</Text>
                   </View>
 
-                  <View style={styles.contentsection}>
-                    <View
-                      style={{
-                        width: "62%",
-                        justifyContent: "center",
-                        marginStart: 8,
-                      }}
-                    >
-                      <Text style={styles.detailscon}>{item.body}</Text>
-                    </View>
-
-                    <View
-                      style={{
-                        width: "30%",
-                        justifyContent: "center",
-                        alignItems: "flex-end",
-                        paddingEnd: width >= 720 ? 0 : 20,
-                      }}
-                    >
-                      <Text style={styles.timedetails}>
-                        {formatTimeDifference(item.CreatedDate)}
-                      </Text>
-                    </View>
+                  <View
+                    style={{
+                      width: "30%",
+                      justifyContent: "center",
+                      alignItems: "flex-end",
+                      paddingEnd: width >= 720 ? 0 : 20,
+                    }}
+                  >
+                    <Text style={styles.timedetails}>
+                      {formatTimeDifference(item.CreatedDate)}
+                    </Text>
                   </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation navigation={navigation} page="notification" />
           </View>
@@ -343,22 +339,18 @@ export default function Notification(props) {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    width: "100%", // Ensure the scrollView takes up the full width
-  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
   },
   input: {
     height: 40,
     marginTop: 12,
     marginBottom: 12,
     width: "100%",
+
     fontSize: 15,
     borderWidth: 1,
     borderRadius: 10,
@@ -369,7 +361,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "90%",
+
+    width: "96%",
     marginLeft: "1%",
   },
   notificationTitle: {
@@ -377,11 +370,13 @@ const styles = StyleSheet.create({
   },
   notificasionContenor: {
     width: "100%",
-    height: "auto",
+    height: "100%",
     alignItems: "center",
+    backgroundColor: "red",
   },
   contentBox: {
     height: "auto",
+    backgroundColor: "yellow",
     width: "95%",
     backfaceVisibility: "#FFF",
     flexDirection: "row",
@@ -391,7 +386,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 10,
-    shadowOpacity: 0.5, // Increased shadow opacity
+    // shadowOpacity: 0.5, // Increased shadow opacity
     // borderColor: "rgba(0,0,0,0.9)",
     // elevation:0.4, // Increased elevation
   },
