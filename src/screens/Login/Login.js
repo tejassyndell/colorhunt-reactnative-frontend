@@ -12,6 +12,8 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Animated,
+  LayoutAnimation,
 } from "react-native";
 
 import { phoneNumberValidation, udatepartytoken } from "../../api/api";
@@ -39,11 +41,18 @@ const Login = (props) => {
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
   const [token, setToken] = useState("");
+  const { width, height } = Dimensions.get("window");
+  const isTablet = width >= 720;
+
+const initialLogoSize = isTablet
+  ? 200
+  : Math.min(width, height) * 0.5;
   const styles = LoginStyles();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSplace, setIsLoadingSplace] = useState(true);
+    const [isLogoVisible, setLogoVisible] = useState(true);
 
-  const initialLogoSize = Math.min(width, height) * 0.5;
+  // const initialLogoSize = Math.min(width, height) * 0.4;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
   const [leftPosition, setLeftPosition] = useState("50%");
 
@@ -220,16 +229,30 @@ const Login = (props) => {
 
     // getNotificationPermission();
   }, []);
+
+  
   const keyboardDidShow = () => {
-    const newSize = Math.min(width, height) * 0.3; // Adjust size when the keyboard is shown
-    setLogoSize(newSize);
-    setLeftPosition("65%");
+    // const newSize = 100;
+    // setLogoSize(newSize);
+    // setLeftPosition("65%");
+    setLogoVisible(false); // Hide the logo when the keyboard shows
+     // Hide the logo when the keyboard shows
+  };
+  const keyboardDidHide = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    // setLogoSize(initialLogoSize);
+    setLeftPosition("50%");
+    setLogoVisible(true); // Show the logo when the keyboard hides
   };
 
-  const keyboardDidHide = () => {
-    setLogoSize(initialLogoSize); // Set it back to the original size when the keyboard is hidden
-    setLeftPosition("50%");
-  };
+  const yourAnimatedValue = new Animated.Value(0);
+  Keyboard.addListener("keyboardDidShow", () => {
+    Animated.timing(yourAnimatedValue, {
+      toValue: 2, // or any other value you desire
+      duration: 400, // A shorter duration for a faster animation
+      useNativeDriver: true,
+    }).start();
+  });
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -426,14 +449,9 @@ const Login = (props) => {
                 <View
                   style={[styles.loginLogoContainer, { left: leftPosition }]}
                 >
-                  {/* <Image
-                source={imageSource}
-                style={[
-                  styles.loginLogo,
-                  { height: logoSize, width: logoSize },
-                ]}
-              /> */}
-                  <WhiteLogo path={imageSource} />
+            
+                {isLogoVisible === true ? <WhiteLogo path={imageSource} />:''}
+                  
                 </View>
               </ImageBackground>
               <View style={styles.contentContainer}>

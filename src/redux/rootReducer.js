@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
-import {reducer} from "./reducer";
+import {notificationReducer, reducer} from "./reducer";
 
 export default combineReducers({
-    reducer
+    reducer: reducer,
+    notificationData:notificationReducer,
 })
