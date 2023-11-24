@@ -605,7 +605,19 @@ export default function AllArticle(props) {
             )}
           </View>
           {/* {/ </ScrollView> /} */}
-          <KeyboardAvoidingView
+          {isKeyboardOpen === true ? null :  <KeyboardAvoidingView
+            // behavior={isKeyboardOpen ? "padding" : null}
+            style={{ flex: 1 }}
+          >
+            {isFilterVisible ? null : (
+              <View
+                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+              >
+                <ButtomNavigation navigation={navigation} page="home" />
+              </View>
+            )}
+          </KeyboardAvoidingView>}
+          {/* <KeyboardAvoidingView
             behavior={isKeyboardOpen ? "padding" : null}
             style={{ flex: 1 }}
           >
@@ -616,7 +628,7 @@ export default function AllArticle(props) {
                 <ButtomNavigation navigation={navigation} page="home" />
               </View>
             )}
-          </KeyboardAvoidingView>
+          </KeyboardAvoidingView> */}
 
           {isFilterVisible && (
             <View

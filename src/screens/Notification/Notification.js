@@ -290,7 +290,6 @@ const UpdateNotificationData = async (id) => {
                       style={styles.imagesection}
                       source={{ uri: baseImageUrl + item.image }}
                     />
-                    {console.log(item.image, "imageget")}
                   </View>
 
                   <View style={styles.contentsection}>
@@ -301,7 +300,7 @@ const UpdateNotificationData = async (id) => {
                         marginStart: 8,
                       }}
                     >
-                      <Text style={styles.detailscon}>{item.body}</Text>
+                      <Text style={item.status === 1 ? styles.detailsconWithStatusZero : styles.detailscon}>{item.body}</Text>
                     </View>
 
                     <View
@@ -312,7 +311,7 @@ const UpdateNotificationData = async (id) => {
                         paddingEnd: width >= 720 ? 0 : 20,
                       }}
                     >
-                      <Text style={styles.timedetails}>
+                      <Text style={item.status === 1 ? styles.detailsconWithStatus : styles.timedetails}>
                         {formatTimeDifference(item.CreatedDate)}
                       </Text>
                     </View>
@@ -391,10 +390,21 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     // Corrected to string
   },
+  detailsconWithStatusZero: {
+    fontSize: 14,
+    fontWeight: "600",
+    color:'gray'
+  },
   timedetails: {
     fontSize: 14,
     fontWeight: "600", // Corrected to string
 
+    paddingRight: 15,
+  },
+  detailsconWithStatus :{
+    fontSize: 14,
+    fontWeight: "600", // Corrected to string
+    color:'gray',
     paddingRight: 15,
   },
   contentsection: {

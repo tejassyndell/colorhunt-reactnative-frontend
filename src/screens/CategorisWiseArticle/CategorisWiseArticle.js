@@ -633,18 +633,21 @@ export default function CategorisWiseArticle(props) {
               />
             )}
           </View>
-          <KeyboardAvoidingView
-            behavior={isKeyboardOpen ? "padding" : null}
-            style={{ flex: 1 }}
-          >
-            {isFilterVisible ? null : (
-              <View
-                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-              >
-                <ButtomNavigation navigation={navigation} page="home" />
-              </View>
-            )}
-          </KeyboardAvoidingView>
+          {isKeyboardOpen === true ? null :
+           <KeyboardAvoidingView
+           behavior={isKeyboardOpen ? "padding" : null}
+           style={{ flex: 1 }}
+         >
+           {isFilterVisible ? null : (
+             <View
+               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+             >
+               <ButtomNavigation navigation={navigation} page="home" />
+             </View>
+           )}
+         </KeyboardAvoidingView>
+          }
+         
           {isFilterVisible && (
             <View
               style={{
