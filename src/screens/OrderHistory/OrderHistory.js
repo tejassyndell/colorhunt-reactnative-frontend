@@ -7,7 +7,7 @@ import {
   Alert,
   Button
 } from "react-native";
-// import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { Pressable } from "react-native";
@@ -920,21 +920,21 @@ const OrderHistory = (props) => {
                       </View>
                     </TouchableOpacity>
                   </View>
-                  {/* {showFromDate && (
-                    // <DateTimePicker
-                    //   value={orderstatus ? fromDate : outwardfromdate}
-                    //   mode="date"
-                    //   display="default"
-                    //   onChange={(event, selectedDate) => {
-                    //     setShowFromDate(false);
-                    //     if (selectedDate) {
-                    //       orderstatus ?
-                    //         setFromDate(selectedDate) :
-                    //         setOutwardfromdate(selectedDate)
-                    //     }
-                    //   }}
-                    // />
-                  )} */}
+                  {showFromDate && (
+                    <DateTimePicker
+                      value={orderstatus ? fromDate : outwardfromdate}
+                      mode="date"
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowFromDate(false);
+                        if (selectedDate) {
+                          orderstatus ?
+                            setFromDate(selectedDate) :
+                            setOutwardfromdate(selectedDate)
+                        }
+                      }}
+                    />
+                  )}
 
                 </View>
               </View>
@@ -970,7 +970,7 @@ const OrderHistory = (props) => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                {/* {showToDate && (
+                {showToDate && (
                   <DateTimePicker
                     value={orderstatus ? toDate : outwardtodate}
                     mode="date"
@@ -985,7 +985,7 @@ const OrderHistory = (props) => {
                       }
                     }}
                   />
-                )} */}
+                )}
               </View>
             </View>
 
@@ -1166,7 +1166,7 @@ const orderstyles = StyleSheet.create({
     fontFamily:"GloryMedium"
   },
   txt_val: {
-    fontSize: width >= 720 ? 22 : 16,
+    fontSize: width >= 720 ? 22 : 14.4,
     fontFamily:"GloryBold",
     color: "#000000",
   },

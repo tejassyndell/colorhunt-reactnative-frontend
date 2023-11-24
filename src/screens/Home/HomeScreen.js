@@ -341,6 +341,7 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = async () => {
+    console.log(searchText,"()()()()");
     if (
       searchText == "" &&
       selectedCategories.length === 0 &&
@@ -380,10 +381,10 @@ export default function HomeScreen(props) {
         const chunkResult = chunk.filter(
           (item) =>
             (searchText === "" ||
-              item.ArticleNumber.toString().includes(searchText.toString()) ||
-              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.ArticleRate.toString().includes(searchText.toString()) ||
-              item.StyleDescription.toLowerCase().includes(
+           item.ArticleNumber &&   item.ArticleNumber.toString().includes(searchText.toString()) ||
+           item.Category &&    item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+           item.ArticleRate &&   item.ArticleRate.toString().includes(searchText.toString()) ||
+           item.StyleDescription &&    item.StyleDescription.toLowerCase().includes(
                 searchText.toLowerCase()
               ) ||
               item.Subcategory.toLowerCase().includes(
