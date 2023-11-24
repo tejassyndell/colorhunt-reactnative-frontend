@@ -19,8 +19,17 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { Timeline } from "react-native-calendars";
 import Loader from "../../components/Loader/Loader";
-import { AllNotifications,updateNotification } from "../../api/api";
-import { format, formatDistanceToNow, isToday, isYesterday, subDays, parseISO, differenceInDays, isBefore } from 'date-fns';
+import { AllNotifications, updateNotification } from "../../api/api";
+import {
+  format,
+  formatDistanceToNow,
+  isToday,
+  isYesterday,
+  subDays,
+  parseISO,
+  differenceInDays,
+  isBefore,
+} from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 export default function Notification(props) {
@@ -32,7 +41,6 @@ export default function Notification(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
-
   };
 
   const headerHeight =
@@ -46,7 +54,6 @@ export default function Notification(props) {
   const data = [{}];
 
   const grtNotificasionData = async () => {
-  
     const data = {
       party_id: await getpartyid(),
     };
@@ -56,52 +63,41 @@ export default function Notification(props) {
         console.log(result2.data);
         setNotificationAllData(result2.data);
         setIsLoading(false);
-      setRefreshing(false);
+        setRefreshing(false);
       }
     } catch (error) {}
   };
 
-
   // Get the navigation object
 
-// Call UpdateNotificationData with the navigation object
+  // Call UpdateNotificationData with the navigation object
 
+  const UpdateNotificationData = async (id) => {
+    const data = {
+      party_id: await getpartyid(),
+      id: id,
+    };
 
-
-const UpdateNotificationData = async (id) => {
-  const data = {
-    party_id: await getpartyid(),
-    id: id,
-  };
-
-  try {
-    const result2 = await updateNotification(data);
-    if (result2.status === 200) {
-      setIsLoading(false);
-      setRefreshing(false);
-      navigation.navigate("ordershistroy");
-      grtNotificasionData ();
-      setRefreshing(false); // Reload data after navigating back
+    try {
+      const result2 = await updateNotification(data);
+      if (result2.status === 200) {
+        setIsLoading(false);
+        setRefreshing(false);
+        navigation.navigate("ordershistroy");
+        grtNotificasionData();
+        setRefreshing(false); // Reload data after navigating back
+      }
+    } catch (error) {
+      // Handle errors as needed
     }
-  } catch (error) {
-    // Handle errors as needed
-  }
-};
-
-
-   
-
+  };
 
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   useEffect(() => {
     grtNotificasionData();
-   
   }, []);
-
-  
-  
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -150,39 +146,48 @@ const UpdateNotificationData = async (id) => {
     const timeDifference = formatDistanceToNow(notificationTime, {
       addSuffix: true,
     });
-  
-    if  (timeDifference.includes("minute")) {
+
+    if (timeDifference.includes("minute")) {
       return "just now";
     } else if (timeDifferenceInMilliseconds < 24 * 60 * 60 * 1000) {
       // If the time difference is less than 24 hours
-      const hoursAgo = Math.floor(timeDifferenceInMilliseconds / (60 * 60 * 1000));
+      const hoursAgo = Math.floor(
+        timeDifferenceInMilliseconds / (60 * 60 * 1000)
+      );
       return `${hoursAgo}h ago`;
     } else if (timeDifferenceInMilliseconds < 7 * 24 * 60 * 60 * 1000) {
       // If the time difference is within the last 7 days
-      const daysAgo = Math.floor(timeDifferenceInMilliseconds / (24 * 60 * 60 * 1000));
+      const daysAgo = Math.floor(
+        timeDifferenceInMilliseconds / (24 * 60 * 60 * 1000)
+      );
       return `${daysAgo}d ago`;
     } else {
       // For older dates, use a library to format the relative time
-      
+
       return formatDistanceToNow(notificationTime, {
         addSuffix: true,
         includeSeconds: true,
-        
-      }).replace("minute", "m").replace("hour", "h").replace("day", "d").replace("month", "m").replace("ms", "m").replace('about','').replace('ds','d').replace('year','y');
+      })
+        .replace("minute", "m")
+        .replace("hour", "h")
+        .replace("day", "d")
+        .replace("month", "m")
+        .replace("ms", "m")
+        .replace("about", "")
+        .replace("ds", "d")
+        .replace("year", "y");
     }
   };
-  
-  
-  
+
   const parseTime = (time) => {
-    const dateTimeParts = time.split('T');
+    const dateTimeParts = time.split("T");
     if (dateTimeParts.length === 2) {
       const datePart = dateTimeParts[0];
       const timePart = dateTimeParts[1];
-      
-      const dateParts = datePart.split('-');
-      const timeParts = timePart.split(':');
-  
+
+      const dateParts = datePart.split("-");
+      const timeParts = timePart.split(":");
+
       if (dateParts.length === 3 && timeParts.length === 3) {
         const year = parseInt(dateParts[0]);
         const month = parseInt(dateParts[1]) - 1; // Months are zero-based
@@ -190,11 +195,11 @@ const UpdateNotificationData = async (id) => {
         const hours = parseInt(timeParts[0]);
         const minutes = parseInt(timeParts[1]);
         const seconds = parseInt(timeParts[2]);
-  
+
         return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
       }
     }
-  
+
     return null; // Return null for invalid time values
   };
 
@@ -216,11 +221,6 @@ const UpdateNotificationData = async (id) => {
       date.getFullYear() === yesterday.getFullYear()
     );
   };
-  
-  
-  
-  
-
 
   return (
     <>
@@ -235,9 +235,16 @@ const UpdateNotificationData = async (id) => {
         >
           <Loader />
         </View>
+      ) : notificationalldata.length === 0 ? (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center",backgroundColor:'#FFF' }}
+        >
+          <Text style={{ fontSize: 18,left:20 }}>No Notifications </Text>
+        </View>
       ) : (
         <View style={styles.container}>
           {/* {/ Render notification data /} */}
+          {console.log(notificationalldata.length === 0, "nsajdnaksndsakndk")}
 
           <StatusBar style="auto" />
           <ScrollView
@@ -248,10 +255,14 @@ const UpdateNotificationData = async (id) => {
           >
             <View style={styles.notificasionContenor}>
               {notificationalldata.map((item, index) => (
-                <TouchableOpacity style={styles.contentBox} key={index} onPress={() => {
-                  UpdateNotificationData(item.id);
-                  // You can add other code here if needed
-                }}>
+                <TouchableOpacity
+                  style={styles.contentBox}
+                  key={index}
+                  onPress={() => {
+                    UpdateNotificationData(item.id);
+                    // You can add other code here if needed
+                  }}
+                >
                   <View
                     style={{
                       width: 60,
@@ -282,7 +293,7 @@ const UpdateNotificationData = async (id) => {
                           width: 12,
                           height: 12,
                           borderRadius: 8,
-                          zIndex:2
+                          zIndex: 2,
                         }}
                       />
                     )}
@@ -300,7 +311,15 @@ const UpdateNotificationData = async (id) => {
                         marginStart: 8,
                       }}
                     >
-                      <Text style={item.status === 1 ? styles.detailsconWithStatusZero : styles.detailscon}>{item.body}</Text>
+                      <Text
+                        style={
+                          item.status === 1
+                            ? styles.detailsconWithStatusZero
+                            : styles.detailscon
+                        }
+                      >
+                        {item.body}
+                      </Text>
                     </View>
 
                     <View
@@ -311,7 +330,13 @@ const UpdateNotificationData = async (id) => {
                         paddingEnd: width >= 720 ? 0 : 20,
                       }}
                     >
-                      <Text style={item.status === 1 ? styles.detailsconWithStatus : styles.timedetails}>
+                      <Text
+                        style={
+                          item.status === 1
+                            ? styles.detailsconWithStatus
+                            : styles.timedetails
+                        }
+                      >
                         {formatTimeDifference(item.CreatedDate)}
                       </Text>
                     </View>
@@ -325,6 +350,7 @@ const UpdateNotificationData = async (id) => {
           </View>
         </View>
       )}
+    
     </>
   );
 }
@@ -393,7 +419,7 @@ const styles = StyleSheet.create({
   detailsconWithStatusZero: {
     fontSize: 14,
     fontWeight: "600",
-    color:'gray'
+    color: "gray",
   },
   timedetails: {
     fontSize: 14,
@@ -401,10 +427,10 @@ const styles = StyleSheet.create({
 
     paddingRight: 15,
   },
-  detailsconWithStatus :{
+  detailsconWithStatus: {
     fontSize: 14,
     fontWeight: "600", // Corrected to string
-    color:'gray',
+    color: "gray",
     paddingRight: 15,
   },
   contentsection: {

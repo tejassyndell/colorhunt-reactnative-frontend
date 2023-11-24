@@ -209,7 +209,7 @@ const OrderHistory = (props) => {
               fontSize: width >= 720 ? 35 : 25,
               fontFamily: "GloryBold",
               width: "100%",
-              height: width >= 720 ? 45:25,
+              height: width >= 720 ? 45:37,
               marginBottom:20, 
 
             }}
