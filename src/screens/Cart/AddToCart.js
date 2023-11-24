@@ -80,7 +80,6 @@ const AddToCart = (props) => {
     loadCustomFont();
   }, []);
 
-
   const updateMaxHeight = () => {
     const windowWidth = Dimensions.get("window").width;
     const windowheight = Dimensions.get("window").height;
@@ -89,21 +88,29 @@ const AddToCart = (props) => {
     const mediaQueryCondition = windowWidth >= 720 || windowheight >= 844;
 
     // Adjust the maxHeight based on media query conditions
-    const newMaxHeight = mediaQueryCondition ? windowWidth * 0.60 : windowWidth * 0.90;
-    
+    const newMaxHeight = mediaQueryCondition
+      ? windowWidth * 0.6
+      : windowWidth * 0.9;
+
     setMaxHeight(newMaxHeight);
   };
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardVisible(true);
-      updateMaxHeight();
-    });
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+        updateMaxHeight();
+      }
+    );
 
-    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardVisible(false);
-      updateMaxHeight();
-    });
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+        updateMaxHeight();
+      }
+    );
 
     // Cleanup listeners
     return () => {
@@ -111,7 +118,6 @@ const AddToCart = (props) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
 
   useEffect(() => {
     // Initial update
@@ -176,13 +182,14 @@ const AddToCart = (props) => {
             alignItems: "center",
             alignContent: "center",
             paddingLeft: "10%",
+
             width: parseInt(windowwidthe) >= 720 ? "95%" : "100%",
           }}
         >
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 35 : 25,
+              fontSize: width >= 720 ? 55 : 25,
               fontFamily: "GloryBold",
               width: "100%",
             }}
@@ -586,14 +593,6 @@ const AddToCart = (props) => {
           style={{ flex: 1 }}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          {/* <ScrollView
-            nestedScrollEnabled={true}
-            contentContainerStyle={{ flex: 1 }}
-            keyboardShouldPersistTaps="handled"
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          > */}
           <View
             style={{
               flex: 1,
@@ -609,7 +608,10 @@ const AddToCart = (props) => {
                     borderTopColor: "black",
                   }}
                 >
-                  <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+                  <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flex: 1 }}
+                  >
                     <ScrollView
                       nestedScrollEnabled={true}
                       style={{
@@ -655,13 +657,13 @@ const AddToCart = (props) => {
                                       shadowColor: "gray",
                                       shadowOpacity: 0.5,
                                       marginHorizontal: "3%",
-                                      marginTop:width >= 720 ? "1%" :"5%",
+                                      marginTop: width >= 720 ? "1%" : "5%",
                                       borderRadius: 10,
-                                      height: width >= 720 ? 160:130,
+                                      height: width >= 720 ? 160 : 130,
                                       paddingVertical: "1.5%",
                                       borderColor: "rgba(0,0,0,0.2)",
                                       borderWidth: 1,
-                                      padding:0,
+                                      padding: 0,
                                       paddingBottom: 1,
                                     }}
                                   >
@@ -819,12 +821,9 @@ const AddToCart = (props) => {
                                     shadowColor: "gray",
                                     shadowOpacity: 0.5,
                                     marginHorizontal: "3%",
-                                    marginTop: "5%",
+                                    marginTop: width >= 720 ? "1%" : "5%",
                                     borderRadius: 10,
-                                    height:
-                                      width >= 720
-                                        ? windowheight * 0.16
-                                        : windowheight * 0.142,
+                                    height: width >= 720 ? 160 : 130,
                                     paddingVertical: "1.5%",
                                     borderColor: "rgba(0,0,0,0.2)",
                                     borderWidth: 1,
@@ -1248,7 +1247,6 @@ const AddToCart = (props) => {
                     ></TextInput>
                     <View
                       style={{
-                        width: "100%",
                         position: "absolute",
                         top: width >= 720 ? 14 : 7,
                         right: width >= 720 ? 10 : 10,
@@ -1469,7 +1467,6 @@ const AddToCart = (props) => {
               )}
             </View>
           </View>
-          {/* </ScrollView> */}
         </KeyboardAvoidingView>
       )}
     </>

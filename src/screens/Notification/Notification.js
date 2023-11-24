@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import { useLayoutEffect } from "react";
 import {
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   SafeAreaView,
   Platform,
   Dimensions,
-  ScrollView,
   RefreshControl,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState, navigation } from "react";
 
@@ -19,8 +19,17 @@ import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import { Timeline } from "react-native-calendars";
 import Loader from "../../components/Loader/Loader";
-import { AllNotifications,updateNotification } from "../../api/api";
-import { format, formatDistanceToNow, isToday, isYesterday, subDays, parseISO, differenceInDays, isBefore } from 'date-fns';
+import { AllNotifications, updateNotification } from "../../api/api";
+import {
+  format,
+  formatDistanceToNow,
+  isToday,
+  isYesterday,
+  subDays,
+  parseISO,
+  differenceInDays,
+  isBefore,
+} from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 export default function Notification(props) {
@@ -32,11 +41,16 @@ export default function Notification(props) {
 
   const onRefresh = () => {
     setRefreshing(true);
-
   };
 
   const headerHeight =
-    Platform.OS === "android" ? (width >= 720 ? 120 : 100) : 120;
+    Platform.OS === "android"
+      ? width >= 720
+        ? 110
+        : 80
+      : height >= 844
+      ? 110
+      : 65;
   const getpartyid = async () => {
     let partydata = await AsyncStorage.getItem("UserData");
     partydata = await JSON.parse(partydata);
@@ -46,7 +60,6 @@ export default function Notification(props) {
   const data = [{}];
 
   const grtNotificasionData = async () => {
-  
     const data = {
       party_id: await getpartyid(),
     };
@@ -56,52 +69,41 @@ export default function Notification(props) {
         console.log(result2.data);
         setNotificationAllData(result2.data);
         setIsLoading(false);
-      setRefreshing(false);
+        setRefreshing(false);
       }
     } catch (error) {}
   };
 
-
   // Get the navigation object
 
-// Call UpdateNotificationData with the navigation object
+  // Call UpdateNotificationData with the navigation object
 
+  const UpdateNotificationData = async (id) => {
+    const data = {
+      party_id: await getpartyid(),
+      id: id,
+    };
 
-
-const UpdateNotificationData = async (id) => {
-  const data = {
-    party_id: await getpartyid(),
-    id: id,
-  };
-
-  try {
-    const result2 = await updateNotification(data);
-    if (result2.status === 200) {
-      setIsLoading(false);
-      setRefreshing(false);
-      navigation.navigate("ordershistroy");
-      grtNotificasionData ();
-      setRefreshing(false); // Reload data after navigating back
+    try {
+      const result2 = await updateNotification(data);
+      if (result2.status === 200) {
+        setIsLoading(false);
+        setRefreshing(false);
+        navigation.navigate("ordershistroy");
+        grtNotificasionData();
+        setRefreshing(false); // Reload data after navigating back
+      }
+    } catch (error) {
+      // Handle errors as needed
     }
-  } catch (error) {
-    // Handle errors as needed
-  }
-};
-
-
-   
-
+  };
 
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
   useEffect(() => {
     grtNotificasionData();
-   
   }, []);
-
-  
-  
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -150,39 +152,48 @@ const UpdateNotificationData = async (id) => {
     const timeDifference = formatDistanceToNow(notificationTime, {
       addSuffix: true,
     });
-  
-    if  (timeDifference.includes("minute")) {
+
+    if (timeDifference.includes("minute")) {
       return "just now";
     } else if (timeDifferenceInMilliseconds < 24 * 60 * 60 * 1000) {
       // If the time difference is less than 24 hours
-      const hoursAgo = Math.floor(timeDifferenceInMilliseconds / (60 * 60 * 1000));
+      const hoursAgo = Math.floor(
+        timeDifferenceInMilliseconds / (60 * 60 * 1000)
+      );
       return `${hoursAgo}h ago`;
     } else if (timeDifferenceInMilliseconds < 7 * 24 * 60 * 60 * 1000) {
       // If the time difference is within the last 7 days
-      const daysAgo = Math.floor(timeDifferenceInMilliseconds / (24 * 60 * 60 * 1000));
+      const daysAgo = Math.floor(
+        timeDifferenceInMilliseconds / (24 * 60 * 60 * 1000)
+      );
       return `${daysAgo}d ago`;
     } else {
       // For older dates, use a library to format the relative time
-      
+
       return formatDistanceToNow(notificationTime, {
         addSuffix: true,
         includeSeconds: true,
-        
-      }).replace("minute", "m").replace("hour", "h").replace("day", "d").replace("month", "m").replace("ms", "m").replace('about','').replace('ds','d').replace('year','y');
+      })
+        .replace("minute", "m")
+        .replace("hour", "h")
+        .replace("day", "d")
+        .replace("month", "m")
+        .replace("ms", "m")
+        .replace("about", "")
+        .replace("ds", "d")
+        .replace("year", "y");
     }
   };
-  
-  
-  
+
   const parseTime = (time) => {
-    const dateTimeParts = time.split('T');
+    const dateTimeParts = time.split("T");
     if (dateTimeParts.length === 2) {
       const datePart = dateTimeParts[0];
       const timePart = dateTimeParts[1];
-      
-      const dateParts = datePart.split('-');
-      const timeParts = timePart.split(':');
-  
+
+      const dateParts = datePart.split("-");
+      const timeParts = timePart.split(":");
+
       if (dateParts.length === 3 && timeParts.length === 3) {
         const year = parseInt(dateParts[0]);
         const month = parseInt(dateParts[1]) - 1; // Months are zero-based
@@ -190,13 +201,14 @@ const UpdateNotificationData = async (id) => {
         const hours = parseInt(timeParts[0]);
         const minutes = parseInt(timeParts[1]);
         const seconds = parseInt(timeParts[2]);
-  
+
         return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
       }
     }
-  
+
     return null; // Return null for invalid time values
   };
+  console.log("Container Width:", width);
 
   const isToday = (date) => {
     const today = new Date();
@@ -216,11 +228,6 @@ const UpdateNotificationData = async (id) => {
       date.getFullYear() === yesterday.getFullYear()
     );
   };
-  
-  
-  
-  
-
 
   return (
     <>
@@ -239,19 +246,24 @@ const UpdateNotificationData = async (id) => {
         <View style={styles.container}>
           {/* {/ Render notification data /} */}
 
-          <StatusBar style="auto" />
+          {/* <StatusBar style="auto" /> */}
           <ScrollView
             style={styles.scrollView}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
+            horizontal={false}
           >
             <View style={styles.notificasionContenor}>
               {notificationalldata.map((item, index) => (
-                <TouchableOpacity style={styles.contentBox} key={index} onPress={() => {
-                  UpdateNotificationData(item.id);
-                  // You can add other code here if needed
-                }}>
+                <TouchableOpacity
+                  style={styles.contentBox}
+                  key={index}
+                  onPress={() => {
+                    UpdateNotificationData(item.id);
+                    // You can add other code here if needed
+                  }}
+                >
                   <View
                     style={{
                       width: 60,
@@ -259,17 +271,7 @@ const UpdateNotificationData = async (id) => {
                       marginVertical: 2,
                       alignItems: "center",
                       justifyContent: "center",
-                      shadowColor: "gray",
                       marginHorizontal: 2,
-                      shadowOpacity: 3,
-                      shadowRadius: 6,
-                      borderRadius: 10,
-                      shadowColor: "black",
-                      elevation: 2,
-                      shadowOffset: {
-                        width: 1,
-                        height: 1,
-                      },
                     }}
                   >
                     {item.status === 0 && (
@@ -282,7 +284,7 @@ const UpdateNotificationData = async (id) => {
                           width: 12,
                           height: 12,
                           borderRadius: 8,
-                          zIndex:2
+                          zIndex: 2,
                         }}
                       />
                     )}
@@ -331,14 +333,15 @@ const UpdateNotificationData = async (id) => {
 
 const styles = StyleSheet.create({
   scrollView: {
-    height: "86%",
-    backgroundColor: "white", // Set the background color to your preference
+    flex: 1,
+    width: "100%", // Ensure the scrollView takes up the full width
   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
   input: {
     height: 40,
@@ -355,7 +358,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
-    width: "96%",
+    width: "90%",
     marginLeft: "1%",
   },
   notificationTitle: {

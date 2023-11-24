@@ -303,3 +303,25 @@ export const Sliderimages = async()=>{
     console.log(err);
   }
 };
+export const FilterSoNumber = async (data) => {
+  try {
+    return await axios.post(`${url}/filtersonumber`, data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const FilteroutwardNumber = async (data) => {
+  try {
+    return await axios.post(`${url}/filteroutwardnumber`, data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const notificationcount = async (data) => {
+  try {
+    return await axios.post(`${url}/notificationcount`, data);
+  } catch (err) {
+    console.log(err);
+  }
+};
