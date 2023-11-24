@@ -271,7 +271,17 @@ export default function Notification(props) {
                       marginVertical: 2,
                       alignItems: "center",
                       justifyContent: "center",
+                      shadowColor: "gray",
                       marginHorizontal: 2,
+                      shadowOpacity: 0.5,
+                      shadowRadius: 6,
+                      borderRadius: 10,
+                      shadowColor: "black",
+                      elevation: 2,
+                      shadowOffset: {
+                        width: 1,
+                        height: 1,
+                      },
                     }}
                   >
                     {item.status === 0 && (

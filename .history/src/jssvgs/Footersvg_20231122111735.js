@@ -1,22 +1,21 @@
 import Svg, { G, Rect, Path, Circle } from "react-native-svg";
 import { Dimensions, View } from "react-native";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from 'react-native';
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { cartcount, notificationcount } from "../api/api";
+import { cartcount } from "../api/api";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { addToCart, AddNotification } from "../redux/action";
+import { addToCart } from "../redux/action";
 const Footersvg = (props) => {
+
   const { width, height } = Dimensions.get("window");
   const { val, status } = props;
   const [showRedDot, setShowreddot] = useState(false);
   const [count, setCount] = useState(0);
-  const cartData = useSelector((state) => state.reducer);
-  const notificationData = useSelector((state) => state.notificationData);
-
+  const cartData = useSelector((state) => state.reducer)
   const dispach = useDispatch();
 
   const getcountofcart = async () => {
@@ -24,49 +23,29 @@ const Footersvg = (props) => {
     let data = await AsyncStorage.getItem("UserData");
     data = await JSON.parse(data);
     const response = await cartcount({ PartyId: data[0].Id }).then((res) => {
-      dispach(addToCart(res.data[0]));
-    });
-  };
-  const getNotification = async () => {
-    let data = await AsyncStorage.getItem("UserData");
-    data = await JSON.parse(data);
-    console.log("kjnsakjdkjsandsa");
-    const response = await notificationcount({ PartyId: data[0].Id }).then(
-      (res) => {
-        console.log(res.data);
-        dispach(AddNotification(res.data[0]));
-      }
-    );
-  };
+      dispach(addToCart(res.data[0]))
+    }
+    )
+
+  }
   useFocusEffect(
     React.useCallback(() => {
       if (val == "cart") {
-        getcountofcart();
-        getNotification();
+        getcountofcart()
       }
     }, [val])
-  );
+
+
+  )
   useEffect(() => {
     if (val == "cart") {
-      console.log(notificationData, "872647328263482", cartData);
-
       if (cartData && cartData.total > 0) {
         setShowreddot(true);
       } else {
         setShowreddot(false);
       }
     }
-  }, [cartData]);
-  useEffect(() => {
-    if (val == "notification") {
-      console.log(notificationData, "987239821jsand");
-      if (notificationData && notificationData.total > 0) {
-        setShowreddot(true);
-      } else {
-        setShowreddot(false);
-      }
-    }
-  }, [notificationData]);
+  }, [cartData])
   const vector = status ? (
     <Svg
       width={width >= 720 ? 60 : 42}
@@ -128,6 +107,7 @@ const Footersvg = (props) => {
       </G>
     </Svg>
   ) : (
+
     <Svg
       width={width >= 720 ? 49 : 34}
       height={width >= 720 ? 40 : 25}
@@ -150,9 +130,10 @@ const Footersvg = (props) => {
         />
       </G>
       {showRedDot && (
-        <Circle cx={20} cy={4} r={4} fill="red" /> // Adjust the coordinates and size as needed
+        <Circle cx={20} cy={4} r={4}  fill="red" /> // Adjust the coordinates and size as needed
       )}
     </Svg>
+
   );
 
   const history = status ? (
@@ -205,9 +186,6 @@ const Footersvg = (props) => {
           fill="#212121"
         />
       </G>
-      {showRedDot && (
-        <Circle cx={24} cy={10} r={4} fill="red" /> // Adjust the coordinates and size as needed
-      )}
     </Svg>
   ) : (
     <Svg
@@ -224,9 +202,6 @@ const Footersvg = (props) => {
         d="M11.5599 18.9514C11.0099 18.8339 7.65929 18.8339 7.1093 18.9514C6.63928 19.06 6.13086 19.3125 6.13086 19.8664C6.15825 20.3948 6.46768 20.8613 6.89612 21.1571L6.89513 21.1582C7.4493 21.5901 8.09983 21.8649 8.78094 21.9636C9.14383 22.0134 9.51331 22.0112 9.88939 21.9636C10.5694 21.8649 11.2199 21.5901 11.7742 21.1582L11.7731 21.1571C12.2017 20.8613 12.511 20.3948 12.5384 19.8664C12.5384 19.3125 12.03 19.06 11.5599 18.9514Z"
         fill="white"
       />
-      {showRedDot && (
-        <Circle cx={16} cy={4} r={4} fill="red" /> // Adjust the coordinates and size as needed
-      )}
     </Svg>
   );
 
