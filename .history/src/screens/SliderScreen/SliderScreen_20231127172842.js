@@ -38,6 +38,7 @@ const SliderScreen = (props) => {
   const Shopping = () => {
     navigation.navigate("Home");
   };
+  console.log(slideimagesdata.length, "hsbdhkabsjhdajhsdvjhad");
   const styles = SliderStyles();
   const renderItem = ({ item, index }) => (
     <View style={styles.slide} key={index}>
@@ -88,6 +89,7 @@ const SliderScreen = (props) => {
             sliderWidth={width}
             itemWidth={width}
             onSnapToItem={(index) => {
+              console.log("onSnapToItem index:", index);
               setCurrentIndex(index);
             }}
           />

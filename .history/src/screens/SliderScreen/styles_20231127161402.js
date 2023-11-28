@@ -97,6 +97,19 @@ const LoginStyles = () => {
       marginTop: 20,
       fontWeight: "500",
     },
+    dotContainer: {
+      position: "absolute",
+      bottom: 20,
+      right: 20,
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    dotImage: {
+      width: 10,
+      height: 10,
+    },
   });
 
   return styles;

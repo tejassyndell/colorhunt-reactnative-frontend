@@ -1,4 +1,3 @@
-// LoginStyles.js
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import * as Font from "expo-font";
@@ -6,7 +5,9 @@ import { loadCustomFont } from "../../loadCustomFont";
 
 const LoginStyles = () => {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  const fonttype = async () => {
+    const status = await loadCustomFont();
+  };
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -18,28 +19,32 @@ const LoginStyles = () => {
         console.error("Error loading custom font:", error);
       }
     };
+    fonttype();
     loadCustomFont();
   }, []);
 
-  const { width } = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      width: "100%",
-      height: "100%",
+      width: width >= 720 ? "100%" : "100%",
+      height: width >= 720 ? "100%" : "100%",
       resizeMode: "cover",
     },
     slide: {
       flex: 1,
-      width: "100%",
-      height: "100%",
+      width: width >= 720 ? "100%" : "100%",
+      height: width >= 720 ? "100%" : "100%",
+      // padding: width >= 720 ? "100%" : "100%",
+      // resizeMode: "cover",
     },
     paginationContainer: {
       width: "100%",
       position: "absolute",
       bottom: 0,
       height: 50,
+      // Transparent background
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
@@ -53,6 +58,7 @@ const LoginStyles = () => {
       borderColor: "black",
       borderWidth: 1,
     },
+
     activePaginationDot: {
       backgroundColor: "black",
       borderColor: "black",
@@ -78,6 +84,30 @@ const LoginStyles = () => {
       position: "absolute",
       top: "5%",
       left: "25%",
+      width: "100%",
+      height: "100%",
+      alignItems: "center",
+    },
+    contain2: {
+      position: "absolute",
+      top: "45%",
+      left: "25%",
+      width: "100%",
+      alignItems: "center",
+      height: "100%",
+    },
+    contain3: {
+      position: "absolute",
+      top: "10%",
+      left: "20%",
+      height: "100%",
+      width: "100%",
+      alignItems: "center",
+    },
+    contain4: {
+      position: "relative",
+      top: height >= 844 ? "44%" : "40%",
+      right: "30%",
       width: "100%",
       height: "100%",
       alignItems: "center",

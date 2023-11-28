@@ -105,7 +105,8 @@ export default function Contact(props) {
       setShowValidationErrors(true);
       return;
     }
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    ;
     if (!emailRegex.test(email)) {
       // Use emailRegex to test the email
       setShowValidationErrors(true);

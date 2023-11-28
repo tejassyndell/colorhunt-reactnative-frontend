@@ -38,6 +38,7 @@ const SliderScreen = (props) => {
   const Shopping = () => {
     navigation.navigate("Home");
   };
+  console.log(currentIndex.length, "hsbdhkabsjhdajhsdvjhad");
   const styles = SliderStyles();
   const renderItem = ({ item, index }) => (
     <View style={styles.slide} key={index}>
@@ -65,22 +66,10 @@ const SliderScreen = (props) => {
       </ImageBackground>
     </View>
   );
-  const CustomDot = ({ index, currentIndex }) => {
-    const isActive = index === currentIndex;
-
-    return (
-      <View
-        style={[
-          styles.paginationDot,
-          isActive ? styles.activePaginationDot : null,
-        ]}
-      />
-    );
-  };
 
   return (
     <View style={styles.container}>
-      {slideimagesdata.length > 0 ? (
+      {slideimagesdata ? (
         <>
           <Carousel
             data={slideimagesdata}
@@ -88,21 +77,25 @@ const SliderScreen = (props) => {
             sliderWidth={width}
             itemWidth={width}
             onSnapToItem={(index) => {
+              console.log("onSnapToItem index:", index);
               setCurrentIndex(index);
             }}
           />
-          <View style={styles.paginationContainer}>
-            {slideimagesdata.map((_, index) => (
-              <CustomDot
-                key={index}
-                index={index}
-                currentIndex={currentIndex}
-              />
-            ))}
-          </View>
+          <Pagination
+            dotsLength={(index) => {
+              slideimagesdata(index).length;
+            }}
+            activeDotIndex={currentIndex}
+            containerStyle={styles.paginationContainer}
+            dotStyle={styles.paginationDot}
+            inactiveDotStyle={styles.activePaginationDot}
+            inactiveDotOpacity={0.6}
+            inactiveDotScale={0.8}
+            // tappableDots={true}
+          />
         </>
       ) : (
-        <Text></Text>
+        <Text>Loading...</Text>
       )}
     </View>
   );

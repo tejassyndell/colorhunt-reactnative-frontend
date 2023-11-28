@@ -18,17 +18,14 @@ const baseImageUrl =
 const SliderScreen = (props) => {
   const { navigation } = props;
   const [slideimagesdata, setSliderimagedata] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(3);
 
   const getSliderimages = async () => {
-    try {
-      const res = await Sliderimages();
+    await Sliderimages().then((res) => {
       if (res && res.status === 200) {
         setSliderimagedata(res.data);
       }
-    } catch (error) {
-      console.error("Error fetching slider images:", error);
-    }
+    });
   };
 
   useEffect(() => {
@@ -38,9 +35,11 @@ const SliderScreen = (props) => {
   const Shopping = () => {
     navigation.navigate("Home");
   };
+
   const styles = SliderStyles();
+
   const renderItem = ({ item, index }) => (
-    <View style={styles.slide} key={index}>
+    <View style={styles.slide}>
       <ImageBackground
         source={{
           uri: baseImageUrl + item.image,
@@ -65,44 +64,47 @@ const SliderScreen = (props) => {
       </ImageBackground>
     </View>
   );
-  const CustomDot = ({ index, currentIndex }) => {
-    const isActive = index === currentIndex;
-
-    return (
-      <View
-        style={[
-          styles.paginationDot,
-          isActive ? styles.activePaginationDot : null,
-        ]}
-      />
-    );
-  };
-
+  // const CustomPagination = ({ index, total }) => {
+  //   const dots = [];
+  //   for (let i = 0; i < total; i++) {
+  //     dots.push(
+  //       <View
+  //         key={i}
+  //         style={[
+  //           styles.paginationDot,
+  //           i === index ? styles.activePaginationDot : null,
+  //         ]}
+  //       />
+  //     );
+  //   }
+  //   return <View style={styles.paginationContainer}>{dots}</View>;
+  // };
   return (
     <View style={styles.container}>
-      {slideimagesdata.length > 0 ? (
+      {slideimagesdata ? (
         <>
           <Carousel
             data={slideimagesdata}
             renderItem={renderItem}
             sliderWidth={width}
             itemWidth={width}
-            onSnapToItem={(index) => {
-              setCurrentIndex(index);
-            }}
+            onSnapToItem={(index) => setCurrentIndex(index)}
           />
-          <View style={styles.paginationContainer}>
-            {slideimagesdata.map((_, index) => (
-              <CustomDot
-                key={index}
-                index={index}
-                currentIndex={currentIndex}
-              />
-            ))}
-          </View>
+          <Pagination
+            dotsLength={slideimagesdata.length}
+            activeDotIndex={currentIndex}
+            containerStyle={styles.paginationContainer}
+            dotStyle={styles.paginationDot}
+            inactiveDotStyle={styles.activePaginationDot}
+            inactiveDotOpacity={0.6}
+            inactiveDotScale={0.8}
+            // renderPagination={(index, total) => (
+            //   <CustomPagination index={index} total={total} />
+            // )}
+          />
         </>
       ) : (
-        <Text></Text>
+        <Text>Loading...</Text>
       )}
     </View>
   );
