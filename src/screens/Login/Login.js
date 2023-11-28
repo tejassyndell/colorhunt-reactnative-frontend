@@ -36,7 +36,7 @@ const Login = (props) => {
   const { navigation } = props;
   const route = useRoute();
   const { getstatus } = route.params;
-  // State variables
+  // State variablessetIsLoading
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOTP] = useState(["", "", "", ""]);
   const [showLogin, setShowLogin] = useState(true);
@@ -44,13 +44,11 @@ const Login = (props) => {
   const { width, height } = Dimensions.get("window");
   const isTablet = width >= 720;
 
-const initialLogoSize = isTablet
-  ? 200
-  : Math.min(width, height) * 0.5;
+  const initialLogoSize = isTablet ? 200 : Math.min(width, height) * 0.5;
   const styles = LoginStyles();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSplace, setIsLoadingSplace] = useState(true);
-    const [isLogoVisible, setLogoVisible] = useState(true);
+  const [isLogoVisible, setLogoVisible] = useState(true);
 
   // const initialLogoSize = Math.min(width, height) * 0.4;
   const [logoSize, setLogoSize] = useState(initialLogoSize);
@@ -70,6 +68,25 @@ const initialLogoSize = isTablet
     };
   }, []);
 
+  const [buttonType, setButtonType] = useState("Back");
+
+  const buttonStyles = {
+    backgroundColor: "#212121",
+    width: width >= 720 ? 220 : 148,
+    height: width >= 720 ? 70 : 50,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    right: 20,
+  };
+
+  if (buttonType === "Back" || buttonType === "Verify") {
+    buttonStyles.bottom = 20;
+  } else {
+    buttonStyles.bottom = 5;
+  }
+
   const requestUserPermission = async () => {
     const status = await requestPermissionsAsync();
     try {
@@ -78,22 +95,26 @@ const initialLogoSize = isTablet
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      console.log('Authorization status:', authStatus, enabled);
+      console.log("Authorization status:", authStatus, enabled);
       return enabled;
     } catch (error) {
-      console.error('Error requesting permission:', error);
+      console.error("Error requesting permission:", error);
       return false;
     }
-  }
+  };
   useEffect(() => {
     const getTokenAndSubscribe = async () => {
       const permissionGranted = await requestUserPermission();
 
       if (permissionGranted) {
         const fcmToken = await messaging().getToken();
-        AsyncStorage.setItem("notificationstatus", JSON.stringify({ status: true, token: fcmToken })).then(() => {
-          // console.log("Data stored in local storage:", userData);
-        })
+        AsyncStorage.setItem(
+          "notificationstatus",
+          JSON.stringify({ status: true, token: fcmToken })
+        )
+          .then(() => {
+            // console.log("Data stored in local storage:", userData);
+          })
           .catch((error) => {
             console.error("Error storing data in local storage:", error);
           });
@@ -156,8 +177,8 @@ const initialLogoSize = isTablet
         .then(async (remoteMessage) => {
           if (remoteMessage) {
             console.log(
-              'Notification caused app to open from quit state:',
-              remoteMessage.notification,
+              "Notification caused app to open from quit state:",
+              remoteMessage.notification
             );
           }
         });
@@ -165,59 +186,56 @@ const initialLogoSize = isTablet
 
       messaging().onNotificationOpenedApp(async (remoteMessage) => {
         console.log(
-          'Notification caused app to open from background state:',
-          remoteMessage.notification,
+          "Notification caused app to open from background state:",
+          remoteMessage.notification
         );
       });
       // Register background handler
       if (Platform.OS === "android") {
-
-        messaging().setBackgroundMessageHandler(async remoteMessage => {
-          console.log('Message handled in the background!', remoteMessage);
-          const channelId = 'colorhuntmobileapp';
+        messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+          console.log("Message handled in the background!", remoteMessage);
+          const channelId = "colorhuntmobileapp";
           const channelConfig = {
             channelId,
-            channelName: 'colorhuntmobileapp Notification Channel',
-            channelDescription: 'colorhuntmobileapp custom notification channel',
-            soundName: 'default',
+            channelName: "colorhuntmobileapp Notification Channel",
+            channelDescription:
+              "colorhuntmobileapp custom notification channel",
+            soundName: "default",
             importance: 4, // Notification Importance (0-4), where 4 is the highest
             vibrate: true,
           };
           // Create the channel
           PushNotification.createChannel(channelConfig);
-          const unsubscribe = messaging().onMessage(async remoteMessage => {
-
+          const unsubscribe = messaging().onMessage(async (remoteMessage) => {
             PushNotification.localNotification({
               channelId: "colorhuntmobileapp",
               title: remoteMessage.notification.title,
-              message: remoteMessage.notification.body
-            })
+              message: remoteMessage.notification.body,
+            });
           });
           // return unsubscribe;
         });
         // Listen for incoming FCM messages
         // Define the channel settings
-        const channelId = 'colorhuntmobileapp';
+        const channelId = "colorhuntmobileapp";
         const channelConfig = {
           channelId,
-          channelName: 'colorhuntmobileapp Notification Channel',
-          channelDescription: 'colorhuntmobileapp custom notification channel',
-          soundName: 'default',
+          channelName: "colorhuntmobileapp Notification Channel",
+          channelDescription: "colorhuntmobileapp custom notification channel",
+          soundName: "default",
           importance: 4, // Notification Importance (0-4), where 4 is the highest
           vibrate: true,
         };
 
         // Create the channel
         PushNotification.createChannel(channelConfig);
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
-
+        const unsubscribe = messaging().onMessage(async (remoteMessage) => {
           PushNotification.localNotification({
             channelId: "colorhuntmobileapp",
             title: remoteMessage.notification.title,
             message: remoteMessage.notification.body,
-          })
+          });
         });
-
 
         return unsubscribe;
       }
@@ -230,13 +248,12 @@ const initialLogoSize = isTablet
     // getNotificationPermission();
   }, []);
 
-  
   const keyboardDidShow = () => {
     // const newSize = 100;
     // setLogoSize(newSize);
     // setLeftPosition("65%");
     setLogoVisible(false); // Hide the logo when the keyboard shows
-     // Hide the logo when the keyboard shows
+    // Hide the logo when the keyboard shows
   };
   const keyboardDidHide = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
@@ -362,7 +379,10 @@ const initialLogoSize = isTablet
                     );
                   });
 
-                await udatepartytoken({ party_id: res.data[0].Id, token: token });
+                await udatepartytoken({
+                  party_id: res.data[0].Id,
+                  token: token,
+                });
 
                 setShowLogin(false); // Switch to OTP view
                 setIsLoading(false);
@@ -383,18 +403,13 @@ const initialLogoSize = isTablet
       const enteredOTP = otp.join(""); // Concatenate OTP digits
       if (enteredOTP === "1234") {
         navigation.navigate("Slider");
-      } else if (otp.join('').length < 1) {
+      } else if (otp.join("").length < 1) {
         // Navigate to the desired screen when "Back" is clicked
         setPhoneNumber("");
         setShowLogin(true);
-
-
       } else {
         alert("Invalid OTP. Please try again.");
       }
-
-
-
     }
   };
 
@@ -405,15 +420,25 @@ const initialLogoSize = isTablet
     newOTP[index] = text;
     setOTP(newOTP);
 
-    if (text && index < 3) {
+    if (text !== "" && index < otpInput.length - 1) {
+      // Move focus to the next input field when a digit is entered (up to the third input)
       otpInput[index + 1].current.focus();
     }
+  
     if (!text && index > 0) {
+      // Move focus back to the previous input field when a digit is deleted (starting from the second input)
       otpInput[index - 1].current.focus();
     }
+  
   };
 
-  const buttonLabel = showLogin ? (phoneNumber ? "Next" : "Skip") : (otp.join('').length === 0 ? "Back" : "Verify");
+  const buttonLabel = showLogin
+    ? phoneNumber
+      ? "Next"
+      : "Skip"
+    : otp.join("").length === 0
+    ? "Back"
+    : "Verify";
 
   const gifImageSource = require("../../../assets/Loader/Screen.gif");
   return (
@@ -449,40 +474,26 @@ const initialLogoSize = isTablet
                 <View
                   style={[styles.loginLogoContainer, { left: leftPosition }]}
                 >
-            
-                {isLogoVisible === true ? <WhiteLogo path={imageSource} />:''}
-                  
+                  {isLogoVisible === true ? (
+                    <WhiteLogo path={imageSource} />
+                  ) : (
+                    ""
+                  )}
                 </View>
               </ImageBackground>
               <View style={styles.contentContainer}>
+                
+               
                 {showLogin ? (
+                  <>
                   <View
                     style={{ width: "100%", alignItems: "center", height: 140 }}
                   >
                     <Text style={styles.title}>Welcome!</Text>
                     <Text style={styles.subtitle}>
-                      {showLogin
-                        ? "Please Login To Continue"
-                        : "Please Login To Continue"}
+                       Please Login To Continue
                     </Text>
                   </View>
-                ) : (
-                  <View
-                    style={{
-                      width: "100%",
-                      alignItems: "center",
-                      height: "31%",
-                    }}
-                  >
-                    <Text style={styles.title}>Welcome!</Text>
-                    <Text style={styles.subtitle}>
-                      {showLogin
-                        ? "Please Login To Continue"
-                        : "Please Login To Continue"}
-                    </Text>
-                  </View>
-                )}
-                {showLogin ? (
                   <View style={styles.inputContainer}>
                     <View style={styles.phoneIconContainer}>
                       <Svg
@@ -513,6 +524,7 @@ const initialLogoSize = isTablet
                       }}
                     />
                   </View>
+                  </>
                 ) : (
                   <>
                     {isLoading ? (
@@ -526,28 +538,56 @@ const initialLogoSize = isTablet
                         <Loader />
                       </View>
                     ) : (
-                      <View style={{ width: "100%", alignItems: "center" }}>
-                        <View style={styles.otpContainer}>
-                          {otp.map((digit, index) => (
-                            <TextInput
-                              key={index}
-                              style={styles.otpInput}
-                              placeholder=""
-                              keyboardType="numeric"
-                              maxLength={1}
-                              value={digit}
-                              onChangeText={(text) =>
-                                handleOTPDigitChange(index, text)
-                              }
-                              ref={otpInput[index]}
-                            />
-                          ))}
+                      <>
+                        <View
+                          style={{
+                            width: "100%",
+                            alignItems: "center",
+                            height: 100,
+                          }}
+                        >
+                          <Text style={styles.title}>Welcome!</Text>
+                          <Text style={styles.subtitle}>
+                            Please Login To Continue
+                          </Text>
                         </View>
-                      </View>
+                        <View
+                          style={{
+                            width: "100%",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            
+                          }}
+                        >
+                          <View style={styles.otpContainer}>
+                            {otp.map((digit, index) => (
+                              <TextInput
+                                key={index}
+                                style={styles.otpInput}
+                                placeholder=""
+                                keyboardType="numeric"
+                                maxLength={1}
+                                value={digit}
+                                onChangeText={(text) =>
+                                  handleOTPDigitChange(index, text)
+                                }
+                                ref={otpInput[index]}
+                              />
+                            ))}
+                          </View>
+                        </View>
+                      </>
                     )}
                   </>
                 )}
-                <View style={{ width: "100%", height: 100 }}>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 100,
+                    position: "relative",
+                    alignSelf: "flex-end",
+                  }}
+                >
                   <TouchableOpacity
                     style={styles.button}
                     onPress={handleNextOrVerify}

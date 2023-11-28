@@ -135,7 +135,7 @@ export default function AllArticle(props) {
     Platform.OS === "android"
       ? width >= 720
         ? 120
-        : 100
+        : 80
       : height >= 844
         ? 100
         : 65;
@@ -500,7 +500,7 @@ export default function AllArticle(props) {
               alignItems: "center",
               width: "100%",
               paddingStart: 3,
-              paddingTop: 10,
+              // paddingTop: 5,
             }}
           >
             <SearchBar

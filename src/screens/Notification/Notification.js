@@ -237,9 +237,9 @@ export default function Notification(props) {
         </View>
       ) : notificationalldata.length === 0 ? (
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center",backgroundColor:'#FFF' }}
+        style={styles.container}
         >
-          <Text style={{ fontSize: 18,left:20 }}>No Notifications </Text>
+          <Text style={{ fontSize: 18,marginLeft:10}}>No Notifications </Text>
         </View>
       ) : (
         <View style={styles.container}>

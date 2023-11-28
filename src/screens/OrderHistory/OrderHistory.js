@@ -923,6 +923,7 @@ const OrderHistory = (props) => {
                   {showFromDate && (
                     <DateTimePicker
                       value={orderstatus ? fromDate : outwardfromdate}
+                      maximumDate={new Date()}
                       mode="date"
                       display="default"
                       onChange={(event, selectedDate) => {
@@ -976,6 +977,7 @@ const OrderHistory = (props) => {
                     mode="date"
                     display="default"
                     minimumDate={orderstatus ? fromDate : outwardfromdate}
+                    maximumDate={new Date()}
                     onChange={(event, selectedDate) => {
                       setShowToDate(false);
                       if (selectedDate) {
@@ -1106,7 +1108,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    height:40
+    height:40,
+    paddingBottom:3
 
   },
 });

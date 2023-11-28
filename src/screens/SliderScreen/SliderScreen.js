@@ -1,64 +1,38 @@
+// SliderScreen.js
 import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Button,
-  ImageBackground,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
   Dimensions,
-} from "react-native";
-import Swiper from "react-native-swiper";
-import SliderStyles from "./styles";
-import Blacklogo from "../../jssvgs/Blacklogo";
-import Sliderwhitelog from "../../jssvgs/Sliderwhitelog";
-import SystemNavigationBar from 'react-native-system-navigation-bar';
-import { Sliderimages } from "../../api/api";
+  ImageBackground,
+  TouchableOpacity,
 
-const { width, height } = Dimensions.get("window");
+} from "react-native";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import SliderStyles from "./styles";
+import { Sliderimages } from "../../api/api";
+import Swiper from "react-native-swiper";
+const { width } = Dimensions.get("window");
+import Sliderwhitelog from "../../jssvgs/Sliderwhitelog";
+import Blacklogo from "../../jssvgs/Blacklogo";
 const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
 const SliderScreen = (props) => {
   const { navigation } = props;
   const [slideimagesdata, setSliderimagedata] = useState([]);
-  const showNavigation = async () => {
-    if (SystemNavigationBar) {
-      try {
-        const result = await SystemNavigationBar.navigationHide();
-        // console.log("Show Navigation Bar:", result);
-      } catch (error) {
-        console.error("Error showing navigation bar:", error);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const getSliderimages = async () => {
+    try {
+      const res = await Sliderimages();
+      if (res && res.status === 200) {
+        setSliderimagedata(res.data);
       }
-    } else {
-      console.error("SystemNavigationBar is not available.");
+    } catch (error) {
+      console.error("Error fetching slider images:", error);
     }
   };
-  const getSliderimages = async () => {
-    await Sliderimages().then((res) => {
-      if (res) {
-        if (res.status == 200) {
-          setSliderimagedata(res.data);
-        }
-      }
-    })
-  }
-  useEffect(() => {
-    getSliderimages();
-    showNavigation(); // Call this function to hide the navigation bar when the component mounts
-  }, []);
-
-
-
-  const Shopping = () => {
-    navigation.navigate("Home");
-  };
-  const styles = SliderStyles();
-  // Calculate the image width and height based on screen width
-  const imageWidth = width >= 720 ? 280 : 130;
-  const imageHeight = height * 0.15; // 20% of screen height
-
   const CustomPagination = ({ index, total }) => {
     const dots = [];
     for (let i = 0; i < total; i++) {
@@ -75,51 +49,198 @@ const SliderScreen = (props) => {
     return <View style={styles.paginationContainer}>{dots}</View>;
   };
 
-  const Shoppings = () => {
+  useEffect(() => {
+    getSliderimages();
+  }, []);
+
+  const Shopping = () => {
     navigation.navigate("Home");
   };
+  const styles = SliderStyles();
+  const renderItem = ({ item, index }) => (
+    <View style={styles.slide} key={index}>
+      <ImageBackground
+        source={{
+          uri: baseImageUrl + item.image,
+        }}
+        style={styles.slide}
+      >
+        <View style={styles.contain1}>
+          {/* Your existing content */}
+          <Text style={[styles.slideText1, { color: "white" }]}>
+            SMAERT{"\n"}FORMALS
+          </Text>
+          <Text style={[styles.slideText2, { color: "white" }]}>
+            MIN. {"\n"}30% OFF*
+          </Text>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "white" }]}
+            onPress={Shopping}
+          >
+            <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    </View>
+  );
+  const CustomDot = ({ index, currentIndex }) => {
+    const isActive = index === currentIndex;
 
+    return (
+      <View
+        style={[
+          styles.paginationDot,
+          isActive ? styles.activePaginationDot : null,
+        ]}
+      />
+    );
+  };
 
   return (
-    <>
-      <View style={styles.container}>
-        {slideimagesdata ?
-          <Swiper
-            loop={false}
-            showsPagination={true}
-            renderPagination={(index, total) => (
-              <CustomPagination index={index} total={total} />
-            )}
-            autoplay={true}
-          >
-            {slideimagesdata.length > 0 ? slideimagesdata.map((item, index) => (
-              <ImageBackground
+    <View style={styles.container}>
+      {slideimagesdata.length > 0 ? (
+        <>
+          <Carousel
+            data={slideimagesdata}
+            renderItem={renderItem}
+            sliderWidth={width}
+            itemWidth={width}
+            onSnapToItem={(index) => {
+              setCurrentIndex(index);
+            }}
+          />
+          <View style={styles.paginationContainer}>
+            {slideimagesdata.map((_, index) => (
+              <CustomDot
                 key={index}
-                source={{
-                  uri: baseImageUrl + item.image
-                }}
-                style={styles.slide}
+                index={index}
+                currentIndex={currentIndex}
+              />
+            ))}
+          </View>
+        </>
+      ) : (
+        <>
+      <View style={{
+        width: '100%',
+        height: 50,
+        backgroundColor: '#FFF',
+        position: "absolute",
+        bottom: 0,
+        zIndex: 0
+
+      }}></View>
+      <Swiper
+        loop={false}
+        showsPagination={true}
+        renderPagination={(index, total) => (
+          <CustomPagination index={index} total={total} />
+        )}
+        // autoplay={true}
+      >
+        <ImageBackground
+          source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
+          style={styles.slide}
+        >
+          <View style={styles.contain1}>
+        
+            <Sliderwhitelog />
+            <Text style={[styles.slideText1, { color: "white" }]}>
+              SMAERT{"\n"}FORMALS
+            </Text>
+            <Text style={[styles.slideText2, { color: "white" }]}>
+              MIN. {"\n"}30% OFF*
+            </Text>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: "white" }]}
+              onPress={Shopping}
+            >
+              <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+
+        <ImageBackground
+          source={require("../../../assets/SliderImage/low-angle-little-boy-posing.png")}
+          style={styles.slide}
+        >
+          <View style={styles.contain2}>
+      
+            <Blacklogo />
+            <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
+              Flat{"\n"}40-50% OFF*
+            </Text>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: "white" }]}
+              onPress={Shopping}
+            >
+              <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+
+        <ImageBackground
+          source={require("../../../assets/SliderImage/kid-studio-portrait-isolated.png")}
+          style={styles.slide}
+        >
+          <View style={styles.contain3}>
+            <Blacklogo />
+
+
+            <Text
+              style={[
+                styles.slideText1,
+                {
+                  fontWeight: "500",
+                  marginTop: 20,
+                },
+              ]}
+            >
+              Flat{"\n"}20-40% OFF*
+            </Text>
+            <TouchableOpacity style={styles.button} onPress={Shopping}>
+              <Text
+                style={[
+                  styles.buttonText,
+                  { color: "white", fontWeight: "bold" },
+                ]}
               >
-                <View style={styles.contain1}>
-                  <Sliderwhitelog />
-                  <Text style={[styles.slideText1, { color: "white" }]}>
-                    SMAERT{"\n"}FORMALS
-                  </Text>
-                  <Text style={[styles.slideText2, { color: "white" }]}>
-                    MIN. {"\n"}30% OFF*
-                  </Text>
-                  <TouchableOpacity
-                    style={[styles.button, { backgroundColor: "white" }]}
-                    onPress={Shopping}
-                  >
-                    <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
-                  </TouchableOpacity>
-                </View>
-              </ImageBackground>
-            )) : ""}
-          </Swiper> : ""}
-      </View>
+                Shop
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+
+        <ImageBackground
+          source={require("../../../assets/SliderImage/handsome-confident-hipster-modelsexy-unshaven-man-dressed-summer-stylish-green-hoodie-jeans-clothes-fashion-male-with-curly-hairstyle-posing-studio-isolated-blue.png")}
+          style={styles.slide}
+        >
+          <View style={styles.contain4}>
+            <Blacklogo />
+
+
+            <Text style={[styles.slideText1]}>BEST{"\n"}PICKS</Text>
+            <Text style={[styles.slideText2, { color: "black" }]}>
+              FLAT{"\n"}50% OFF*
+            </Text>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                {
+                  backgroundColor: "black",
+                  borderColor: "black",
+                },
+              ]}
+              onPress={Shopping}
+            >
+              <Text style={styles.buttonText}>Shop</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+      </Swiper>
     </>
+      )}
+    </View>
   );
 };
 

@@ -12,7 +12,7 @@ import {
   Modal,
   Platform,
   StyleSheet,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import { addso, gettransportation } from "../../api/api";
 import { ActivityIndicator } from "react-native";
@@ -21,8 +21,8 @@ const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 import { TouchableWithoutFeedback } from "react-native";
 import * as Font from "expo-font";
-import Svg, { G, Path } from 'react-native-svg';
-import Loader from "../../components/Loader/Loader"
+import Svg, { G, Path } from "react-native-svg";
+import Loader from "../../components/Loader/Loader";
 import Ordersuccessful from "../../jssvgs/Ordersucseccful";
 import { loadCustomFont } from "../../loadCustomFont";
 const Orderlist = (props) => {
@@ -51,16 +51,15 @@ const Orderlist = (props) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isfailed, setisFailed] = useState("");
 
-
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
     setRefreshing(true);
-    GetTransportation()
+    GetTransportation();
   };
-const fonttype = async ()=>{
- const status = await loadCustomFont();
-}
+  const fonttype = async () => {
+    const status = await loadCustomFont();
+  };
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -90,8 +89,8 @@ const fonttype = async ()=>{
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
   const AddSo = async () => {
     setIsLoading2(true);
     let userdata = await AsyncStorage.getItem("UserData");
@@ -129,7 +128,7 @@ const fonttype = async ()=>{
     await addso(data).then((res) => {
       if (res.status === 200) {
         setIsLoading2(false);
-        setRefreshing(false)
+        setRefreshing(false);
         setIsSuccess(true);
       } else {
         setisFailed(true);
@@ -147,8 +146,9 @@ const fonttype = async ()=>{
     }
   };
   // let ParsedData = [];
-  const formattedDate = `${currentDate.getMonth() + 1
-    }/${currentDate.getDate()}/${currentDate.getFullYear()}`;
+  const formattedDate = `${
+    currentDate.getMonth() + 1
+  }/${currentDate.getDate()}/${currentDate.getFullYear()}`;
   AsyncStorage.getItem("Orderlist")
     .then((Storagedata) => {
       if (Storagedata !== null) {
@@ -168,7 +168,7 @@ const fonttype = async ()=>{
         setTransportationVal(response.data[0].Name);
         setOldTransportation(response.data);
         setIsLoading(false);
-        setRefreshing(false)
+        setRefreshing(false);
       })
       .catch((error) => {
         console.error("Error fetching transportation data:", error);
@@ -211,8 +211,8 @@ const fonttype = async ()=>{
           <Text
             style={{
               textAlign: "center",
-              fontSize: width >= 720 ? 35 : 25,
-              fontFamily: "GloryBold" ,
+              fontSize: width >= 720 ? 55 : 25,
+              fontFamily: "GloryBold",
               width: "100%",
             }}
           >
@@ -266,7 +266,7 @@ const fonttype = async ()=>{
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: '#FFF'
+            backgroundColor: "#FFF",
           }}
         >
           <Loader />
@@ -329,14 +329,15 @@ const fonttype = async ()=>{
                       borderColor: "#E4E7EA",
                       backgroundColor: "#EEE",
                     }}
-                  // value={formattedDate}
-                  // disableFullscreenUI
+                    // value={formattedDate}
+                    // disableFullscreenUI
                   >
                     <Text
                       style={{
                         color: "#626262",
                         fontFamily: isFontLoaded ? "GloryMedium" : undefined,
-                        fontSize: windowwidthe < 720 ? windowwidthe * 0.045 : 26,
+                        fontSize:
+                          windowwidthe < 720 ? windowwidthe * 0.045 : 26,
                       }}
                     >
                       {new Date(currentDate).toLocaleDateString("en-GB", {
@@ -423,6 +424,7 @@ const fonttype = async ()=>{
                       backgroundColor: "#EEE",
                       display: "flex",
                       flexDirection: "row",
+                      // marginBottom:20
                     }}
                     onPress={() => {
                       Transportation.length !== 0
@@ -477,19 +479,18 @@ const fonttype = async ()=>{
                     </View>
                   </TouchableOpacity>
                 </View>
-
               </View>
 
               <View
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  maxHeight: "30%",
-                  width: "100%"
+                  maxHeight: "39%",
+                  // backgroundColor:'red',
+                  width: "100%",
                 }}
               >
-
-                <ScrollView nestedScrollEnabled={true} >
+                <ScrollView nestedScrollEnabled={true}>
                   {ParsedData &&
                     ParsedData.map((item, index) => (
                       <View key={index}>
@@ -614,10 +615,9 @@ const fonttype = async ()=>{
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: "35%"
+                  top: 270,
                 }}
                 nestedScrollEnabled={true}
-
               >
                 <View>
                   {Transportation.map((item, index) => (
@@ -627,17 +627,15 @@ const fonttype = async ()=>{
                         setTransportationVal(item.Name);
                         setshowTransporatation(!showTransporatation);
                       }}
-                    // onPressIn={() => handlePressIn(item)}
-                    // onPressOut={handlePressOut}
+                      // onPressIn={() => handlePressIn(item)}
+                      // onPressOut={handlePressOut}
                     >
                       <View
                         style={[
                           styles.item,
                           {
                             backgroundColor:
-                              hoveredItem === item.Id
-                                ? "black"
-                                : "transparent",
+                              hoveredItem === item.Id ? "black" : "transparent",
                           },
                         ]}
                       >
@@ -645,14 +643,12 @@ const fonttype = async ()=>{
                           style={[
                             {
                               fontSize:
-                                windowwidthe < 720
-                                  ? windowwidthe * 0.042
-                                  : 26,
+                                windowwidthe < 720 ? windowwidthe * 0.042 : 26,
                               color:
-                                hoveredItem === item.Id
-                                  ? "#fff"
-                                  : "#626262",
-                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                                hoveredItem === item.Id ? "#fff" : "#626262",
+                              fontFamily: isFontLoaded
+                                ? "GloryMedium"
+                                : undefined,
                             },
                           ]}
                         >
@@ -717,7 +713,6 @@ const fonttype = async ()=>{
                         padding: 5,
                       }}
                     >
-
                       <Ordersuccessful />
 
                       <Text
@@ -750,12 +745,12 @@ const fonttype = async ()=>{
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 'auto',
+                          height: "auto",
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
                           marginVertical: 20,
-                          paddingVertical:"4%"
+                          paddingVertical: "4%",
                         }}
                       >
                         <Text
@@ -827,12 +822,12 @@ const fonttype = async ()=>{
                         style={{
                           backgroundColor: "black",
                           width: 189,
-                          height: 'auto',
+                          height: "auto",
                           borderRadius: 10,
                           justifyContent: "center",
                           alignItems: "center",
                           marginVertical: 20,
-                          paddingVertical:"4%"
+                          paddingVertical: "4%",
                         }}
                       >
                         <Text
@@ -925,7 +920,9 @@ const fonttype = async ()=>{
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                            fontFamily: isFontLoaded
+                              ? "GloryMedium"
+                              : undefined,
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -937,7 +934,9 @@ const fonttype = async ()=>{
                         <Text
                           style={{
                             fontSize: width >= 720 ? 22 : 12,
-                            fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                            fontFamily: isFontLoaded
+                              ? "GloryMedium"
+                              : undefined,
                             color: "#00000080",
                             textAlign: "right",
                           }}
@@ -954,7 +953,7 @@ const fonttype = async ()=>{
                 )}
                 {userdata !== "" ? (
                   userdata[0].GSTType === "IGST" &&
-                    userdata[0].GSTNumber !== "" ? (
+                  userdata[0].GSTNumber !== "" ? (
                     <>
                       <View
                         style={{
@@ -968,7 +967,9 @@ const fonttype = async ()=>{
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                              fontFamily: isFontLoaded
+                                ? "GloryMedium"
+                                : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -980,7 +981,9 @@ const fonttype = async ()=>{
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                              fontFamily: isFontLoaded
+                                ? "GloryMedium"
+                                : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1001,7 +1004,9 @@ const fonttype = async ()=>{
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                              fontFamily: isFontLoaded
+                                ? "GloryMedium"
+                                : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1013,7 +1018,9 @@ const fonttype = async ()=>{
                           <Text
                             style={{
                               fontSize: width >= 720 ? 22 : 12,
-                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                              fontFamily: isFontLoaded
+                                ? "GloryMedium"
+                                : undefined,
                               color: "#00000080",
                               textAlign: "right",
                             }}
@@ -1128,6 +1135,6 @@ const styles = StyleSheet.create({
   item: {
     borderRadius: 6,
     padding: 10,
-    paddingLeft: 2.6
+    paddingLeft: 2.6,
   },
 });

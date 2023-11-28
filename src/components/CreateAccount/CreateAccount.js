@@ -53,11 +53,9 @@ const CreateAccount = (props) => {
             // console.log("Notification permission denied");
           }
         }
-
       } catch (error) {
         // console.error("Error requesting permission:", error);
       }
-
     };
     getToken();
   }, []);
@@ -102,34 +100,42 @@ const CreateAccount = (props) => {
         setPhoneNumber(numericValue);
       }
     } else {
-      // Update the state for the field
-      switch (fieldName) {
-        case "name":
-          setName(value);
-          break;
-        case "address":
-          setAddress(value);
-          break;
-        case "phoneNumber":
-          setPhoneNumber(value);
-          break;
-        case "state":
-          setState(value);
-          break;
-        case "city":
-          setCity(value);
-          break;
-        case "country":
-          setCountry(value);
-          break;
-        case "pinCode":
-          setPinCode(value);
-          break;
-        case "contactPerson":
-          setContactPerson(value);
-          break;
-        default:
-          break;
+      if (fieldName === "pinCode") {
+        const numericValue = value.replace(/\D/g, "");
+
+        if (numericValue.length <= 6) {
+          setPinCode(numericValue);
+        }
+      } else {
+        // Update the state for the field
+        switch (fieldName) {
+          case "name":
+            setName(value);
+            break;
+          case "address":
+            setAddress(value);
+            break;
+          case "phoneNumber":
+            setPhoneNumber(value);
+            break;
+          case "state":
+            setState(value);
+            break;
+          case "city":
+            setCity(value);
+            break;
+          case "country":
+            setCountry(value);
+            break;
+          case "pinCode":
+            setPinCode(value);
+            break;
+          case "contactPerson":
+            setContactPerson(value);
+            break;
+          default:
+            break;
+        }
       }
     }
   };
@@ -170,6 +176,8 @@ const CreateAccount = (props) => {
       case "pinCode":
         if (pinCode === "") {
           setPinCodeError("Pincode is required");
+        } else if (pinCode.length !== 6) {
+          setPinCodeError("Pincode must be a 6-digit number");
         }
         break;
       case "contactPerson":
@@ -222,6 +230,8 @@ const CreateAccount = (props) => {
 
     if (pinCode === "") {
       setPinCodeError("Pincode is required");
+    } else if (pinCode.length !== 6) {
+      setPinCodeError("Pincode must be a 6-digit numbe");
       isValid = false;
     }
 
@@ -246,22 +256,19 @@ const CreateAccount = (props) => {
           token,
         });
         console.log("API response:", response.data);
-       
-        
-        console.log(response.data)
+
+        console.log(response.data);
         if (response && response.data && response.data.error) {
           // Set the phone number error message
-          
-         Alert.alert("Number is already Exits");
-        }else{
+
+          Alert.alert("Number is already Exits");
+        } else {
           setShowSuccess(true); // Show success message
         }
 
-       
         clearFormFields();
       } catch (error) {
         console.error("Error making API request:", error);
-       
       }
     }
   };
@@ -309,7 +316,7 @@ const CreateAccount = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <ScrollView style={{ paddingHorizontal: 10,}}>
+          <ScrollView style={{ paddingHorizontal: 10 }}>
             <TextInput
               style={[styles.input, nameError && styles.inputError]}
               placeholder="Name"

@@ -571,6 +571,7 @@ const DetailsOfArticals = (props) => {
                               android: {
                                 elevation: 0,
                                 backgroundColor: "#f4f4f4",
+                                paddingEnd:9
                               },
                             }),
                           }}
