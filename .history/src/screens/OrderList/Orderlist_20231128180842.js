@@ -430,14 +430,16 @@ const Orderlist = (props) => {
                     style={{
                       width: "100%",
                       borderWidth: 1,
-                      paddingVertical: 9,
+                      paddingVertical: 30,
                       paddingLeft: "3%",
                       borderRadius: 6,
-
+                      borderBottomLeftRadius: 0,
+                      borderBottomRightRadius: 0,
                       borderColor: "#E4E7EA",
                       backgroundColor: "#EEE",
                       display: "flex",
                       flexDirection: "row",
+                      backgroundColor: "red",
                     }}
                     onPress={() => {
                       Transportation.length !== 0
@@ -459,7 +461,6 @@ const Orderlist = (props) => {
                       style={{
                         position: "absolute",
                         top: width >= 720 ? "52%" : "52%",
-
                         right: "1%",
                         justifyContent: "center",
                       }}
@@ -623,13 +624,12 @@ const Orderlist = (props) => {
                   borderRadius: 6,
                   borderColor: "#E4E7EA",
                   paddingHorizontal: "2.5%",
-                  // paddingBottom: "4.5%",
+                  paddingBottom: "4.5%",
                   width: "90%",
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: height >= 844 ? 248 : 241,
-                  // bottom: 0,
+                  top: 240,
                 }}
                 nestedScrollEnabled={true}
               >

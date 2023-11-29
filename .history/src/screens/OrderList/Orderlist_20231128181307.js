@@ -501,6 +501,7 @@ const Orderlist = (props) => {
                   flexDirection: "column",
                   maxHeight: "39%",
                   width: "100%",
+                  backgroundColor: "red",
                 }}
               >
                 <ScrollView nestedScrollEnabled={true}>
@@ -623,13 +624,12 @@ const Orderlist = (props) => {
                   borderRadius: 6,
                   borderColor: "#E4E7EA",
                   paddingHorizontal: "2.5%",
-                  // paddingBottom: "4.5%",
+                  paddingBottom: "4.5%",
                   width: "90%",
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: height >= 844 ? 248 : 241,
-                  // bottom: 0,
+                  top: 240,
                 }}
                 nestedScrollEnabled={true}
               >

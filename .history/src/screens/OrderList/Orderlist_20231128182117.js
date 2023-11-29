@@ -616,7 +616,7 @@ const Orderlist = (props) => {
               <ScrollView
                 style={{
                   height: "auto",
-                  maxHeight: "100%",
+                  // maxHeight: "100%",
                   borderWidth: 1,
                   backgroundColor: "#EEEEEE",
                   marginHorizontal: "5%",
@@ -628,8 +628,8 @@ const Orderlist = (props) => {
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: height >= 844 ? 248 : 241,
-                  // bottom: 0,
+                  top: 250,
+                  // bottom: 200,
                 }}
                 nestedScrollEnabled={true}
               >

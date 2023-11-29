@@ -625,11 +625,11 @@ const Orderlist = (props) => {
                   paddingHorizontal: "2.5%",
                   // paddingBottom: "4.5%",
                   width: "90%",
-                  position: "absolute",
+                  position: "relative",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: height >= 844 ? 248 : 241,
-                  // bottom: 0,
+                  // top: 250,
+                  // bottom: 200,
                 }}
                 nestedScrollEnabled={true}
               >

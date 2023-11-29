@@ -10,8 +10,8 @@ import {
   Modal,
   KeyboardAvoidingView,
   Keyboard,
+  ScrollView,
   RefreshControl,
-  Alert,
 } from "react-native";
 import {
   getProductName,
@@ -20,20 +20,20 @@ import {
   DeleteWishlist,
 } from "../../api/api";
 import styles from "./styles";
-import Loader from "../../components/Loader/Loader";
-import { useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import ButtomNavigation from "../../components/AppFooter/ButtomNavigation";
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import SearchBar from "../../components/SearchBar/searchbar";
 import Filter from "../../components/Filter/Filter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loader from "../../components/Loader/Loader";
+
 import { ActivityIndicator } from "react-native";
-import * as Font from "expo-font";
-import { Svg, Path, Circle } from "react-native-svg";
 import CreateAccount from "../../components/CreateAccount/CreateAccount";
+import Svg, { Circle, Path } from "react-native-svg";
 import { loadCustomFont } from "../../loadCustomFont";
-export default function CategorisWiseArticle(props) {
+
+export default function AllArticle(props) {
   const { navigation } = props;
   const [finalData, setFinalData] = useState([]);
   const [nameDatas, setNameDatas] = useState([]);
@@ -45,19 +45,24 @@ export default function CategorisWiseArticle(props) {
   const [searchText, setSearchText] = useState(""); // To store the search text
   const [minArticleRate, setMinArticleRate] = useState(null);
   const [maxArticleRate, setMaxArticleRate] = useState(null);
+  const [noArticlesFound, setNoArticlesFound] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccountVisible, setCreateAccountVisible] = useState(false);
-
-  const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  const { width, height } = Dimensions.get("window");
+  const key = "your_storage_key";
+  const key2 = "your_storage_key";
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
+  const fonttype = async () => {
+    let status = await loadCustomFont();
+  };
+  useEffect(() => {
+    fonttype();
+  }, []);
   const onRefresh = () => {
-    setRefreshing(true);
-    getproductnamess();
+    getCategoriesname();
   };
 
   const fetchMoreData = () => {
@@ -87,35 +92,36 @@ export default function CategorisWiseArticle(props) {
       keyboardDidHideListener.remove();
     };
   }, []);
-  const fonttype = async () => {
-    const status = await loadCustomFont();
-  };
-  useEffect(() => {
-    const loadCustomFont = async () => {
-      try {
-        await Font.loadAsync({
-          Glory: require("../../../assets/Fonts/Glory.ttf"),
-        });
-        setIsFontLoaded(true);
-      } catch (error) {
-        console.error("Error loading custom font:", error);
-      }
-    };
-    fonttype();
-    loadCustomFont();
-  }, []);
 
-  const CheckUser = async () => {
-    const user = await AsyncStorage.getItem("UserData");
-    if (user) {
+  const retrieveStoredCategories = async () => {
+    try {
+      const serializedCategories = await AsyncStorage.getItem(key);
+      const serrializedPriceRange = await AsyncStorage.getItem(key2);
+      if (serializedCategories !== null || selectedPriceRange !== null) {
+        const categories = JSON.parse(serializedCategories);
+        const priceRange = JSON.parse(serrializedPriceRange);
+        setSelectedCategories(categories);
+        setSelectedPriceRange(priceRange);
+      } else {
+        // console.log("No data found with the key.");
+      }
+    } catch (error) {
+      // console.error("Error retrieving data:", error);
+    }
+  };
+  const userChecked = async () => {
+    const token = await AsyncStorage.getItem("UserData");
+
+    if (token) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   };
+
   useEffect(() => {
-    CheckUser();
-  }, []);
+    userChecked();
+  });
 
   const openCreateAccountModal = () => {
     // console.log("done");
@@ -125,27 +131,20 @@ export default function CategorisWiseArticle(props) {
   const closeCreateAccountModal = () => {
     setCreateAccountVisible(false);
   };
-
-  const route = useRoute(); // Define route using useRoute hook
-  const { item1 } = route.params;
-  const { width, height } = Dimensions.get("window");
   const headerHeight =
     Platform.OS === "android"
       ? width >= 720
-        ? 110
-        : 80
+        ? 120
+        : 100
       : height >= 844
-      ? 110
+      ? 100
       : 65;
-  const [noArticlesFound, setNoArticlesFound] = useState(false);
-
   // uploard url image
   const baseImageUrl =
     "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
-  const category = item1.Category;
-  // const titlename = convertToTitleCase(category);
-  console.log(category);
+
   const openFilter = () => {
+    Keyboard.dismiss();
     setIsFilterVisible((prev) => !prev); // Toggle the Filter component visibility
   };
   const getpartyid = async () => {
@@ -153,22 +152,15 @@ export default function CategorisWiseArticle(props) {
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   };
-
-  const getproductnamess = async () => {
-    try {
-      const res = await getProductName();
-      if (res.status === 200) {
-        const sdPrds = res.data.slice();
-        const fildata = sdPrds.filter((item) => item.Category === category);
-        setNameDatas(fildata);
-        setFinalData(fildata);
-        setIsLoading(false);
-        setRefreshing(false);
-      } else {
-        // Alert.alert("Server is not responding");
-      }
-    } catch (error) {
-      // console.log(error);
+  const getCategoriesname = async () => {
+    retrieveStoredCategories();
+    const res = await getProductName();
+    if (res.status === 200) {
+      // console.log(res.data);
+      setNameDatas(res.data);
+      setFinalData(res.data);
+      setIsLoading(false);
+      setRefreshing(false);
     }
   };
   const rmvProductWishlist = async (i) => {
@@ -192,6 +184,16 @@ export default function CategorisWiseArticle(props) {
     }
   };
 
+  const setsearchtextfromstorage = async () => {
+    let currentText = await AsyncStorage.getItem("searchText");
+
+    // Parse the currentText if it exists
+    if (currentText) {
+      currentText = JSON.parse(currentText);
+      setSearchText(currentText.text);
+    }
+  };
+
   // ------- add product in wishlist start-------------
   const getWishlist = async () => {
     const data = {
@@ -209,10 +211,10 @@ export default function CategorisWiseArticle(props) {
       article_id: i.Id,
     };
     setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
-
     try {
       await getAddWishlist(data).then((res) => {
         // getWishlist();
+        // setSelectprd((prevSelectprd) => [...prevSelectprd, { Id: i.Id }]);
       });
     } catch (error) {
       // console.log(error);
@@ -226,9 +228,9 @@ export default function CategorisWiseArticle(props) {
       .join("-"); // Join the words with hyphens
   };
   useEffect(() => {
-    // getCategoriesname();
+    getCategoriesname();
     getWishlist();
-    getproductnamess();
+    setsearchtextfromstorage();
   }, []);
 
   useLayoutEffect(() => {
@@ -252,7 +254,7 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile");
+              isLoggedIn ? navigation.navigate("Profile") : null;
               // console.log(isLoggedIn);
             }}
           >
@@ -268,9 +270,9 @@ export default function CategorisWiseArticle(props) {
         </View>
       ),
       headerStyle: {
-        height: headerHeight,
-        borderBottomWidth: 1, // Adjust the width as needed
-        borderBottomColor: "#FFF", // Increase the header height here
+        height: headerHeight, // Increase the header height here
+        elevation: 0, // Remove the shadow on Android
+        shadowOpacity: 0,
       },
     });
   }, []);
@@ -283,7 +285,8 @@ export default function CategorisWiseArticle(props) {
     if (
       searchText === "" &&
       selectedCategories.length === 0 &&
-      selectedPriceRange.length === 0
+      selectedPriceRange[0] == minArticleRate &&
+      selectedPriceRange[1] == maxArticleRate
     ) {
       setFinalData(nameDatas); // Reset to the original data when no filters are applied
     } else {
@@ -296,13 +299,21 @@ export default function CategorisWiseArticle(props) {
 
         const batchFiltered = batch.filter(
           (item) =>
-            (searchText === "" || // Check if searchText is empty or matches any criteria
-              item.ArticleNumber.toString().includes(searchText.toString()) ||
-              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.ArticleRate.toString().includes(searchText.toString()) ||
-              item.StyleDescription.toLowerCase().includes(
-                searchText.toLowerCase()
-              ) ||
+            (searchText === "" ||
+              (item.ArticleNumber &&
+                item.ArticleNumber.toString().includes(
+                  searchText.toString()
+                )) ||
+              (item.Category &&
+                item.Category.toLowerCase().includes(
+                  searchText.toLowerCase()
+                )) ||
+              (item.ArticleRate &&
+                item.ArticleRate.toString().includes(searchText.toString())) ||
+              (item.StyleDescription &&
+                item.StyleDescription.toLowerCase().includes(
+                  searchText.toLowerCase()
+                )) ||
               item.Subcategory.toLowerCase().includes(
                 searchText.toLowerCase()
               )) &&
@@ -317,7 +328,9 @@ export default function CategorisWiseArticle(props) {
         filteredData.push(...batchFiltered);
       }
 
+      // Set the final filtered data
       setFinalData(filteredData);
+
       setNoArticlesFound(filteredData.length === 0);
     }
   };
@@ -347,33 +360,40 @@ export default function CategorisWiseArticle(props) {
         },
       }}
     >
-      <View id={item.id} style={styles.producticones}>
-        {selectedprd.some((i) => i.Id === item.Id) ? (
-          <TouchableOpacity
-            onPress={() => {
-              rmvProductWishlist(item);
-            }}
-          >
-            <FontAwesome
-              name="heart"
-              style={[
-                styles.icon,
-                // isLoggedin === false ? styles.disabledIcon : null,
-              ]}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              addArticleWishlist(item);
-            }}
-          >
-            {isLoggedIn ? (
-              <FontAwesome name="heart-o" style={[styles.disabledIcon]} />
-            ) : null}
-          </TouchableOpacity>
-        )}
-      </View>
+      {isLoggedIn ? (
+        <View id={item.id} style={styles.producticones}>
+          {selectedprd.some((i) => i.Id === item.Id) ? (
+            <TouchableOpacity
+              onPress={() => {
+                rmvProductWishlist(item);
+              }}
+            >
+              <FontAwesome
+                name="heart"
+                style={[
+                  styles.icon,
+                  // isLoggedin === false ? styles.disabledIcon : null,
+                ]}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                addArticleWishlist(item);
+              }}
+            >
+              <FontAwesome
+                name="heart-o"
+                style={[
+                  styles.disabledIcon,
+                  // isLoggedin === false ? styles.disabledIcon : null,
+                ]}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+      ) : null}
+
       <View
         style={{
           width: "90%",
@@ -392,14 +412,12 @@ export default function CategorisWiseArticle(props) {
         <Image
           source={{ uri: baseImageUrl + item.Photos }}
           style={{
-            width: "100%",
-            height: "100%",
+            width: "90%",
+            height: 180,
             flex: 1,
             resizeMode: "contain",
             borderRadius: 10,
-            zIndex: 1,
-
-            // marginTop: 10,
+            marginTop: 10,
           }}
         />
       </View>
@@ -422,7 +440,7 @@ export default function CategorisWiseArticle(props) {
           <View style={{ width: 178, alignItems: "center", paddingTop: 10 }}>
             <Text
               style={{
-                fontSize: width >= 720 ? 18 : 15,
+                fontSize: width >= 720 ? 18 : 14,
                 fontFamily: "GlorySemiBold",
               }}
             >
@@ -438,7 +456,7 @@ export default function CategorisWiseArticle(props) {
             </Text>
             <Text
               style={{
-                fontSize: width >= 720 ? 18 : 15,
+                fontSize: width >= 720 ? 18 : 14,
                 fontFamily: "GlorySemiBold",
               }}
             >
@@ -452,25 +470,16 @@ export default function CategorisWiseArticle(props) {
   const handleFilterChange = (categories, priceRange) => {
     setSelectedCategories(categories);
     setSelectedPriceRange(priceRange);
+    // console.log(priceRange, "All");
     setSearchText(""); // Reset the search text
 
     // Trigger the filter function
     filterData();
   };
+
   const handleCloseFilter = () => {
     setIsFilterVisible((prev) => !prev);
   };
-
-  useEffect(() => {
-    const abc = nameDatas.filter(
-      (item) =>
-        (!selectedCategories.length ||
-          selectedCategories.includes(item.Category)) &&
-        item.ArticleRate >= selectedPriceRange[0] &&
-        item.ArticleRate <= selectedPriceRange[1]
-    );
-    setFinalData(abc);
-  }, [selectedCategories, selectedPriceRange]);
 
   useEffect(() => {
     const minRate = nameDatas.reduce((min, item) => {
@@ -486,7 +495,7 @@ export default function CategorisWiseArticle(props) {
     setMinArticleRate(minRate);
 
     setMaxArticleRate(maxRate);
-  }, [nameDatas]);
+  }, [finalData]);
   return (
     <>
       {isLoading ? (
@@ -497,89 +506,66 @@ export default function CategorisWiseArticle(props) {
         <View
           style={{ width: "100%", height: "100%", backgroundColor: "#FFF" }}
         >
-          {isLoggedIn ? (
-            <View
-              style={{
-                flexDirection: "row",
-                backgroundColor: "#FFF",
-                alignItems: "center",
-                width: "100%",
-                paddingStart: 3,
-                paddingTop: 10,
-              }}
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: "#FFF",
+              alignItems: "center",
+              width: "100%",
+              paddingStart: 3,
+              paddingTop: 5,
+            }}
+          >
+            <SearchBar
+              searchPhrase={searchText}
+              setSearchPhrase={setSearchText}
+            />
+            <TouchableOpacity
+              style={{ width: "10%", alignItems: "flex-end" }}
+              onPress={openFilter}
             >
-              <SearchBar
-                searchPhrase={searchText}
-                setSearchPhrase={setSearchText}
-              />
-              <TouchableOpacity
-                style={{ width: "10%", alignItems: "flex-end", paddingEnd: 0 }}
-                onPress={() => {
-                  isLoggedIn ? openFilter() : "";
-                }}
+              <Svg
+                width={width >= 720 ? 65 : 42}
+                height={width >= 720 ? 65 : 42}
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/Svg"
+                {...props}
               >
-                <Svg
-                  width={width >= 720 ? 65 : 40}
-                  height={width >= 720 ? 65 : 40}
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/Svg"
-                  {...props}
-                >
-                  <Circle cx={20} cy={20} r={20} fill="#212121" />
-                  <Path
-                    opacity={0.4}
-                    d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
-                    fill="white"
-                  />
-                  <Path
-                    opacity={0.4}
-                    d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
-                    fill="white"
-                  />
-                  <Path
-                    d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
-                    fill="white"
-                  />
-                  <Path
-                    d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
-                    fill="white"
-                  />
-                </Svg>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View
-              style={{
-                flexDirection: "row",
-                backgroundColor: "#FFF",
-                alignItems: "center",
-                width: "112%",
-                paddingStart: 3,
-                paddingTop: 10,
-              }}
-            >
-              <SearchBar
-                searchPhrase={searchText}
-                setSearchPhrase={setSearchText}
-              />
-            </View>
-          )}
-
+                <Circle cx={20} cy={20} r={20} fill="#212121" />
+                <Path
+                  opacity={0.4}
+                  d="M18.6198 22.9297H13.8854C13.2862 22.9297 12.7998 23.4076 12.7998 23.9962C12.7998 24.5841 13.2862 25.0628 13.8854 25.0628H18.6198C19.219 25.0628 19.7054 24.5841 19.7054 23.9962C19.7054 23.4076 19.219 22.9297 18.6198 22.9297Z"
+                  fill="white"
+                />
+                <Path
+                  opacity={0.4}
+                  d="M27.1997 16.0326C27.1997 15.4447 26.7133 14.9668 26.1149 14.9668H21.3805C20.7814 14.9668 20.2949 15.4447 20.2949 16.0326C20.2949 16.6213 20.7814 17.0991 21.3805 17.0991H26.1149C26.7133 17.0991 27.1997 16.6213 27.1997 16.0326Z"
+                  fill="white"
+                />
+                <Path
+                  d="M17.7518 16.0322C17.7518 17.3762 16.6438 18.4655 15.2758 18.4655C13.9086 18.4655 12.7998 17.3762 12.7998 16.0322C12.7998 14.689 13.9086 13.5996 15.2758 13.5996C16.6438 13.5996 17.7518 14.689 17.7518 16.0322Z"
+                  fill="white"
+                />
+                <Path
+                  d="M27.2001 23.9665C27.2001 25.3098 26.0921 26.3991 24.7241 26.3991C23.3568 26.3991 22.248 25.3098 22.248 23.9665C22.248 22.6225 23.3568 21.5332 24.7241 21.5332C26.0921 21.5332 27.2001 22.6225 27.2001 23.9665Z"
+                  fill="white"
+                />
+              </Svg>
+            </TouchableOpacity>
+          </View>
           <View>
             <Text
               style={{
                 fontSize: width >= 720 ? 25 : 18,
-                fontFamily: "GloryBold",
                 paddingLeft: 15,
                 height: width >= 720 ? 30 : 20,
                 alignItems: "center",
                 marginTop: 10,
+                fontFamily: "GloryBold",
               }}
             >
-              {category === "WOMENS T-SHIRT" || category === "WOMENS LEGGINGS"
-                ? convertToTitleCase(category)
-                : `Men's ${convertToTitleCase(category)}`}
+              ALL Articles
             </Text>
           </View>
           <View
@@ -588,52 +574,58 @@ export default function CategorisWiseArticle(props) {
               backgroundColor: "#FFF",
               width: "100%",
               height: "74%",
-              top: 10,
+              top: 20,
               paddingHorizontal: 10,
             }}
           >
-            {finalData.length === 0 ? (
-              <View
+            {noArticlesFound ? (
+              <Text
                 style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
+                  textAlign: "center",
+                  fontSize: 16,
+                  marginTop: 20,
+                  fontFamily: "GloryMedium",
                 }}
               >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "GloryMedium",
-                    fontSize: 20,
-                  }}
-                >
-                  No Articles Found
-                </Text>
-              </View>
+                No Articles Found
+              </Text>
             ) : (
-              <FlatList
-                style={{ backgroundColor: "#FFF" }}
-                data={finalData}
-                keyExtractor={(item) => item.Id}
-                renderItem={renderItem}
-                numColumns={width >= 720 ? 4 : 2}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingVertical: 0 }}
-                columnWrapperStyle={{ justifyContent: "space-between" }}
-                onEndReached={fetchMoreData}
-                onEndReachedThreshold={0.1}
+              <>
+                {/* <ScrollView
+                style={{ flex: 1 }}
                 refreshControl={
                   <RefreshControl
                     refreshing={refreshing}
                     onRefresh={onRefresh}
                   />
                 }
-              />
+              > */}
+                <FlatList
+                  style={{ backgroundColor: "#FFF" }}
+                  data={finalData}
+                  keyExtractor={(item) => item.Id.toString()}
+                  renderItem={renderItem}
+                  numColumns={width >= 720 ? 4 : 2}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingVertical: 0 }}
+                  columnWrapperStyle={{ justifyContent: "space-between" }}
+                  onEndReached={fetchMoreData}
+                  onEndReachedThreshold={0.1}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                />
+                {/* </ScrollView> */}
+              </>
             )}
           </View>
+          {/* {/ </ScrollView> /} */}
           {isKeyboardOpen === true ? null : (
             <KeyboardAvoidingView
-              behavior={isKeyboardOpen ? "padding" : null}
+              // behavior={isKeyboardOpen ? "padding" : null}
               style={{ flex: 1 }}
             >
               {isFilterVisible ? null : (
@@ -645,6 +637,18 @@ export default function CategorisWiseArticle(props) {
               )}
             </KeyboardAvoidingView>
           )}
+          {/* <KeyboardAvoidingView
+            behavior={isKeyboardOpen ? "padding" : null}
+            style={{ flex: 1 }}
+          >
+            {isFilterVisible ? null : (
+              <View
+                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+              >
+                <ButtomNavigation navigation={navigation} page="home" />
+              </View>
+            )}
+          </KeyboardAvoidingView> */}
 
           {isFilterVisible && (
             <View
@@ -661,24 +665,25 @@ export default function CategorisWiseArticle(props) {
             >
               <View
                 style={{
-                  width: "92%",
+                  width: "94%",
                   backgroundColor: "#FFF",
                   position: "absolute",
-                  bottom: "2%",
-                  left: 1,
+                  bottom: 0,
+                  left: 0,
                   right: 0, // To make it span the full width
-                  marginLeft: "4%", // Margin on the left side
+                  marginLeft: "3%", // Margin on the left side
                   padding: 10,
-                  borderRadius: 10, // Adjust the radius as needed
+                  borderTopLeftRadius: 10, // Adjust the radius as needed
+                  borderTopRightRadius: 10,
                 }}
               >
                 <Filter
-                  status={true}
                   onFilterChange={handleFilterChange}
                   onCloseFilter={handleCloseFilter}
                   Scategories={selectedCategories}
                   minArticleRate={minArticleRate}
                   maxArticleRate={maxArticleRate}
+                  status={false}
                   spr={selectedPriceRange}
                   uniquerates={nameDatas}
                 />

@@ -628,8 +628,7 @@ const Orderlist = (props) => {
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: height >= 844 ? 248 : 241,
-                  // bottom: 0,
+                  top: 255,
                 }}
                 nestedScrollEnabled={true}
               >

@@ -613,27 +613,26 @@ const Orderlist = (props) => {
               </View>
             </View>
             {showTransporatation && Transportation.length !== 0 && (
-              <ScrollView
-                style={{
-                  height: "auto",
-                  maxHeight: "100%",
-                  borderWidth: 1,
-                  backgroundColor: "#EEEEEE",
-                  marginHorizontal: "5%",
-                  borderRadius: 6,
-                  borderColor: "#E4E7EA",
-                  paddingHorizontal: "2.5%",
-                  // paddingBottom: "4.5%",
-                  width: "90%",
-                  position: "absolute",
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 0,
-                  top: height >= 844 ? 248 : 241,
-                  // bottom: 0,
-                }}
-                nestedScrollEnabled={true}
-              >
-                <View>
+              <ScrollView nestedScrollEnabled={true}>
+                <View
+                  style={{
+                    // height: "auto",
+                    maxHeight: "100%",
+                    borderWidth: 1,
+                    backgroundColor: "#EEEEEE",
+                    marginHorizontal: "5%",
+                    borderRadius: 6,
+                    borderColor: "#E4E7EA",
+                    paddingHorizontal: "2.5%",
+                    // paddingBottom: "4.5%",
+                    width: "90%",
+                    // position: "absolute",
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                    // top: "40%",
+                    // bottom: 0,
+                  }}
+                >
                   {Transportation.map((item, index) => (
                     <TouchableOpacity
                       key={index}
