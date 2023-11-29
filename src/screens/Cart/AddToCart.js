@@ -1242,7 +1242,7 @@ const fonttype = async ()=>{
                       ></TextInput>
                       <View
                         style={{
-                          // width: "100%",
+                          width: "100%",
                           position: "absolute",
                           top: width >= 720 ? 14 : 7,
                           right: width >= 720 ? 10 : 10,

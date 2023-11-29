@@ -374,7 +374,7 @@ const OrderHistory = (props) => {
         </View>
       ) : (
         <View style={styles.container}>
-          <View style={styles.first_cnt}>
+           <View style={styles.first_cnt}>
             <View style={styles.pendin_complete_cnt}>
               <View style={styles.pc_btn_cnt}>
                 {/* <View style={{ width: "50%" }}> */}
@@ -412,11 +412,14 @@ const OrderHistory = (props) => {
               </View>
             </View>
             <View style={styles.calender_cnt}>
-              <View style={{ paddingRight: "4%" ,marginTop:10}}>
+              <View style={{ paddingRight: "4%", marginTop: 10 }}>
                 {/* <Button title="Select Dates" onPress={openModal} /> */}
                 <TouchableOpacity
                   onPress={openModal}
-                  style={{ height: width >= 720 ? 35: 20, width: width >= 720 ? 35: 20 }}
+                  style={{
+                    height: width >= 720 ? 35 : 20,
+                    width: width >= 720 ? 35 : 20,
+                  }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>

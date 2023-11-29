@@ -908,8 +908,8 @@ const DetailsOfArticals = (props) => {
                 >
                   <View
                     style={{
-                      width: 360,
-                      height: 320,
+                      width:'88%',
+                      height: 300,
                       backgroundColor: "white",
                       borderRadius: 15,
                       alignItems: "center",
@@ -931,7 +931,7 @@ const DetailsOfArticals = (props) => {
                         fontSize: 24,
                         fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                         textAlign: "center",
-                        marginBottom: 10,
+                        marginBottom: 5,
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >

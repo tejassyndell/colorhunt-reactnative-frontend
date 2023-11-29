@@ -6,15 +6,12 @@ import {
   Dimensions,
   ImageBackground,
   TouchableOpacity,
-
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import SliderStyles from "./styles";
 import { Sliderimages } from "../../api/api";
-import Swiper from "react-native-swiper";
+
 const { width } = Dimensions.get("window");
-import Sliderwhitelog from "../../jssvgs/Sliderwhitelog";
-import Blacklogo from "../../jssvgs/Blacklogo";
 const baseImageUrl =
   "https://webportalstaging.colorhunt.in/colorHuntApiStaging/public/uploads/";
 
@@ -33,25 +30,18 @@ const SliderScreen = (props) => {
       console.error("Error fetching slider images:", error);
     }
   };
-  const CustomPagination = ({ index, total }) => {
-    const dots = [];
-    for (let i = 0; i < total; i++) {
-      dots.push(
-        <View
-          key={i}
-          style={[
-            styles.paginationDot,
-            i === index ? styles.activePaginationDot : null,
-          ]}
-        />
-      );
-    }
-    return <View style={styles.paginationContainer}>{dots}</View>;
-  };
 
   useEffect(() => {
     getSliderimages();
   }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextIndex = (currentIndex + 1) % slideimagesdata.length;
+      setCurrentIndex(nextIndex);
+    }, 5000); // Adjust the interval as needed
+
+    return () => clearInterval(interval);
+  }, [currentIndex, slideimagesdata.length]);
 
   const Shopping = () => {
     navigation.navigate("Home");
@@ -108,6 +98,9 @@ const SliderScreen = (props) => {
             onSnapToItem={(index) => {
               setCurrentIndex(index);
             }}
+            loop={true} // Enable loop for smooth sliding
+            autoplay={true} // Enable autoplay
+            autoplayInterval={2000} // Set autoplay interval (in milliseconds)
           />
           <View style={styles.paginationContainer}>
             {slideimagesdata.map((_, index) => (
@@ -120,125 +113,7 @@ const SliderScreen = (props) => {
           </View>
         </>
       ) : (
-        <>
-      <View style={{
-        width: '100%',
-        height: 50,
-        backgroundColor: '#FFF',
-        position: "absolute",
-        bottom: 0,
-        zIndex: 0
-
-      }}></View>
-      <Swiper
-        loop={false}
-        showsPagination={true}
-        renderPagination={(index, total) => (
-          <CustomPagination index={index} total={total} />
-        )}
-        // autoplay={true}
-      >
-        <ImageBackground
-          source={require("../../../assets/SliderImage/serious-young-man-standing-isolated-grey.png")}
-          style={styles.slide}
-        >
-          <View style={styles.contain1}>
-        
-            <Sliderwhitelog />
-            <Text style={[styles.slideText1, { color: "white" }]}>
-              SMAERT{"\n"}FORMALS
-            </Text>
-            <Text style={[styles.slideText2, { color: "white" }]}>
-              MIN. {"\n"}30% OFF*
-            </Text>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: "white" }]}
-              onPress={Shopping}
-            >
-              <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-
-        <ImageBackground
-          source={require("../../../assets/SliderImage/low-angle-little-boy-posing.png")}
-          style={styles.slide}
-        >
-          <View style={styles.contain2}>
-      
-            <Blacklogo />
-            <Text style={[styles.slideText1, { fontWeight: "bold" }]}>
-              Flat{"\n"}40-50% OFF*
-            </Text>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: "white" }]}
-              onPress={Shopping}
-            >
-              <Text style={[styles.buttonText, { color: "black" }]}>Shop</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-
-        <ImageBackground
-          source={require("../../../assets/SliderImage/kid-studio-portrait-isolated.png")}
-          style={styles.slide}
-        >
-          <View style={styles.contain3}>
-            <Blacklogo />
-
-
-            <Text
-              style={[
-                styles.slideText1,
-                {
-                  fontWeight: "500",
-                  marginTop: 20,
-                },
-              ]}
-            >
-              Flat{"\n"}20-40% OFF*
-            </Text>
-            <TouchableOpacity style={styles.button} onPress={Shopping}>
-              <Text
-                style={[
-                  styles.buttonText,
-                  { color: "white", fontWeight: "bold" },
-                ]}
-              >
-                Shop
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-
-        <ImageBackground
-          source={require("../../../assets/SliderImage/handsome-confident-hipster-modelsexy-unshaven-man-dressed-summer-stylish-green-hoodie-jeans-clothes-fashion-male-with-curly-hairstyle-posing-studio-isolated-blue.png")}
-          style={styles.slide}
-        >
-          <View style={styles.contain4}>
-            <Blacklogo />
-
-
-            <Text style={[styles.slideText1]}>BEST{"\n"}PICKS</Text>
-            <Text style={[styles.slideText2, { color: "black" }]}>
-              FLAT{"\n"}50% OFF*
-            </Text>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                {
-                  backgroundColor: "black",
-                  borderColor: "black",
-                },
-              ]}
-              onPress={Shopping}
-            >
-              <Text style={styles.buttonText}>Shop</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </Swiper>
-    </>
+        <Text></Text>
       )}
     </View>
   );

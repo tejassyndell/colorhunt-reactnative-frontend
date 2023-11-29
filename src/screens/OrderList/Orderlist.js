@@ -610,12 +610,12 @@ const Orderlist = (props) => {
                   borderRadius: 6,
                   borderColor: "#E4E7EA",
                   paddingHorizontal: "2.5%",
-                  paddingBottom: "4.5%",
+                  // paddingBottom: "4.5%",
                   width: "90%",
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: 270,
+                  top: height >= 844 ? 260 : 268,
                 }}
                 nestedScrollEnabled={true}
               >
@@ -677,7 +677,7 @@ const Orderlist = (props) => {
                 >
                   <View
                     style={{
-                      width: 360,
+                      width: "88%",
                       height: 390,
                       backgroundColor: "white",
                       borderRadius: 25,
@@ -705,7 +705,7 @@ const Orderlist = (props) => {
                   >
                     <View
                       style={{
-                        width: 360,
+                        width: "88%",
                         height: 390,
                         backgroundColor: "white",
                         borderRadius: 25,
