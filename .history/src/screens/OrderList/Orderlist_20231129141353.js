@@ -719,7 +719,7 @@ const Orderlist = (props) => {
                   >
                     <View
                       style={{
-                        width: "88%",
+                        width: 360,
                         height: 390,
                         backgroundColor: "white",
                         borderRadius: 25,

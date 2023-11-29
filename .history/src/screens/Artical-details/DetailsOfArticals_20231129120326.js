@@ -956,8 +956,8 @@ const DetailsOfArticals = (props) => {
                   >
                     <View
                       style={{
-                        width: "88%",
-                        height: 300,
+                        width: 360,
+                        height: 320,
                         backgroundColor: "white",
                         borderRadius: 15,
                         alignItems: "center",
@@ -991,7 +991,7 @@ const DetailsOfArticals = (props) => {
                           display: "flex",
                           flexDirection: "row",
                           position: "absolute",
-                          bottom: 20,
+                          bottom: 10,
                         }}
                       >
                         <TouchableOpacity
