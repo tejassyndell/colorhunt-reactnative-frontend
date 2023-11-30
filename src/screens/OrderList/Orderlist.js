@@ -47,7 +47,7 @@ const Orderlist = (props) => {
   const windowheight = parseInt(Dimensions.get("window").height);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-  const [isLoading2, setIsLoading2] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isfailed, setisFailed] = useState("");
 
@@ -424,6 +424,7 @@ const Orderlist = (props) => {
                       backgroundColor: "#EEE",
                       display: "flex",
                       flexDirection: "row",
+                      // marginBottom:20
                     }}
                     onPress={() => {
                       Transportation.length !== 0
@@ -484,7 +485,8 @@ const Orderlist = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  maxHeight: "30%",
+                  maxHeight: "39%",
+                  // backgroundColor:'red',
                   width: "100%",
                 }}
               >
@@ -608,12 +610,12 @@ const Orderlist = (props) => {
                   borderRadius: 6,
                   borderColor: "#E4E7EA",
                   paddingHorizontal: "2.5%",
-                  paddingBottom: "4.5%",
+                  // paddingBottom: "4.5%",
                   width: "90%",
                   position: "absolute",
                   borderTopLeftRadius: 0,
                   borderTopRightRadius: 0,
-                  top: "35%",
+                  top: height >= 844 ? 260 : 268,
                 }}
                 nestedScrollEnabled={true}
               >
@@ -662,12 +664,12 @@ const Orderlist = (props) => {
               visible={isModalVisible}
               transparent={true}
               animationType="slide"
-              onRequestClose={() => setIsModalVisible(false)}
             >
               {isLoading2 && (
                 <View
                   style={{
                     flex: 1,
+                    height: "100%",
                     justifyContent: "center",
                     alignItems: "center",
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -675,9 +677,9 @@ const Orderlist = (props) => {
                 >
                   <View
                     style={{
-                      width: 360,
+                      width: "88%",
                       height: 390,
-                      backgroundColor: "white",
+                      backgroundColor: "#FFF",
                       borderRadius: 25,
                       justifyContent: "center",
                       alignItems: "center",
@@ -685,14 +687,27 @@ const Orderlist = (props) => {
                       padding: 5,
                     }}
                   >
-                    <Loader />
+                     <View
+                        style={{
+                          width: "100%",
+                          backgroundColor: "#FFF",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          alignContent: "center",
+                        }}
+                      >
+                        <Image
+                          source={require("../../../assets/Loader/Newfile.gif")}
+                          style={{ width: "80%", height: "80%" }}
+                          resizeMode="contain"
+                        />
+                      </View>
+                    
                   </View>
                 </View>
               )}
               {isSuccess && (
-                <TouchableWithoutFeedback
-                  onPress={() => setIsModalVisible(false)}
-                >
+                <TouchableWithoutFeedback>
                   <View
                     style={{
                       flex: 1,
@@ -703,7 +718,7 @@ const Orderlist = (props) => {
                   >
                     <View
                       style={{
-                        width: 360,
+                        width: "88%",
                         height: 390,
                         backgroundColor: "white",
                         borderRadius: 25,

@@ -48,7 +48,7 @@ export default function Contact(props) {
   const multilineHeight = numberOfLines * lineHeight;
 
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -105,7 +105,7 @@ export default function Contact(props) {
       setShowValidationErrors(true);
       return;
     }
-    const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       // Use emailRegex to test the email
       setShowValidationErrors(true);
@@ -124,7 +124,7 @@ export default function Contact(props) {
   };
 
   const mail = async () => {
-    // console.log(username, email, subject, message);
+    console.log(username, email, subject, message);
     const data = {
       username,
       email,
@@ -135,10 +135,10 @@ export default function Contact(props) {
       const result = await SendMail(data);
       if (result.status === 200) {
         const data = result.data;
-        // console.log(data);
+        console.log(data);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   };
 
@@ -207,7 +207,8 @@ export default function Contact(props) {
   };
   const handleEmailChange = (text) => {
     setEmail(text);
-    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+    const isValidEmail =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(text);
     if (isValidEmail) {
       setShowValidationemail(false);
     } else {
@@ -235,18 +236,22 @@ export default function Contact(props) {
             style={{ flex: 1, backgroundColor: "white" }}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <View
+             {!isKeyboardVisible && 
+              <KeyboardAvoidingView
               style={{
+                flex: 1,
+                justifyContent: "center",
                 alignItems: "center",
-                borderTopColor: "#828282",
-                width: "60%",
-                height: "30%",
-                marginLeft: "20%",
-                marginRight: "20%",
+                // width: height >= 844 ? "40%" : "60%",
+                height: height >= 844 ? "30%" : "20%",
+              
               }}
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
               <Contactsvg />
-            </View>
+            </KeyboardAvoidingView>
+             }
+           
 
             <ScrollView
               contentContainerStyle={{ flexGrow: 0.7 }}

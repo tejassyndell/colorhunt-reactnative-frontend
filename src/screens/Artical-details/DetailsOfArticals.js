@@ -9,15 +9,14 @@ import {
   Modal,
   Dimensions,
   Platform,
-  RefreshControl,
-  KeyboardAvoidingView,
+  RefreshControl
 } from "react-native";
 import {
   ArticleDetails,
   addto_cart,
   findfromthecart,
   updateCartArticale,
-  cartcount,
+  cartcount
 } from "../../api/api";
 import Carousel from "react-native-snap-carousel";
 import { useEffect, useState } from "react";
@@ -50,7 +49,7 @@ const DetailsOfArticals = (props) => {
   const { id, Quantity = 0 } = route.params;
   // console.log(id);
   const styles = detailsOfArtStyles();
-  const handleSizeClick = (size) => {};
+  const handleSizeClick = (size) => { };
   // const { id } = useParams()//Use this with navigate
   useEffect(() => {
     ArticleDetailsData();
@@ -73,18 +72,20 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
-
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const dispach = useDispatch();
 
   const onRefresh = () => {
-    setRefreshing(true);
-    ArticleDetailsData();
+    setRefreshing(true)
+    ArticleDetailsData()
+
+
   };
-  const fonttype = async () => {
-    const status = await loadCustomFont();
-  };
+ const fonttype = async()=>{
+  const status = await loadCustomFont();
+ }
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -111,8 +112,8 @@ const DetailsOfArticals = (props) => {
         ? 110
         : 80
       : height >= 844
-      ? 110
-      : 65;
+        ? 110
+        : 65;
   const ArticleDetailsData = async () => {
     console.log("{}{{}{");
     let data = {
@@ -195,11 +196,13 @@ const DetailsOfArticals = (props) => {
     data = await JSON.parse(data);
     const response = await cartcount({ PartyId: data[0].Id }).then((res) => {
       console.log(res.data);
-      dispach(addToCart(res.data[0]));
-    });
-  };
+      dispach(addToCart(res.data[0]))
+    }
+    )
+  }
 
   const addtocart = async (ArticleId) => {
+    setIsAddingToCart(true);
     if (!combinedArray) {
       // console.log("undefined");
       return;
@@ -222,8 +225,9 @@ const DetailsOfArticals = (props) => {
       await findfromthecart(data).then(async (res) => {
         if (res.data.id == -1) {
           await addto_cart(data);
-          getcountofcart();
+          getcountofcart()
           navigation.navigate("cart_list", { totalPrice });
+          setIsAddingToCart(false);
         } else {
           setIsModalVisible(true);
 
@@ -277,26 +281,12 @@ const DetailsOfArticals = (props) => {
     }));
   };
   const onchangeaddqty = (val, colorIndex) => {
-    const numericValue = parseInt(val, 10);
-
-    if (isNaN(numericValue)) {
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [colorIndex]: 0,
-      }));
-    }
-
-    if (!combinedArray || !combinedArray[colorIndex]) {
-      return;
-    }
-
-    if (numericValue < 0) {
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [colorIndex]: 0,
-      }));
-    }
-    if (numericValue > quantities[colorIndex]) {
+    // if (val == "") {
+    //   setQuantities(() => ({
+    //     [colorIndex]:"0",
+    //   }));
+    // }
+    if (val > quantities[colorIndex]) {
       if (!combinedArray || !combinedArray[colorIndex]) {
         return;
       }
@@ -305,19 +295,20 @@ const DetailsOfArticals = (props) => {
       if (quantities[colorIndex] < nopacks) {
         setQuantities((prevQuantities) => ({
           ...prevQuantities,
-          [colorIndex]: numericValue,
+          [colorIndex]: val,
         }));
       }
-    } else if (numericValue < quantities[colorIndex]) {
+    } else if (val < quantities[colorIndex] && val >=0) {
       if (!combinedArray || !combinedArray[colorIndex]) {
         return;
       }
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
-        [colorIndex]: numericValue,
+        [colorIndex]: val,
       }));
     }
-  };
+
+  }
   const totalQuantity = Object.values(quantities).reduce(
     (total, quantity) => total + quantity,
     0
@@ -408,653 +399,616 @@ const DetailsOfArticals = (props) => {
           <Loader />
         </View>
       ) : (
-        <View style={{ backgroundColor: "#FFF", flex: 1 }}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
+        <View style={{ backgroundColor: "#FFF", flex: 1, paddingBottom: 100 }}>
+          <ScrollView nestedScrollEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 0.7 }}
+            keyboardShouldPersistTaps="handled"
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
-            <ScrollView
-              nestedScrollEnabled={true}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ flexGrow: 0.8 }}
-              keyboardShouldPersistTaps="always"
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-              style={{ marginBottom: 100 }}
-            >
-              <View style={{ zIndex: 1, flex: 1 }}>
+            <View style={{ zIndex: 1, flex: 1 }}>
+              <View
+                style={{
+                  width: "100%",
+                  height: viewportWidth >= 720 ? 500 : 400,
+                  flex: 1,
+                }}
+              >
+                {articlePhotos && articlePhotos.length > 0 ? (
+                  <Carousel
+                    data={articlePhotos}
+                    renderItem={renderImage}
+                    sliderWidth={viewportWidth}
+                    itemWidth={viewportWidth}
+                    loop={true}
+                    autoplay={true}
+                    autoplayInterval={3000}
+                  ></Carousel>
+                ) : (
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      position: "absolute",
+                    }}
+                  >
+                    <Text style={{ textAlign: "center", fontSize: 28,fontFamily:"GloryMedium" }}>
+                      No Image
+                    </Text>
+                  </View>
+                )}
                 <View
                   style={{
-                    width: "100%",
-                    height: viewportWidth >= 720 ? 500 : 400,
-                    flex: 1,
+                    zIndex: 2,
+                    position: "absolute",
+                    top: viewportWidth >= 720 ? "88%" : "86%",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                   }}
                 >
-                  {articlePhotos && articlePhotos.length > 0 ? (
-                    <Carousel
-                      data={articlePhotos}
-                      renderItem={renderImage}
-                      sliderWidth={viewportWidth}
-                      itemWidth={viewportWidth}
-                      loop={true}
-                      autoplay={true}
-                      autoplayInterval={3000}
-                    ></Carousel>
-                  ) : (
+                  <Image
+                    style={{ width: "100%" }}
+                    source={require("../../../assets/Rectangle_18898.png")}
+                  />
+                  <View
+                    style={{
+                      zIndex: 3,
+                      position: "absolute",
+                      top: width >= 720 ? "10%" : "30%",
+                      left: 0,
+                      right: 0,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: width >= 720 ? 40 : 26,
+                        fontFamily: "GloryBold",
+                        textAlign: "center",
+                        color: "black",
+                      }}
+                    >
+                      Article No: {articleNumber}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ zIndex: 2 }}>
+              <View
+                style={{
+                  backgroundColor: "#FFF",
+                  elevation: 12,
+                  borderColor: "#b3a8a8",
+                  width: "100%",
+                  height: "100%",
+                  borderTopLeftRadius: 30,
+                  borderTopRightRadius: 30,
+                  padding: 15,
+                  paddingTop: 20,
+                  shadowColor: "grey",
+                  shadowOpacity: 0.4,
+                }}
+              >
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                      alignItems: "stretch",
+                      // padding: 20,
+                    }}
+                  >
                     <View
                       style={{
                         width: "100%",
-                        height: "100%",
-                        justifyContent: "center",
-                        position: "absolute",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          fontSize: 28,
-                          fontFamily: "GloryMedium",
-                        }}
-                      >
-                        No Image
-                      </Text>
-                    </View>
-                  )}
-                  <View
-                    style={{
-                      zIndex: 2,
-                      position: "absolute",
-                      top: viewportWidth >= 720 ? "88%" : "86%",
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                    }}
-                  >
-                    <Image
-                      style={{ width: "100%" }}
-                      source={require("../../../assets/Rectangle_18898.png")}
-                    />
-                    <View
-                      style={{
-                        zIndex: 3,
-                        position: "absolute",
-                        top: width >= 720 ? "10%" : "30%",
-                        left: 0,
-                        right: 0,
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: width >= 720 ? 40 : 26,
-                          fontFamily: "GloryBold",
-                          textAlign: "center",
-                          color: "black",
-                        }}
-                      >
-                        Article No: {articleNumber}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-
-              <View style={{ zIndex: 2 }}>
-                <View
-                  style={{
-                    backgroundColor: "#FFF",
-                    elevation: 12,
-                    borderColor: "#b3a8a8",
-                    width: "100%",
-                    height: "100%",
-                    borderTopLeftRadius: 30,
-                    borderTopRightRadius: 30,
-                    padding: 15,
-                    paddingTop: 20,
-                    shadowColor: "grey",
-                    shadowOpacity: 0.4,
-                  }}
-                >
-                  <View>
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        justifyContent: "flex-start",
-                        alignItems: "stretch",
-                        // padding: 20,
+                        flexDirection:
+                          articleSizeData && articleSizeData.length > 3
+                            ? "column"
+                            : "row",
+                        alignItems:
+                          articleSizeData && articleSizeData.length > 3
+                            ? "flex-Start"
+                            : "flex-start",
+                        marginBottom: 10,
                       }}
                     >
                       <View
                         style={{
-                          width: "100%",
-                          flexDirection:
+                          marginRight:
                             articleSizeData && articleSizeData.length > 3
-                              ? "column"
-                              : "row",
-                          alignItems:
+                              ? 0
+                              : 30,
+                          width:
                             articleSizeData && articleSizeData.length > 3
-                              ? "flex-Start"
-                              : "flex-start",
-                          marginBottom: 10,
+                              ? "100%"
+                              : "45%",
+                          marginBottom:
+                            articleSizeData && articleSizeData.length > 3
+                              ? 10
+                              : 0,
                         }}
                       >
+                        <Text
+                          style={{
+                            marginBottom: 5,
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
+                          }}
+                        >
+                          Size
+                        </Text>
                         <View
                           style={{
-                            marginRight:
+                            paddingHorizontal:
                               articleSizeData && articleSizeData.length > 3
-                                ? 0
-                                : 30,
-                            width:
-                              articleSizeData && articleSizeData.length > 3
-                                ? "100%"
-                                : "45%",
-                            marginBottom:
-                              articleSizeData && articleSizeData.length > 3
-                                ? 10
+                                ? "6%"
                                 : 0,
+                            width: "100%",
+                            height: width >= 720 ? 100 : 60,
+                            flexDirection: "row",
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            borderRadius: 10,
+                            padding: 10,
+                            alignItems: "center",
+
+                            justifyContent:
+                              articleSizeData && articleSizeData.length > 3
+                                ? "center"
+                                : "center",
+                            ...Platform.select({
+                              ios: {
+                                shadowColor: "black",
+                                shadowOffset: { width: 0, height: 0 },
+                                shadowRadius: 2,
+                                backgroundColor: "#f4f4f4",
+                              },
+                              android: {
+                                elevation: 0,
+                                backgroundColor: "#f4f4f4",
+                                paddingEnd:9
+                              },
+                            }),
+                          }}
+                        >
+                          {articleSizeData &&
+                            articleSizeData.map((item, index) => (
+                              <View
+                                style={[
+                                  styles.size_options,
+                                  {
+                                    paddingHorizontal:
+                                      articleSizeData &&
+                                        articleSizeData.length > 3
+                                        ? "1%"
+                                        : 0,
+                                  },
+                                ]}
+                                key={index}
+                              >
+                                <TouchableOpacity
+                                  onPress={() => handleSizeClick(item.Name)}
+                                >
+                                  <View style={styles.size}>
+                                    <Text href="/" style={styles.size_a}>
+                                      {item.Name}
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
+                              </View>
+                            ))}
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          // width: "40%",
+                          width:
+                            articleSizeData && articleSizeData.length > 3
+                              ? "100%"
+                              : "45%",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            marginBottom: 5,
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
+                          }}
+                        >
+                          Subcategory
+                        </Text>
+                        <View
+                          style={{
+                            width: "100%",
+                            height: width >= 720 ? 100 : 60,
+                            flexDirection: "row",
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            borderRadius: 10,
+                            padding: 10,
+                            alignContent: "center",
+                            justifyContent:
+                              articleSizeData && articleSizeData.length > 3
+                                ? "center"
+                                : "center",
+
+                            alignItems: "center",
+                            ...Platform.select({
+                              ios: {
+                                shadowColor: "black",
+                                shadowOffset: { width: 0, height: 0 },
+                                shadowRadius: 2,
+                                backgroundColor: "#f4f4f4",
+                              },
+                              android: {
+                                elevation: 0,
+                                backgroundColor: "#f4f4f4",
+                              },
+                            }),
                           }}
                         >
                           <Text
                             style={{
-                              marginBottom: 5,
-                              fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded
-                                ? "GloryBold"
-                                : "Arial, sans-serif",
-                            }}
-                          >
-                            Size
-                          </Text>
-                          <View
-                            style={{
+                              fontSize:
+                                articleSizeData && articleSizeData.length > 3
+                                  ? 30
+                                  : 16,
+                              fontFamily:"GloryMedium" ,
                               paddingHorizontal:
                                 articleSizeData && articleSizeData.length > 3
-                                  ? "6%"
+                                  ? "10%"
                                   : 0,
-                              width: "100%",
-                              height: width >= 720 ? 100 : 60,
-                              flexDirection: "row",
-                              borderWidth: 1,
-                              borderColor: "#0000001d",
-                              borderRadius: 10,
-                              padding: 10,
-                              alignItems: "center",
-
-                              justifyContent:
-                                articleSizeData && articleSizeData.length > 3
-                                  ? "center"
-                                  : "center",
-                              ...Platform.select({
-                                ios: {
-                                  shadowColor: "black",
-                                  shadowOffset: { width: 0, height: 0 },
-                                  shadowRadius: 2,
-                                  backgroundColor: "#f4f4f4",
-                                },
-                                android: {
-                                  elevation: 0,
-                                  backgroundColor: "#f4f4f4",
-                                },
-                              }),
+                              textAlign: "center",
+                              color: "#000000",
                             }}
                           >
-                            {articleSizeData &&
-                              articleSizeData.map((item, index) => (
-                                <View
-                                  style={[
-                                    styles.size_options,
-                                    {
-                                      paddingHorizontal:
-                                        articleSizeData &&
-                                        articleSizeData.length > 3
-                                          ? "1%"
-                                          : 0,
-                                    },
-                                  ]}
-                                  key={index}
-                                >
-                                  <TouchableOpacity
-                                    onPress={() => handleSizeClick(item.Name)}
-                                  >
-                                    <View style={styles.size}>
-                                      <Text href="/" style={styles.size_a}>
-                                        {item.Name}
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
-                                </View>
-                              ))}
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            // width: "40%",
-                            width:
-                              articleSizeData && articleSizeData.length > 3
-                                ? "100%"
-                                : "45%",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              marginBottom: 5,
-                              fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded
-                                ? "GloryBold"
-                                : "Arial, sans-serif",
-                            }}
-                          >
-                            Subcategory
-                          </Text>
-                          <View
-                            style={{
-                              width: "100%",
-                              height: width >= 720 ? 100 : 60,
-                              flexDirection: "row",
-                              borderWidth: 1,
-                              borderColor: "#0000001d",
-                              borderRadius: 10,
-                              padding: 10,
-                              alignContent: "center",
-                              justifyContent:
-                                articleSizeData && articleSizeData.length > 3
-                                  ? "center"
-                                  : "center",
-
-                              alignItems: "center",
-                              ...Platform.select({
-                                ios: {
-                                  shadowColor: "black",
-                                  shadowOffset: { width: 0, height: 0 },
-                                  shadowRadius: 2,
-                                  backgroundColor: "#f4f4f4",
-                                },
-                                android: {
-                                  elevation: 0,
-                                  backgroundColor: "#f4f4f4",
-                                },
-                              }),
-                            }}
-                          >
-                            <Text
-                              style={{
-                                fontSize:
-                                  articleSizeData && articleSizeData.length > 3
-                                    ? 30
-                                    : 16,
-                                fontFamily: "GloryMedium",
-                                paddingHorizontal:
-                                  articleSizeData && articleSizeData.length > 3
-                                    ? "10%"
-                                    : 0,
-                                textAlign: "center",
-                                color: "#000000",
-                              }}
-                            >
-                              {subcategory}
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                    </View>
-
-                    <View
-                      style={{
-                        flex: 1,
-                        marginVertical: 15,
-                        marginTop: 18,
-                        marginRight: 7,
-                      }}
-                    >
-                      <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
-                        <View style={{ flex: 1.18 }}>
-                          <Text
-                            style={{
-                              fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded
-                                ? "GloryBold"
-                                : "Arial, sans-serif",
-                            }}
-                          >
-                            Color
-                          </Text>
-                        </View>
-                        <View style={{ flex: 1.21 }}>
-                          <Text
-                            style={{
-                              fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded
-                                ? "GloryBold"
-                                : "Arial, sans-serif",
-                            }}
-                          >
-                            Available in Stock
-                          </Text>
-                        </View>
-                        <View style={{ flex: 1, paddingLeft: 2 }}>
-                          <Text
-                            style={{
-                              fontSize: width >= 720 ? 20 : 16,
-                              fontFamily: isFontLoaded
-                                ? "GloryBold"
-                                : "Arial, sans-serif",
-                            }}
-                          >
-                            Add Qty.
-                          </Text>
-                        </View>
-                      </View>
-                      {combinedArray.map((item, index) => (
-                        <View
-                          key={index}
-                          style={{ flex: 1, flexDirection: "row", gap: 12 }}
-                        >
-                          <View
-                            style={{
-                              flex: 1,
-                              borderRadius: 10,
-                              borderWidth: 1,
-                              borderColor: "#0000001d",
-                              marginTop: 8,
-
-                              justifyContent: "center",
-                              alignContent: "center",
-                              alignItems: "center",
-                              backgroundColor: "#FFF",
-                              paddingVertical: 8,
-                              height: width >= 720 ? 70 : 42,
-                              paddingHorizontal: 8,
-                              elevation: 2,
-                              shadowColor: "gray",
-                              shadowOpacity: 0,
-                            }}
-                          >
-                            <Text
-                              style={{
-                                textAlign: "center",
-                                fontSize: width >= 720 ? 30 : 18,
-                                fontFamily: isFontLoaded ? "Glory" : undefined,
-                                fontWeight: "500",
-                                color: "#626262",
-                              }}
-                            >
-                              {item.Name}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 1.1,
-                              borderRadius: 10,
-                              borderWidth: 1,
-                              borderColor: "#0000001d",
-                              marginTop: 8,
-                              justifyContent: "center",
-                              alignContent: "center",
-                              alignItems: "center",
-                              backgroundColor: "#FFF",
-                              paddingVertical: 8,
-                              height: width >= 720 ? 70 : 42,
-                              paddingHorizontal: 8,
-                              elevation: 2,
-                              shadowColor: "gray",
-                              shadowOpacity: 0,
-                            }}
-                          >
-                            <Text
-                              style={{
-                                textAlign: "center",
-                                fontSize: width >= 720 ? 30 : 18,
-                                fontFamily: isFontLoaded
-                                  ? "GloryMedium"
-                                  : undefined,
-                                color: "#626262",
-                              }}
-                            >
-                              {item.available}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 1,
-                              flexDirection: "row",
-                              borderRadius: 10,
-                              borderWidth: 0.8,
-                              borderColor: "#0000001d",
-                              marginTop: 8,
-                              justifyContent: "center",
-                              alignContent: "center",
-                              borderRightColor: "#FFF",
-                              borderLeftWidth: 0,
-                              borderRightWidth: 0,
-                              alignItems: "center",
-                              backgroundColor: "#FFF",
-                              height: width >= 720 ? 70 : 42,
-                              elevation: 2,
-                              shadowColor: "gray",
-                              shadowOpacity: 0,
-                            }}
-                          >
-                            <Pressable
-                              onPress={() => handleDecrease(item.index)}
-                              disabled={quantities[item.index] <= 0}
-                              style={{
-                                flex: 1.2,
-                                borderWidth: 1,
-                                width: "95%",
-                                height: "100%",
-                                borderColor: "#0000001d",
-                                borderRadius: 10,
-                                justifyContent: "center",
-                                alignContent: "center",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  fontSize: width >= 720 ? 45 : 24,
-                                  fontFamily: isFontLoaded
-                                    ? "GloryMedium"
-                                    : undefined,
-                                }}
-                              >
-                                -
-                              </Text>
-                            </Pressable>
-                            {/* <View style={{ flex: 1 }}> */}
-                            <TextInput
-                              value={quantities[item.index].toString()}
-                              style={{
-                                fontSize: width >= 720 ? 30 : 18,
-                                fontFamily: isFontLoaded
-                                  ? "GloryMedium"
-                                  : undefined,
-                                textAlign: "center",
-                                color: "#000",
-                              }}
-                              onChangeText={(text) => {
-                                text <= item.available
-                                  ? onchangeaddqty(text, item.index)
-                                  : onchangeaddqty(item.available, item.index);
-                              }}
-                            ></TextInput>
-                            {/* </View> */}
-                            <Pressable
-                              onPress={() => handleIncrease(item.index)}
-                              disabled={
-                                quantities[item.index] >= item.available
-                              }
-                              style={{
-                                flex: 1.2,
-                                justifyContent: "center",
-                                alignContent: "center",
-                                alignItems: "center",
-                                borderWidth: 1,
-                                width: "100%",
-                                height: "100%",
-                                borderColor: "#0000001d",
-                                borderRadius: 10,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  fontSize: width >= 720 ? 40 : 21,
-                                  fontFamily: isFontLoaded
-                                    ? "Glory"
-                                    : undefined,
-                                  textAlign: "center",
-                                  paddingBottom: 0,
-                                }}
-                              >
-                                +
-                              </Text>
-                            </Pressable>
-                          </View>
-                        </View>
-                      ))}
-                    </View>
-                    <View style={styles.article_ratio_Section}>
-                      <View style={styles.article_ratio_container}>
-                        <Text style={styles.articallabel}>Article Ratio</Text>
-                        <View style={styles.article_content_r}>
-                          <Text style={[styles.article_ratio_content]}>
-                            {articleRatio}
-                          </Text>
-                        </View>
-                      </View>
-
-                      <View style={styles.article_rate_container}>
-                        <Text style={styles.articallabel1}>Article Rate</Text>
-                        <View style={styles.article_content_r}>
-                          <Text style={[styles.article_rate_content]}>
-                            {articleRate / 10}
+                            {subcategory}
                           </Text>
                         </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              </View>
-              <Modal
-                visible={isModalVisible}
-                transparent={true}
-                animationType="slide"
-                onRequestClose={() => setIsModalVisible(false)}
-              >
-                <TouchableWithoutFeedback
-                  onPress={() => setIsModalVisible(false)}
-                >
+
                   <View
                     style={{
                       flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                      marginVertical: 15,
+                      marginTop: 18,
+                      marginRight: 7,
                     }}
                   >
-                    <View
-                      style={{
-                        width: 360,
-                        height: 320,
-                        backgroundColor: "white",
-                        borderRadius: 15,
-                        alignItems: "center",
-                        // padding: 5
-                      }}
-                    >
-                      <Image
-                        source={require("../../../assets/update_cart.png")}
-                        style={{
-                          width: 70,
-                          height: 70,
-                          marginBottom: 20,
-                          marginTop: 30,
-                        }}
-                      />
+                    <View style={{ flex: 1, flexDirection: "row", gap: 12 }}>
+                      <View style={{ flex: 1.18 }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
+                          }}
+                        >
+                          Color
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1.21 }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
+                          }}
+                        >
+                          Available in Stock
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1, paddingLeft: 2 }}>
+                        <Text
+                          style={{
+                            fontSize: width >= 720 ? 20 : 16,
+                            fontFamily: isFontLoaded ? "GloryBold" :  "Arial, sans-serif",
+                          }}
+                        >
+                          Add Qty.
+                        </Text>
+                      </View>
+                    </View>
+                    {combinedArray.map((item, index) => (
+                      <View key={index} style={{ flex: 1, flexDirection: "row", gap: 12 }}>
+                        <View
+                          style={{
+                            flex: 1,
+                            borderRadius: 10,
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            marginTop: 8,
 
-                      <Text
-                        style={{
-                          fontSize: 24,
-                          fontFamily: isFontLoaded ? "GloryMedium" : undefined,
-                          textAlign: "center",
-                          marginBottom: 10,
-                          color: "rgba(0, 0, 0, 0.70)",
-                        }}
-                      >
-                        Are you sure that want {"\n"}to update in cart
-                      </Text>
-                      <View
-                        style={{
-                          width: "90%",
-                          display: "flex",
-                          flexDirection: "row",
-                          position: "absolute",
-                          bottom: 20,
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() => {
-                            setIsModalVisible(false);
-                          }}
-                          style={{
-                            width: "47.5%",
-                            borderWidth: 1,
-                            height: 50,
                             justifyContent: "center",
+                            alignContent: "center",
                             alignItems: "center",
-                            borderRadius: 10,
-                            borderColor: "grey",
+                            backgroundColor: "#FFF",
+                            paddingVertical: 8,
+                            height: width >= 720 ? 70 : 42,
+                            paddingHorizontal: 8,
+                            elevation: 2,
+                            shadowColor: "gray",
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
                             style={{
-                              fontSize: 18,
+                              textAlign: "center",
+                              fontSize: width >= 720 ? 30 : 18,
                               fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "700",
-                              color: "grey",
-                              paddingHorizontal: 15,
+                              fontWeight: "500",
+                              color: "#626262",
                             }}
                           >
-                            No
+                            {item.Name}
                           </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => {
-                            setIsModalVisible(false);
-                            updateArticalInCart();
-                          }}
+                        </View>
+                        <View
                           style={{
-                            backgroundColor: "black",
-                            width: "47.5%",
-                            height: 50,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderWidth: 1,
+                            flex: 1.1,
                             borderRadius: 10,
-                            marginLeft: "5%",
-                            borderColor: "white",
+                            borderWidth: 1,
+                            borderColor: "#0000001d",
+                            marginTop: 8,
+                            justifyContent: "center",
+                            alignContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#FFF",
+                            paddingVertical: 8,
+                            height: width >= 720 ? 70 : 42,
+                            paddingHorizontal: 8,
+                            elevation: 2,
+                            shadowColor: "gray",
+                            shadowOpacity: 0,
                           }}
                         >
                           <Text
                             style={{
-                              fontSize: 18,
-                              fontFamily: isFontLoaded ? "Glory" : undefined,
-                              fontWeight: "700",
-                              color: "white",
-                              paddingHorizontal: 15,
+                              textAlign: "center",
+                              fontSize: width >= 720 ? 30 : 18,
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                              color: "#626262",
                             }}
                           >
-                            Yes
+                            {item.available}
                           </Text>
-                        </TouchableOpacity>
+                        </View>
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            borderRadius: 10,
+                            borderWidth: 0.8,
+                            borderColor: "#0000001d",
+                            marginTop: 8,
+                            justifyContent: "center",
+                            alignContent: "center",
+                            borderRightColor: "#FFF",
+                            borderLeftWidth: 0,
+                            borderRightWidth: 0,
+                            alignItems: "center",
+                            backgroundColor: "#FFF",
+                            height: width >= 720 ? 70 : 42,
+                            elevation: 2,
+                            shadowColor: "gray",
+                            shadowOpacity: 0,
+                          }}
+                        >
+                          <Pressable
+                            onPress={() => handleDecrease(item.index)}
+                            disabled={quantities[item.index] <= 0}
+                            style={{
+                              flex: 1.2,
+                              borderWidth: 1,
+                              width: "95%",
+                              height: "100%",
+                              borderColor: "#0000001d",
+                              borderRadius: 10,
+                              justifyContent: "center",
+                              alignContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: width >= 720 ? 45 : 24,
+                                fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                              }}
+                            >
+                              -
+                            </Text>
+                          </Pressable>
+                          {/* <View style={{ flex: 1 }}> */}
+                          <TextInput
+                            value={quantities[item.index].toString()}
+                            style={{
+                              fontSize: width >= 720 ? 30 : 18,
+                              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                              textAlign: "center",
+                              color: "#000",
+                            }}
+                            onChangeText={(text) =>{text<=item.available? onchangeaddqty(text, item.index): onchangeaddqty(item.available, item.index)}}
+                          >
+
+                          </TextInput>
+                          {/* </View> */}
+                          <Pressable
+                            onPress={() => handleIncrease(item.index)}
+                            disabled={quantities[item.index] >= item.available}
+                            style={{
+                              flex: 1.2,
+                              justifyContent: "center",
+                              alignContent: "center",
+                              alignItems: "center",
+                              borderWidth: 1,
+                              width: "100%",
+                              height: "100%",
+                              borderColor: "#0000001d",
+                              borderRadius: 10,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontSize: width >= 720 ? 40 : 21,
+                                fontFamily: isFontLoaded ? "Glory" : undefined,
+                                textAlign: "center",
+                                paddingBottom: 0,
+                              }}
+                            >
+                              +
+                            </Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                  <View style={styles.article_ratio_Section}>
+                    <View style={styles.article_ratio_container}>
+                      <Text style={styles.articallabel}>Article Ratio</Text>
+                      <View style={styles.article_content_r}>
+                        <Text style={[styles.article_ratio_content]}>
+                          {articleRatio}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.article_rate_container}>
+                      <Text style={styles.articallabel1}>Article Rate</Text>
+                      <View style={styles.article_content_r}>
+                        <Text style={[styles.article_rate_content]}>
+                          {articleRate / 10}
+                        </Text>
                       </View>
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
-              </Modal>
-            </ScrollView>
-          </KeyboardAvoidingView>
+                </View>
+              </View>
+            </View>
+            <Modal
+              visible={isModalVisible}
+              transparent={true}
+              animationType="slide"
+              onRequestClose={() => setIsModalVisible(false)}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => setIsModalVisible(false)}
+              >
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  <View
+                    style={{
+                      width:'88%',
+                      height: 300,
+                      backgroundColor: "white",
+                      borderRadius: 15,
+                      alignItems: "center",
+                      // padding: 5
+                    }}
+                  >
+                    <Image
+                      source={require("../../../assets/update_cart.png")}
+                      style={{
+                        width: 70,
+                        height: 70,
+                        marginBottom: 20,
+                        marginTop: 30,
+                      }}
+                    />
+
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                        textAlign: "center",
+                        marginBottom: 5,
+                        color: "rgba(0, 0, 0, 0.70)",
+                      }}
+                    >
+                      Are you sure that want {"\n"}to update in cart
+                    </Text>
+                    <View
+                      style={{
+                        width: "90%",
+                        display: "flex",
+                        flexDirection: "row",
+                        position: "absolute",
+                        bottom: 20,
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => {
+                          setIsModalVisible(false);
+                        }}
+                        style={{
+                          width: "47.5%",
+                          borderWidth: 1,
+                          height: 50,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: 10,
+                          borderColor: "grey",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "700",
+                            color: "grey",
+                            paddingHorizontal: 15,
+                          }}
+                        >
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setIsModalVisible(false);
+                          updateArticalInCart();
+                        }}
+                        style={{
+                          backgroundColor: "black",
+                          width: "47.5%",
+                          height: 50,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderWidth: 1,
+                          borderRadius: 10,
+                          marginLeft: "5%",
+                          borderColor: "white",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontFamily: isFontLoaded ? "Glory" : undefined,
+                            fontWeight: "700",
+                            color: "white",
+                            paddingHorizontal: 15,
+                          }}
+                        >
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </Modal>
+          </ScrollView>
         </View>
       )}
       <Modal visible={isImageZoomVisible} transparent={true}>
@@ -1127,7 +1081,7 @@ const DetailsOfArticals = (props) => {
                 },
               ]}
               onPress={() => addtocart(id)}
-              disabled={totalQuantity === 0}
+              disabled={totalQuantity === 0 || isAddingToCart === true}
             >
               <View
                 style={{
@@ -1181,7 +1135,7 @@ const DetailsOfArticals = (props) => {
                   style={{
                     color: "white",
                     textAlign: "center",
-                    fontFamily: "GloryBold",
+                    fontFamily:"GloryBold",
                     fontSize: width >= 720 ? 30 : 18,
                     marginLeft: width >= 720 ? 20 : 10,
                   }}

@@ -63,7 +63,7 @@ const SliderStyles = () => {
       height: "auto",
       flexDirection: "row",
       width: width >= 720 ? 400 : "60%",
-      marginBottom:width >= 720 ? "6%": "10%",
+      marginBottom:15,
       justifyContent: "space-between",
     },
     otpInput: {
@@ -77,7 +77,7 @@ const SliderStyles = () => {
       fontSize: width >= 720 ? 40 : 23,
       borderRadius: 7,
       textAlign: "center",
-      marginTop:20,
+      
     },
     button: {
       backgroundColor: "#212121",
@@ -90,6 +90,8 @@ const SliderStyles = () => {
       bottom: 20,
       right: 20,
     },
+
+   
     buttonText: {
       fontFamily: "GloryBold",
       color: "white",

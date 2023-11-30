@@ -242,9 +242,16 @@ export default function Notification(props) {
         >
           <Loader />
         </View>
+      ) : notificationalldata.length === 0 ? (
+        <View
+        style={styles.container}
+        >
+          <Text style={{ fontSize: 18,marginLeft:10}}>No Notifications </Text>
+        </View>
       ) : (
         <View style={styles.container}>
           {/* {/ Render notification data /} */}
+          {console.log(notificationalldata.length === 0, "nsajdnaksndsakndk")}
 
           {/* <StatusBar style="auto" /> */}
           <ScrollView
@@ -302,7 +309,15 @@ export default function Notification(props) {
                         marginStart: 8,
                       }}
                     >
-                      <Text style={item.status === 1 ? styles.detailsconWithStatusZero : styles.detailscon}>{item.body}</Text>
+                      <Text
+                        style={
+                          item.status === 1
+                            ? styles.detailsconWithStatusZero
+                            : styles.detailscon
+                        }
+                      >
+                        {item.body}
+                      </Text>
                     </View>
 
                     <View
@@ -313,7 +328,13 @@ export default function Notification(props) {
                         paddingEnd: width >= 720 ? 0 : 20,
                       }}
                     >
-                      <Text style={item.status === 1 ? styles.detailsconWithStatus : styles.timedetails}>
+                      <Text
+                        style={
+                          item.status === 1
+                            ? styles.detailsconWithStatus
+                            : styles.timedetails
+                        }
+                      >
                         {formatTimeDifference(item.CreatedDate)}
                       </Text>
                     </View>
@@ -327,6 +348,7 @@ export default function Notification(props) {
           </View>
         </View>
       )}
+    
     </>
   );
 }
@@ -396,7 +418,7 @@ const styles = StyleSheet.create({
   detailsconWithStatusZero: {
     fontSize: 14,
     fontWeight: "600",
-    color:'gray'
+    color: "gray",
   },
   timedetails: {
     fontSize: 14,
@@ -404,10 +426,10 @@ const styles = StyleSheet.create({
 
     paddingRight: 15,
   },
-  detailsconWithStatus :{
+  detailsconWithStatus: {
     fontSize: 14,
     fontWeight: "600", // Corrected to string
-    color:'gray',
+    color: "gray",
     paddingRight: 15,
   },
   contentsection: {

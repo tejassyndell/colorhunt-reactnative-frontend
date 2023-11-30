@@ -34,10 +34,10 @@ export const getCategories = async () => {
 
 //////////////////////getAllNotification
 export const AllNotifications = async (data) => {
-  console.log(")()()()()");
+  console.log(')()()()()');
 
   try {
-    return await axios.post(`${url}/getallnotification`, data);
+    return await axios.post(`${url}/getallnotification`,data);
   } catch (error) {
     console.log(error, "err in react api");
   }
@@ -263,6 +263,7 @@ export const getCompletedSoDetails = async (data) => {
   }
 };
 
+
 export const partyidsend = async (data) => {
   console.log(data);
   try {
@@ -272,14 +273,16 @@ export const partyidsend = async (data) => {
   }
 };
 
+
 export const updateNotification = async (data) => {
-  console.log(data, "oijwqeoijwoie");
+  console.log(data,'oijwqeoijwoie');
   try {
     return await axios.post(`${url}/updatenotification`, data);
   } catch (err) {
     console.log(err, "err in react API");
   }
 };
+
 
 export const cartcount = async (data) => {
   try {
@@ -299,10 +302,11 @@ export const notificationcount = async (data) => {
 export const Sliderimages = async()=>{
   try{
     return await axios.get(`${url}/sliderimages`);
-  } catch (err) {
+  }catch(err){
     console.log(err);
   }
-};
+}
+
 export const FilterSoNumber = async (data) => {
   try {
     return await axios.post(`${url}/filtersonumber`, data);
@@ -314,13 +318,6 @@ export const FilterSoNumber = async (data) => {
 export const FilteroutwardNumber = async (data) => {
   try {
     return await axios.post(`${url}/filteroutwardnumber`, data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-export const notificationcount = async (data) => {
-  try {
-    return await axios.post(`${url}/notificationcount`, data);
   } catch (err) {
     console.log(err);
   }

@@ -543,7 +543,7 @@ const AddToCart = (props) => {
         >
           <View
             style={{
-              height: "80%",
+              height: "100%",
               justifyContent: "center",
             }}
           >

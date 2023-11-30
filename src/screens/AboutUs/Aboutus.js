@@ -67,7 +67,7 @@ export default function Aboutus(props) {
               width: "100%",
             }}
           >
-            AboutUs
+            About Us
           </Text>
         </View>
       ),
