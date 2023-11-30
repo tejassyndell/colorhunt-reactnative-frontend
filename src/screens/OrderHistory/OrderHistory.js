@@ -7,7 +7,7 @@ import {
   Alert,
   Button
 } from "react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { Pressable } from "react-native";
@@ -923,7 +923,7 @@ const OrderHistory = (props) => {
                       </View>
                     </TouchableOpacity>
                   </View>
-                  {showFromDate && (
+                  {/* {showFromDate && (
                     <DateTimePicker
                       value={orderstatus ? fromDate : outwardfromdate}
                       maximumDate={new Date()}
@@ -938,7 +938,7 @@ const OrderHistory = (props) => {
                         }
                       }}
                     />
-                  )}
+                  )} */}
 
                 </View>
               </View>

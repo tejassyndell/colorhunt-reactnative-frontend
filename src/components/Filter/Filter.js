@@ -395,7 +395,7 @@ export default function Filter({
                         ]}
                         {...panResponderRight.panHandlers}
                       >
-                        <Text style={styleslider.thumbText}>
+                        <Text style={styleslider.thumbText1}>
                           {rightValue}
                         </Text>
                       </View>
@@ -645,6 +645,18 @@ const styleslider = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     top: 15,
+    right:0.5,
+    color: "black",
+    fontSize: width >= 720 ? 22 : 15,
+    fontFamily: "GlorySemiBold",
+  },
+  thumbText1: {
+    // marginTop:30,
+    width: width >= 720 ? 50 : 30,
+    textAlign: "center",
+    position: "absolute",
+    top: 15,
+    left:0.5,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
     fontFamily: "GlorySemiBold",

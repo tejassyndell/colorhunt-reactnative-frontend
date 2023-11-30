@@ -236,22 +236,20 @@ export default function Contact(props) {
             style={{ flex: 1, backgroundColor: "white" }}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-             {!isKeyboardVisible && 
+            {!isKeyboardVisible && (
               <KeyboardAvoidingView
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                // width: height >= 844 ? "40%" : "60%",
-                height: height >= 844 ? "30%" : "20%",
-              
-              }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <Contactsvg />
-            </KeyboardAvoidingView>
-             }
-           
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  // width: height >= 844 ? "40%" : "60%",
+                  height: height >= 844 ? "30%" : "20%",
+                }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              >
+                <Contactsvg />
+              </KeyboardAvoidingView>
+            )}
 
             <ScrollView
               contentContainerStyle={{ flexGrow: 0.7 }}
@@ -415,7 +413,7 @@ export default function Contact(props) {
                     editable
                     multiline
                     numberOfLines={numberOfLines}
-                    maxLength={100}
+                    maxLength={1000}
                     value={message}
                     onChangeText={setMessage}
                     style={{
@@ -446,7 +444,7 @@ export default function Contact(props) {
                   style={{
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: height >= 720 ? 90 : 45,
+                    marginTop: height >= 720 ? 90 : 80,
                   }}
                 >
                   <TouchableOpacity

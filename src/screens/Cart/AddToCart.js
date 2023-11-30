@@ -536,58 +536,62 @@ const AddToCart = (props) => {
         </View>
       ) : orderItems.length === 0 ? (
         <View
+        style={{
+          flex: 1,
+          backgroundColor: "#FFF",
+        }}
+      >
+        <View
           style={{
-            flex: 1,
-            backgroundColor: "#FFF",
+            height: "100%",
+            justifyContent: "center",
           }}
         >
-          <View
+          <Text
             style={{
-              height: "100%",
-              justifyContent: "center",
+              fontSize: windowwidthe * 0.1,
+              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+              textAlign: "center",
+              color: "#808080",
             }}
           >
-            <Text
-              style={{
-                fontSize: windowwidthe * 0.1,
-                fontFamily: isFontLoaded ? "GloryMedium" : undefined,
-                textAlign: "center",
-                color: "#808080",
-              }}
-            >
-              Your Cart is {"\n"} Empty
-            </Text>
-          </View>
-          <View
+            Your Cart is {"\n"} Empty
+          </Text>
+        </View>
+
+        <View
+          style={{
+            height: "20%",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            bottom: 40,
+            left: "30%",
+          }}
+        >
+          <TouchableOpacity
             style={{
-              height: "20%",
+              width: 170,
+              height: 50,
+              borderRadius: 10,
+              backgroundColor: "black",
               justifyContent: "center",
               alignItems: "center",
             }}
+            onPress={() => navigation.navigate("Home")}
           >
-            <TouchableOpacity
+            <Text
               style={{
-                width: windowwidthe * 0.4,
-                height: windowheight * 0.06,
-                borderRadius: 10,
-                backgroundColor: "black",
-                justifyContent: "center",
-                alignItems: "center",
+                color: "white",
+                fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                fontSize: width >= 720 ? 45 : 25,
               }}
-              onPress={() => navigation.navigate("Home")}
             >
-              <Text
-                style={{
-                  color: "white",
-                  fontFamily: isFontLoaded ? "GloryMedium" : undefined,
-                  fontSize: width >= 720 ? 45 : 25,
-                }}
-              >
-                Create Order
-              </Text>
-            </TouchableOpacity>
-          </View>
+              Create Order
+            </Text>
+          </TouchableOpacity>
         </View>
+      </View>
       ) : (
         <KeyboardAvoidingView
           style={{ flex: 1 }}
