@@ -72,7 +72,7 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
-
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const dispach = useDispatch();
@@ -202,6 +202,7 @@ const DetailsOfArticals = (props) => {
   }
 
   const addtocart = async (ArticleId) => {
+    setIsAddingToCart(true);
     if (!combinedArray) {
       // console.log("undefined");
       return;
@@ -226,6 +227,7 @@ const DetailsOfArticals = (props) => {
           await addto_cart(data);
           getcountofcart()
           navigation.navigate("cart_list", { totalPrice });
+          setIsAddingToCart(false);
         } else {
           setIsModalVisible(true);
 
@@ -1079,7 +1081,7 @@ const DetailsOfArticals = (props) => {
                 },
               ]}
               onPress={() => addtocart(id)}
-              disabled={totalQuantity === 0}
+              disabled={totalQuantity === 0 || isAddingToCart === true}
             >
               <View
                 style={{

@@ -87,7 +87,7 @@ const SliderScreen = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={Shopping}>
       {slideimagesdata.length > 0 ? (
         <>
           <Carousel
@@ -100,7 +100,7 @@ const SliderScreen = (props) => {
             }}
             loop={true} // Enable loop for smooth sliding
             autoplay={true} // Enable autoplay
-            autoplayInterval={2000} // Set autoplay interval (in milliseconds)
+            autoplayInterval={1500} // Set autoplay interval (in milliseconds)
           />
           <View style={styles.paginationContainer}>
             {slideimagesdata.map((_, index) => (
@@ -115,7 +115,7 @@ const SliderScreen = (props) => {
       ) : (
         <Text></Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -47,7 +47,7 @@ const Orderlist = (props) => {
   const windowheight = parseInt(Dimensions.get("window").height);
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-  const [isLoading2, setIsLoading2] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isfailed, setisFailed] = useState("");
 
@@ -664,12 +664,12 @@ const Orderlist = (props) => {
               visible={isModalVisible}
               transparent={true}
               animationType="slide"
-              onRequestClose={() => setIsModalVisible(false)}
             >
               {isLoading2 && (
                 <View
                   style={{
                     flex: 1,
+                    height: "100%",
                     justifyContent: "center",
                     alignItems: "center",
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -679,7 +679,7 @@ const Orderlist = (props) => {
                     style={{
                       width: "88%",
                       height: 390,
-                      backgroundColor: "white",
+                      backgroundColor: "#FFF",
                       borderRadius: 25,
                       justifyContent: "center",
                       alignItems: "center",
@@ -687,14 +687,27 @@ const Orderlist = (props) => {
                       padding: 5,
                     }}
                   >
-                    <Loader />
+                     <View
+                        style={{
+                          width: "100%",
+                          backgroundColor: "#FFF",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          alignContent: "center",
+                        }}
+                      >
+                        <Image
+                          source={require("../../../assets/Loader/Newfile.gif")}
+                          style={{ width: "80%", height: "80%" }}
+                          resizeMode="contain"
+                        />
+                      </View>
+                    
                   </View>
                 </View>
               )}
               {isSuccess && (
-                <TouchableWithoutFeedback
-                  onPress={() => setIsModalVisible(false)}
-                >
+                <TouchableWithoutFeedback>
                   <View
                     style={{
                       flex: 1,

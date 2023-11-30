@@ -1021,7 +1021,7 @@ export default function HomeScreen(props) {
           </ScrollView>
         </View>
       )}
-      <KeyboardAvoidingView behavior={isKeyboardOpen ? "padding" : null}>
+      {isKeyboardOpen === true ? null : <KeyboardAvoidingView >
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation
@@ -1033,7 +1033,7 @@ export default function HomeScreen(props) {
         )}
 
         {/* Other components here */}
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView>}
       {isFilterVisible && (
         <View
           style={{
