@@ -564,13 +564,13 @@ const AddToCart = (props) => {
               justifyContent: "center",
               alignItems: "center",
               position: "absolute",
-              bottom: 40,
+              bottom: 10,
               left: "30%",
             }}
           >
             <TouchableOpacity
               style={{
-                width: 170,
+                width: 200,
                 height: 50,
                 borderRadius: 10,
                 backgroundColor: "black",

@@ -564,7 +564,7 @@ const AddToCart = (props) => {
               justifyContent: "center",
               alignItems: "center",
               position: "absolute",
-              bottom: 40,
+              bottom: 10,
               left: "30%",
             }}
           >

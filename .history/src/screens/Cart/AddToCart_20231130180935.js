@@ -557,21 +557,44 @@ const AddToCart = (props) => {
               Your Cart is {"\n"} Empty
             </Text>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+            style={{
+              backgroundColor: "black",
+              width: 189,
+              height: "auto",
+              borderRadius: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 20,
+              paddingVertical: "4%",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: isFontLoaded ? "GloryBold" : undefined,
+                color: "white",
+                paddingHorizontal: 15,
+              }}
+            >
+              Continue Shopping
+            </Text>
+          </TouchableOpacity>
 
           <View
             style={{
               height: "20%",
               justifyContent: "center",
               alignItems: "center",
-              position: "absolute",
-              bottom: 40,
-              left: "30%",
             }}
           >
             <TouchableOpacity
               style={{
-                width: 170,
-                height: 50,
+                width: windowwidthe * 0.4,
+                height: windowheight * 0.06,
                 borderRadius: 10,
                 backgroundColor: "black",
                 justifyContent: "center",

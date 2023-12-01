@@ -380,7 +380,7 @@ export default function Filter({
                         style={[
                           styleslider.thumb,
                           {
-                            left: `${(leftValue / maxArticleRate) * 100}%`,
+                            left: `${(leftValue / maxArticleRate) * 90}%`,
                             borderColor: "black",
                           }, // Adjust the left handle's position here
                         ]}
@@ -392,13 +392,13 @@ export default function Filter({
                         style={[
                           styleslider.thumb,
                           {
-                            left: `${(rightValue / maxArticleRate) * 100}%`,
+                            left: `${(rightValue / maxArticleRate) * 90}%`,
                             borderColor: "black",
                           },
                         ]}
                         {...panResponderRight.panHandlers}
                       >
-                        <Text style={styleslider.thumbText1}>{rightValue}</Text>
+                        <Text style={styleslider.thumbText}>{rightValue}</Text>
                       </View>
                     </View>
                   </View>
@@ -646,17 +646,6 @@ const styleslider = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     top: 15,
-    right: 0.5,
-    color: "black",
-    fontSize: width >= 720 ? 22 : 15,
-    fontFamily: "GlorySemiBold",
-  },
-  thumbText1: {
-    width: width >= 720 ? 50 : 30,
-    textAlign: "center",
-    position: "absolute",
-    top: 15,
-    left: 0.5,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
     fontFamily: "GlorySemiBold",

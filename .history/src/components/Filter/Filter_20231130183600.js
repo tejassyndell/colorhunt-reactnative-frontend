@@ -152,20 +152,17 @@ export default function Filter({
   const handleLeftMove = (dx) => {
     const newLeftValue = Math.min(
       Math.max(leftValue + dx, minArticleRate),
-      maxArticleRate - step
+      rightValue - step - 10 // 10px gap
     );
-    // Find the nearest allowed value
+
     const nearestAllowedValue = allowedValues.reduce((prev, curr) => {
       return Math.abs(curr - newLeftValue) < Math.abs(prev - newLeftValue)
         ? curr
         : prev;
     });
-    if (rightValue == nearestAllowedValue) {
-      setLeftValue(minArticleRate);
-    } else {
-      setLeftValue(nearestAllowedValue);
-    }
-    setRightValue(Math.max(rightValue, nearestAllowedValue));
+
+    setLeftValue(nearestAllowedValue);
+    setRightValue(Math.max(rightValue, nearestAllowedValue + step + 10));
   };
 
   const handleRightMove = (dx) => {
@@ -398,7 +395,7 @@ export default function Filter({
                         ]}
                         {...panResponderRight.panHandlers}
                       >
-                        <Text style={styleslider.thumbText1}>{rightValue}</Text>
+                        <Text style={styleslider.thumbText}>{rightValue}</Text>
                       </View>
                     </View>
                   </View>
@@ -646,17 +643,6 @@ const styleslider = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     top: 15,
-    right: 0.5,
-    color: "black",
-    fontSize: width >= 720 ? 22 : 15,
-    fontFamily: "GlorySemiBold",
-  },
-  thumbText1: {
-    width: width >= 720 ? 50 : 30,
-    textAlign: "center",
-    position: "absolute",
-    top: 15,
-    left: 0.5,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
     fontFamily: "GlorySemiBold",

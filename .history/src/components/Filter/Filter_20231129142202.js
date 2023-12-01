@@ -55,21 +55,20 @@ export default function Filter({
   const sliderLength = (Screenwidth * sliderlenghtinPercent) / 100;
   const { width, height } = Dimensions.get("window");
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-  const fonttype = async () => {
-    const status = await loadCustomFont();
-  };
-  useEffect(() => {
-    fonttype();
-  }, []);
+  const fonttype = async ()=>{
+    const status = await loadCustomFont()
+  }
+  useEffect(()=>{
+    fonttype()
+  },[])
+
 
   const getCategoriesname = async () => {
     try {
       const result1 = await getCategories();
       if (result1.status === 200) {
-        const filteredData = result1.data.filter(
-          (item) =>
-            item.Category !== "ASSORTED" && item.Category !== "REJECTION"
-        );
+
+        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION");
         setData(filteredData);
       }
     } catch (error) {
@@ -161,9 +160,10 @@ export default function Filter({
         : prev;
     });
     if (rightValue == nearestAllowedValue) {
-      setLeftValue(minArticleRate);
-    } else {
-      setLeftValue(nearestAllowedValue);
+      setLeftValue(minArticleRate)
+    }
+    else {
+      setLeftValue(nearestAllowedValue)
     }
     setRightValue(Math.max(rightValue, nearestAllowedValue));
   };
@@ -181,9 +181,10 @@ export default function Filter({
 
     // Update the rightValue to the nearest allowed value
     if (nearestAllowedValue == leftValue) {
-      setRightValue(maxArticleRate);
-    } else {
-      setRightValue(nearestAllowedValue);
+      setRightValue(maxArticleRate)
+    }
+    else {
+      setRightValue(nearestAllowedValue)
     }
 
     // Ensure that the leftValue is less than or equal to the rightValue
@@ -264,13 +265,7 @@ export default function Filter({
           ""
         )}
         {status === false ? (
-          <ScrollView
-            style={{
-              width: "100%",
-              backgroundColor: "#FFF",
-              height: height >= 844 ? 360 : 250,
-            }}
-          >
+          <ScrollView style={{ width: '100%', backgroundColor: '#FFF', height: height >= 844 ? 360 : 250 }}>
             <View style={styles.categoriesContainer}>
               {data.map((item, index) => (
                 <TouchableOpacity
@@ -370,7 +365,9 @@ export default function Filter({
                 {minArticleRate}
               </Text>
             </View>
-            <View style={{ width: width >= 720 ? "80%" : "70%", marginTop: 3 }}>
+            <View
+              style={{ width: width >= 720 ? "80%" : "70%", marginTop: 3 }}
+            >
               <View style={styles.sliderContainer}>
                 <View style={{ width: "100%" }}>
                   <View style={styleslider.sliderContainer}>
@@ -398,7 +395,9 @@ export default function Filter({
                         ]}
                         {...panResponderRight.panHandlers}
                       >
-                        <Text style={styleslider.thumbText1}>{rightValue}</Text>
+                        <Text style={styleslider.thumbText}>
+                          {rightValue}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -646,17 +645,6 @@ const styleslider = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     top: 15,
-    right: 0.5,
-    color: "black",
-    fontSize: width >= 720 ? 22 : 15,
-    fontFamily: "GlorySemiBold",
-  },
-  thumbText1: {
-    width: width >= 720 ? 50 : 30,
-    textAlign: "center",
-    position: "absolute",
-    top: 15,
-    left: 0.5,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
     fontFamily: "GlorySemiBold",

@@ -312,27 +312,6 @@ export default function CategorisWiseArticle(props) {
         //       (item.ArticleRate >= selectedPriceRange[0] &&
         //         item.ArticleRate <= selectedPriceRange[1]))
         // );
-        const batchFiltered = batch.filter((item) => {
-          const articleNumber = item.ArticleNumber?.toString() || "";
-          const category = item.Category?.toLowerCase() || "";
-          const articleRate = item.ArticleRate?.toString() || "";
-          const styleDescription = item.StyleDescription?.toLowerCase() || "";
-          const subcategory = item.Subcategory?.toLowerCase() || "";
-
-          return (
-            (!searchText ||
-              articleNumber.includes(searchText) ||
-              category.includes(searchText.toLowerCase()) ||
-              articleRate.includes(searchText) ||
-              styleDescription.includes(searchText.toLowerCase()) ||
-              subcategory.includes(searchText.toLowerCase())) &&
-            (selectedCategories.length === 0 ||
-              selectedCategories.includes(item.Category)) &&
-            (selectedPriceRange.length === 0 ||
-              (item.ArticleRate >= selectedPriceRange[0] &&
-                item.ArticleRate <= selectedPriceRange[1]))
-          );
-        });
 
         // Append the batchFiltered data to the filteredData array
         filteredData.push(...batchFiltered);

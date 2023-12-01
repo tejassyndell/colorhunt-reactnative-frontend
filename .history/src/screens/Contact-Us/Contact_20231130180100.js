@@ -444,7 +444,7 @@ export default function Contact(props) {
                   style={{
                     justifyContent: "center",
                     alignItems: "center",
-                    marginTop: height >= 720 ? 90 : 80,
+                    marginTop: height >= 720 ? 90 : 105,
                   }}
                 >
                   <TouchableOpacity

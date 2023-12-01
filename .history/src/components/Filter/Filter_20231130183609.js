@@ -152,42 +152,33 @@ export default function Filter({
   const handleLeftMove = (dx) => {
     const newLeftValue = Math.min(
       Math.max(leftValue + dx, minArticleRate),
-      maxArticleRate - step
+      rightValue - step - 10 // 10px gap
     );
-    // Find the nearest allowed value
+
     const nearestAllowedValue = allowedValues.reduce((prev, curr) => {
       return Math.abs(curr - newLeftValue) < Math.abs(prev - newLeftValue)
         ? curr
         : prev;
     });
-    if (rightValue == nearestAllowedValue) {
-      setLeftValue(minArticleRate);
-    } else {
-      setLeftValue(nearestAllowedValue);
-    }
-    setRightValue(Math.max(rightValue, nearestAllowedValue));
+
+    setLeftValue(nearestAllowedValue);
+    setRightValue(Math.max(rightValue, nearestAllowedValue + step + 10));
   };
 
   const handleRightMove = (dx) => {
     const newRightValue = Math.max(
       Math.min(rightValue + dx, maxArticleRate),
-      leftValue + step
+      leftValue + step + 10 // 10px gap
     );
+
     const nearestAllowedValue = allowedValues.reduce((prev, curr) => {
       return Math.abs(curr - newRightValue) < Math.abs(prev - newRightValue)
         ? curr
         : prev;
     });
 
-    // Update the rightValue to the nearest allowed value
-    if (nearestAllowedValue == leftValue) {
-      setRightValue(maxArticleRate);
-    } else {
-      setRightValue(nearestAllowedValue);
-    }
-
-    // Ensure that the leftValue is less than or equal to the rightValue
-    setLeftValue(Math.min(leftValue, nearestAllowedValue));
+    setRightValue(nearestAllowedValue);
+    setLeftValue(Math.min(leftValue, nearestAllowedValue - step - 10));
   };
 
   const panResponderLeft = PanResponder.create({
@@ -398,7 +389,7 @@ export default function Filter({
                         ]}
                         {...panResponderRight.panHandlers}
                       >
-                        <Text style={styleslider.thumbText1}>{rightValue}</Text>
+                        <Text style={styleslider.thumbText}>{rightValue}</Text>
                       </View>
                     </View>
                   </View>
@@ -646,17 +637,6 @@ const styleslider = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     top: 15,
-    right: 0.5,
-    color: "black",
-    fontSize: width >= 720 ? 22 : 15,
-    fontFamily: "GlorySemiBold",
-  },
-  thumbText1: {
-    width: width >= 720 ? 50 : 30,
-    textAlign: "center",
-    position: "absolute",
-    top: 15,
-    left: 0.5,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
     fontFamily: "GlorySemiBold",

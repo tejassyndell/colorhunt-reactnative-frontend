@@ -152,7 +152,7 @@ export default function Filter({
   const handleLeftMove = (dx) => {
     const newLeftValue = Math.min(
       Math.max(leftValue + dx, minArticleRate),
-      maxArticleRate - step
+      rightValue - step
     );
     // Find the nearest allowed value
     const nearestAllowedValue = allowedValues.reduce((prev, curr) => {
@@ -178,6 +178,9 @@ export default function Filter({
         ? curr
         : prev;
     });
+
+    setRightValue(nearestAllowedValue);
+    setLeftValue(Math.min(leftValue, nearestAllowedValue));
 
     // Update the rightValue to the nearest allowed value
     if (nearestAllowedValue == leftValue) {
@@ -398,7 +401,7 @@ export default function Filter({
                         ]}
                         {...panResponderRight.panHandlers}
                       >
-                        <Text style={styleslider.thumbText1}>{rightValue}</Text>
+                        <Text style={styleslider.thumbText}>{rightValue}</Text>
                       </View>
                     </View>
                   </View>
@@ -646,17 +649,6 @@ const styleslider = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
     top: 15,
-    right: 0.5,
-    color: "black",
-    fontSize: width >= 720 ? 22 : 15,
-    fontFamily: "GlorySemiBold",
-  },
-  thumbText1: {
-    width: width >= 720 ? 50 : 30,
-    textAlign: "center",
-    position: "absolute",
-    top: 15,
-    left: 0.5,
     color: "black",
     fontSize: width >= 720 ? 22 : 15,
     fontFamily: "GlorySemiBold",
