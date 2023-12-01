@@ -88,8 +88,8 @@ export default function CategorisWiseArticle(props) {
     };
   }, []);
   const fonttype = async () => {
-    const status = await loadCustomFont()
-  }
+    const status = await loadCustomFont();
+  };
   useEffect(() => {
     const loadCustomFont = async () => {
       try {
@@ -135,8 +135,8 @@ export default function CategorisWiseArticle(props) {
         ? 110
         : 80
       : height >= 844
-        ? 110
-        : 65;
+      ? 110
+      : 65;
   const [noArticlesFound, setNoArticlesFound] = useState(false);
 
   // uploard url image
@@ -231,6 +231,20 @@ export default function CategorisWiseArticle(props) {
     getproductnamess();
   }, []);
 
+  const checkUserLoginforheader = async () => {
+    try {
+      const data = await AsyncStorage.getItem("UserData");
+      if (data) {
+        navigation.navigate("Profile");
+      } else {
+        openCreateAccountModal();
+      }
+    } catch (error) {
+      console.error("Error while checking user data:", error);
+      return false;
+    }
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -252,7 +266,7 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              isLoggedIn ? navigation.navigate("Profile") : null;
+              checkUserLoginforheader();
               // console.log(isLoggedIn);
             }}
           >
@@ -261,7 +275,6 @@ export default function CategorisWiseArticle(props) {
                 resizeMode: "contain",
                 width: width >= 720 ? 55 : 35,
                 height: width >= 720 ? 55 : 35,
-                marginBottom: 20,
               }}
               source={require("../../../assets/Profileicon/Group8919.png")}
             />
@@ -295,24 +308,45 @@ export default function CategorisWiseArticle(props) {
         // Slice the data into batches of size batchSize
         const batch = nameDatas.slice(i, i + batchSize);
 
-        const batchFiltered = batch.filter(
-          (item) =>
-            (searchText === "" || // Check if searchText is empty or matches any criteria
-              item.ArticleNumber.toString().includes(searchText.toString()) ||
-              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.ArticleRate.toString().includes(searchText.toString()) ||
-              item.StyleDescription.toLowerCase().includes(
-                searchText.toLowerCase()
-              ) ||
-              item.Subcategory.toLowerCase().includes(
-                searchText.toLowerCase()
-              )) &&
+        // const batchFiltered = batch.filter(
+        //   (item) =>
+        //     (searchText === "" || // Check if searchText is empty or matches any criteria
+        //       item.ArticleNumber.toString().includes(searchText.toString()) ||
+        //       item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+        //       item.ArticleRate.toString().includes(searchText.toString()) ||
+        //       item.StyleDescription.toLowerCase().includes(
+        //         searchText.toLowerCase()
+        //       ) ||
+        //       item.Subcategory.toLowerCase().includes(
+        //         searchText.toLowerCase()
+        //       )) &&
+        //     (selectedCategories.length === 0 ||
+        //       selectedCategories.includes(item.Category)) &&
+        //     (selectedPriceRange.length === 0 ||
+        //       (item.ArticleRate >= selectedPriceRange[0] &&
+        //         item.ArticleRate <= selectedPriceRange[1]))
+        // );
+        const batchFiltered = batch.filter((item) => {
+          const articleNumber = item.ArticleNumber?.toString() || "";
+          const category = item.Category?.toLowerCase() || "";
+          const articleRate = item.ArticleRate?.toString() || "";
+          const styleDescription = item.StyleDescription?.toLowerCase() || "";
+          const subcategory = item.Subcategory?.toLowerCase() || "";
+
+          return (
+            (!searchText ||
+              articleNumber.includes(searchText) ||
+              category.includes(searchText.toLowerCase()) ||
+              articleRate.includes(searchText) ||
+              styleDescription.includes(searchText.toLowerCase()) ||
+              subcategory.includes(searchText.toLowerCase())) &&
             (selectedCategories.length === 0 ||
               selectedCategories.includes(item.Category)) &&
             (selectedPriceRange.length === 0 ||
               (item.ArticleRate >= selectedPriceRange[0] &&
                 item.ArticleRate <= selectedPriceRange[1]))
-        );
+          );
+        });
 
         // Append the batchFiltered data to the filteredData array
         filteredData.push(...batchFiltered);
@@ -424,21 +458,23 @@ export default function CategorisWiseArticle(props) {
             <Text
               style={{
                 fontSize: width >= 720 ? 18 : 15,
-                fontFamily: "GlorySemiBold"
+                fontFamily: "GlorySemiBold",
               }}
             >
               {item.ArticleNumber}
             </Text>
-            <Text style={{
-              fontSize: width >= 720 ? 15 : 13,
-              fontFamily: "GloryMedium"
-            }}>
+            <Text
+              style={{
+                fontSize: width >= 720 ? 15 : 13,
+                fontFamily: "GloryMedium",
+              }}
+            >
               {convertToTitleCase(item.Category)}
             </Text>
             <Text
               style={{
                 fontSize: width >= 720 ? 18 : 15,
-                fontFamily: "GlorySemiBold"
+                fontFamily: "GlorySemiBold",
               }}
             >
               {isLoggedIn ? "₹" + item.ArticleRate + ".00" : ""}
@@ -592,26 +628,23 @@ export default function CategorisWiseArticle(props) {
             }}
           >
             {finalData.length === 0 ? (
-              (
-                (
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontFamily: "GloryMedium" ,
-                        fontSize: 20,
-                      }}
-                    >
-                      No Articles Found
-                    </Text>
-                  </View>
-                ))
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontFamily: "GloryMedium",
+                    fontSize: 20,
+                  }}
+                >
+                  No Articles Found
+                </Text>
+              </View>
             ) : (
               <FlatList
                 style={{ backgroundColor: "#FFF" }}
@@ -633,21 +666,21 @@ export default function CategorisWiseArticle(props) {
               />
             )}
           </View>
-          {isKeyboardOpen === true ? null :
-           <KeyboardAvoidingView
-           behavior={isKeyboardOpen ? "padding" : null}
-           style={{ flex: 1 }}
-         >
-           {isFilterVisible ? null : (
-             <View
-               style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-             >
-               <ButtomNavigation navigation={navigation} page="home" />
-             </View>
-           )}
-         </KeyboardAvoidingView>
-          }
-         
+          {isKeyboardOpen === true ? null : (
+            <KeyboardAvoidingView
+              behavior={isKeyboardOpen ? "padding" : null}
+              style={{ flex: 1 }}
+            >
+              {isFilterVisible ? null : (
+                <View
+                  style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+                >
+                  <ButtomNavigation navigation={navigation} isLoggedIn={isLoggedIn} page="home" />
+                </View>
+              )}
+            </KeyboardAvoidingView>
+          )}
+
           {isFilterVisible && (
             <View
               style={{

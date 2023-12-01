@@ -361,7 +361,7 @@ const Login = (props) => {
             if (res && res.status == 200) {
               if (res.data[0].Status == 0) {
                 Alert.alert(
-                  "Invalid Phone Number. Please enter a valid phone number."
+                  "Admin is not allowed to access. Please wait for admin response."
                 );
               } else if (res.data[0].Status == 1) {
                 setIsLoading(true);
@@ -395,7 +395,7 @@ const Login = (props) => {
           });
         } catch (error) {
           console.error("Error validating phone number:", error);
-          alert("An error occurred while validating the phone number.");
+          alert("Invalid Phone Number. Please enter a valid phone number.");
         } finally {
           setIsButtonLoading(false);
         }
@@ -416,8 +416,8 @@ const Login = (props) => {
         alert("Invalid OTP. Please try again.");
         setIsButtonLoading(false);
       }
+      setIsButtonLoading(false);
     }
-    setIsButtonLoading(false);
   };
 
   const otpInput = [useRef(), useRef(), useRef(), useRef()];

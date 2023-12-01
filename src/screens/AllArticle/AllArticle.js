@@ -233,6 +233,20 @@ export default function AllArticle(props) {
     setsearchtextfromstorage();
   }, []);
 
+  const checkUserLoginforheader = async () => {
+    try {
+      const data = await AsyncStorage.getItem("UserData");
+      if (data) {
+        navigation.navigate("Profile");
+      } else {
+        openCreateAccountModal();
+      }
+    } catch (error) {
+      console.error("Error while checking user data:", error);
+      return false;
+    }
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -254,7 +268,7 @@ export default function AllArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile");
+              checkUserLoginforheader();
             }}
           >
             <Image
@@ -613,7 +627,7 @@ export default function AllArticle(props) {
               <View
                 style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
               >
-                <ButtomNavigation navigation={navigation} page="home" />
+                <ButtomNavigation navigation={navigation} isLoggedIn={isLoggedIn} page="home" />
               </View>
             )}
           </KeyboardAvoidingView>}

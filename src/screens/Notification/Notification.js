@@ -275,7 +275,6 @@ export default function Notification(props) {
                       shadowOpacity: 3,
                       shadowRadius: 6,
                       borderRadius: 10,
-                      shadowColor: "black",
                       elevation: 2,
                       shadowOffset: {
                         width: 1,

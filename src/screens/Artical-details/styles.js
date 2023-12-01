@@ -282,7 +282,6 @@ const detailsOfArtStyles = () => {
     // },
     qty_box: {
       width: "100%",
-      // shadowColor: "gray",
       // shadowOpacity: 0.5,
       elevation: 2, // Use elevation to simulate box-shadow
       justifyContent: "center", // Align content vertically
@@ -304,14 +303,7 @@ const detailsOfArtStyles = () => {
       display: "flex",
       flexDirection: "row",
       width: "100%",
-      // backgroundColor:"#FFF",
-      // borderWidth: 1,
-      // borderStyle: "solid",
-      // borderColor: "#0000002d",
-      // borderRadius:10,
-      // elevation:2,
-      // shadowColor:"gray",
-      // shadowOpacity:0.5
+   
     },
     box1: {
       width: "44%",
