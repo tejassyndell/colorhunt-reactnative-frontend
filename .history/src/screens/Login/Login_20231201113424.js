@@ -361,7 +361,7 @@ const Login = (props) => {
             if (res && res.status == 200) {
               if (res.data[0].Status == 0) {
                 Alert.alert(
-                  "Admin is not allowed to access. Please wait for admin response."
+                  "Admin not allowd to access , please wait for admin response"
                 );
               } else if (res.data[0].Status == 1) {
                 setIsLoading(true);
