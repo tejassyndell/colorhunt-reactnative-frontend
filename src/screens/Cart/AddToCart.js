@@ -81,27 +81,42 @@ const fonttype = async ()=>{
     loadCustomFont();
   }, []);
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        
-        setMaxHeight(windowwidthe * 0.9); // Adjust the value as needed
-        setKeyboardVisible(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setMaxHeight(windowwidthe * 1.1); // Adjust the value as needed
-        setKeyboardVisible(false);
-      }
-    );
 
+  const updateMaxHeight = () => {
+    const windowWidth = Dimensions.get("window").width;
+    const windowheight = Dimensions.get("window").height;
+
+    // Add your media query conditions here
+    const mediaQueryCondition = windowWidth >= 720 || windowheight >= 844;
+
+    // Adjust the maxHeight based on media query conditions
+    const newMaxHeight = mediaQueryCondition ? windowWidth * 0.60 : windowWidth * 0.90;
+    
+    setMaxHeight(newMaxHeight);
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+      updateMaxHeight();
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+      updateMaxHeight();
+    });
+
+    // Cleanup listeners
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
+  }, []);
+
+
+  useEffect(() => {
+    // Initial update
+    updateMaxHeight();
   }, []);
   const deletsvg = (
     <Svg width="100%" height="100%" viewBox="0 0 15 17" fill="none">
@@ -516,58 +531,62 @@ const fonttype = async ()=>{
         </View>
       ) : orderItems.length === 0 ? (
         <View
+        style={{
+          flex: 1,
+          backgroundColor: "#FFF",
+        }}
+      >
+        <View
           style={{
-            flex: 1,
-            backgroundColor: "#FFF",
+            height: "100%",
+            justifyContent: "center",
           }}
         >
-          <View
+          <Text
             style={{
-              height: "80%",
-              justifyContent: "center",
+              fontSize: windowwidthe * 0.1,
+              fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+              textAlign: "center",
+              color: "#808080",
             }}
           >
-            <Text
-              style={{
-                fontSize: windowwidthe * 0.1,
-                fontFamily: isFontLoaded ? "GloryMedium" : undefined,
-                textAlign: "center",
-                color: "#808080",
-              }}
-            >
-              Your Cart is {"\n"} Empty
-            </Text>
-          </View>
-          <View
+            Your Cart is {"\n"} Empty
+          </Text>
+        </View>
+
+        <View
+          style={{
+            height: "20%",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            bottom: 40,
+            left: "30%",
+          }}
+        >
+          <TouchableOpacity
             style={{
-              height: "20%",
+              width: 170,
+              height: 50,
+              borderRadius: 10,
+              backgroundColor: "black",
               justifyContent: "center",
               alignItems: "center",
             }}
+            onPress={() => navigation.navigate("Home")}
           >
-            <TouchableOpacity
+            <Text
               style={{
-                width: windowwidthe * 0.4,
-                height: windowheight * 0.06,
-                borderRadius: 10,
-                backgroundColor: "black",
-                justifyContent: "center",
-                alignItems: "center",
+                color: "white",
+                fontFamily: isFontLoaded ? "GloryMedium" : undefined,
+                fontSize: width >= 720 ? 45 : 25,
               }}
-              onPress={() => navigation.navigate("Home")}
             >
-              <Text
-                style={{
-                  color: "white",
-                  fontFamily: isFontLoaded ? "GloryMedium" : undefined,
-                  fontSize: width >= 720 ? 45 : 25,
-                }}
-              >
-                Create Order
-              </Text>
-            </TouchableOpacity>
-          </View>
+              Create Order
+            </Text>
+          </TouchableOpacity>
         </View>
+      </View>
       ) : (
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -804,9 +823,9 @@ const fonttype = async ()=>{
                                       shadowColor: "gray",
                                       shadowOpacity: 0.5,
                                       marginHorizontal: "3%",
-                                      marginTop: "5%",
+                                      marginTop:width >= 720 ? "1%" :"5%",
                                       borderRadius: 10,
-                                      height: width >= 720 ? windowheight * 0.160: windowheight * 0.142,
+                                      height: width >= 720 ? 160:130,
                                       paddingVertical: "1.5%",
                                       borderColor: "rgba(0,0,0,0.2)",
                                       borderWidth: 1,
@@ -1228,7 +1247,6 @@ const fonttype = async ()=>{
                       <View
                         style={{
                           width: "100%",
-                          position: "absolute",
                           top: width >= 720 ? 14 : 7,
                           right: width >= 720 ? 10 : 10,
                           position: "absolute",

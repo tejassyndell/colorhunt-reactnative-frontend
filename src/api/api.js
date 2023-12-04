@@ -291,6 +291,13 @@ export const cartcount = async (data) => {
     console.log(err);
   }
 }
+export const notificationcount = async (data) => {
+  try {
+    return await axios.post(`${url}/notificationcount`, data);
+  } catch (err) {
+    console.log(err);
+  }
+}
  
 export const Sliderimages = async()=>{
   try{

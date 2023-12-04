@@ -72,7 +72,7 @@ const DetailsOfArticals = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [updateCart, setUpdateCart] = useState(false);
   const [articalCartId, setArticalCartId] = useState();
-
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const dispach = useDispatch();
@@ -202,6 +202,7 @@ const DetailsOfArticals = (props) => {
   }
 
   const addtocart = async (ArticleId) => {
+    setIsAddingToCart(true);
     if (!combinedArray) {
       // console.log("undefined");
       return;
@@ -226,6 +227,7 @@ const DetailsOfArticals = (props) => {
           await addto_cart(data);
           getcountofcart()
           navigation.navigate("cart_list", { totalPrice });
+          setIsAddingToCart(false);
         } else {
           setIsModalVisible(true);
 
@@ -279,28 +281,12 @@ const DetailsOfArticals = (props) => {
     }));
   };
   const onchangeaddqty = (val, colorIndex) => {
-
-    const numericValue = parseInt(val, 10);
-
-    if (isNaN(numericValue)) {
-
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [colorIndex]: 0,
-      }));
-    }
-  
-    if (!combinedArray || !combinedArray[colorIndex]) {
-      return;
-    }
-  
-    if (numericValue < 0) {
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [colorIndex]: 0,
-      }));
-    }
-    if (numericValue > quantities[colorIndex]) {
+    // if (val == "") {
+    //   setQuantities(() => ({
+    //     [colorIndex]:"0",
+    //   }));
+    // }
+    if (val > quantities[colorIndex]) {
       if (!combinedArray || !combinedArray[colorIndex]) {
         return;
       }
@@ -309,16 +295,16 @@ const DetailsOfArticals = (props) => {
       if (quantities[colorIndex] < nopacks) {
         setQuantities((prevQuantities) => ({
           ...prevQuantities,
-          [colorIndex]: numericValue,
+          [colorIndex]: val,
         }));
       }
-    } else if (numericValue < quantities[colorIndex] ) {
+    } else if (val < quantities[colorIndex] && val >=0) {
       if (!combinedArray || !combinedArray[colorIndex]) {
         return;
       }
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
-        [colorIndex]: numericValue,
+        [colorIndex]: val,
       }));
     }
 
@@ -587,6 +573,7 @@ const DetailsOfArticals = (props) => {
                               android: {
                                 elevation: 0,
                                 backgroundColor: "#f4f4f4",
+                                paddingEnd:9
                               },
                             }),
                           }}
@@ -923,8 +910,8 @@ const DetailsOfArticals = (props) => {
                 >
                   <View
                     style={{
-                      width: 360,
-                      height: 320,
+                      width:'88%',
+                      height: 300,
                       backgroundColor: "white",
                       borderRadius: 15,
                       alignItems: "center",
@@ -946,7 +933,7 @@ const DetailsOfArticals = (props) => {
                         fontSize: 24,
                         fontFamily: isFontLoaded ? "GloryMedium" : undefined,
                         textAlign: "center",
-                        marginBottom: 10,
+                        marginBottom: 5,
                         color: "rgba(0, 0, 0, 0.70)",
                       }}
                     >
@@ -1094,7 +1081,7 @@ const DetailsOfArticals = (props) => {
                 },
               ]}
               onPress={() => addtocart(id)}
-              disabled={totalQuantity === 0}
+              disabled={totalQuantity === 0 || isAddingToCart === true}
             >
               <View
                 style={{

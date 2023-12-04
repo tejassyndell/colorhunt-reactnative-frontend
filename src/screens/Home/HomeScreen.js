@@ -56,12 +56,12 @@ export default function HomeScreen(props) {
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const fonttype = async () => {
+  const fonttype=async()=>{
     const status = await loadCustomFont()
   }
-  useEffect(() => {
+  useEffect(()=>{
     fonttype()
-  }, [])
+  },[])
   const onRefresh = () => {
     getCategoriesname()
   };
@@ -230,7 +230,7 @@ export default function HomeScreen(props) {
     try {
       const result1 = await getcateGorywithphotos();
       if (result1 && result1.status === 200) {
-        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION" && item.Category.toLowerCase() !== "kids");
+        const filteredData = result1.data.filter(item => item.Category !== "ASSORTED" && item.Category !== "REJECTION" && item.Category !== "kids");
         setNameData(filteredData);
         setTimeout(() => {
           setIsLoading(false);
@@ -240,7 +240,7 @@ export default function HomeScreen(props) {
       const result2 = await getProductName();
       if (result2 && result2.status === 200) {
         setNameDatas(result2.data);
-        setkidsdata(result2.data.filter((item) => item.Category.toLowerCase() === "kids"));
+        setkidsdata(result2.data.filter((item) => item.Category === "kids"));
         setIsLoading(false);
         setRefreshing(false);
       } else {
@@ -341,6 +341,7 @@ export default function HomeScreen(props) {
     navigation.navigate("CategorisWiseArticle", { item1: item });
   };
   const filterData = async () => {
+    console.log(searchText,"()()()()");
     if (
       searchText == "" &&
       selectedCategories.length === 0 &&
@@ -380,10 +381,10 @@ export default function HomeScreen(props) {
         const chunkResult = chunk.filter(
           (item) =>
             (searchText === "" ||
-              item.ArticleNumber.toString().includes(searchText.toString()) ||
-              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.ArticleRate.toString().includes(searchText.toString()) ||
-              item.StyleDescription.toLowerCase().includes(
+           item.ArticleNumber &&   item.ArticleNumber.toString().includes(searchText.toString()) ||
+           item.Category &&    item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+           item.ArticleRate &&   item.ArticleRate.toString().includes(searchText.toString()) ||
+           item.StyleDescription &&    item.StyleDescription.toLowerCase().includes(
                 searchText.toLowerCase()
               ) ||
               item.Subcategory.toLowerCase().includes(
@@ -622,7 +623,6 @@ export default function HomeScreen(props) {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-        
           >
             <View style={{ width: "100%", flexDirection: "row", top: 10 }}>
               <Text
@@ -762,10 +762,8 @@ export default function HomeScreen(props) {
                           >
                             {item.ArticleNumber}
                           </Text>
-                          <Text style={{
-                            fontSize: width >= 720 ? 16 : 16,
-                            fontFamily: isFontLoaded ? "GloryMedium" : "Arial, sans-serif"
-                          }}>
+                          <Text style={{ fontSize: width >= 720 ? 16 : 16,
+                            fontFamily: isFontLoaded ? "GloryMedium" : "Arial, sans-serif" }}>
                             {convertToTitleCase(item.Category)}
                           </Text>
                           <Text
@@ -791,7 +789,7 @@ export default function HomeScreen(props) {
                       <Text
                         style={{
                           fontSize: width >= 720 ? 25 : 17,
-                          fontFamily: "GloryMedium",
+                          fontFamily: "GloryMedium" ,
                           textAlign: "center",
                           color: "#808080",
                         }}
@@ -876,7 +874,7 @@ export default function HomeScreen(props) {
             {kids.length === 0 ?
               ""
               :
-              <View style={{ marginTop: width >= 720 ? 30 : 10,marginBottom:"20%"}}>
+              <View style={{ marginTop: width >= 720 ? 30 : 10 }}>
                 <View
                   style={{
                     width: "100%",
@@ -912,142 +910,118 @@ export default function HomeScreen(props) {
 
                 <View
                   style={{
-                    maxWidth: "100%",
+                    position: "relative",
+                    width: "100%",
                     height: "auto",
                     flexDirection: "row",
-                    marginTop: "3%",
-                    shadowColor: "grey",
-                    shadowOffset: {
-                      width: 1,
-                      height: 1,
-                    },
-                    shadowOpacity: 0.6,
-                    elevation: 2,
+                    top: 20,
                   }}
                 >
-                  <ScrollView
-                    // horizontal={true}
-                    // showsHorizontalScrollIndicator={false}
-                    style={{ flex: 1 }}
-                  >
-                    {
-                      kids.map((item, index) => (
-
-
-                        <TouchableOpacity
+                  {
+                    kids.map((item, index) => (
+                      <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        style={{ overflow: "hidden" }}
+                      >
+                        <View
                           key={index}
-                          onPress={() => {
-                            navigation.navigate("DetailsOfArticals", {
-                              id: item.Id,
-                            });
+                          style={{
+                            alignItems: "center",
+                            width: width >= 720 ? 300 : 155,
+                            height: width >= 720 ? 280 : 280,
+                            marginLeft: width >= 720 ? 15 : 10,
+                            marginRight: width >= 720 ? 15 : 5,
+                            borderRadius: 10,
+                            marginTop: 10,
                           }}
                         >
                           <View
-                            key={index}
                             style={{
-                              alignItems: "center",
                               width: width >= 720 ? 300 : 155,
-                              height: width >= 720 ? 280 : 280,
-                              marginLeft: width >= 720 ? 15 : 10,
-                              marginRight: width >= 720 ? 15 : 5,
-                              borderRadius: 10,
-                              marginTop: 10,
+                              height: width >= 720 ? 280 : 190,
+                              borderRadius: 12,
+                              backgroundColor: "#FFF",
+                              elevation: 2,
                             }}
                           >
-                            <View
-                              style={{
-                                width: width >= 720 ? 300 : 155,
-                                height: width >= 720 ? 280 : 190,
-                                borderRadius: 12,
-                                backgroundColor: "#FFF",
-                                elevation: 2,
-                              }}
-                            >
-                              {isLoggedIn ? (
-                                <View id={item.id} style={styles.producticones}>
-                                  {selectedprd.some((i) => i.Id === item.Id) ? (
-                                    <TouchableOpacity
-                                      onPress={() => {
-                                        rmvProductWishlist(item);
-                                      }}
-                                    >
-                                      <FontAwesome
-                                        name="heart"
-                                        style={[styles.icon]}
-                                      />
-                                    </TouchableOpacity>
-                                  ) : (
-                                    <TouchableOpacity
-                                      onPress={() => {
-                                        isLoggedIn
-                                          ? addArticleWishlist(item)
-                                          : openCreateAccountModal();
-                                      }}
-                                    >
-                                      <FontAwesome
-                                        name="heart-o"
-                                        style={[styles.disabledIcon]}
-                                      />
-                                    </TouchableOpacity>
-                                  )}
-                                </View>
-                              ) : null}
-                              {item.Photos ? (
-                                <Image
-                                  source={{ uri: baseImageUrl + item.Photos }}
-                                  style={{
-                                    width: "100%",
-                                    height: width >= 720 ? 280 : 190,
-                                    borderRadius: 10,
-                                    resizeMode: "contain",
+                            <View id={item.id} style={styles.producticones}>
+                              {selectedprd.some((i) => i.Id === item.Id) ? (
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    rmvProductWishlist(item);
                                   }}
-                                />
+                                >
+                                  <FontAwesome
+                                    name="heart"
+                                    style={[styles.icon]}
+                                  />
+                                </TouchableOpacity>
                               ) : (
-                                <Image
-                                  source={require("../../../assets/demo.png")}
-                                  style={{
-                                    width: "100%",
-                                    height: width >= 720 ? 280 : 190,
-                                    borderRadius: 10,
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    isLoggedIn
+                                      ? addArticleWishlist(item)
+                                      : openCreateAccountModal();
                                   }}
-                                />
+                                >
+                                  <FontAwesome
+                                    name="heart-o"
+                                    style={[styles.disabledIcon]}
+                                  />
+                                </TouchableOpacity>
                               )}
                             </View>
-
-                            <Text
-                              style={{
-                                marginTop: 10,
-                                fontSize: width >= 720 ? 20 : 18,
-                                fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif",
-                              }}
-                            >
-                              {item.ArticleNumber}
-                            </Text>
-                            <Text style={{
-                              fontSize: width >= 720 ? 16 : 16,
-                              fontFamily: isFontLoaded ? "GloryMedium" : "Arial, sans-serif"
+                            <TouchableOpacity onPress={() => {
+                              navigation.navigate("DetailsOfArticals", {
+                                id: item.Id,
+                              });
                             }}>
-                              {convertToTitleCase(item.Category)}
-                            </Text>
-                            <Text
-                              style={{
-                                fontSize: width >= 720 ? 20 : 18,
-                                fontFamily: isFontLoaded ? "GloryBold" : "Arial, sans-serif"
-                              }}
-                            >
-                              {isLoggedIn ? "₹" + item.ArticleRate + ".00" : null}
-                            </Text>
+                              <Image
+                                source={{ uri: baseImageUrl + item.Photos }}
+                                style={{
+                                  width: "100%",
+                                  height: width >= 720 ? 280 : 190,
+                                  borderRadius: 10,
+                                }}
+                              /></TouchableOpacity>
                           </View>
-                        </TouchableOpacity>
-                      ))
-                    }
-                  </ScrollView>
+
+                          <Text
+                            style={{
+                              marginTop: 10,
+                              fontSize: width >= 720 ? 18 : 12,
+                              fontFamily: isFontLoaded ? "GloryExtraBold" : "Arial, sans-serif",
+                            }}
+                          >
+                            {item.ArticleNumber}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: width >= 720 ? 15 : 10,
+                              fontFamily: isFontLoaded ? "GloryMedium" : "Arial, sans-serif",
+                            }}
+                          >
+                            {convertToTitleCase(item.Category)}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: width >= 720 ? 18 : 12,
+                              fontFamily: isFontLoaded ? "GloryBold" : "Arial, sans-serif",
+                            }}
+                          >
+                            {"₹" + item.ArticleRate + ".00"}
+                          </Text>
+                        </View>
+                      </ScrollView>
+                    ))
+                  }
                 </View>
               </View>}
           </ScrollView>
         </View>
       )}
-      <KeyboardAvoidingView behavior={isKeyboardOpen ? "padding" : null}>
+      {isKeyboardOpen === true ? null : <KeyboardAvoidingView >
         {isFilterVisible ? null : (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <ButtomNavigation
@@ -1059,7 +1033,7 @@ export default function HomeScreen(props) {
         )}
 
         {/* Other components here */}
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView>}
       {isFilterVisible && (
         <View
           style={{

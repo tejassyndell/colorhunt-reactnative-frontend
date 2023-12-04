@@ -209,8 +209,8 @@ const OrderHistory = (props) => {
               fontSize: width >= 720 ? 35 : 25,
               fontFamily: "GloryBold",
               width: "100%",
-              height: width >= 720 ? 45 : 25,
-              marginBottom: 20,
+              height: width >= 720 ? 45:37,
+              marginBottom:20, 
 
             }}
           >
@@ -335,33 +335,29 @@ const OrderHistory = (props) => {
     closeModal();
   };
   const cleardate = () => {
-    // if (filterosstatus == true) {
-    if (orderstatus) {
-      setFromDate(new Date());
-      setToDate(new Date());
-      if (filterosstatus == true) {
+    if (filterosstatus == true) {
+      if (orderstatus) {
+        setFromDate(new Date());
+        setToDate(new Date());
         setSodatanotfount(false);
         setFilterosstatus(false);
         setSoNumberData(oldDataOfso);
-      }
-    } else {
-      setOutwardfromdate(new Date());
-      setOutwardtodate(new Date());
-      if (filterosstatus == true) {
+      } else {
+        setOutwardfromdate(new Date());
+        setOutwardtodate(new Date());
         setOutworddatanotfount(false);
         setFilteroutwardstatus(false);
         setcompletedsodata(olddataofcompleted);
       }
+      setTimeout(() => {
+        setFilteractive(false);
+        closeModal();
+      }, 1000);
     }
-    setTimeout(() => {
+    else {
       setFilteractive(false);
       closeModal();
-    }, 1000);
-    // }
-    // else {
-    //   setFilteractive(false);
-    //   closeModal();
-    // }
+    }
   };
   return (
     <>
@@ -378,7 +374,7 @@ const OrderHistory = (props) => {
         </View>
       ) : (
         <View style={styles.container}>
-          <View style={styles.first_cnt}>
+           <View style={styles.first_cnt}>
             <View style={styles.pendin_complete_cnt}>
               <View style={styles.pc_btn_cnt}>
                 {/* <View style={{ width: "50%" }}> */}
@@ -420,7 +416,10 @@ const OrderHistory = (props) => {
                 {/* <Button title="Select Dates" onPress={openModal} /> */}
                 <TouchableOpacity
                   onPress={openModal}
-                  style={{ height: width >= 720 ? 35 : 20, width: width >= 720 ? 35 : 20 }}
+                  style={{
+                    height: width >= 720 ? 35 : 20,
+                    width: width >= 720 ? 35 : 20,
+                  }}
                 >
                   <Calendersvg />
                 </TouchableOpacity>
@@ -556,7 +555,7 @@ const OrderHistory = (props) => {
                                 <Text
                                   style={{
                                     fontSize: width < 720 ? 11.854 : 16.854,
-                                    fontFamily: "GloryBold",
+                                    fontFamily:"GloryBold",
                                     color: "#FF0203",
                                   }}
                                 >
@@ -729,7 +728,7 @@ const OrderHistory = (props) => {
                                 style={{
                                   fontSize: width < 720 ? 11.854 : 16.854,
                                   color: "#7AC848",
-                                  fontFamily: "GloryBold"
+                                  fontFamily:"GloryBold"
                                 }}
                               >
                                 Completed
@@ -783,7 +782,7 @@ const OrderHistory = (props) => {
                     paddingLeft: 20,
                   }}
                 >
-                  <View style={{ height: 35, width: 35 }}>
+                  <View style={{ height:  35, width:  35 }}>
                     <Image
                       style={{
                         height: "100%",
@@ -927,6 +926,7 @@ const OrderHistory = (props) => {
                   {showFromDate && (
                     <DateTimePicker
                       value={orderstatus ? fromDate : outwardfromdate}
+                      maximumDate={new Date()}
                       mode="date"
                       display="default"
                       onChange={(event, selectedDate) => {
@@ -980,6 +980,7 @@ const OrderHistory = (props) => {
                     mode="date"
                     display="default"
                     minimumDate={orderstatus ? fromDate : outwardfromdate}
+                    maximumDate={new Date()}
                     onChange={(event, selectedDate) => {
                       setShowToDate(false);
                       if (selectedDate) {
@@ -1052,21 +1053,20 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#FFF",
-
+   
     borderTopColor: "#E0E0E0",
   },
   first_cnt: {
     width: "100%",
-    paddingHorizontal: 20,
-    height: height >= 844 ? "13%" : "17%",
+    height: height >= 844 ? "15%" : "17%",
     backgroundColor: "#FFF",
-    justifyContent: "center",
+    padding: "5%",
   },
   pendin_complete_cnt: {
     width: "100%",
     backgroundColor: "#212121",
-    paddingHorizontal: width >= 720 ? 18 : 10,
-    height: width >= 720 ? 70 : 60,
+    paddingHorizontal: width >= 720 ? 18 : 15,
+    height: width >= 720 ? 70 : 50,
     borderRadius: 5,
     justifyContent: "center",
   },
@@ -1077,7 +1077,7 @@ const styles = StyleSheet.create({
     // paddingVertical: "2.5%",
     // paddingHorizontal: "3.5%",
     // width: "100%",
-    // gap: 6,
+    gap: 6,
     // justifyContent: "center",
   },
   pending_btn: {
@@ -1086,8 +1086,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // paddingTop: "1.5%",
     // paddingBottom: "2.5%"
-    justifyContent: "center",
-    height: 40,
   },
   pending_text: {
     fontSize: width >= 720 ? 27 : 22,
@@ -1105,7 +1103,7 @@ const styles = StyleSheet.create({
     fontSize: width >= 720 ? 27 : 22,
     textAlign: "center",
     paddingBottom: "2%",
-    fontFamily: "GloryBold"
+    fontFamily:"GloryBold"
   },
   calender_cnt: {
     backgroundColor: "#FFF",
@@ -1113,6 +1111,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "flex-end",
+    height:40,
+    paddingBottom:3
+
   },
 });
 
@@ -1166,13 +1167,13 @@ const orderstyles = StyleSheet.create({
     marginBottom: 8,
   },
   txt_titile: {
-    fontSize: width < 720 ? 14 : 14,
+    fontSize: width < 720 ? 14 : 20,
     color: "#000000B2",
-    fontFamily: "GloryMedium"
+    fontFamily:"GloryMedium"
   },
   txt_val: {
     fontSize: width >= 720 ? 22 : 14.4,
-    fontFamily: "GloryBold",
+    fontFamily:"GloryBold",
     color: "#000000",
   },
   complete_icon_text: {
@@ -1247,7 +1248,7 @@ const calenderstyle = StyleSheet.create({
     color: "#FFF",
     textAlign: "center",
     fontSize: width >= 720 ? 25 : 18,
-    fontFamily: "GloryMedium"
+    fontFamily:"GloryMedium"
   },
   fromdate: {
     backgroundColor: 'transparent',
@@ -1268,6 +1269,6 @@ const calenderstyle = StyleSheet.create({
     marginBottom: "4%",
     fontSize: 16,
     color: "#000",
-    fontFamily: "GloryMedium"
+    fontFamily:"GloryMedium"
   },
 });

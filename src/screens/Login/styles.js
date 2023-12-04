@@ -40,13 +40,13 @@ const SliderStyles = () => {
       fontFamily: "GloryExtraBold" ,
       color: "white",
       fontSize: windowWidth * 0.08,
-      marginBottom: "2%",
+      marginBottom: width >= 720 ? "0.5%" : "2%",
     },
     subtitle: {
       fontFamily: "GloryMedium",
       color: "#BCBCBC",
       fontSize: windowWidth * 0.045,
-      marginBottom: 80,
+      marginBottom:80,
     },
     input: {
       fontFamily:"GloryRegular",
@@ -57,14 +57,13 @@ const SliderStyles = () => {
       backgroundColor: "white",
       borderTopRightRadius: 7,
       borderBottomRightRadius: 7,
-
       color: "#000000",
     },
     otpContainer: {
       height: "auto",
       flexDirection: "row",
       width: width >= 720 ? 400 : "60%",
-      marginBottom: "10%",
+      marginBottom:15,
       justifyContent: "space-between",
     },
     otpInput: {
@@ -78,6 +77,7 @@ const SliderStyles = () => {
       fontSize: width >= 720 ? 40 : 23,
       borderRadius: 7,
       textAlign: "center",
+      
     },
     button: {
       backgroundColor: "#212121",
@@ -90,6 +90,8 @@ const SliderStyles = () => {
       bottom: 20,
       right: 20,
     },
+
+   
     buttonText: {
       fontFamily:"GloryBold" ,
       color: "white",

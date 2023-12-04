@@ -135,7 +135,7 @@ export default function AllArticle(props) {
     Platform.OS === "android"
       ? width >= 720
         ? 120
-        : 100
+        : 80
       : height >= 844
         ? 100
         : 65;
@@ -233,6 +233,20 @@ export default function AllArticle(props) {
     setsearchtextfromstorage();
   }, []);
 
+  const checkUserLoginforheader = async () => {
+    try {
+      const data = await AsyncStorage.getItem("UserData");
+      if (data) {
+        navigation.navigate("Profile");
+      } else {
+        openCreateAccountModal();
+      }
+    } catch (error) {
+      console.error("Error while checking user data:", error);
+      return false;
+    }
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -254,7 +268,7 @@ export default function AllArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile");
+              checkUserLoginforheader();
             }}
           >
             <Image
@@ -300,10 +314,10 @@ export default function AllArticle(props) {
         const batchFiltered = batch.filter(
           (item) =>
             (searchText === "" ||
-              item.ArticleNumber.toString().includes(searchText.toString()) ||
-              item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.ArticleRate.toString().includes(searchText.toString()) ||
-              item.StyleDescription.toLowerCase().includes(
+            item.ArticleNumber && item.ArticleNumber.toString().includes(searchText.toString()) ||
+            item.Category && item.Category.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.ArticleRate && item.ArticleRate.toString().includes(searchText.toString()) ||
+            item.StyleDescription && item.StyleDescription.toLowerCase().includes(
                 searchText.toLowerCase()
               ) ||
               item.Subcategory.toLowerCase().includes(
@@ -500,7 +514,7 @@ export default function AllArticle(props) {
               alignItems: "center",
               width: "100%",
               paddingStart: 3,
-              paddingTop: 10,
+              // paddingTop: 5,
             }}
           >
             <SearchBar
@@ -605,7 +619,19 @@ export default function AllArticle(props) {
             )}
           </View>
           {/* {/ </ScrollView> /} */}
-          <KeyboardAvoidingView
+          {isKeyboardOpen === true ? null :  <KeyboardAvoidingView
+            // behavior={isKeyboardOpen ? "padding" : null}
+            style={{ flex: 1 }}
+          >
+            {isFilterVisible ? null : (
+              <View
+                style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+              >
+                <ButtomNavigation navigation={navigation} isLoggedIn={isLoggedIn} page="home" />
+              </View>
+            )}
+          </KeyboardAvoidingView>}
+          {/* <KeyboardAvoidingView
             behavior={isKeyboardOpen ? "padding" : null}
             style={{ flex: 1 }}
           >
@@ -616,7 +642,7 @@ export default function AllArticle(props) {
                 <ButtomNavigation navigation={navigation} page="home" />
               </View>
             )}
-          </KeyboardAvoidingView>
+          </KeyboardAvoidingView> */}
 
           {isFilterVisible && (
             <View
