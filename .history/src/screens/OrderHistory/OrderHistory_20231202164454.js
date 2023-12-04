@@ -1133,6 +1133,7 @@ const orderstyles = StyleSheet.create({
     gap: 5,
     justifyContent: "center",
     alignContent: "center",
+    // margin:2,
   },
   text_cnt: {
     display: "flex",

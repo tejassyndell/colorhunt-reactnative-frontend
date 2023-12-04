@@ -42,7 +42,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFF",
   },
-
+  producticones: {
+    width: "20%",
+    position: "absolute",
+    resizeMode: "contain",
+    zIndex: 2,
+    right: 20,
+    top: 20,
+  },
   icon: {
     width: "100%",
     fontSize: width >= 720 ? 30 : 20,

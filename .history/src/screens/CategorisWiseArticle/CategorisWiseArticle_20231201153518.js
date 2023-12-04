@@ -153,19 +153,7 @@ export default function CategorisWiseArticle(props) {
     partydata = await JSON.parse(partydata);
     return partydata[0].Id;
   };
-  const checkUserLoginforheader = async () => {
-    try {
-      const data = await AsyncStorage.getItem("UserData");
-      if (data) {
-        navigation.navigate("Profile");
-      } else {
-        openCreateAccountModal();
-      }
-    } catch (error) {
-      console.error("Error while checking user data:", error);
-      return false;
-    }
-  };
+
   const getproductnamess = async () => {
     try {
       const res = await getProductName();
@@ -264,7 +252,8 @@ export default function CategorisWiseArticle(props) {
         >
           <TouchableOpacity
             onPress={() => {
-              checkUserLoginforheader();
+              navigation.navigate("Profile");
+              // console.log(isLoggedIn);
             }}
           >
             <Image

@@ -659,7 +659,7 @@ PODS:
     - ExpoModulesCore
   - EXPermissions (14.2.1):
     - ExpoModulesCore
-  - Expo (49.0.20):
+  - Expo (49.0.21):
     - ExpoModulesCore
   - expo-dev-client (2.4.12):
     - EXManifests
@@ -1382,21 +1382,21 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.11.0):
     - React-Core
-  - RNDateTimePicker (7.6.1):
+  - RNDateTimePicker (7.6.2):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFBApp (18.6.2):
+  - RNFBApp (18.7.1):
     - Firebase/CoreOnly (= 10.18.0)
     - React-Core
-  - RNFBFirestore (18.6.2):
+  - RNFBFirestore (18.7.1):
     - Firebase/Firestore (= 10.18.0)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - React-Core
     - RNFBApp
-  - RNFBMessaging (18.6.2):
+  - RNFBMessaging (18.7.1):
     - Firebase/Messaging (= 10.18.0)
     - FirebaseCoreExtension (= 10.18.0)
     - React-Core
@@ -1738,7 +1738,7 @@ SPEC CHECKSUMS:
   EXMediaLibrary: 88ee9eed37c4fe38a4b5b35b73a4f9fa056c999e
   EXNotifications: 09394cbd7165f9a4a00a53328aa09bf874bae717
   EXPermissions: 4f80cf527001aa408a22eddf076e61465ea71d5a
-  Expo: 25b41ba5d4a3af57234dca132f6b9e1f5b0bd4b5
+  Expo: 61a8e1aa94311557c137c0a4dfd4fe78281cfbb4
   expo-dev-client: 1e20e0d67534fd63da37604747a60e7d69fc46f5
   expo-dev-launcher: 4abaa5997c1063e77432bb23ca05da364803e297
   expo-dev-menu: 7cc0b6c9ed9fc99740e5d3ba1335bcd1537da9e8
@@ -1816,11 +1816,11 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
-  RNDateTimePicker: 8fb39263b721223e095248acaf6f406d5b7f6713
+  RNDateTimePicker: fc2e4f2795877d45e84d85659bebe627eba5c931
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
-  RNFBApp: 09fd96441b0f556a1ef50ee70fa72160ae71ecb9
-  RNFBFirestore: df782994cdc4b06be3f532f769698af7f34658f7
-  RNFBMessaging: 95fa608c79d3378b1a958a64f8be82e4699368a9
+  RNFBApp: 3d518e0ea7f945ae546facc0e6034806d9ddfde7
+  RNFBFirestore: 8d1ebb9a5af12838a15c8e9572435daca761767f
+  RNFBMessaging: 5c909e97a0c81c4a03c56ca17f0fe79256941ec9
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   RNScreens: 50ffe2fa2342eabb2d0afbe19f7c1af286bc7fb3

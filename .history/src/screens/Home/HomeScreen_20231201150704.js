@@ -371,7 +371,6 @@ export default function HomeScreen(props) {
         const newObject = { text: searchText };
         await AsyncStorage.setItem("searchText", JSON.stringify(newObject));
       }
-
       setshowarticle(false);
     } else {
       setshowarticle(true);

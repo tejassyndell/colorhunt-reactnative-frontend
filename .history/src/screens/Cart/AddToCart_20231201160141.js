@@ -1249,6 +1249,7 @@ const AddToCart = (props) => {
                           position: "absolute",
                           top: width >= 720 ? 14 : 7,
                           right: width >= 720 ? 10 : 10,
+                          position: "absolute",
                           justifyContent: "flex-end",
                           alignItems: "flex-end",
                         }}

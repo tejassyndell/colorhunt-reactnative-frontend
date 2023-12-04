@@ -1120,7 +1120,6 @@ const orderstyles = StyleSheet.create({
     paddingVertical: 2,
   },
   pending_icon_text: {
-    backgroundColor: "#FFD1D1",
     borderWidth: 0.659,
     paddingTop: 6,
     paddingBottom: 6.34,
@@ -1133,6 +1132,7 @@ const orderstyles = StyleSheet.create({
     gap: 5,
     justifyContent: "center",
     alignContent: "center",
+    // margin:2,
   },
   text_cnt: {
     display: "flex",

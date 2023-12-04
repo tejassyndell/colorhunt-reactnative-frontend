@@ -34,15 +34,29 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     zIndex: 2,
     right: width >= 720 ? 10 : 15,
-    top: 20,
+    top: 12,
+  },
+  icon: {
+    width: "100%",
+    fontSize: 20,
+    textAlign: "right",
+    color: "red",
   },
   loader: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF",
-  },
+    backgroundColor:'#FFF',
 
+  },
+  producticones: {
+    width: "20%",
+    position: "absolute",
+    resizeMode: "contain",
+    zIndex: 2,
+    right: 20,
+    top: 20,
+  },
   icon: {
     width: "100%",
     fontSize: width >= 720 ? 30 : 20,
@@ -57,8 +71,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   gif: {
     width: 200,
