@@ -693,7 +693,7 @@ const Orderlist = (props) => {
                 >
                   <View
                     style={{
-                      width: "88%",
+                      width: width >= 720 ? "50%":"88%",
                       height: 390,
                       backgroundColor: "#FFF",
                       borderRadius: 25,
@@ -735,7 +735,7 @@ const Orderlist = (props) => {
                   >
                     <View
                       style={{
-                        width: "88%",
+                        width: width >= 720 ? "50%":"88%",
                         height: 390,
                         backgroundColor: "white",
                         borderRadius: 25,

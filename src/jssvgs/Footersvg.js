@@ -156,7 +156,7 @@ const Footersvg = (props) => {
         />
       </G>
       {showRedDot && (
-        <Circle cx={20} cy={4} r={4}  fill="red" /> // Adjust the coordinates and size as needed
+        <Circle cx={width >=720 ? 19:20} cy={width >=720 ? 5:4} r={4}  fill="red" /> // Adjust the coordinates and size as needed
       )}
     </Svg>
 

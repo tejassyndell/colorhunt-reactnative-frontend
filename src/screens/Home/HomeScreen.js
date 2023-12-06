@@ -688,7 +688,7 @@ export default function HomeScreen(props) {
                 style={{ flex: 1 }}
               >
                 {showarticle ? (
-                  finalData.length > 0 ? (
+                  finalData ? (
                     finalData.map((item, index) => (
                       <TouchableOpacity
                         key={index}
@@ -703,7 +703,7 @@ export default function HomeScreen(props) {
                           style={{
                             alignItems: "center",
                             width: width >= 720 ? 300 : 155,
-                            height: width >= 720 ? 280 : 280,
+                            height: width >= 720 ? 380 : 280,
                             marginLeft: width >= 720 ? 15 : 10,
                             marginRight: width >= 720 ? 15 : 5,
                             borderRadius: 10,

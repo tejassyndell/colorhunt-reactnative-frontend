@@ -765,7 +765,7 @@ const OrderHistory = (props) => {
                 <View
                   style={{
                     width: "80%",
-                    height: 48.752,
+                    height: 50,
                     gap: 12,
                     display: "flex",
                     flexDirection: "row",
@@ -1101,6 +1101,7 @@ const orderstyles = StyleSheet.create({
 
     backgroundColor: "#FFF",
     paddingBottom: 200,
+    marginTop: width >= 720 ? 30:0, 
   },
   data_cnt: {
     marginBottom: 15,
