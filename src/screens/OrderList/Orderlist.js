@@ -445,7 +445,12 @@ const Orderlist = (props) => {
                     <View
                       style={{
                         position: "absolute",
+<<<<<<< Updated upstream
                         top: width >= 720 ? "52%" : "52%",
+=======
+                        top: width >= 720 ? "60%" : "52%",
+
+>>>>>>> Stashed changes
                         right: "1%",
                         justifyContent: "center",
                       }}
@@ -677,7 +682,7 @@ const Orderlist = (props) => {
                 >
                   <View
                     style={{
-                      width: "88%",
+                      width: width >= 720? '50%':"88%",
                       height: 390,
                       backgroundColor: "#FFF",
                       borderRadius: 25,
@@ -718,7 +723,7 @@ const Orderlist = (props) => {
                   >
                     <View
                       style={{
-                        width: "88%",
+                        width: width >= 720? '50%':"88%",
                         height: 390,
                         backgroundColor: "white",
                         borderRadius: 25,

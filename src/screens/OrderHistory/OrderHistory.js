@@ -7,7 +7,11 @@ import {
   Alert,
   Button
 } from "react-native";
+<<<<<<< Updated upstream
 import DateTimePicker from '@react-native-community/datetimepicker';
+=======
+// import DateTimePicker from "@react-native-community/datetimepicker";
+>>>>>>> Stashed changes
 import MenuBackArrow from "../../components/menubackarrow/menubackarrow";
 import { useState, useLayoutEffect, useEffect } from "react";
 import { Pressable } from "react-native";
@@ -774,12 +778,13 @@ const OrderHistory = (props) => {
                 <View
                   style={{
                     width: "80%",
-                    height: 48.752,
+                    height: 50,
                     gap: 12,
                     display: "flex",
                     flexDirection: "row",
                     paddingVertical: 13,
                     paddingLeft: 20,
+                    
                   }}
                 >
                   <View style={{ height:  35, width:  35 }}>
@@ -1124,6 +1129,7 @@ const orderstyles = StyleSheet.create({
 
     backgroundColor: "#FFF",
     paddingBottom: 200,
+    marginTop: width >= 720 ? 30 : 0,
   },
   data_cnt: {
     marginBottom: 15,
